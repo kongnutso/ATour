@@ -8,7 +8,6 @@ import promise from "redux-promise";
 
 import reducers from "./reducer";
 import App from "./component/App";
-import TopBanner from "./component/TopBanner/TopBanner";
 
 const createStoreWithMiddleware = applyMiddleware(promise)(createStore);
 
@@ -16,7 +15,6 @@ ReactDOM.render(
   <Provider store={createStoreWithMiddleware(reducers)}>
     <BrowserRouter>
       <div>
-        <Route path="/" component={TopBanner} />
         <Switch>
           <Route path="/" component={App} />
         </Switch>
