@@ -8,6 +8,7 @@ import promise from "redux-promise";
 
 import reducers from "./reducer";
 import App from "./component/App";
+import RegisterPage from "./component/RegisterPage/RegisterPage";
 
 const createStoreWithMiddleware = applyMiddleware(promise)(createStore);
 
@@ -16,6 +17,7 @@ ReactDOM.render(
     <BrowserRouter>
       <div>
         <Switch>
+          <Route path="/register" component={RegisterPage} />
           <Route path="/" component={App} />
         </Switch>
       </div>
