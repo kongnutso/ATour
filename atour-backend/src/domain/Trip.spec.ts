@@ -7,7 +7,7 @@ describe('Trip', () => {
       tripId: '1234',
       tripDate: new Date('2018-11-05')
     };
-    const bookedTrip = Trip.book(
+    const bookedTrip = Trip.bookTrip()(
       unbookedTrip,
       'customer1',
       new Date('2018-10-05')

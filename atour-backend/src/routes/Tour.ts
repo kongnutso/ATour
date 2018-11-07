@@ -14,6 +14,7 @@ router.post('/', async (req, res) => {
   const saveTour = async tour => {
     await db.collection('tour').insert(tour);
   };
+
   const { tourName, minSize, maxSize, price, detail } = req.body;
   await createTourService(saveTour)(tourName, minSize, maxSize, price, detail);
   res.send('OK');
