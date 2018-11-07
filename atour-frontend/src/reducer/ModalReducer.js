@@ -1,5 +1,5 @@
 import { combineReducers } from "redux";
-import { REGISTER_MODAL, LOGIN_MODAL } from "../action/modalAction";
+import { REGISTER_MODAL, LOGIN_MODAL } from "../action/ModalAction";
 
 const initialState = {
   register: false,

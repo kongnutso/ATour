@@ -1,7 +1,8 @@
 .banner {
   display: flex;
-  border-width: 1px;
+  border-width: 0px 0px 1px 0px;
   border-style: solid;
+  border-color: #e3e3e3;
   height: 50px;
 }
 
@@ -16,9 +17,14 @@
   padding-left: 50px;
 }
 
-.home {
+.logo {
   font-size: 40px;
   position: absolute;
   left: 10%;
-  top: -5px;
+  top: -9px;
+  width: 145px;
+}
+
+.logo-img {
+  width: 100%;
 }

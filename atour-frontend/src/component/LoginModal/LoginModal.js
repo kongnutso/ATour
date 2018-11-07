@@ -1,7 +1,8 @@
 import React from "react";
 import Modal from "react-modal";
 import { connect } from "react-redux";
-import { loginModal, registerModal } from "../../action/modalAction";
+import { loginModal, registerModal } from "../../action/ModalAction";
+import { login } from "../../action/ApplicationAction";
 import classNames from "classnames";
 import autobind from "react-autobind";
 import "./styles.css";
@@ -96,7 +97,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => ({
   onCloseModal: () => dispatch(loginModal(false)),
-  onOpenRegisterModal: () => dispatch(registerModal(true))
+  onOpenRegisterModal: () => dispatch(registerModal(true)),
+  login: (username, password) => dispatch(login(username, password))
 });
 
 export default connect(
