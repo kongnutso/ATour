@@ -6,16 +6,16 @@ import autobind from "react-autobind";
 import classNames from "classnames";
 import { Card, Header } from "semantic-ui-react";
 import styled from "styled-components";
-import TourItem from "Guide/TourItem";
+import TourItem from "./Guide/TourItem";
 
 // target props: tours
-//tourName, tourImage, tourRating, tourPrice, tourLocation
+// tourName, tourImage, tourRating, tourPrice, tourLocation
 const Tours = props => (
-  <Card.group itemsPerRow={3}>
-    {this.props.tours.map(tour => (
+  <Card.Group itemsPerRow={3}>
+    {props.tours.map(tour => (
       <TourItem tour={tour} />
     ))}
-  </Card.group>
+  </Card.Group>
 );
 
 export default Tours;
