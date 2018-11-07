@@ -1,10 +1,10 @@
 import { combineReducers } from "redux";
 import userInfoReducer from "./userInfoReducer";
-import { reducer as formReducer } from "redux-form";
+import modalReducer from "./modalReducer";
 
 const rootReducer = combineReducers({
   user: userInfoReducer,
-  form: formReducer
+  modal: modalReducer
 });
 
 export default rootReducer;
