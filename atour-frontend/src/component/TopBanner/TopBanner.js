@@ -1,51 +1,15 @@
 import React from "react";
 import { connect } from "react-redux";
-import Modal from "react-modal";
-import autoBind from "react-autobind";
 import "./styles.css";
 import { Link } from "react-router-dom";
+import RegisterModal from "../RegisterModal/RegisterModal";
+import { loginModal, registerModal } from "../../action/modalAction";
 
 class TopBanner extends React.Component {
-  constructor() {
-    super();
-    this.state = { isLoginModal: false, isRegisterModal: false };
-    autoBind(
-      this,
-      "openLoginModal",
-      "closeLoginModal",
-      "openRegisterModal",
-      "closeRegisterModal"
-    );
-  }
-  openLoginModal() {
-    this.setState({ isLoginModal: true });
-  }
-  closeLoginModal() {
-    this.setState({ isLoginModal: false });
-  }
-  openRegisterModal() {
-    this.setState({ isRegisterModal: true });
-  }
-  closeRegisterModal() {
-    this.setState({ isRegisterModal: false });
-  }
   render() {
     return (
       <div>
-        <Modal
-          className="Modal"
-          isOpen={this.state.isLoginModal}
-          onRequestClose={this.closeLoginModal}
-        >
-          Login Modal
-        </Modal>
-        <Modal
-          className="Modal"
-          isOpen={this.state.isRegisterModal}
-          onRequestClose={this.closeRegisterModal}
-        >
-          Register Modal
-        </Modal>
+        <RegisterModal />
         <div className="banner">
           <Link to="/">
             <div className="home">ATour</div>
@@ -53,7 +17,7 @@ class TopBanner extends React.Component {
           <div className="right-container">
             <div className="right">Search for Tour</div>
             <div className="right">Search for Guide</div>
-            <div className="right" onClick={this.openRegisterModal}>
+            <div className="right" onClick={this.props.openRegisterModal}>
               Sign up
             </div>
             <div className="right" onClick={this.openLoginModal}>
@@ -66,7 +30,12 @@ class TopBanner extends React.Component {
   }
 }
 
+const mapDispatchToProps = dispatch => ({
+  openRegisterModal: () => dispatch(registerModal(true)),
+  openLoginModal: () => dispatch(loginModal(true))
+});
+
 export default connect(
   null,
-  null
+  mapDispatchToProps
 )(TopBanner);
