@@ -1,6 +1,8 @@
 import app from './app';
 import { initMongo } from './db';
 import { Db } from 'mongodb';
+import Tour from './routes/Tour';
+
 const PORT = 3000;
 
 async function testDb(db: Db) {
@@ -12,9 +14,15 @@ async function testDb(db: Db) {
 }
 
 async function main() {
-  const { db, client } = await initMongo();
+  const { db } = await initMongo();
 
   testDb(db);
+  app.use((req, res, next) => {
+    res.locals.db = db;
+    next();
+  });
+
+  app.use('/tour', Tour);
 
   app.listen(PORT, () => {
     console.log('Express server listening on port ' + PORT);
