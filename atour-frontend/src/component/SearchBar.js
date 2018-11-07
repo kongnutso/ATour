@@ -47,7 +47,7 @@ class SearchBar extends React.Component {
       >
         <Grid.Row centered={true} columns={12}>
           <Grid.Column width={12} text>
-            <Header as="h3" color="white" textAlign="left">
+            <Header as="h4" inverted color="grey">
               Where to ?
             </Header>
           </Grid.Column>
