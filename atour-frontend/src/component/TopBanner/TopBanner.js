@@ -4,11 +4,13 @@ import "./styles.css";
 import { Link } from "react-router-dom";
 import RegisterModal from "../RegisterModal/RegisterModal";
 import { loginModal, registerModal } from "../../action/modalAction";
+import LoginModal from "../LoginModal/LoginModal";
 
 class TopBanner extends React.Component {
   render() {
     return (
       <div>
+        <LoginModal />
         <RegisterModal />
         <div className="banner">
           <Link to="/">
@@ -20,7 +22,7 @@ class TopBanner extends React.Component {
             <div className="right" onClick={this.props.openRegisterModal}>
               Sign up
             </div>
-            <div className="right" onClick={this.openLoginModal}>
+            <div className="right" onClick={this.props.openLoginModal}>
               Login
             </div>
           </div>

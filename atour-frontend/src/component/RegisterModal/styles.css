@@ -22,11 +22,11 @@
   width: 149px;
   border-radius: 0;
   background-color: white;
-  color: #00bfff;
-  border-color: #00bfff;
+  color: #26abdc;
+  border-color: #26abdc;
 }
 
 .selected {
-  background-color: #00bfff;
+  background-color: #26abdc;
   color: white;
 }
