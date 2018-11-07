@@ -1,9 +1,9 @@
 import { combineReducers } from "redux";
-// import userInfoReducer from "./userInfoReducer";
-import modalReducer from "./modalReducer";
+import userInfoReducer from "./UserInfoReducer";
+import modalReducer from "./ModalReducer";
 
 const rootReducer = combineReducers({
-  // user: userInfoReducer,
+  user: userInfoReducer,
   modal: modalReducer
 });
 

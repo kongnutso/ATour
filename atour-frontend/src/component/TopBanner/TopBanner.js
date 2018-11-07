@@ -3,8 +3,9 @@ import { connect } from "react-redux";
 import "./styles.css";
 import { Link } from "react-router-dom";
 import RegisterModal from "../RegisterModal/RegisterModal";
-import { loginModal, registerModal } from "../../action/modalAction";
+import { loginModal, registerModal } from "../../action/ModalAction";
 import LoginModal from "../LoginModal/LoginModal";
+import logo from "../../image/Atour-logo.jpg";
 
 class TopBanner extends React.Component {
   render() {
@@ -14,7 +15,9 @@ class TopBanner extends React.Component {
         <RegisterModal />
         <div className="banner">
           <Link to="/">
-            <div className="home">ATour</div>
+            <div className="logo">
+              <img className="logo-img" src={logo} alt="logo" />
+            </div>
           </Link>
           <div className="right-container">
             <div className="right">Search for Tour</div>

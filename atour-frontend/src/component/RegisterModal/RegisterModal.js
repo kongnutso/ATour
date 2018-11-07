@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import Modal from "react-modal";
 import "./styles.css";
-import { registerModal } from "../../action/modalAction";
+import { registerModal } from "../../action/ModalAction";
 import autobind from "react-autobind";
 import * as validation from "../../utils/validation";
 import classNames from "classnames";
