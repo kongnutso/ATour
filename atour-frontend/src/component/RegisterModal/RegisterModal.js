@@ -52,7 +52,7 @@ class RegisterModal extends React.Component {
     super();
     this.state = {
       asCustomer: true,
-      accountInfo: false,
+      accountInfo: true,
       value: {
         username: "",
         password: "",
