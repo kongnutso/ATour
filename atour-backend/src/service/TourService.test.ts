@@ -1,6 +1,7 @@
 import { createTourService } from './TourService';
 
 test('createTour', () => {
+  //TODO: properly check this
   createTourService(async tour => console.log(tour))(
     'Changmai Trip',
     1,

@@ -12,7 +12,7 @@ router.post('/', async (req, res) => {
   const db: Db = res.locals.db;
 
   const saveTour = async tour => {
-    db.collection('tour').insert(tour);
+    await db.collection('tour').insert(tour);
   };
   const { tourName, minSize, maxSize, price, detail } = req.body;
   await createTourService(saveTour)(tourName, minSize, maxSize, price, detail);
