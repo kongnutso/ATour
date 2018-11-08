@@ -15,9 +15,9 @@ class LoginModal extends React.Component {
   }
 
   login() {
-    console.log(
-      "username: " + this.state.username + "\npassword: " + this.state.password
-    );
+    const { username, password, asCustomer } = this.state;
+    this.props.onCloseModal();
+    this.props.login(username, password, asCustomer ? "Customer" : "Guide");
   }
 
   switchToSignUp() {
@@ -98,7 +98,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => ({
   onCloseModal: () => dispatch(loginModal(false)),
   onOpenRegisterModal: () => dispatch(registerModal(true)),
-  login: (username, password) => dispatch(login(username, password))
+  login: (username, password, role) => dispatch(login(username, password, role))
 });
 
 export default connect(

@@ -17,8 +17,9 @@ ReactDOM.render(
     <BrowserRouter>
       <div>
         <Route path="/" component={TopBanner} />
+
         <Switch>
-          <Route path="/" component={App} />
+          <Route exact path="/" component={App} />
         </Switch>
       </div>
     </BrowserRouter>
