@@ -75,8 +75,7 @@ class LoginModal extends React.Component {
           onClick={() => this.login()}
           className="btn loginModal-login-btn"
         >
-          {" "}
-          Login{" "}
+          Login
         </button>
         <div className="loginModal-to-register-container">
           <div className="loginModal-to-register-text">

@@ -52,6 +52,11 @@
   margin-top: 25px;
 }
 
+.loginModal-login-btn:hover {
+  border-color: #2297c7;
+  background-color: #2297c7;
+}
+
 .loginModal-login-label {
   margin-top: 10px;
 }

@@ -16,11 +16,13 @@
   margin: auto;
   width: 340px;
   margin-top: 200px;
+  margin-bottom: 100px;
 }
 
 .registerModal-next-btn {
   width: 300px;
   background-color: #26abdc;
+  border-color: #26abdc;
 }
 
 .to-login-container {
