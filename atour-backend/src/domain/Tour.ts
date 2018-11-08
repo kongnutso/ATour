@@ -2,7 +2,7 @@ import { Tour, UnbookedTrip } from './types';
 
 export type IdGenerator = () => string;
 
-export type CreateTour = (
+export type PublishTour = (
   tourName: string,
   minSize: number,
   maxSize: number,
@@ -12,7 +12,7 @@ export type CreateTour = (
 
 export type PublishTrip = (t: Tour, d: Date) => Tour;
 
-export function createTour(idGenerator: IdGenerator): CreateTour {
+export function publishTour(idGenerator: IdGenerator): PublishTour {
   return (
     tourName: string,
     minimumSize: number,

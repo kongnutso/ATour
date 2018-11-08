@@ -92,7 +92,7 @@ export type UserProfile = {
   firstName: string;
   lastName: string;
   phoneNumber: string;
-  birthDate: string;
+  birthDate: Date;
 };
 
 export enum RegistrationStatus {
@@ -118,19 +118,52 @@ export type Customer = {
   tripHistory: Trip[];
 };
 
-export type Guide = {
+export type Guide = NotConfirmedGuide | UnApprovedGuide | ApprovedGuide;
+export enum GuideType {
+  NotConfirmedGuide,
+  UnApprovedGuide,
+  ApprovedGuide
+}
+export type NotConfirmedGuide = {
+  _type: GuideType.NotConfirmedGuide;
+  guideId: string;
   userName: string;
   password: string;
   personalId: string;
   email: string;
   profile: UserProfile;
-  registrationStatus: RegistrationStatus;
-  guideId: string;
-  availableDate: Date[];
-  approvalStatus: ApprovalStatus;
   bankAccountNumber: string;
   bankName: string;
+  registrationStatus: RegistrationStatus.NotConfirm;
+};
+
+export type UnApprovedGuide = {
+  _type: GuideType.UnApprovedGuide;
+  guideId: string;
+  userName: string;
+  password: string;
+  personalId: string;
+  email: string;
+  profile: UserProfile;
+  bankAccountNumber: string;
+  bankName: string;
+  registrationStatus: RegistrationStatus.Confirmed;
+  approvalStatus: ApprovalStatus.NotApprove;
+};
+
+export type ApprovedGuide = {
+  _type: GuideType.ApprovedGuide;
+  guideId: string;
+  userName: string;
+  password: string;
+  personalId: string;
+  email: string;
+  profile: UserProfile;
+  bankAccountNumber: string;
+  bankName: string;
+  registrationStatus: RegistrationStatus.Confirmed;
+  approvalStatus: ApprovalStatus.Approved;
+  availableDate: Date[];
   dealtTrips: Trip[];
   publishedTours: Tour[];
-  allTours: Tour[];
 };
