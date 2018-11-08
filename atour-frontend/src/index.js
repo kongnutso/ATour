@@ -9,6 +9,7 @@ import promise from "redux-promise";
 import reducers from "./reducer";
 import App from "./component/App";
 import TopBanner from "./component/TopBanner/TopBanner";
+import EditProfile from "./component/EditProfile/EditProfile";
 
 const createStoreWithMiddleware = applyMiddleware(promise)(createStore);
 
@@ -19,6 +20,7 @@ ReactDOM.render(
         <Route path="/" component={TopBanner} />
         <Switch>
           <Route exact path="/" component={App} />
+          <Route exact path="/editProfile" component={EditProfile} />
         </Switch>
       </div>
     </BrowserRouter>
