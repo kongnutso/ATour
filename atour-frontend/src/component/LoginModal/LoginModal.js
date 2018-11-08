@@ -29,7 +29,7 @@ class LoginModal extends React.Component {
     const { asCustomer, username, password } = this.state;
     return (
       <Modal
-        className="modal-container"
+        className="modal-container-loginModal"
         style={{
           overlay: {
             overflow: "auto"
@@ -39,12 +39,12 @@ class LoginModal extends React.Component {
         onRequestClose={this.props.onCloseModal}
         ariaHideApp={false}
       >
-        <div className="login">Log in</div>
+        <div className="loginModal-login">Log in</div>
         <button
           onClick={() => this.setState({ asCustomer: true })}
           className={classNames({
-            "btn selectiveButton": true,
-            selected: asCustomer
+            "btn loginModal-selectiveButton": true,
+            "loginModal-selected": asCustomer
           })}
         >
           Customer
@@ -52,34 +52,39 @@ class LoginModal extends React.Component {
         <button
           onClick={() => this.setState({ asCustomer: false })}
           className={classNames({
-            "btn selectiveButton": true,
-            selected: !asCustomer
+            "btn loginModal-selectiveButton": true,
+            "loginModal-selected": !asCustomer
           })}
         >
           Guide
         </button>
-        <div className="login-label">Username</div>
+        <div className="loginModal-login-label">Username</div>
         <input
-          className="text-field"
+          className="loginModal-text-field"
           value={username}
           onChange={e => this.setState({ username: e.target.value })}
         />
-        <div className="login-label">Password</div>
+        <div className="loginModal-login-label">Password</div>
         <input
-          className="text-field"
+          className="loginModal-text-field"
           type="password"
           value={password}
           onChange={e => this.setState({ password: e.target.value })}
         />
-        <button onClick={() => this.login()} className="btn login-btn">
+        <button
+          onClick={() => this.login()}
+          className="btn loginModal-login-btn"
+        >
           {" "}
           Login{" "}
         </button>
-        <div className="to-register-container">
-          <div className="to-register-text">Don't have an account ?</div>
+        <div className="loginModal-to-register-container">
+          <div className="loginModal-to-register-text">
+            Don't have an account ?
+          </div>
           <div
             onClick={() => this.switchToSignUp()}
-            className="to-register-link"
+            className="loginModal-to-register-link"
           >
             Sign up
           </div>
