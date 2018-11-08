@@ -89,7 +89,6 @@ class RegisterModal extends React.Component {
       "onSubmitUserInfo",
       "renderUserInfo",
       "onCloseModal",
-      "validateAccountInfo",
       "onFieldChange"
     );
   }
