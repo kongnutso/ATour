@@ -2,11 +2,10 @@ import * as GuideDomain from './Guide';
 import {
   Guide,
   ApprovalStatus,
-  RegistrationStatus,
   Tour,
   GuideType,
   ApprovedGuide,
-  NotConfirmedGuide
+  UnApprovedGuide
 } from './types';
 
 describe('Guide', () => {
@@ -23,8 +22,8 @@ describe('Guide', () => {
       '102943940',
       'SCB'
     );
-    const expectedGuide: NotConfirmedGuide = {
-      _type: GuideType.NotConfirmedGuide,
+    const expectedGuide: UnApprovedGuide = {
+      _type: GuideType.UnApprovedGuide,
       guideId: 'guideid',
       userName: 'guideuser',
       password: 'password',
@@ -34,19 +33,18 @@ describe('Guide', () => {
         firstName: 'John',
         lastName: 'Smith',
         phoneNumber: '0812345678',
-        birthDate: new Date('1996-05-07'),
+        birthDate: new Date('1996-05-07')
       },
       bankAccountNumber: '102943940',
       bankName: 'SCB',
-      registrationStatus: RegistrationStatus.NotConfirm
-    }
+      approvalStatus: ApprovalStatus.NotApprove
+    };
     expect(resultGuide).toEqual(expectedGuide);
   });
   test('addPublishedTour', () => {
     const guide: ApprovedGuide = {
       _type: GuideType.ApprovedGuide,
       guideId: 'guideid',
-      registrationStatus: RegistrationStatus.Confirmed,
       approvalStatus: ApprovalStatus.Approved,
       userName: 'john',
       password: 'password',
