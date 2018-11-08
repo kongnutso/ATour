@@ -8,7 +8,7 @@ import { logout } from "../../action/ApplicationAction";
 import LoginModal from "../LoginModal/LoginModal";
 import logo from "../../image/Atour-logo.jpg";
 import autobind from "react-autobind";
-import ClickOutSide from "react-click-outside";
+import ClickOutSide from "react-click-outside-component";
 
 class TopBanner extends React.Component {
   constructor() {
@@ -27,11 +27,18 @@ class TopBanner extends React.Component {
       <div className="topbanner-user-container">
         <LoginModal />
         <RegisterModal />
-        <div className="topbanner-right" onClick={this.props.openRegisterModal}>
-          Sign up
+        <div className="topbanner-right">
+          <div
+            onClick={this.props.openRegisterModal}
+            className="topbanner-menu"
+          >
+            Sign up
+          </div>
         </div>
-        <div className="topbanner-right" onClick={this.props.openLoginModal}>
-          Login
+        <div className="topbanner-right">
+          <div className="topbanner-menu" onClick={this.props.openLoginModal}>
+            Login{" "}
+          </div>
         </div>
       </div>
     );
@@ -45,21 +52,30 @@ class TopBanner extends React.Component {
         <div className="topbanner-login-dropdown">
           {this.props.userInfo.role === "Customer" ? (
             <Link className="topbanner-link" to="/bookedHistory">
-              <div className="dropdown-item">
+              <div
+                className="dropdown-item"
+                onClick={() => this.setState({ isClickedDropdown: false })}
+              >
                 <i className="fa fa-calendar topbanner-icon" />
                 Booked History
               </div>
             </Link>
           ) : (
             <Link to="/publishedTour" className="topbanner-link">
-              <div className="dropdown-item">
+              <div
+                className="dropdown-item"
+                onClick={() => this.setState({ isClickedDropdown: false })}
+              >
                 <i className="fa fa-calendar topbanner-icon" />
                 Published Tour
               </div>
             </Link>
           )}
           <Link to="/editProfile" className="topbanner-link">
-            <div className="dropdown-item">
+            <div
+              className="dropdown-item"
+              onClick={() => this.setState({ isClickedDropdown: false })}
+            >
               <i className="fa fa-cog topbanner-icon" />
               Edit Profile
             </div>
@@ -96,22 +112,31 @@ class TopBanner extends React.Component {
       : this.renderNotSignIn();
     return (
       <div>
-        <div className="topbanner-banner">
-          <Link to="/">
-            <div className="topbanner-logo">
-              <img
-                className="topbanner-logo-img"
-                src={logo}
-                alt="topbanner-logo"
-              />
+        <div className="topbanner">
+          <div className="topbanner-banner">
+            <div className="topbanner-logo-container">
+              <div className="topbanner-logo">
+                <Link to="/">
+                  <img
+                    className="topbanner-logo-img"
+                    src={logo}
+                    alt="topbanner-logo"
+                  />
+                </Link>
+              </div>
             </div>
-          </Link>
-          <div className="topbanner-right-container">
-            <div className="topbanner-right">Search for Tour</div>
-            <div className="topbanner-right">Search for Guide</div>
-            {renderSignIn}
+            <div className="topbanner-right-container">
+              <div className="topbanner-right topbanner-first">
+                <div className="topbanner-menu">Search for Tour</div>
+              </div>
+              <div className="topbanner-right">
+                <div className="topbanner-menu">Search for Guide</div>
+              </div>
+              {renderSignIn}
+            </div>
           </div>
         </div>
+        <div style={{ height: "50px" }} />
       </div>
     );
   }

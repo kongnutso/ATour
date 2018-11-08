@@ -39,53 +39,61 @@ class LoginModal extends React.Component {
         onRequestClose={this.props.onCloseModal}
         ariaHideApp={false}
       >
-        <div className="loginModal-login">Log in</div>
-        <button
-          onClick={() => this.setState({ asCustomer: true })}
-          className={classNames({
-            "btn loginModal-selectiveButton": true,
-            "loginModal-selected": asCustomer
-          })}
+        <div
+          onKeyPress={e => {
+            if (e.which === 13) {
+              this.login();
+            }
+          }}
         >
-          Customer
-        </button>
-        <button
-          onClick={() => this.setState({ asCustomer: false })}
-          className={classNames({
-            "btn loginModal-selectiveButton": true,
-            "loginModal-selected": !asCustomer
-          })}
-        >
-          Guide
-        </button>
-        <div className="loginModal-login-label">Username</div>
-        <input
-          className="loginModal-text-field"
-          value={username}
-          onChange={e => this.setState({ username: e.target.value })}
-        />
-        <div className="loginModal-login-label">Password</div>
-        <input
-          className="loginModal-text-field"
-          type="password"
-          value={password}
-          onChange={e => this.setState({ password: e.target.value })}
-        />
-        <button
-          onClick={() => this.login()}
-          className="btn loginModal-login-btn"
-        >
-          Login
-        </button>
-        <div className="loginModal-to-register-container">
-          <div className="loginModal-to-register-text">
-            Don't have an account ?
-          </div>
-          <div
-            onClick={() => this.switchToSignUp()}
-            className="loginModal-to-register-link"
+          <div className="loginModal-login">Log in</div>
+          <button
+            onClick={() => this.setState({ asCustomer: true })}
+            className={classNames({
+              "btn loginModal-selectiveButton": true,
+              "loginModal-selected": asCustomer
+            })}
           >
-            Sign up
+            Customer
+          </button>
+          <button
+            onClick={() => this.setState({ asCustomer: false })}
+            className={classNames({
+              "btn loginModal-selectiveButton": true,
+              "loginModal-selected": !asCustomer
+            })}
+          >
+            Guide
+          </button>
+          <div className="loginModal-login-label">Username</div>
+          <input
+            className="loginModal-text-field"
+            value={username}
+            onChange={e => this.setState({ username: e.target.value })}
+          />
+          <div className="loginModal-login-label">Password</div>
+          <input
+            className="loginModal-text-field"
+            type="password"
+            value={password}
+            onChange={e => this.setState({ password: e.target.value })}
+          />
+          <button
+            onClick={() => this.login()}
+            className="btn loginModal-login-btn"
+          >
+            Login
+          </button>
+          <div className="loginModal-to-register-container">
+            <div className="loginModal-to-register-text">
+              Don't have an account ?
+            </div>
+            <div
+              onClick={() => this.switchToSignUp()}
+              className="loginModal-to-register-link"
+            >
+              Sign up
+            </div>
           </div>
         </div>
       </Modal>
