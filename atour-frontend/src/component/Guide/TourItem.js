@@ -12,7 +12,7 @@ import StarRatingComponent from "react-star-rating-component";
 
 const TourItem = props => (
   <Card>
-    <Image src={props.tour.tourImage} />
+    <Image src={require("../../image/TourImage.png")} />
     <Card.Content>
       <Card.Meta>
         <span>{props.tour.tourLocation}</span>

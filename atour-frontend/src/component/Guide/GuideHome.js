@@ -58,6 +58,9 @@ const GuideHome = props => (
             <SearchBar />
           </Grid.Column>
         </Grid.Row>
+        <Grid.Row textAlign="center">
+          <h2>Tour Available</h2>
+        </Grid.Row>
         <Grid.Row>
           <Grid.Column>
             <Tours tours={tours} />
