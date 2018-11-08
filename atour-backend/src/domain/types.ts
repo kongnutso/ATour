@@ -95,11 +95,6 @@ export type UserProfile = {
   birthDate: Date;
 };
 
-export enum RegistrationStatus {
-  NotConfirm,
-  Confirmed
-}
-
 export enum ApprovalStatus {
   NotApprove,
   Approved
@@ -113,29 +108,15 @@ export type Customer = {
   personalId: string;
   email: string;
   profile: UserProfile;
-  registrationStatus: RegistrationStatus;
   customerId: string;
   tripHistory: Trip[];
 };
 
-export type Guide = NotConfirmedGuide | UnApprovedGuide | ApprovedGuide;
+export type Guide = UnApprovedGuide | ApprovedGuide;
 export enum GuideType {
-  NotConfirmedGuide,
   UnApprovedGuide,
   ApprovedGuide
 }
-export type NotConfirmedGuide = {
-  _type: GuideType.NotConfirmedGuide;
-  guideId: string;
-  userName: string;
-  password: string;
-  personalId: string;
-  email: string;
-  profile: UserProfile;
-  bankAccountNumber: string;
-  bankName: string;
-  registrationStatus: RegistrationStatus.NotConfirm;
-};
 
 export type UnApprovedGuide = {
   _type: GuideType.UnApprovedGuide;
@@ -147,7 +128,6 @@ export type UnApprovedGuide = {
   profile: UserProfile;
   bankAccountNumber: string;
   bankName: string;
-  registrationStatus: RegistrationStatus.Confirmed;
   approvalStatus: ApprovalStatus.NotApprove;
 };
 
@@ -161,7 +141,6 @@ export type ApprovedGuide = {
   profile: UserProfile;
   bankAccountNumber: string;
   bankName: string;
-  registrationStatus: RegistrationStatus.Confirmed;
   approvalStatus: ApprovalStatus.Approved;
   availableDate: Date[];
   dealtTrips: Trip[];

@@ -1,5 +1,5 @@
 import { publishTourService } from './TourService';
-import { RegistrationStatus, ApprovalStatus, GuideType } from '../domain/types';
+import { ApprovalStatus, GuideType } from '../domain/types';
 import { GetGuideDb } from '../repository/Guide';
 
 test('createTour', () => {
@@ -7,7 +7,6 @@ test('createTour', () => {
   const fakeGetGuide: GetGuideDb = async guideId => ({
     _type: GuideType.ApprovedGuide,
     guideId: 'guideid',
-    registrationStatus: RegistrationStatus.Confirmed,
     approvalStatus: ApprovalStatus.Approved,
     userName: 'john',
     password: 'password',
