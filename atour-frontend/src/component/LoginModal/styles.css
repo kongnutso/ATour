@@ -1,4 +1,4 @@
-.modal-container {
+.modal-container-loginModal {
   border: 1px solid rgb(204, 204, 204);
   background: rgb(255, 255, 255);
   overflow: auto;
@@ -10,11 +10,12 @@
   margin-top: 200px;
 }
 
-.login {
+.loginModal-login {
   text-align: center;
+  font-size: 24px;
 }
 
-.text-field {
+.loginModal-text-field {
   display: block;
   width: 100%;
   padding: 0.375rem 0.75rem;
@@ -28,7 +29,7 @@
   margin-top: 10px;
 }
 
-.selectiveButton {
+.loginModal-selectiveButton {
   margin-top: 20px;
   margin-bottom: 10px;
   width: 149px;
@@ -38,12 +39,12 @@
   border-color: #26abdc;
 }
 
-.selected {
+.loginModal-selected {
   background-color: #26abdc;
   color: white;
 }
 
-.login-btn {
+.loginModal-login-btn {
   width: 300px;
   color: #fff;
   border-color: #26abdc;
@@ -51,20 +52,20 @@
   margin-top: 25px;
 }
 
-.login-label {
+.loginModal-login-label {
   margin-top: 10px;
 }
 
-.to-register-container {
+.loginModal-to-register-container {
   margin-top: 15px;
   text-align: center;
 }
 
-.to-register-text {
+.loginModal-to-register-text {
   display: inline;
 }
 
-.to-register-link {
+.loginModal-to-register-link {
   color: #2297c7;
   cursor: pointer;
   text-decoration: underline;
