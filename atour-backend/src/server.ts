@@ -2,6 +2,7 @@ import app from './app';
 import { initMongo } from './db';
 import { Db } from 'mongodb';
 import Tour from './routes/Tour';
+import Guide from './routes/Guide';
 
 const PORT = 3000;
 
@@ -23,6 +24,7 @@ async function main() {
   });
 
   app.use('/tour', Tour);
+  app.use('/guide', Guide);
 
   app.listen(PORT, () => {
     console.log('Express server listening on port ' + PORT);

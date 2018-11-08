@@ -3,7 +3,7 @@ import { Tour } from './types';
 
 describe('Tour', () => {
   test('create Tour', () => {
-    const tour = TourDomain.createTour(() => 'tourId')(
+    const tour = TourDomain.publishTour(() => 'tourId')(
       'Changmai',
       1,
       5,
