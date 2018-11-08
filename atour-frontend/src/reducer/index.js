@@ -1,10 +1,12 @@
-import { combineReducers } from "redux";
-import userInfoReducer from "./UserInfoReducer";
-import modalReducer from "./ModalReducer";
+import { combineReducers } from 'redux';
+import userInfoReducer from './UserInfoReducer';
+import modalReducer from './ModalReducer';
+import BookedHistoryReducer from './BookedHistoryReducer';
 
 const rootReducer = combineReducers({
   user: userInfoReducer,
-  modal: modalReducer
+  modal: modalReducer,
+  bookedHistory: BookedHistoryReducer
 });
 
 export default rootReducer;
