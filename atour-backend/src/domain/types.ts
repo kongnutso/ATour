@@ -88,11 +88,14 @@ export type Tour = {
   reviews: Review[];
 };
 
+export type Gender = "Male"| "Female";
+
 export type UserProfile = {
   firstName: string;
   lastName: string;
   phoneNumber: string;
   birthDate: Date;
+  gender: Gender;
 };
 
 export enum ApprovalStatus {
