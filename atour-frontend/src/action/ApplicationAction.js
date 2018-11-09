@@ -12,3 +12,11 @@ export function logout() {
     type: LOGOUT
   };
 }
+
+export const EDIT_USER_INFO = "EDIT_USER_INFO";
+export function editUserInfo(userInfo) {
+  return {
+    type: EDIT_USER_INFO,
+    payload: userInfo
+  };
+}
