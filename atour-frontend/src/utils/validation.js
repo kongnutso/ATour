@@ -94,3 +94,49 @@ function SID(sid) {
   if ((11 - (sum % 11)) % 10 !== parseFloat(sid.charAt(12))) return false;
   return true;
 }
+
+export function validateMinGroupSize(minGroupSize) {
+  let regex = /^(\$|)([1-9]\d{0,2}(\,\d{3})*|([1-9]\d*))(\.\d{2})?$/;
+  let passed = minGroupSize.match(regex);
+  if (passed == null || minGroupSize.length > 50 || isNaN(minGroupSize)) {
+    return "minimum group size must ...";
+  }
+  return false;
+}
+
+export function validateTourName(tourName) {
+  if (!tourName || tourName.length > 50) {
+    return "Tour name must ...";
+  }
+  return false;
+}
+
+export function validatePrice(price) {
+  let regex = /^(\$|)([1-9]\d{0,2}(\,\d{3})*|([1-9]\d*))(\.\d{2})?$/;
+  let passed = price.match(regex);
+  if (passed == null || price.length > 50 || isNaN(price)) {
+    return "price must ...";
+  }
+  return false;
+}
+export function validateMaxGroupSize(minGroupSize, maxGroupSize) {
+  let regex = /^(\$|)([1-9]\d{0,2}(\,\d{3})*|([1-9]\d*))(\.\d{2})?$/;
+  let passed = maxGroupSize.match(regex);
+  if (
+    passed == null ||
+    maxGroupSize.length > 50 ||
+    isNaN(minGroupSize) ||
+    isNaN(maxGroupSize) ||
+    parseInt(minGroupSize) > parseInt(maxGroupSize)
+  ) {
+    return "maximum group size must ...";
+  }
+  return false;
+}
+
+export function validateDetail(detail) {
+  if (!detail || detail.length < 5 || detail.length > 500) {
+    return "Detail must ...";
+  }
+  return false;
+}
