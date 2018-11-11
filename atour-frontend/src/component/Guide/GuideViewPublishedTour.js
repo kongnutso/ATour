@@ -2,7 +2,6 @@ import React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import autobind from "react-autobind";
-import * as validation from "../../utils/validation";
 import classNames from "classnames";
 import { Container, Segment, Grid } from "semantic-ui-react";
 import Tours from "../Tours/Tours";

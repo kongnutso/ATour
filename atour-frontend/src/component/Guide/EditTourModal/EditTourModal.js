@@ -2,12 +2,10 @@ import React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import Modal from "react-modal";
-import { publishNewTour } from "../../../action/ModalAction";
 import autobind from "react-autobind";
 import * as validation from "../../../utils/validation";
-import classNames from "classnames";
+import { editTour } from "../../../action/ModalAction";
 import "./styles.css";
-import { Grid, Form } from "semantic-ui-react";
 
 function Field(props) {
   const { inputType, error, label, onChange, value } = props;
@@ -15,11 +13,11 @@ function Field(props) {
     "form-group " + (error ? (error !== true ? "has-danger" : "") : "");
   return (
     <div className={className}>
-      <label className="publish-new-tour-label">{label}</label>
+      <label className="editlish-new-tour-label">{label}</label>
       <div>
         <input
           onChange={onChange}
-          className="publish-new-tour-input"
+          className="editlish-new-tour-input"
           className="form-control"
           type={inputType || "text"}
           value={value}
@@ -55,33 +53,30 @@ function maxGroupSizeValidation(sizes) {
   return false;
 }
 
-class PublishNewTourModal extends React.Component {
-  constructor() {
-    super();
+class EditTourModal extends React.Component {
+  constructor(props) {
+    super(props);
+    console.log("props", this.props);
     this.state = {
       value: {
-        tourName: "",
-        price: "",
-        minGroupSize: "",
-        maxGroupSize: "",
-        meetingPlace: "",
-        schedule: "",
-        detail: ""
+        tourName: this.props.tour.tourName,
+        price: this.props.tour.price,
+        minGroupSize: this.props.tour.minGroupSize,
+        maxGroupSize: this.props.tour.maxGroupSize,
+        detail: this.props.tour.detail
       },
       error: {
-        tourName: true,
-        price: true,
-        minGroupSize: true,
-        maxGroupSize: true,
-        meetingPlace: true,
-        schedule: true,
-        detail: true
+        tourName: false,
+        price: false,
+        minGroupSize: false,
+        maxGroupSize: false,
+        detail: false
       }
     };
 
     autobind(
       this,
-      "renderPublishNewTour",
+      "renderEditTour",
       "onSubmitNewTourInfo",
       "onCloseModal",
       "onFieldChange",
@@ -126,11 +121,11 @@ class PublishNewTourModal extends React.Component {
     this.setState({ value: newValue, error: newError });
   }
 
-  renderPublishNewTour() {
+  renderEditTour() {
     const { value, asCustomer } = this.state;
     return (
-      <div className="publish-new-tour-form-control">
-        <h2>Publish New Tour</h2>
+      <div className="edit-tour-form-control">
+        <h2>Edit Tour</h2>
         <hr color="black" size="50" />
         <Field
           label="Tour name"
@@ -189,22 +184,6 @@ class PublishNewTourModal extends React.Component {
             }
             error={this.state.error.minGroupSize}
           />
-          {/* <Field
-            label="to"
-            value={{
-              minGroupSize: this.state.value.maxGroupSize,
-              maxGroupSize: value.maxGroupSize
-            }}
-            onChange={e =>
-              this.onFieldChange(
-                "maxGroupSize",
-                e.target.value,
-                this.maxGroupSizeValidation()
-              )
-            }
-            error={this.state.error.maxGroupSize}
-            isMinMaxSizes={true}
-          /> */}
         </div>
         <Field
           label="Details"
@@ -228,35 +207,34 @@ class PublishNewTourModal extends React.Component {
     );
   }
   render() {
-    const { accountInfo } = this.state;
-
     return (
       <Modal
-        className="publish-new-tour-modal-container"
+        className="edit-tour-modal-container"
         style={{
           overlay: {
             overflow: "auto"
           }
         }}
         isOpen={this.props.isOpen}
+        // isOpen={true}
         onRequestClose={this.onCloseModal}
         ariaHideApp={false}
       >
-        {this.renderPublishNewTour()}
+        {this.renderEditTour()}
       </Modal>
     );
   }
 }
 
 const mapStateToProps = state => {
-  return { isOpen: state.modal.publishNewTour };
+  return { isOpen: state.modal.editTour };
 };
 
 const mapDispatchToProps = dispatch => ({
-  onCloseModal: () => dispatch(publishNewTour(false))
+  onCloseModal: () => dispatch(editTour(false))
 });
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(PublishNewTourModal);
+)(EditTourModal);
