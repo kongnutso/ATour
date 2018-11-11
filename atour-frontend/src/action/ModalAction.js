@@ -13,3 +13,11 @@ export function loginModal(isOpen) {
     payload: isOpen
   };
 }
+
+export const PUBLISHNEWTOUR_MODAL = "PUBLISHNEWTOUR_MODAL";
+export function publishNewTour(isOpen) {
+  return {
+    type: PUBLISHNEWTOUR_MODAL,
+    payload: isOpen
+  };
+}

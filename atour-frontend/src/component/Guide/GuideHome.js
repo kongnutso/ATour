@@ -8,7 +8,7 @@ import autobind from "react-autobind";
 import * as validation from "../../utils/validation";
 import classNames from "classnames";
 import { Container, Segment, Grid } from "semantic-ui-react";
-import Tours from "../Tours";
+import Tours from "../Tours/Tours";
 import SearchBar from "../SearchBar";
 
 // const ResponsiveContainer = ({ children }) => (

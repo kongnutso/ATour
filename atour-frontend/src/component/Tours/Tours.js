@@ -6,7 +6,7 @@ import autobind from "react-autobind";
 import classNames from "classnames";
 import { Card, Header } from "semantic-ui-react";
 import styled from "styled-components";
-import TourItem from "./Guide/TourItem";
+import TourItem from "./TourItem";
 
 // target props: tours
 // tourName, tourImage, tourRating, tourPrice, tourLocation
