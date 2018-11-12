@@ -21,7 +21,7 @@ class BookedHistoryInfo extends React.Component {
   }
 
   classNameStatus(statusNumber) {
-    if (statusNumber == this.props.status)
+    if (statusNumber === this.props.status)
       return 'bookedhistoryinfo-status-inprocess';
     else if (statusNumber < this.props.status)
       return 'bookedhistoryinfo-status-finish';
@@ -29,7 +29,7 @@ class BookedHistoryInfo extends React.Component {
   }
 
   classNameText(statusNumber) {
-    if (statusNumber == this.props.status)
+    if (statusNumber === this.props.status)
       return 'bookedhistoryinfo-text-inprocess';
     else if (statusNumber < this.props.status)
       return 'bookedhistoryinfo-text-finish';
@@ -42,7 +42,7 @@ class BookedHistoryInfo extends React.Component {
   }
 
   onClickChooseFile(statusNumber) {
-    if (statusNumber != this.props.status) return;
+    if (statusNumber !== this.props.status) return;
     else {
       console.log('choose file');
     }
@@ -100,7 +100,7 @@ class BookedHistoryInfo extends React.Component {
           X cancel
         </div>
       );
-    } else if (this.props.status == 3) {
+    } else if (this.props.status === 3) {
       return (
         <div
           className="bookedhistoryinfo-headbutton"
@@ -155,7 +155,9 @@ class BookedHistoryInfo extends React.Component {
                   >
                     choose file
                   </div>
-                  {this.props.image}
+                  <div className="bookedhistoryinfo-upliadfile">
+                    {this.props.image}
+                  </div>
                 </Box>
               </Flex>
             </div>

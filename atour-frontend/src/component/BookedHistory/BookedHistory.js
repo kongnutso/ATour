@@ -1,8 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import classNames from 'classnames';
 import autobind from 'react-autobind';
-import { Table } from 'semantic-ui-react';
 import { Flex, Box } from 'rebass';
 import { Link } from 'react-router-dom';
 import tour from '../../image/Tour.jpg';

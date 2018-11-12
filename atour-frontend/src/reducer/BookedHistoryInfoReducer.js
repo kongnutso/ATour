@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 
 const initialState = {
-  tourStatus: 3,
+  tourStatus: 2,
   bookedDate: '1/1/2018',
   uploadedFileDate: '31/12/2018',
   bookedId: '1234',
