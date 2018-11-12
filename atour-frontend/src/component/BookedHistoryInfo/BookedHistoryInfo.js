@@ -9,10 +9,6 @@ import './styles.css';
 class BookedHistoryInfo extends React.Component {
   constructor() {
     super();
-    this.state = {
-      bookedId: '1234',
-      image: 'a.jpg'
-    };
     autobind(
       this,
       'classNameStatus',
@@ -57,7 +53,11 @@ class BookedHistoryInfo extends React.Component {
     else
       return (
         <div>
-          <Rating maxRating={5} clearable />
+          <Rating
+            maxRating={5}
+            clearable
+            className="bookedhistoryinfo-rating"
+          />
         </div>
       );
   }
@@ -120,7 +120,7 @@ class BookedHistoryInfo extends React.Component {
         <div className="bookedhistoryinfo-header">
           <i className="fa fa-calendar topbanner-icon" />
           <Link to="/bookedHistory">Booked History</Link> / Book ID :
-          {this.state.bookedId}
+          {this.props.bookedId}
           {this.renderRedButton()}
         </div>
         <hr className="bookedhistoryinfo-line" />
@@ -129,67 +129,65 @@ class BookedHistoryInfo extends React.Component {
           <div>
             <div className={this.classNameText(1)}>
               <Flex>
-                <Box p={2} width={1 / 15}>
+                <Box p={2} width={[1 / 4, 1 / 8, 1 / 15]}>
                   <div className={this.classNameStatus(1)}>1</div>
                 </Box>
-                <Box p={3} width={14 / 15}>
+                <Box p={3} width={[3 / 4, 7 / 8, 14 / 15]}>
                   Booked Date: {this.props.bookedDate}
                 </Box>
               </Flex>
             </div>
             <div className={this.classNameText(2)}>
               <Flex>
-                <Box p={2} width={1 / 15}>
+                <Box p={2} width={[1 / 4, 1 / 8, 1 / 15]}>
                   <div className={this.classNameStatus(2)}>2</div>
                 </Box>
-                <Box p={3} width={14 / 15}>
+                <Box p={3} width={[3 / 4, 7 / 8, 14 / 15]}>
                   Uploaded File Date: {this.props.uploadedFileDate}
                 </Box>
               </Flex>
               <Flex>
                 <Box width={1 / 15} />
-                <Box p={3} width={3 / 15}>
+                <Box p={3} width={1} style={{ display: 'flex' }}>
                   <div
                     className={this.classNameColorButton(2)}
                     onClick={() => this.onClickChooseFile(2)}
                   >
                     choose file
                   </div>
-                </Box>
-                <Box p={3} width={11 / 15}>
-                  {this.state.image}
+                  {this.props.image}
                 </Box>
               </Flex>
             </div>
             <div className={this.classNameText(3)}>
               <Flex>
-                <Box p={2} width={1 / 15}>
+                <Box p={2} width={[1 / 4, 1 / 8, 1 / 15]}>
                   <div className={this.classNameStatus(3)}>3</div>
                 </Box>
-                <Box p={3} width={14 / 15}>
+                <Box p={3} width={[3 / 4, 7 / 8, 14 / 15]}>
                   Approved
                 </Box>
               </Flex>
             </div>
             <div className={this.classNameText(4)}>
               <Flex>
-                <Box p={2} width={1 / 15}>
+                <Box p={2} width={[1 / 4, 1 / 8, 1 / 15]}>
                   <div className={this.classNameStatus(4)}>4</div>
                 </Box>
-                <Box p={3} width={14 / 15}>
+                <Box p={3} width={[3 / 4, 7 / 8, 14 / 15]}>
                   Take a Trip!
                 </Box>
               </Flex>
             </div>
             <div className={this.classNameText(5)}>
               <Flex>
-                <Box p={2} width={1 / 15}>
+                <Box p={2} width={[1 / 4, 1 / 8, 1 / 15]}>
                   <div className={this.classNameStatus(5)}>5</div>
                 </Box>
-                <Box p={3} width={2 / 15}>
+                <Box p={3} width={[1 / 4, 2 / 8, 2 / 15]}>
                   Review
                 </Box>
-                <Box p={3} width={12 / 15}>
+                <Box p={3} width={[2 / 4, 5 / 8, 12 / 15]}>
                   {this.renderRate(5)}
                 </Box>
               </Flex>
@@ -206,7 +204,9 @@ const mapStateToProps = state => {
   return {
     status: state.bookedHistoryInfo.tourStatus,
     bookedDate: state.bookedHistoryInfo.bookedDate,
-    uploadedFileDate: state.bookedHistoryInfo.uploadedFileDate
+    uploadedFileDate: state.bookedHistoryInfo.uploadedFileDate,
+    bookedId: state.bookedHistoryInfo.bookedId,
+    image: state.bookedHistoryInfo.image
   };
 };
 

@@ -32,6 +32,9 @@
 
 .bookedhistoryinfo-status-inprocess {
   display: table-cell;
+  border-style: solid;
+  display: table-cell;
+  border-color: #26abdc;
   background-color: #26abdc;
   height: 40px;
   width: 40px;
@@ -43,6 +46,9 @@
 
 .bookedhistoryinfo-status-finish {
   display: table-cell;
+  border-style: solid;
+  display: table-cell;
+  border-color: #cccccc;
   background-color: #cccccc;
   height: 40px;
   width: 40px;
@@ -91,4 +97,40 @@
   text-align: center;
   background-color: #cccccc;
   color: #ffffff;
+}
+
+.bookedhistoryinfo-rating:hover {
+  background-color: white;
+}
+
+@media screen and (max-width: 800px) {
+  .bookedhistoryinfo-status-inprocess,
+  .bookedhistoryinfo-status-finish,
+  .bookedhistoryinfo-status-coming {
+    height: 30px;
+  }
+  .bookedhistoryinfo-header {
+    font-size: 16px;
+  }
+}
+
+@media screen and (max-width: 415px) {
+  .bookedhistoryinfo-status-inprocess,
+  .bookedhistoryinfo-status-finish,
+  .bookedhistoryinfo-status-coming {
+    height: 35px;
+  }
+  .bookedhistoryinfo-headbutton,
+  .bookedhistoryinfo-headbutton-gray {
+    width: 50px;
+  }
+}
+
+@media screen and (max-width: 376px) {
+  .bookedhistoryinfo-status-inprocess,
+  .bookedhistoryinfo-status-finish,
+  .bookedhistoryinfo-status-coming {
+    height: 20px;
+    font-size: 14px;
+  }
 }
