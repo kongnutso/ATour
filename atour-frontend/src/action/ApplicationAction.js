@@ -20,3 +20,11 @@ export function editUserInfo(userInfo) {
     payload: userInfo
   };
 }
+
+export const RESIZE_WINDOW = "RESIZE_WIDNOW";
+export function resizeWindow(width) {
+  return {
+    type: RESIZE_WINDOW,
+    payload: width
+  };
+}
