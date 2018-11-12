@@ -1,0 +1,73 @@
+.modal-container {
+  border: 1px solid rgb(204, 204, 204);
+  background: rgb(255, 255, 255);
+  overflow: auto;
+  border-radius: 4px;
+  outline: none;
+  padding: 20px;
+  margin: auto;
+  width: 340px;
+  margin-top: 200px;
+}
+
+.login {
+  text-align: center;
+}
+
+.text-field {
+  display: block;
+  width: 100%;
+  padding: 0.375rem 0.75rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #55595c;
+  background-color: #fff;
+  background-image: none;
+  border: 1px solid #ccc;
+  border-radius: 0.25rem;
+  margin-top: 10px;
+}
+
+.selectiveButton {
+  margin-top: 20px;
+  margin-bottom: 10px;
+  width: 149px;
+  border-radius: 0;
+  background-color: white;
+  color: #26abdc;
+  border-color: #26abdc;
+}
+
+.selected {
+  background-color: #26abdc;
+  color: white;
+}
+
+.login-btn {
+  width: 300px;
+  color: #fff;
+  border-color: #26abdc;
+  background-color: #26abdc;
+  margin-top: 25px;
+}
+
+.login-label {
+  margin-top: 10px;
+}
+
+.to-register-container {
+  margin-top: 15px;
+  text-align: center;
+}
+
+.to-register-text {
+  display: inline;
+}
+
+.to-register-link {
+  color: #2297c7;
+  cursor: pointer;
+  text-decoration: underline;
+  display: inline;
+  margin-left: 10px;
+}

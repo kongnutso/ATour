@@ -1,0 +1,100 @@
+.topbanner-banner {
+  display: flex;
+  border-width: 0px 0px 1px 0px;
+  border-style: solid;
+  border-color: #e3e3e3;
+  height: 50px;
+}
+
+.topbanner-right-container {
+  display: flex;
+  position: absolute;
+  right: 10%;
+}
+
+.topbanner-user-container {
+  display: flex;
+}
+
+.topbanner-login-container {
+  padding-top: 8px;
+  padding-left: 50px;
+}
+
+.topbanner-login-dropdown {
+  margin-top: 3px;
+  box-shadow: 1px 1px 10px grey;
+  background-color: white;
+}
+
+.topbanner-login-banner {
+  width: 192px;
+  height: 33px;
+  background-color: #26abdc;
+  border-radius: 5px;
+  font-size: 14px;
+  cursor: pointer;
+  overflow: auto;
+  display: flex;
+}
+
+.topbanner-as-username {
+  color: white;
+  margin: 5px;
+  margin-left: 0px;
+  width: 70px;
+}
+
+.topbanner-dropdown-arrow {
+  color: white;
+  margin-left: 5px;
+  margin-top: 10px;
+}
+
+.topbanner-link:hover,
+.topbanner-link:active,
+.topbanner-link:visited,
+.topbanner-link:focus {
+  text-decoration: none;
+}
+
+.topbanner-link {
+  text-decoration: none;
+}
+
+.topbanner-icon {
+  margin-right: 10px;
+  font-size: 20px;
+}
+
+.dropdown-item {
+  font-weight: 500;
+  height: 33px;
+  cursor: pointer;
+}
+
+.topbanner-role {
+  margin: 5px;
+  border-radius: 4px;
+  width: 80px;
+  background-color: white;
+  color: #26a8dc;
+  text-align: center;
+}
+
+.topbanner-right {
+  margin-top: 13px;
+  padding-left: 50px;
+}
+
+.topbanner-logo {
+  font-size: 40px;
+  position: absolute;
+  left: 10%;
+  top: -9px;
+  width: 145px;
+}
+
+.topbanner-logo-img {
+  width: 100%;
+}
