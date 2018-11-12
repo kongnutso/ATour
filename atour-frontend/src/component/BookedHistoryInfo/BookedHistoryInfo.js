@@ -1,50 +1,50 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { Flex, Box } from 'rebass';
-import autobind from 'react-autobind';
-import { Rating, Form, TextArea } from 'semantic-ui-react';
-import './styles.css';
+import React from "react";
+import { connect } from "react-redux";
+import { Link } from "react-router-dom";
+import { Flex, Box } from "rebass";
+import autobind from "react-autobind";
+import { Rating, Form, TextArea } from "semantic-ui-react";
+import "./styles.css";
 
 class BookedHistoryInfo extends React.Component {
   constructor() {
     super();
     autobind(
       this,
-      'classNameStatus',
-      'classNameColorButton',
-      'classNameText',
-      'renderReview',
-      'onClickChooseFile',
-      'renderRedButton'
+      "classNameStatus",
+      "classNameColorButton",
+      "classNameText",
+      "renderReview",
+      "onClickChooseFile",
+      "renderRedButton"
     );
   }
 
   classNameStatus(statusNumber) {
     if (statusNumber === this.props.status)
-      return 'bookedhistoryinfo-status-inprocess';
+      return "bookedhistoryinfo-status-inprocess";
     else if (statusNumber < this.props.status)
-      return 'bookedhistoryinfo-status-finish';
-    else return 'bookedhistoryinfo-status-coming';
+      return "bookedhistoryinfo-status-finish";
+    else return "bookedhistoryinfo-status-coming";
   }
 
   classNameText(statusNumber) {
     if (statusNumber === this.props.status)
-      return 'bookedhistoryinfo-text-inprocess';
+      return "bookedhistoryinfo-text-inprocess";
     else if (statusNumber < this.props.status)
-      return 'bookedhistoryinfo-text-finish';
-    else return 'bookedhistoryinfo-text-coming';
+      return "bookedhistoryinfo-text-finish";
+    else return "bookedhistoryinfo-text-coming";
   }
 
   classNameColorButton(statusNumber) {
-    if (statusNumber < this.props.status) return 'bookedhistoryinfo-graybutton';
-    else return 'bookedhistoryinfo-bluebutton';
+    if (statusNumber < this.props.status) return "bookedhistoryinfo-graybutton";
+    else return "bookedhistoryinfo-bluebutton";
   }
 
   onClickChooseFile(statusNumber) {
     if (statusNumber !== this.props.status) return;
     else {
-      console.log('choose file');
+      console.log("choose file");
     }
   }
 
@@ -80,9 +80,9 @@ class BookedHistoryInfo extends React.Component {
             <Box p={3} width={14 / 15}>
               <div
                 className={this.classNameColorButton(5)}
-                onClick={() => console.log('submit')}
+                onClick={() => console.log("submit")}
               >
-                submit
+                Submit
               </div>
             </Box>
           </Flex>
@@ -95,18 +95,18 @@ class BookedHistoryInfo extends React.Component {
       return (
         <div
           className="bookedhistoryinfo-headbutton"
-          onClick={() => console.log('cancel')}
+          onClick={() => console.log("cancel")}
         >
-          X cancel
+          Cancel
         </div>
       );
     } else if (this.props.status === 3) {
       return (
         <div
           className="bookedhistoryinfo-headbutton"
-          onClick={() => console.log('click')}
+          onClick={() => console.log("click")}
         >
-          refund
+          Refund
         </div>
       );
     } else {
@@ -148,12 +148,12 @@ class BookedHistoryInfo extends React.Component {
               </Flex>
               <Flex>
                 <Box width={1 / 15} />
-                <Box p={3} width={1} style={{ display: 'flex' }}>
+                <Box p={3} width={1} style={{ display: "flex" }}>
                   <div
                     className={this.classNameColorButton(2)}
                     onClick={() => this.onClickChooseFile(2)}
                   >
-                    choose file
+                    Choose file
                   </div>
                   <div className="bookedhistoryinfo-upliadfile">
                     {this.props.image}
@@ -212,4 +212,7 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps, null)(BookedHistoryInfo);
+export default connect(
+  mapStateToProps,
+  null
+)(BookedHistoryInfo);
