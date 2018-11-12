@@ -62,11 +62,16 @@ class EditAvailableDateModal extends React.Component {
   }
 
   deleteAvailableDate(e) {
+    let target = e.target;
+    if (target.tagName !== "BUTTON") {
+      target = target.parentNode;
+    }
     const availableDates = this.state.availableDates;
-    const clickedId = e.target.value;
+    const clickedId = target.value;
     const newAvailableDates = availableDates.filter(
       item => item.id !== clickedId
     );
+    console.log(target);
     console.log("clicked id ", clickedId);
     console.log("after deleted ", newAvailableDates);
     this.setState({ availableDates: newAvailableDates });

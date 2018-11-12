@@ -119,7 +119,10 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => ({
   onClickEditTour: () => dispatch(editTour(true)),
-  onClickEditAvailableDate: () => dispatch(editAvailableDate(true))
+  onClickEditAvailableDate: () => {
+    console.log(editAvailableDate(true));
+    return dispatch(editAvailableDate(true));
+  }
 });
 
 export default connect(

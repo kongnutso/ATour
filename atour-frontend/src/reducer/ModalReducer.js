@@ -60,6 +60,12 @@ function editAvailableDate(state = initialState.editAvailableDate, action) {
   }
 }
 
-const reducer = combineReducers({ register, login, publishNewTour, editTour });
+const reducer = combineReducers({
+  register,
+  login,
+  publishNewTour,
+  editTour,
+  editAvailableDate
+});
 
 export default reducer;
