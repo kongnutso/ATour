@@ -13,7 +13,7 @@
     "react-redux": "^5.0.7",
     "react-router-dom": "^4.3.1",
     "react-scripts": "2.0.5",
-    "rebass": "^3.0.0-9",
+    "rebass": "^2.3.4",
     "redux": "^4.0.1",
     "redux-promise": "^0.6.0",
     "semantic-ui-react": "^0.83.0",
