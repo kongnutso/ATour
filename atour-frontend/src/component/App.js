@@ -15,11 +15,7 @@ const tour = {
   May indulgence difficulty ham can put especially. Bringing remember for supplied her why was confined. Middleton principle did she procuring extensive believing add. Weather adapted prepare oh is calling. These wrong of he which there smile to my front. He fruit oh enjoy it of whose table. Cultivated occasional old her unpleasing unpleasant. At as do be against pasture covered viewing started. Enjoyed me settled mr respect no spirits civilly. ",
   minGroupSize: "12",
   maxGroupSize: "21",
-  availableDates: [
-    { id: "01", date: "date1" },
-    { id: "02", date: "date2" },
-    { id: "03", date: "date3" }
-  ]
+  availableDates: [{ date: "date1" }, { date: "date2" }, { date: "date3" }]
 };
 
 class App extends Component {
