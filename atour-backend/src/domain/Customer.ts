@@ -1,5 +1,5 @@
 import {
-    Customer,
+    Customer, UserProfile,
     } from './types';
 
 import { IdGenerator } from "./Tour";
@@ -15,6 +15,14 @@ type RegisterCustomer = (
     birthDate: Date,
     gender: "Male" | "Female"
 ) => Customer;
+
+type CustomerProfile = (
+    firstName: string,
+    lastName: string,
+    phoneNumber: string,
+    birthDate: Date,
+    gender: "Male" | "Female"
+) => UserProfile;
 
 export function registerCustomer(idGenerator :IdGenerator): RegisterCustomer{
     return (
@@ -47,4 +55,21 @@ export function registerCustomer(idGenerator :IdGenerator): RegisterCustomer{
     }
 }
 
-
+export function customerProfile():CustomerProfile {
+    return (
+        firstName,
+        lastName,
+        phoneNumber,
+        birthDate,
+        gender
+    ) => {
+        const profile: UserProfile = {
+            firstName,
+            lastName,
+            phoneNumber,
+            birthDate,
+            gender
+        }
+    return profile;
+    }
+}
