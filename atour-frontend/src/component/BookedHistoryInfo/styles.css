@@ -1,0 +1,136 @@
+.bookedhistoryinfo-page {
+  margin-left: 100px;
+  margin-right: 100px;
+  margin-top: 30px;
+}
+.bookedhistoryinfo-header {
+  text-align: left;
+  font-size: 24px;
+}
+
+.bookedhistoryinfo-line {
+  border: 1px solid;
+}
+
+.bookedhistoryinfo-headbutton {
+  float: right;
+  border-radius: 4px;
+  width: 100px;
+  text-align: center;
+  background-color: #ec424b;
+  color: #ffffff;
+}
+
+.bookedhistoryinfo-headbutton-gray {
+  float: right;
+  border-radius: 4px;
+  width: 100px;
+  text-align: center;
+  background-color: #cccccc;
+  color: #ffffff;
+}
+
+.bookedhistoryinfo-status-inprocess {
+  display: table-cell;
+  border-style: solid;
+  display: table-cell;
+  border-color: #26abdc;
+  background-color: #26abdc;
+  height: 40px;
+  width: 40px;
+  text-align: center;
+  vertical-align: middle;
+  border-radius: 50%;
+  color: #ffffff;
+}
+
+.bookedhistoryinfo-status-finish {
+  display: table-cell;
+  border-style: solid;
+  display: table-cell;
+  border-color: #cccccc;
+  background-color: #cccccc;
+  height: 40px;
+  width: 40px;
+  text-align: center;
+  vertical-align: middle;
+  border-radius: 50%;
+  color: #ffffff;
+}
+
+.bookedhistoryinfo-status-coming {
+  display: table-cell;
+  border-style: solid;
+  border-color: #26abdc;
+  background-color: #ffffff;
+  height: 40px;
+  width: 40px;
+  text-align: center;
+  vertical-align: middle;
+  border-radius: 50%;
+  color: #26abdc;
+}
+
+.bookedhistoryinfo-text-inprocess {
+  color: #26abdc;
+}
+
+.bookedhistoryinfo-text-coming {
+  color: #000000;
+}
+
+.bookedhistoryinfo-text-finish {
+  color: #cccccc;
+}
+
+.bookedhistoryinfo-bluebutton {
+  width: 150px;
+  border-radius: 4px;
+  text-align: center;
+  background-color: #26abdc;
+  color: #ffffff;
+}
+
+.bookedhistoryinfo-graybutton {
+  width: 150px;
+  border-radius: 4px;
+  text-align: center;
+  background-color: #cccccc;
+  color: #ffffff;
+}
+
+.bookedhistoryinfo-rating:hover {
+  background-color: white;
+}
+
+@media screen and (max-width: 800px) {
+  .bookedhistoryinfo-status-inprocess,
+  .bookedhistoryinfo-status-finish,
+  .bookedhistoryinfo-status-coming {
+    height: 30px;
+  }
+  .bookedhistoryinfo-header {
+    font-size: 16px;
+  }
+}
+
+@media screen and (max-width: 415px) {
+  .bookedhistoryinfo-status-inprocess,
+  .bookedhistoryinfo-status-finish,
+  .bookedhistoryinfo-status-coming {
+    height: 35px;
+  }
+  .bookedhistoryinfo-headbutton,
+  .bookedhistoryinfo-headbutton-gray {
+    width: 50px;
+  }
+}
+
+@media screen and (max-width: 376px) {
+  .bookedhistoryinfo-status-inprocess,
+  .bookedhistoryinfo-status-finish,
+  .bookedhistoryinfo-status-coming {
+    height: 20px;
+    font-size: 14px;
+  }
+}
