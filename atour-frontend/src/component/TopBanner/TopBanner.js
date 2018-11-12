@@ -1,20 +1,20 @@
-import React from "react";
-import { connect } from "react-redux";
-import "./styles.css";
-import { Link } from "react-router-dom";
-import RegisterModal from "../RegisterModal/RegisterModal";
-import { loginModal, registerModal } from "../../action/ModalAction";
-import { logout } from "../../action/ApplicationAction";
-import LoginModal from "../LoginModal/LoginModal";
-import logo from "../../image/Atour-logo.jpg";
-import autobind from "react-autobind";
-import ClickOutSide from "react-click-outside-component";
+import React from 'react';
+import { connect } from 'react-redux';
+import './styles.css';
+import { Link } from 'react-router-dom';
+import RegisterModal from '../RegisterModal/RegisterModal';
+import { loginModal, registerModal } from '../../action/ModalAction';
+import { logout } from '../../action/ApplicationAction';
+import LoginModal from '../LoginModal/LoginModal';
+import logo from '../../image/Atour-logo.jpg';
+import autobind from 'react-autobind';
+import ClickOutSide from 'react-click-outside-component';
 
 class TopBanner extends React.Component {
   constructor() {
     super();
     this.state = { isClickedDropdown: false };
-    autobind(this, "renderNotSignIn", "renderSignIn");
+    autobind(this, 'renderNotSignIn', 'renderSignIn');
   }
 
   componentWillReceiveProps(nextProps) {
@@ -37,7 +37,7 @@ class TopBanner extends React.Component {
         </div>
         <div className="topbanner-right">
           <div className="topbanner-menu" onClick={this.props.openLoginModal}>
-            Login{" "}
+            Login{' '}
           </div>
         </div>
       </div>
@@ -50,7 +50,7 @@ class TopBanner extends React.Component {
         onClickOutside={() => this.setState({ isClickedDropdown: false })}
       >
         <div className="topbanner-login-dropdown">
-          {this.props.userInfo.role === "Customer" ? (
+          {this.props.userInfo.role === 'Customer' ? (
             <Link className="topbanner-link" to="/bookedHistory">
               <div
                 className="dropdown-item"
@@ -136,7 +136,7 @@ class TopBanner extends React.Component {
             </div>
           </div>
         </div>
-        <div style={{ height: "50px" }} />
+        <div style={{ height: '50px' }} />
       </div>
     );
   }
@@ -152,7 +152,4 @@ const mapDispatchToProps = dispatch => ({
   logout: () => dispatch(logout())
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(TopBanner);
+export default connect(mapStateToProps, mapDispatchToProps)(TopBanner);
