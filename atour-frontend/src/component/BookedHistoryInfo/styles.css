@@ -13,6 +13,7 @@
 }
 
 .bookedhistoryinfo-headbutton {
+  cursor: pointer;
   float: right;
   border-radius: 4px;
   width: 100px;
@@ -22,6 +23,7 @@
 }
 
 .bookedhistoryinfo-headbutton-gray {
+  cursor: pointer;
   float: right;
   border-radius: 4px;
   width: 100px;
@@ -84,6 +86,7 @@
 }
 
 .bookedhistoryinfo-bluebutton {
+  cursor: pointer;
   width: 150px;
   border-radius: 4px;
   text-align: center;
@@ -101,6 +104,10 @@
 
 .bookedhistoryinfo-rating:hover {
   background-color: white;
+}
+
+.bookedhistoryinfo-upliadfile {
+  margin-left: 5px;
 }
 
 @media screen and (max-width: 800px) {
@@ -124,13 +131,14 @@
   .bookedhistoryinfo-headbutton-gray {
     width: 50px;
   }
+  .bookedhistoryinfo-page {
+    margin-left: 50px;
+    margin-right: 50px;
+  }
 }
 
 @media screen and (max-width: 376px) {
-  .bookedhistoryinfo-status-inprocess,
-  .bookedhistoryinfo-status-finish,
-  .bookedhistoryinfo-status-coming {
-    height: 20px;
+  .bookedhistoryinfo-header {
     font-size: 14px;
   }
 }
