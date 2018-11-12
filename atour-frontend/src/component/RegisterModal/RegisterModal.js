@@ -353,16 +353,16 @@ class RegisterModal extends React.Component {
         />
         {renderBankAccountInfo}
         <button
-          onClick={this.onSubmitUserInfo}
-          className="btn btn-primary registerModal-confirm-btn"
-        >
-          Confirm
-        </button>
-        <button
           onClick={() => this.setState({ accountInfo: true })}
           className="btn btn-danger registerModal-back-btn"
         >
           Back
+        </button>
+        <button
+          onClick={this.onSubmitUserInfo}
+          className="btn btn-primary registerModal-confirm-btn"
+        >
+          Confirm
         </button>
       </div>
     );

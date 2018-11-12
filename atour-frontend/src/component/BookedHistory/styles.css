@@ -17,7 +17,7 @@
 }
 
 .bookedhistory-table {
-  border: 0px !important;
+  color: #000000;
 }
 
 .bookedhistiry-list {
@@ -28,4 +28,36 @@
 .bookedhistory-tourimage {
   height: 200px;
   width: 200px;
+}
+
+@media screen and (max-width: 415px) {
+  .bookedhistiry-list {
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+  .bookedhistory-tourimage {
+    height: 125px;
+    width: 125px;
+  }
+  .bookedhistory-page {
+    margin-left: 50px;
+    margin-right: 50px;
+  }
+  .bookedhistory-table {
+    font-size: 14px;
+  }
+}
+
+@media screen and (max-width: 376px) {
+  .bookedhistory-header {
+    font-size: 20px;
+  }
+  .bookedhistory-tourimage {
+    height: 100px;
+    width: 100px;
+  }
+  .bookedhistiry-list {
+    margin-left: 10px;
+    margin-right: 10px;
+  }
 }
