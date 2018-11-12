@@ -316,11 +316,9 @@ class TopBanner extends React.Component {
         <LoginModal />
         <RegisterModal />
         <div className="topbanner">
-          <ClickOutSide onClickOutside={() => this.onCloseSideMenu()}>
-            <div className={MenuClassName} style={{ height, width }}>
-              {Menu}
-            </div>
-          </ClickOutSide>
+          <div className={MenuClassName} style={{ height }}>
+            {Menu}
+          </div>
           <div className="topbanner-banner">
             <div className="topbanner-logo-container">
               <div className="topbanner-logo">

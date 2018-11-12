@@ -84,6 +84,7 @@
   border-top-width: 1px;
   border-bottom-width: 1px;
   border-color: #e3e3e3;
+  color: #777777;
 }
 
 .topbanner-menu-minimized-userInfo:hover,
@@ -91,6 +92,7 @@
 .topbanner-menu-minimized-userInfo:visited,
 .topbanner-menu-minimized-userInfo:focus {
   background-color: white;
+  color: #777777;
 }
 
 .dropdown.topbanner-menu-minimized:hover {
@@ -199,6 +201,7 @@
   position: absolute;
   right: 0%;
   top: 48px;
+  width: 100%;
 }
 
 .topbanner-menu-minimized-menu.isShowing {
@@ -219,7 +222,7 @@
   }
 
   100% {
-    right: -50%;
+    right: -100%;
   }
 }
 
@@ -229,7 +232,7 @@
   }
 
   100% {
-    right: -50%;
+    right: -100%;
   }
 }
 
@@ -239,13 +242,13 @@
   }
 
   100% {
-    right: -50%;
+    right: -100%;
   }
 }
 
 @keyframes slidein {
   0% {
-    right: -50%;
+    right: -100%;
   }
 
   100% {
@@ -255,7 +258,7 @@
 
 @keyframes slideinHigh {
   0% {
-    right: -33%;
+    right: -100%;
   }
 
   100% {
@@ -265,7 +268,7 @@
 
 @keyframes slideinMed {
   0% {
-    right: -40%;
+    right: -100%;
   }
 
   100% {
