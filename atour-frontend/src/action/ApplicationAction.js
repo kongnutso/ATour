@@ -28,3 +28,11 @@ export function setWarningType(type) {
     payload: type
   };
 }
+
+export const RESIZE_WINDOW = 'RESIZE_WIDNOW';
+export function resizeWindow(width) {
+  return {
+    type: RESIZE_WINDOW,
+    payload: width
+  };
+}

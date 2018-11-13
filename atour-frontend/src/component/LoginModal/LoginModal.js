@@ -18,11 +18,17 @@ class LoginModal extends React.Component {
     const { username, password, asCustomer } = this.state;
     this.props.onCloseModal();
     this.props.login(username, password, asCustomer ? "Customer" : "Guide");
+    this.setState({ asCustomer: true, username: "", password: "" });
   }
 
   switchToSignUp() {
     this.props.onCloseModal();
     this.props.onOpenRegisterModal();
+  }
+
+  onCloseLoginModal() {
+    this.setState({ asCustomer: true, username: "", password: "" });
+    this.props.onCloseModal();
   }
 
   render() {
@@ -36,7 +42,7 @@ class LoginModal extends React.Component {
           }
         }}
         isOpen={this.props.isOpen}
-        onRequestClose={this.props.onCloseModal}
+        onRequestClose={() => this.onCloseLoginModal()}
         ariaHideApp={false}
       >
         <div

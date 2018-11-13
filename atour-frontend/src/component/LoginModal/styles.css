@@ -10,6 +10,12 @@
   margin-top: 200px;
 }
 
+@media screen and (max-width: 800px) {
+  .modal-container-loginModal {
+    margin-top: 100px;
+  }
+}
+
 .loginModal-login {
   text-align: center;
   font-size: 24px;

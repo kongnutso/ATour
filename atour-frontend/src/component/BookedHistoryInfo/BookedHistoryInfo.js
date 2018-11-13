@@ -91,7 +91,7 @@ class BookedHistoryInfo extends React.Component {
                 className={this.classNameColorButton(5)}
                 onClick={() => console.log('submit')}
               >
-                submit
+                Submit
               </div>
             </Box>
           </Flex>
@@ -168,7 +168,7 @@ class BookedHistoryInfo extends React.Component {
                     className={this.classNameColorButton(2)}
                     onClick={() => this.onClickChooseFile(2)}
                   >
-                    choose file
+                    Choose file
                   </div>
                   <div className="bookedhistoryinfo-upliadfile">
                     {this.props.image}
