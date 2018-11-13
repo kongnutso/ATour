@@ -4,9 +4,7 @@ import { Link } from 'react-router-dom';
 import { Flex, Box } from 'rebass';
 import autobind from 'react-autobind';
 import { Rating, Form, TextArea } from 'semantic-ui-react';
-import WarningModal from '../WarningModal/WarningModal';
-import { warningModal } from '../../action/ModalAction';
-import { setWarningType } from '../../action/ApplicationAction';
+import PopUpModal from '../WarningModal/PopUpModal';
 import './styles.css';
 
 class BookedHistoryInfo extends React.Component {
@@ -22,6 +20,7 @@ class BookedHistoryInfo extends React.Component {
       'renderRedButton',
       'setWarningType'
     );
+    this.state = { confirmationModal: false };
   }
 
   classNameStatus(statusNumber) {
@@ -50,11 +49,6 @@ class BookedHistoryInfo extends React.Component {
     else {
       console.log('choose file');
     }
-  }
-
-  setWarningType() {
-    if (this.props.status <= 2) this.props.setWarningType('Cancel');
-    else if (this.props.status === 3) this.props.setWarningType('Refund');
   }
 
   renderRate(statusNumber) {
@@ -100,35 +94,37 @@ class BookedHistoryInfo extends React.Component {
   }
 
   renderRedButton() {
-    if (this.props.status < 3) {
+    const { status } = this.props;
+    let text;
+    if (status < 3) text = 'Cancel';
+    else if (status === 3) text = 'Refund';
+    if (this.props.status <= 3) {
       return (
         <div
           className="bookedhistoryinfo-headbutton"
           onClick={() => {
-            this.props.openWarningModal();
+            this.setState({ confirmationModal: true });
           }}
         >
-          Cancel
-        </div>
-      );
-    } else if (this.props.status === 3) {
-      return (
-        <div
-          className="bookedhistoryinfo-headbutton"
-          onClick={() => {
-            this.props.openWarningModal();
-          }}
-        >
-          Refund
+          {text}
         </div>
       );
     } else {
-      return <div className="bookedhistoryinfo-headbutton-gray">refund</div>;
+      return <div className="bookedhistoryinfo-headbutton-gray">Refund</div>;
     }
   }
 
   render() {
-    this.setWarningType();
+    const { status } = this.props;
+    let message;
+    let modalName;
+    if (status <= 2) {
+      message = 'Cancel';
+      modalName = 'cancelTrip-confirmation';
+    } else if (status === 3) {
+      message = 'Refund';
+      modalName = 'refund-conafirmation';
+    }
     return (
       <div className="bookedhistoryinfo-page">
         <div className="bookedhistoryinfo-header">
@@ -137,7 +133,16 @@ class BookedHistoryInfo extends React.Component {
           {this.props.bookedId}
           {this.renderRedButton()}
         </div>
-        <WarningModal />
+        <PopUpModal
+          isOpen={this.state.confirmationModal}
+          onCloseModal={() => this.setState({ confirmationModal: false })}
+          modalName={modalName}
+          headerText={`${message} Confirmation`}
+          bodyText={`Do you want to [${message}] ? `}
+          // onConfirm
+          isDanger
+          type="Confirmation"
+        />
         <hr className="bookedhistoryinfo-line" />
         <div>
           Status
@@ -223,14 +228,13 @@ const mapStateToProps = state => {
     bookedDate: state.bookedHistoryInfo.bookedDate,
     uploadedFileDate: state.bookedHistoryInfo.uploadedFileDate,
     bookedId: state.bookedHistoryInfo.bookedId,
-    image: state.bookedHistoryInfo.image,
-    modalType: state.bookedHistoryInfo.modalType
+    image: state.bookedHistoryInfo.image
   };
 };
 
-const mapDispatchToProps = dispatch => ({
-  openWarningModal: () => dispatch(warningModal(true)),
-  setWarningType: type => dispatch(setWarningType(type))
-});
+const mapDispatchToProps = dispatch => ({});
 
-export default connect(mapStateToProps, mapDispatchToProps)(BookedHistoryInfo);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(BookedHistoryInfo);
