@@ -8,6 +8,7 @@ import autobind from 'react-autobind';
 import * as validation from '../../utils/validation';
 import classNames from 'classnames';
 import FormProgress from '../FormProgress/FormProgress';
+import PopUpModal from '../PopUpModal/PopUpModal';
 
 function Field(props) {
   const { inputType, error, label, onChange, value } = props;
@@ -55,6 +56,11 @@ function DropDown(props) {
 const defaultValue = () => ({
   asCustomer: true,
   accountInfo: true,
+  errorPopUp: {
+    username: '',
+    email: '',
+    sid: ''
+  },
   value: {
     username: '',
     password: '',
@@ -87,12 +93,19 @@ const defaultValue = () => ({
 class RegisterModal extends React.Component {
   constructor() {
     super();
-    const { asCustomer, accountInfo, value, error } = defaultValue();
+    const {
+      asCustomer,
+      accountInfo,
+      value,
+      error,
+      errorPopUp
+    } = defaultValue();
     this.state = {
       asCustomer,
       accountInfo,
       value,
-      error
+      error,
+      errorPopUp
     };
 
     autobind(
@@ -117,6 +130,11 @@ class RegisterModal extends React.Component {
   }
 
   onSubmitUserInfo() {
+    const { errorPopUp } = this.state;
+    errorPopUp.username = 'already in used';
+    errorPopUp.sid = 'already apsjpadfjas';
+    errorPopUp.email = 'ez';
+    this.setState({ errorPopUp });
     console.log('from submit');
   }
 
@@ -369,11 +387,32 @@ class RegisterModal extends React.Component {
     );
   }
 
+  clearPopUpError() {
+    const errorPopUp = this.state.errorPopUp;
+    errorPopUp.username = '';
+    errorPopUp.sid = '';
+    errorPopUp.email = '';
+    this.setState({ errorPopUp });
+  }
+
   render() {
-    const { accountInfo } = this.state;
+    const {
+      accountInfo,
+      errorPopUp: { username, email, sid }
+    } = this.state;
     const renderObject = accountInfo
       ? this.renderAccount()
       : this.renderUserInfo();
+    let errorPopUpText = '';
+    if (username) {
+      errorPopUpText += `Username: ${username}\n`;
+    }
+    if (email) {
+      errorPopUpText += `Email: ${email}\n`;
+    }
+    if (sid) {
+      errorPopUpText += `Social ID: ${sid}\n`;
+    }
     return (
       <Modal
         className="modal-container-registerModal"
@@ -386,6 +425,13 @@ class RegisterModal extends React.Component {
         onRequestClose={this.onCloseModal}
         ariaHideApp={false}
       >
+        <PopUpModal
+          isOpen={errorPopUpText}
+          onCloseModal={() => this.clearPopUpError()}
+          headerText={'Register Fail'}
+          bodyText={errorPopUpText}
+          // onConfirm
+        />
         <div className="registerModal-signUp-text">Sign Up</div>
         <Fragment>
           <div className="registerModal-formProgress-container">

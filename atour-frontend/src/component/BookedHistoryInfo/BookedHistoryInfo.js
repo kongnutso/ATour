@@ -117,13 +117,10 @@ class BookedHistoryInfo extends React.Component {
   render() {
     const { status } = this.props;
     let message;
-    let modalName;
     if (status <= 2) {
       message = 'Cancel';
-      modalName = 'cancelTrip-confirmation';
     } else if (status === 3) {
       message = 'Refund';
-      modalName = 'refund-conafirmation';
     }
     return (
       <div className="bookedhistoryinfo-page">
@@ -136,7 +133,6 @@ class BookedHistoryInfo extends React.Component {
         <PopUpModal
           isOpen={this.state.confirmationModal}
           onCloseModal={() => this.setState({ confirmationModal: false })}
-          modalName={modalName}
           headerText={`${message} Confirmation`}
           bodyText={`Do you want to [${message}] ? `}
           // onConfirm
