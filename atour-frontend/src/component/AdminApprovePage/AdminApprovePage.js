@@ -1,10 +1,10 @@
 import React, { Component, Fragment } from 'react';
 import { Flex, Box, Text } from 'rebass';
 import { connect } from 'react-redux';
-import styled from 'styled-components';
 import Table from '../Table';
 import PopUpModal from '../PopUpModal/PopUpModal';
 import COLOR from '../../utils/color';
+import { Button } from '../BaseComponent';
 
 // Mock data
 const tableProps = num => {
@@ -63,15 +63,6 @@ const adminApproveColumns = (handleConfirm, handleReject) => [
     },
   },
 ];
-
-const Button = styled.button`
-  border-color: white;
-  background-color: white;
-  color: ${props => props.color};
-  &:hover {
-    color: #555;
-  }
-`;
 
 class AdminApprovePage extends Component {
   state = { approveModal: false, rejectModal: false };

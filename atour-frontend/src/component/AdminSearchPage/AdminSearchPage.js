@@ -2,10 +2,10 @@ import React, { Component, Fragment } from 'react';
 import { Flex, Box, Text } from 'rebass';
 import { Icon } from 'semantic-ui-react';
 import { connect } from 'react-redux';
-import styled from 'styled-components';
 import Table from '../Table';
 import PopUpModal from '../PopUpModal/PopUpModal';
 import COLOR from '../../utils/color';
+import { Button, SearchButton, Input } from '../BaseComponent';
 
 //Mock Data
 const tableProps = num => {
@@ -73,62 +73,6 @@ const adminSearchColumns = (handleConfirm, handleReject) => [
     },
   },
 ];
-
-const StyleInput = styled.input`
-  border: 1px solid #ccc;
-  width: 100%;
-  height: 42px;
-  padding-left: 10px;
-  &::placeholder {
-    color: ${COLOR.disable_text};
-    font-weight: 100;
-  }
-  &:focus {
-    outline: 0px;
-    border-color: black;
-  }
-`;
-
-const Button = styled.button`
-  border-color: white;
-  background-color: white;
-  color: ${props => props.color};
-  &:hover {
-    color: #555;
-  }
-`;
-
-const SearchButton = styled.button`
-  width: 100%;
-  border-color: ${COLOR.primary};
-  border-radius: 5px;
-  height: 42px;
-  background-color: ${COLOR.primary};
-  color: white;
-  &:hover {
-    border-color: ${COLOR.primary_darker};
-    background-color: ${COLOR.primary_darker};
-  }
-  &:focus {
-    outline: 0px !important;
-  }
-  &:active {
-    outline: 0px !important;
-    border-color: black;
-  }
-`;
-
-class Input extends Component {
-  handleKeyPress = e => {
-    if (e.key === 'Enter') {
-      this.props.onEnterText();
-    }
-  };
-  render() {
-    const { onEnterText, ...props } = this.props;
-    return <StyleInput type="text" onKeyPress={this.handleKeyPress} {...props} />;
-  }
-}
 
 class AdminSearchPage extends Component {
   state = { username: '', approveModal: false, rejectModal: false };
