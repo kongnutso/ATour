@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { Flex, Box } from 'rebass';
 import autobind from 'react-autobind';
 import { Rating, Form, TextArea } from 'semantic-ui-react';
-import PopUpModal from '../WarningModal/PopUpModal';
+import PopUpModal from '../PopUpModal/PopUpModal';
 import './styles.css';
 
 class BookedHistoryInfo extends React.Component {
