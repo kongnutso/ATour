@@ -1,11 +1,13 @@
 import { combineReducers } from 'redux';
+import { SET_WARNING_TYPE } from '../action/ApplicationAction';
 
 const initialState = {
-  tourStatus: 2,
+  tourStatus: 3,
   bookedDate: '1/1/2018',
   uploadedFileDate: '31/12/2018',
   bookedId: '1234',
-  image: 'a.jpg'
+  image: 'a.jpg',
+  modalType: ''
 };
 
 function tourStatus(state = initialState.tourStatus, action) {
@@ -43,12 +45,23 @@ function image(state = initialState.image, action) {
   }
 }
 
+function modalType(state = initialState.modalType, action) {
+  switch (action.type) {
+    case SET_WARNING_TYPE:
+      state = action.payload;
+      return state;
+    default:
+      return state;
+  }
+}
+
 const reducer = combineReducers({
   tourStatus,
   bookedDate,
   uploadedFileDate,
   bookedId,
-  image
+  image,
+  modalType
 });
 
 export default reducer;

@@ -1,9 +1,14 @@
-import { combineReducers } from "redux";
-import { REGISTER_MODAL, LOGIN_MODAL } from "../action/ModalAction";
+import { combineReducers } from 'redux';
+import {
+  REGISTER_MODAL,
+  LOGIN_MODAL,
+  WARNING_MODAL
+} from '../action/ModalAction';
 
 const initialState = {
   register: false,
-  login: false
+  login: false,
+  warning: false
 };
 
 function register(state = initialState.register, action) {
@@ -24,6 +29,15 @@ function login(state = initialState.login, action) {
   }
 }
 
-const reducer = combineReducers({ register, login });
+function warning(state = initialState.warning, action) {
+  switch (action.type) {
+    case WARNING_MODAL:
+      return action.payload;
+    default:
+      return state;
+  }
+}
+
+const reducer = combineReducers({ register, login, warning });
 
 export default reducer;

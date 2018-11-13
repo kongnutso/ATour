@@ -1,0 +1,47 @@
+.modal-container-warningModal {
+  border: 1px solid rgb(204, 204, 204);
+  background: rgb(255, 255, 255, 1);
+  overflow: auto;
+  border-radius: 4px;
+  outline: none;
+  padding: 20px;
+  margin: auto;
+  width: 270px;
+  margin-top: 200px;
+}
+
+.warninModal-line {
+  border: 1px solid;
+}
+
+.warninModal-confirm {
+  cursor: pointer;
+  border: 1px solid #ec424b;
+  float: right;
+  width: 100px;
+  border-radius: 2px;
+  text-align: center;
+  background-color: #ec424b;
+  color: #ffffff;
+}
+
+.warninModal-cancel {
+  cursor: pointer;
+  border: 1px solid #cccccc;
+  float: right;
+  width: 100px;
+  border-radius: 2px;
+  text-align: center;
+  margin-left: 10px;
+  background-color: #ffffff;
+  color: #cccccc;
+}
+
+.warninModal-button {
+  display: flex;
+  align-items: center;
+}
+
+.warninModal-topic {
+  font-size: 20px;
+}
