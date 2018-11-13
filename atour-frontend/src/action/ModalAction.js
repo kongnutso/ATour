@@ -1,23 +1,29 @@
-export const REGISTER_MODAL = 'REGISTER_MODAL';
+export const OPEN_MODAL = 'OPEN_MODAL';
 export function registerModal(isOpen) {
+  let payload = '';
+  if (isOpen) {
+    payload = 'register';
+  }
   return {
-    type: REGISTER_MODAL,
-    payload: isOpen
+    type: OPEN_MODAL,
+    payload
   };
 }
 
-export const LOGIN_MODAL = 'LOGIN_MODAL';
 export function loginModal(isOpen) {
+  let payload = '';
+  if (isOpen) {
+    payload = 'login';
+  }
   return {
-    type: LOGIN_MODAL,
-    payload: isOpen
+    type: OPEN_MODAL,
+    payload
   };
 }
 
-export const WARNING_MODAL = 'WARNING_MODAL';
-export function warningModal(isOpen) {
+export function closeAllModal() {
   return {
-    type: WARNING_MODAL,
-    payload: isOpen
+    type: OPEN_MODAL,
+    payload: ''
   };
 }

@@ -1,24 +1,24 @@
-import React from "react";
-import Modal from "react-modal";
-import { connect } from "react-redux";
-import { loginModal, registerModal } from "../../action/ModalAction";
-import { login } from "../../action/ApplicationAction";
-import classNames from "classnames";
-import autobind from "react-autobind";
-import "./styles.css";
+import React from 'react';
+import Modal from 'react-modal';
+import { connect } from 'react-redux';
+import { loginModal, registerModal } from '../../action/ModalAction';
+import { login } from '../../action/ApplicationAction';
+import classNames from 'classnames';
+import autobind from 'react-autobind';
+import './styles.css';
 
 class LoginModal extends React.Component {
   constructor() {
     super();
-    this.state = { asCustomer: true, username: "", password: "" };
-    autobind(this, "switchToSignUp", "login");
+    this.state = { asCustomer: true, username: '', password: '' };
+    autobind(this, 'switchToSignUp', 'login');
   }
 
   login() {
     const { username, password, asCustomer } = this.state;
     this.props.onCloseModal();
-    this.props.login(username, password, asCustomer ? "Customer" : "Guide");
-    this.setState({ asCustomer: true, username: "", password: "" });
+    this.props.login(username, password, asCustomer ? 'Customer' : 'Guide');
+    this.setState({ asCustomer: true, username: '', password: '' });
   }
 
   switchToSignUp() {
@@ -27,7 +27,7 @@ class LoginModal extends React.Component {
   }
 
   onCloseLoginModal() {
-    this.setState({ asCustomer: true, username: "", password: "" });
+    this.setState({ asCustomer: true, username: '', password: '' });
     this.props.onCloseModal();
   }
 
@@ -38,7 +38,7 @@ class LoginModal extends React.Component {
         className="modal-container-loginModal"
         style={{
           overlay: {
-            overflow: "auto"
+            overflow: 'auto'
           }
         }}
         isOpen={this.props.isOpen}
@@ -56,8 +56,8 @@ class LoginModal extends React.Component {
           <button
             onClick={() => this.setState({ asCustomer: true })}
             className={classNames({
-              "btn loginModal-selectiveButton": true,
-              "loginModal-selected": asCustomer
+              'btn loginModal-selectiveButton': true,
+              'loginModal-selected': asCustomer
             })}
           >
             Customer
@@ -65,8 +65,8 @@ class LoginModal extends React.Component {
           <button
             onClick={() => this.setState({ asCustomer: false })}
             className={classNames({
-              "btn loginModal-selectiveButton": true,
-              "loginModal-selected": !asCustomer
+              'btn loginModal-selectiveButton': true,
+              'loginModal-selected': !asCustomer
             })}
           >
             Guide
@@ -109,7 +109,7 @@ class LoginModal extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    isOpen: state.modal.login
+    isOpen: state.modal.modalName === 'login'
   };
 };
 

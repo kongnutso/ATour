@@ -11,35 +11,35 @@ const initialState = {
 };
 
 function tourStatus(state = initialState.tourStatus, action) {
-  switch (state.action) {
+  switch (action.type) {
     default:
       return state;
   }
 }
 
 function bookedDate(state = initialState.bookedDate, action) {
-  switch (state.action) {
+  switch (action.type) {
     default:
       return state;
   }
 }
 
 function uploadedFileDate(state = initialState.uploadedFileDate, action) {
-  switch (state.action) {
+  switch (action.type) {
     default:
       return state;
   }
 }
 
 function bookedId(state = initialState.bookedId, action) {
-  switch (state.action) {
+  switch (action.type) {
     default:
       return state;
   }
 }
 
 function image(state = initialState.image, action) {
-  switch (state.action) {
+  switch (action.type) {
     default:
       return state;
   }
