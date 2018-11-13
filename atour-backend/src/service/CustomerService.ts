@@ -1,16 +1,18 @@
-import * as uuid from 'uuid/v4';
 import { 
     CheckCustomerUsernameDuplicate,
     SaveCustomerDb,
-    Login,
-    EditCustomerProfileDb
+    GetCustomerLogin,
+    GetCustomerTokenDb,
+    SaveCustomerTokenDb,
+    EditCustomerProfileDb,
+
 } from '../repository/Customer';
 import { 
     registerCustomer,
     customerProfile
 } from '../domain/Customer';
-import { Customer } from 'domain/types';
-
+import { Customer, UserProfile } from 'domain/types';
+import {IdGenerator} from 'domain/Tour';
 export type RegisterCustomerService = (
     userName: string,
     password: string,
@@ -21,12 +23,12 @@ export type RegisterCustomerService = (
     phoneNumber: string,
     birthDate: Date,
     gender: "Male" | "Female"
-) => Promise<void>;
+) => Promise<Customer>;
 
 export type LoginService = (
     userName: string,
     password: string
-) => Promise<Customer|null>;
+) => Promise<string>;
 
 export type EditCustomerProfileService = (
     customerId: string,
@@ -35,9 +37,14 @@ export type EditCustomerProfileService = (
     phoneNumber: string,
     birthDate: Date,
     gender: "Male"| "Female"
-) => Promise<void>;
+) => Promise<UserProfile>;
 
-export function registerCustomerService(checkCustomerUsernameDuplicate: CheckCustomerUsernameDuplicate,saveCustomerDb: SaveCustomerDb): RegisterCustomerService {
+export function registerCustomerService(
+    checkCustomerUsernameDuplicate: CheckCustomerUsernameDuplicate,
+    saveCustomerDb: SaveCustomerDb,
+    saveCustomerTokenDb: SaveCustomerTokenDb,
+    idGenerator: IdGenerator
+    ): RegisterCustomerService {
         return async (
             userName: string,
             password: string,
@@ -52,7 +59,7 @@ export function registerCustomerService(checkCustomerUsernameDuplicate: CheckCus
             if (await checkCustomerUsernameDuplicate(userName)){
                 throw new Error('Customer username is duplicated');
             }
-            const customer = registerCustomer(()=>uuid())(
+            const customer = registerCustomer(idGenerator)(
                 userName,
                 password,
                 email,
@@ -64,19 +71,19 @@ export function registerCustomerService(checkCustomerUsernameDuplicate: CheckCus
                 gender
             );
             await saveCustomerDb(customer);
+            await saveCustomerTokenDb(customer.customerId, idGenerator())
+            return customer;
         }
     }
 
-export function loginService(login: Login):LoginService {
+export function loginService(login: GetCustomerLogin, getToken: GetCustomerTokenDb):LoginService {
     return async (
         userName,
         password
     )=>{
-        const result = await login(userName);
-        if( result.password === password){
-            return result;
-        }
-        return null;
+        const customer = await login(userName, password);
+        const token = await getToken(customer.customerId)
+        return token;
     }
 }
 
@@ -97,6 +104,7 @@ export function editCustomerProfileService(editCustomerProfileDb: EditCustomerPr
             gender
         );
         await editCustomerProfileDb (customerId, profile);
+        return profile;
     }
 }
 

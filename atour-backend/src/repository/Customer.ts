@@ -6,8 +6,9 @@ export type SaveCustomerDb = (customer: Customer) => Promise<void>;
 export type CheckCustomerUsernameDuplicate = (
     customerUsername: string
 ) => Promise<boolean>;
-export type Login = (
-    userName: string
+export type GetCustomerLogin = (
+    userName: string,
+    password: string
 ) => Promise<Customer>;
 
 export type EditCustomerProfileDb = (
@@ -15,11 +16,37 @@ export type EditCustomerProfileDb = (
     profile: UserProfile
 ) => Promise<void>;
 
+export type SaveCustomerTokenDb = (
+    customerId: string,
+    token: string
+) => Promise<void>;
+
+export type GetCustomerTokenDb = (
+    customerId: string
+) => Promise<string>
+
+export function getCustomerToken(db:Db):GetCustomerTokenDb {
+    return async (customerId) => {
+        const customerToken = await db.collection('customerToken').findOne({customerId})
+        return customerToken.token;
+    }     
+}
+
+export function saveCustomerToken(db:Db):SaveCustomerTokenDb {
+    return async (
+        customerId,
+        token
+    ) =>{
+        await  db.collection('customerToken')
+            .update({ customerId }, { customerId, token }, {upsert: true})
+    }
+}
+
 export function getCustomer(db: Db): GetCustomerDb {
     return async customerId => {
         return db.collection('customer').findOne({ customerId });
     };
-} 
+}
 
 export function saveCustomer(db: Db): SaveCustomerDb {
     return async (customer) => {
@@ -40,11 +67,12 @@ export function checkCustomerUsernameDuplicate(
     };
 }
 
-export function login(db:Db): Login {
+export function login(db:Db): GetCustomerLogin {
     return async (
         userName,
+        password
     ) => {
-        const result = await db.collection('customer').findOne({userName});
+        const result = await db.collection('customer').findOne({userName, password});
         return result;
     }
 }
@@ -57,6 +85,7 @@ export function editCustomerProfile(db: Db): EditCustomerProfileDb {
         await db.collection('customer').update({customerId: customerId}, {$set :{
             profile
             }  
-        })
+        });
     }
 }
+

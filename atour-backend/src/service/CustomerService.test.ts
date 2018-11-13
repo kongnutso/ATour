@@ -1,16 +1,21 @@
 import * as CustomerService from './CustomerService';
 import { 
     SaveCustomerDb,
+    SaveCustomerTokenDb,
     CheckCustomerUsernameDuplicate,
-    Login,
-    EditCustomerProfileDb
+    GetCustomerLogin,
+    GetCustomerTokenDb,
+    EditCustomerProfileDb,
  } from '../repository/Customer';
-import {Customer} from '../domain/types';
+import {Customer, UserProfile} from '../domain/types';
+import { IdGenerator } from 'domain/Tour';
 describe('CustomerService', () => {
   test('registerCustomer', async () => {
     const fakeCheckCustomerUserNameDuplicated: CheckCustomerUsernameDuplicate = async () => false;
     const fakeSaveCustomer: SaveCustomerDb = async customer => console.log(customer);
-    await CustomerService.registerCustomerService(fakeCheckCustomerUserNameDuplicated, fakeSaveCustomer)(
+    const fakeSaveCustomerToken: SaveCustomerTokenDb = async customerId => console.log(customerId);
+    const fakeTokenGenerator: IdGenerator = () => "fakeToken"
+    await CustomerService.registerCustomerService(fakeCheckCustomerUserNameDuplicated, fakeSaveCustomer, fakeSaveCustomerToken, fakeTokenGenerator)(
       'customeruser',
       'password',
       'customer@test.com',
@@ -39,24 +44,20 @@ describe('CustomerService', () => {
         },
         tripHistory: [],
     };
-    const fakelogin: Login  = async (customerUsername) => {
+    const fakelogin: GetCustomerLogin  = async (customerUsername) => {
         return customer
     };
-    const resultTrue = await CustomerService.loginService(fakelogin)(
+    const fakeGetToken:GetCustomerTokenDb = async (customerId) => "fakeToken"
+    const result = await CustomerService.loginService(fakelogin, fakeGetToken)(
         'customerUser',
         'password'
     );
-    const resultFalse = await CustomerService.loginService(fakelogin)(
-        'customerUser',
-        'falsepassword'
-    );
-    expect(resultTrue).toEqual(customer);
-    expect(resultFalse).toEqual(null);
+    expect(result).toEqual("fakeToken");
   })
 
   test('editCustomerProfile', async () => {
     const fakeEditCustomerProfile: EditCustomerProfileDb = async (customerId, profile) => console.log(customerId, profile);
-    await CustomerService.editCustomerProfileService(fakeEditCustomerProfile)(
+    const result = await CustomerService.editCustomerProfileService(fakeEditCustomerProfile)(
         'customerId',
         'Customername',
         'Clastname',
@@ -64,6 +65,18 @@ describe('CustomerService', () => {
         new Date('1997-05-07'),
         'Female'
     );
+
+    const expectedProfile: UserProfile = {
+        firstName: 'Customername',
+        lastName: 'Clastname',
+        phoneNumber: '0811111111',
+        birthDate: new Date('1997-05-07'),
+        gender: 'Female'
+    };
+    
+    expect(result).toEqual(expectedProfile);
   })
+
+ 
 
 })
