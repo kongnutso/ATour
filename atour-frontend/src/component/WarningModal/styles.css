@@ -1,4 +1,4 @@
-.modal-container-warningModal {
+.modal-container-popUpModal {
   border: 1px solid rgb(204, 204, 204);
   background: rgb(255, 255, 255, 1);
   overflow: auto;
@@ -10,22 +10,57 @@
   margin-top: 200px;
 }
 
-.warninModal-line {
+.popUpModal-line {
   border: 1px solid;
 }
 
-.warninModal-confirm {
+.popUpModal-confirm {
+  border: 1px solid #26a8dc;
+  background-color: #26a8dc;
   cursor: pointer;
-  border: 1px solid #ec424b;
   float: right;
   width: 100px;
   border-radius: 2px;
   text-align: center;
+  color: white;
+}
+.popUpModal-confirm-danger {
+  border: 1px solid #ec424b;
   background-color: #ec424b;
-  color: #ffffff;
+  cursor: pointer;
+  float: right;
+  width: 100px;
+  border-radius: 2px;
+  text-align: center;
+  color: white;
 }
 
-.warninModal-cancel {
+.popUpModal-confirm:hover {
+  background-color: #2297c7;
+  border: 1px solid #2297c7;
+}
+
+.popUpModal-confirm-danger:hover {
+  background-color: #cc0000;
+  border: 1px solid #cc0000;
+}
+
+.popUpModal-ok {
+  border: 1px solid #26a8dc;
+  background-color: #26a8dc;
+  cursor: pointer;
+  float: right;
+  width: 100%;
+  border-radius: 2px;
+  text-align: center;
+  color: white;
+}
+
+.popUpModal-ok:hover {
+  background-color: #2297c7;
+}
+
+.popUpModal-cancel {
   cursor: pointer;
   border: 1px solid #cccccc;
   float: right;
@@ -37,11 +72,12 @@
   color: #cccccc;
 }
 
-.warninModal-button {
+.popUpModal-button-container {
   display: flex;
   align-items: center;
+  margin-top: 20px;
 }
 
-.warninModal-topic {
+.popUpModal-topic {
   font-size: 20px;
 }
