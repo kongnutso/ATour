@@ -78,25 +78,30 @@ router.post('/login', async (req,res) => {
 })
 
 router.post('/editProfile', async (req,res) => {
-    const db: Db = res.locals.db;
-    const {
-        customerId,
-        firstName,
-        lastName,
-        phoneNumber,
-        birthDate,
-        gender
-    } = req.body;
-    await editCustomerProfileService(
-        editCustomerProfile(db))(
+    try {
+        const db: Db = res.locals.db;
+        const {
             customerId,
             firstName,
             lastName,
             phoneNumber,
             birthDate,
             gender
-        );
-        res.send('Customer register');
+        } = req.body;
+        const profile = await editCustomerProfileService(
+            editCustomerProfile(db))(
+                customerId,
+                firstName,
+                lastName,
+                phoneNumber,
+                birthDate,
+                gender
+            );
+        res.json(profile);
+    } catch (error) {
+        res.json(error.message)
+    }
+        
 });
 
 router.post('/changeEmail', async (req,res) => {
