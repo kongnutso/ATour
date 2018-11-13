@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Flex, Box, Text } from 'rebass';
 import { Menu, Segment, Icon } from 'semantic-ui-react';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Table from '../Table';
 import { SearchButton, Input } from '../BaseComponent';
@@ -12,6 +13,7 @@ const tableProps = num => {
     dataArray.push({
       date: `${i}/10/2018`,
       deal: `${String.fromCharCode(97 + i)}asdasdsadsada`,
+      tourUrl: '2ewds2wds',
       username: `${String.fromCharCode(97 + i)}`,
       phoneNumber: `${i}${i}${i}${i}${i}${i}`,
       email: `${i}@hot.hr`,
@@ -19,7 +21,7 @@ const tableProps = num => {
   }
   return dataArray;
 };
-const adminApproveColumns = (handleConfirm, handleReject) => [
+const viewDealTripColumns = () => [
   {
     Header: 'Date',
     accessor: 'date',
@@ -34,8 +36,14 @@ const adminApproveColumns = (handleConfirm, handleReject) => [
     accessor: 'deal',
     width: 250,
     Cell: ({ original }) => {
-      const { deal } = original;
-      return <Text fontWeight="bold">{deal}</Text>;
+      const { deal, tourUrl } = original;
+      return (
+        <Link to={'/' + tourUrl}>
+          <Text fontWeight="bold" color="#333">
+            {deal}
+          </Text>
+        </Link>
+      );
     },
   },
   {
@@ -72,17 +80,11 @@ class ViewDealtTripPage extends Component {
   state = { activeItem: 'current', searchTerm: { date: '', deal: '', username: '' } };
 
   onSearch = () => {
-    console.log(`Search :`, this.statesearchTerm);
+    console.log(`Search :`, this.state.searchTerm);
   };
 
   handleMenuClick = (e, { name }) => this.setState({ activeItem: name });
 
-  handleConfirm = () => {
-    this.setState({ approveModal: true });
-  };
-  handleReject = () => {
-    this.setState({ rejectModal: true });
-  };
   render() {
     const { activeItem, searchTerm } = this.state;
     return (
@@ -150,7 +152,7 @@ class ViewDealtTripPage extends Component {
               <Box width={1}>
                 <Table
                   data={tableProps(4)}
-                  columns={adminApproveColumns(this.handleConfirm, this.handleReject)}
+                  columns={viewDealTripColumns()}
                   defaultPageSize={10}
                   style={{
                     textAlign: 'center',

@@ -30,7 +30,7 @@ ReactDOM.render(
           <Route exact path="/bookedHistoryInfo" component={BookedHistoryInfo} />
           <Route exact path="/adminApprove" component={AdminApprovePage} />
           <Route exact path="/adminSearch" component={AdminSearchPage} />
-          <Route exact path="/viewDealtTrip" component={ViewDealtTripPage} />
+          <Route exact path="/viewDealtTrips" component={ViewDealtTripPage} />
         </Switch>
       </div>
     </BrowserRouter>
