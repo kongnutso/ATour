@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { Flex, Box } from 'rebass';
 import autobind from 'react-autobind';
 import { Rating, Form, TextArea } from 'semantic-ui-react';
-import PopUpModal from '../WarningModal/PopUpModal';
+import PopUpModal from '../PopUpModal/PopUpModal';
 import './styles.css';
 
 class BookedHistoryInfo extends React.Component {
@@ -24,18 +24,14 @@ class BookedHistoryInfo extends React.Component {
   }
 
   classNameStatus(statusNumber) {
-    if (statusNumber === this.props.status)
-      return 'bookedhistoryinfo-status-inprocess';
-    else if (statusNumber < this.props.status)
-      return 'bookedhistoryinfo-status-finish';
+    if (statusNumber === this.props.status) return 'bookedhistoryinfo-status-inprocess';
+    else if (statusNumber < this.props.status) return 'bookedhistoryinfo-status-finish';
     else return 'bookedhistoryinfo-status-coming';
   }
 
   classNameText(statusNumber) {
-    if (statusNumber === this.props.status)
-      return 'bookedhistoryinfo-text-inprocess';
-    else if (statusNumber < this.props.status)
-      return 'bookedhistoryinfo-text-finish';
+    if (statusNumber === this.props.status) return 'bookedhistoryinfo-text-inprocess';
+    else if (statusNumber < this.props.status) return 'bookedhistoryinfo-text-finish';
     else return 'bookedhistoryinfo-text-coming';
   }
 
@@ -56,11 +52,7 @@ class BookedHistoryInfo extends React.Component {
     else
       return (
         <div>
-          <Rating
-            maxRating={5}
-            clearable
-            className="bookedhistoryinfo-rating"
-          />
+          <Rating maxRating={5} clearable className="bookedhistoryinfo-rating" />
         </div>
       );
   }
@@ -81,10 +73,7 @@ class BookedHistoryInfo extends React.Component {
           <Flex>
             <Box p={2} width={1 / 15} />
             <Box p={3} width={14 / 15}>
-              <div
-                className={this.classNameColorButton(5)}
-                onClick={() => console.log('submit')}
-              >
+              <div className={this.classNameColorButton(5)} onClick={() => console.log('submit')}>
                 Submit
               </div>
             </Box>
@@ -129,8 +118,7 @@ class BookedHistoryInfo extends React.Component {
       <div className="bookedhistoryinfo-page">
         <div className="bookedhistoryinfo-header">
           <i className="fa fa-calendar topbanner-icon" />
-          <Link to="/bookedHistory">Booked History</Link> / Book ID :
-          {this.props.bookedId}
+          <Link to="/bookedHistory">Booked History</Link> / Book ID :{this.props.bookedId}
           {this.renderRedButton()}
         </div>
         <PopUpModal
@@ -175,9 +163,7 @@ class BookedHistoryInfo extends React.Component {
                   >
                     Choose file
                   </div>
-                  <div className="bookedhistoryinfo-upliadfile">
-                    {this.props.image}
-                  </div>
+                  <div className="bookedhistoryinfo-upliadfile">{this.props.image}</div>
                 </Box>
               </Flex>
             </div>
@@ -228,7 +214,7 @@ const mapStateToProps = state => {
     bookedDate: state.bookedHistoryInfo.bookedDate,
     uploadedFileDate: state.bookedHistoryInfo.uploadedFileDate,
     bookedId: state.bookedHistoryInfo.bookedId,
-    image: state.bookedHistoryInfo.image
+    image: state.bookedHistoryInfo.image,
   };
 };
 
