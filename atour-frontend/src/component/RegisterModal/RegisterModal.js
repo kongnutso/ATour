@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Modal from 'react-modal';
@@ -7,6 +7,7 @@ import { registerModal, loginModal } from '../../action/ModalAction';
 import autobind from 'react-autobind';
 import * as validation from '../../utils/validation';
 import classNames from 'classnames';
+import FormProgress from '../FormProgress/FormProgress';
 
 function Field(props) {
   const { inputType, error, label, onChange, value } = props;
@@ -386,6 +387,11 @@ class RegisterModal extends React.Component {
         ariaHideApp={false}
       >
         <div className="registerModal-signUp-text">Sign Up</div>
+        <Fragment>
+          <div className="registerModal-formProgress-container">
+            <FormProgress currentStep={accountInfo ? 1 : 2} />
+          </div>
+        </Fragment>
         {renderObject}
       </Modal>
     );
