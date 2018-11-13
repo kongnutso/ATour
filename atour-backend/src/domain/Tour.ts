@@ -1,4 +1,4 @@
-import { Tour, UnbookedTrip } from './types';
+import { Tour, UnbookedTrip, PartialTour } from './types';
 
 export type IdGenerator = () => string;
 
@@ -7,10 +7,13 @@ export type PublishTour = (
   minSize: number,
   maxSize: number,
   price: number,
-  detail: string
+  detail: string,
+  guideId: string
 ) => Tour;
 
-export type PublishTrip = (t: Tour, d: Date) => Tour;
+export type EditTour = (t: Tour, updateInfo: PartialTour) => Tour;
+
+export type AddTrip = (t: Tour, d: Date) => Tour;
 
 export function publishTour(idGenerator: IdGenerator): PublishTour {
   return (
@@ -18,7 +21,8 @@ export function publishTour(idGenerator: IdGenerator): PublishTour {
     minimumSize: number,
     maximumSize: number,
     price: number,
-    detail: string
+    detail: string,
+    guideId: string
   ): Tour => {
     const tour: Tour = {
       tourId: idGenerator(),
@@ -28,12 +32,23 @@ export function publishTour(idGenerator: IdGenerator): PublishTour {
       price,
       detail,
       trips: [],
-      reviews: []
+      reviews: [],
+      guideId
     };
     return tour;
   };
 }
-export function publishTrip(idGenerator: IdGenerator): PublishTrip {
+
+export function editTour(): EditTour {
+  return (tour, updateInfo) => {
+    return {
+      ...tour,
+      ...updateInfo
+    };
+  };
+}
+
+export function addTrip(idGenerator: IdGenerator): AddTrip {
   return (tour: Tour, tripDate: Date): Tour => {
     const addedTrip: UnbookedTrip = { tripId: idGenerator(), tripDate };
     const newTrips = [...tour.trips, addedTrip];

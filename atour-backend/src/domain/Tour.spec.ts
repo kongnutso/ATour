@@ -8,7 +8,8 @@ describe('Tour', () => {
       1,
       5,
       3500,
-      'trip to Changmai'
+      'trip to Changmai',
+      'guideid',
     );
     const expectedTour: Tour = {
       tourId: 'tourId',
@@ -18,9 +19,42 @@ describe('Tour', () => {
       price: 3500,
       detail: 'trip to Changmai',
       reviews: [],
-      trips: []
+      trips: [],
+      guideId: 'guideid'
     };
     expect(tour).toEqual(expectedTour);
+  });
+
+  test('edit Tour', () => {
+    const editedTour = TourDomain.editTour()(
+      {
+        tourId: 'tourId',
+        tourName: 'Changmai',
+        minimumSize: 1,
+        maximumSize: 5,
+        price: 3500,
+        detail: 'trip to Changmai',
+        reviews: [],
+        trips: [],
+        guideId: 'guideid'
+      },
+      {
+        tourName: 'Changmai trip',
+        price: 5000
+      }
+    );
+    const expectedTour: Tour = {
+      tourId: 'tourId',
+      tourName: 'Changmai trip',
+      minimumSize: 1,
+      maximumSize: 5,
+      price: 5000,
+      detail: 'trip to Changmai',
+      reviews: [],
+      trips: [],
+      guideId: 'guideid'
+    };
+    expect(editedTour).toEqual(expectedTour);
   });
 
   test('publish Trip', () => {
@@ -32,13 +66,14 @@ describe('Tour', () => {
       price: 3500,
       detail: 'trip to Changmai',
       trips: [],
-      reviews: []
+      reviews: [],
+      guideId: 'guideid'
     };
-    const tourWithTrip = TourDomain.publishTrip(() => 'newidkrub')(
+    const tourWithTrip = TourDomain.addTrip(() => 'newidkrub')(
       tour,
       new Date('2018-11-04')
     );
-    const expectedTour = {
+    const expectedTour: Tour = {
       tourId: 'tourId',
       tourName: 'Changmai',
       minimumSize: 1,
@@ -51,7 +86,8 @@ describe('Tour', () => {
           tripDate: new Date('2018-11-04')
         }
       ],
-      reviews: []
+      reviews: [],
+      guideId: 'guideid'
     };
     expect(tourWithTrip).toEqual(expectedTour);
   });
