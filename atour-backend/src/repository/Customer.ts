@@ -15,6 +15,16 @@ export type EditCustomerProfileDb = (
     profile: UserProfile
 ) => Promise<void>;
 
+export type ChangeCustomerEmailDb = (
+    customerId: string,
+    email: string
+) => Promise<void>;
+
+export type ChangeCustomerPasswordDb = (
+    customerId: string,
+    newPassword
+) => Promise<void>;
+
 export function getCustomer(db: Db): GetCustomerDb {
     return async customerId => {
         return db.collection('customer').findOne({ customerId });
@@ -58,5 +68,23 @@ export function editCustomerProfile(db: Db): EditCustomerProfileDb {
             profile
             }  
         })
+    }
+}
+
+export function changeCustomerEmail(db: Db):ChangeCustomerEmailDb{
+    return async (
+        customerId,
+        email
+    ) => {
+        await db.collection('customer').update({customerId: customerId}, {$set: email})
+    }
+}
+
+export function changeCustomerPassword(db: Db): ChangeCustomerPasswordDb{
+    return async (
+        customerId,
+        password
+    ) => {
+        await db.collection('customer').update({customerId: customerId}, {$set: password})
     }
 }

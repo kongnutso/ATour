@@ -3,7 +3,10 @@ import {
     SaveCustomerDb,
     CheckCustomerUsernameDuplicate,
     Login,
-    EditCustomerProfileDb
+    EditCustomerProfileDb,
+    ChangeCustomerEmailDb,
+    ChangeCustomerPasswordDb,
+    GetCustomerDb
  } from '../repository/Customer';
 import {Customer} from '../domain/types';
 describe('CustomerService', () => {
@@ -63,6 +66,41 @@ describe('CustomerService', () => {
         '0811111111',
         new Date('1997-05-07'),
         'Female'
+    );
+  })
+
+  test('changeCustomerEmail', async () => {
+      const fakechangeCustomerEmail: ChangeCustomerEmailDb = async (customerId, email) => console.log(customerId, email)
+      await CustomerService.changeCustomerEmailService(fakechangeCustomerEmail)(
+          'customerId',
+          'newEmail@test.com'
+      );
+  })
+
+  test('changePassword', async () => {
+    const customer :Customer = {
+        customerId: 'customerid',
+        userName: 'customerUser',
+        password: 'password',
+        email: 'customer@test.com',
+        personalId: '1234567890123',
+        profile: {
+            firstName: 'Customername',
+            lastName: 'Clastname',
+            birthDate: new Date('1997-05-07'),
+            phoneNumber: '0811111111',
+            gender: 'Female'
+        },
+        tripHistory: [],
+    };
+    const fakeGetCustomer: GetCustomerDb = async (customerId) => {
+        return customer
+    }
+    const fakeChangeCustomerPassword: ChangeCustomerPasswordDb = async (customerId, password) => console.log(customerId, password)
+    await CustomerService.changeCustomerPasswordService(fakeGetCustomer, fakeChangeCustomerPassword)(
+        'customerId',
+        'password',
+        'newpassword'
     );
   })
 

@@ -3,7 +3,10 @@ import {
     CheckCustomerUsernameDuplicate,
     SaveCustomerDb,
     Login,
-    EditCustomerProfileDb
+    EditCustomerProfileDb,
+    ChangeCustomerEmailDb,
+    GetCustomerDb,
+    ChangeCustomerPasswordDb
 } from '../repository/Customer';
 import { 
     registerCustomer,
@@ -35,6 +38,17 @@ export type EditCustomerProfileService = (
     phoneNumber: string,
     birthDate: Date,
     gender: "Male"| "Female"
+) => Promise<void>;
+
+export type ChangeCustomerEmailService = (
+    customerId:string,
+    email:string
+) => Promise<void>;
+
+export type ChangeCustomerPasswordService = (
+    customerId: string,
+    oldPassword: string,
+    newPassword: string
 ) => Promise<void>;
 
 export function registerCustomerService(checkCustomerUsernameDuplicate: CheckCustomerUsernameDuplicate,saveCustomerDb: SaveCustomerDb): RegisterCustomerService {
@@ -100,3 +114,24 @@ export function editCustomerProfileService(editCustomerProfileDb: EditCustomerPr
     }
 }
 
+export function changeCustomerEmailService(changeCustomerEmailDb: ChangeCustomerEmailDb):ChangeCustomerEmailService {
+    return async (
+        customerId,
+        email
+    ) => {
+        await changeCustomerEmailDb(customerId, email);
+    }
+}
+
+export function changeCustomerPasswordService(getCustomerDb: GetCustomerDb, changeCustomerPasswordDb: ChangeCustomerPasswordDb): ChangeCustomerPasswordService {
+    return async (
+        customerId,
+        oldPassword,
+        newPassword
+    ) => {
+        const customer = await getCustomerDb(customerId);
+        if(customer.password === oldPassword){
+            await changeCustomerPasswordDb(customerId, newPassword)
+        }
+    }
+}
