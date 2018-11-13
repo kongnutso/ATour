@@ -12,6 +12,7 @@ import TopBanner from './component/TopBanner/TopBanner';
 import BookedHistory from './component/BookedHistory/BookedHistory';
 import EditProfile from './component/EditProfile/EditProfile';
 import BookedHistoryInfo from './component/BookedHistoryInfo/BookedHistoryInfo';
+import AdminPage from './component/AdminPage';
 
 const createStoreWithMiddleware = applyMiddleware(promise)(createStore);
 
@@ -24,11 +25,8 @@ ReactDOM.render(
           <Route exact path="/" component={App} />
           <Route exact path="/bookedHistory" component={BookedHistory} />
           <Route exact path="/editProfile" component={EditProfile} />
-          <Route
-            exact
-            path="/bookedHistoryInfo"
-            component={BookedHistoryInfo}
-          />
+          <Route exact path="/bookedHistoryInfo" component={BookedHistoryInfo} />
+          <Route exact path="/admin" component={AdminPage} />
         </Switch>
       </div>
     </BrowserRouter>
