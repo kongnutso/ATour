@@ -5,18 +5,16 @@ import {
     checkCustomerUsernameDuplicate,
     editCustomerProfile,
     login,
-    changeCustomerEmail,
-    changeCustomerPassword,
-    getCustomer
+    saveCustomerToken,
+    getCustomerToken
 } from '../repository/Customer';
 import {
     registerCustomerService,
     loginService,
     editCustomerProfileService,
-    changeCustomerEmailService,
-    changeCustomerPasswordService
 } from '../service/CustomerService';
 
+import * as uuid from 'uuid/v4';
 const router = express.Router();
 
 router.get('/', (req,res) => {
@@ -39,7 +37,10 @@ router.post('/register', async (req,res) => {
         } = req.body;
         const result = await registerCustomerService(
             checkCustomerUsernameDuplicate(userName, db),
-            saveCustomer(db))(
+            saveCustomer(db),
+            saveCustomerToken(db),
+            () => uuid()
+        )(
                 userName,
                 password,
                 email,
@@ -63,18 +64,15 @@ router.post('/login', async (req,res) => {
             userName,
             password
         } = req.body;
-        const customer = await loginService(
-            login(db))(
+        const token = await loginService(
+            login(db), getCustomerToken(db))(
                 userName,
                 password
             );
-        res.json(customer);
+        res.json(token);
     } catch (error) {
         res.json(error.message)
     }
-    
-
-
 })
 
 router.post('/editProfile', async (req,res) => {
@@ -103,43 +101,5 @@ router.post('/editProfile', async (req,res) => {
     }
         
 });
-
-router.post('/changeEmail', async (req,res) => {
-    try {
-        const db: Db = res.locals.db;
-        const {
-            customerId,
-            email
-        } = req.body;
-        await changeCustomerEmailService(
-            changeCustomerEmail(db))(
-                customerId,
-                email
-            );
-        res.json({result: true})
-    } catch (error) {
-        res.json(error.message)
-    }
-});
-
-router.post('/changePassword', async (req,res) => {
-    try {
-        const db:Db = res.locals.db;
-        const {
-            customerId,
-            oldPassword,
-            newPassword
-        } = req.body;
-        await changeCustomerPasswordService(getCustomer(db),changeCustomerPassword(db))(
-            customerId,
-            oldPassword,
-            newPassword
-        );
-        res.json({result:true})
-    } catch (error) {
-        res.json(error.message)
-    }
-        
-})
 
 export default router;

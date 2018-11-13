@@ -1,19 +1,18 @@
-import * as uuid from 'uuid/v4';
 import { 
     CheckCustomerUsernameDuplicate,
     SaveCustomerDb,
-    Login,
+    GetCustomerLogin,
+    GetCustomerTokenDb,
+    SaveCustomerTokenDb,
     EditCustomerProfileDb,
-    ChangeCustomerEmailDb,
-    GetCustomerDb,
-    ChangeCustomerPasswordDb
+
 } from '../repository/Customer';
 import { 
     registerCustomer,
     customerProfile
 } from '../domain/Customer';
 import { Customer, UserProfile } from 'domain/types';
-
+import {IdGenerator} from 'domain/Tour';
 export type RegisterCustomerService = (
     userName: string,
     password: string,
@@ -29,7 +28,7 @@ export type RegisterCustomerService = (
 export type LoginService = (
     userName: string,
     password: string
-) => Promise<Customer|null>;
+) => Promise<string>;
 
 export type EditCustomerProfileService = (
     customerId: string,
@@ -51,7 +50,12 @@ export type ChangeCustomerPasswordService = (
     newPassword: string
 ) => Promise<boolean>;
 
-export function registerCustomerService(checkCustomerUsernameDuplicate: CheckCustomerUsernameDuplicate,saveCustomerDb: SaveCustomerDb): RegisterCustomerService {
+export function registerCustomerService(
+    checkCustomerUsernameDuplicate: CheckCustomerUsernameDuplicate,
+    saveCustomerDb: SaveCustomerDb,
+    saveCustomerTokenDb: SaveCustomerTokenDb,
+    idGenerator: IdGenerator
+    ): RegisterCustomerService {
         return async (
             userName: string,
             password: string,
@@ -66,7 +70,7 @@ export function registerCustomerService(checkCustomerUsernameDuplicate: CheckCus
             if (await checkCustomerUsernameDuplicate(userName)){
                 throw new Error('Customer username is duplicated');
             }
-            const customer = registerCustomer(()=>uuid())(
+            const customer = registerCustomer(idGenerator)(
                 userName,
                 password,
                 email,
@@ -78,20 +82,19 @@ export function registerCustomerService(checkCustomerUsernameDuplicate: CheckCus
                 gender
             );
             await saveCustomerDb(customer);
+            await saveCustomerTokenDb(customer.customerId, idGenerator())
             return customer;
         }
     }
 
-export function loginService(login: Login):LoginService {
+export function loginService(login: GetCustomerLogin, getToken: GetCustomerTokenDb):LoginService {
     return async (
         userName,
         password
     )=>{
-        const result = await login(userName);
-        if( result.password === password){
-            return result;
-        }
-        return null;
+        const customer = await login(userName, password);
+        const token = await getToken(customer.customerId)
+        return token;
     }
 }
 
@@ -116,26 +119,3 @@ export function editCustomerProfileService(editCustomerProfileDb: EditCustomerPr
     }
 }
 
-export function changeCustomerEmailService(changeCustomerEmailDb: ChangeCustomerEmailDb):ChangeCustomerEmailService {
-    return async (
-        customerId,
-        email
-    ) => {
-        await changeCustomerEmailDb(customerId, email);
-    }
-}
-
-export function changeCustomerPasswordService(getCustomerDb: GetCustomerDb, changeCustomerPasswordDb: ChangeCustomerPasswordDb): ChangeCustomerPasswordService {
-    return async (
-        customerId,
-        oldPassword,
-        newPassword
-    ) => {
-        const customer = await getCustomerDb(customerId);
-        if(customer.password === oldPassword){
-            await changeCustomerPasswordDb(customerId, newPassword)
-            return true
-        }
-        return false
-    }
-}
