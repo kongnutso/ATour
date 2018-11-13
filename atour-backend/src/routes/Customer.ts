@@ -35,7 +35,7 @@ router.post('/register', async (req,res) => {
             birthDate,
             gender
         } = req.body;
-        const result = await registerCustomerService(
+        const customer = await registerCustomerService(
             checkCustomerUsernameDuplicate(userName, db),
             saveCustomer(db),
             saveCustomerToken(db),
@@ -51,9 +51,10 @@ router.post('/register', async (req,res) => {
                 birthDate,
                 gender
             );
-        res.json(result);
+        res.json(customer);
     }catch(e){
-        res.json(e.message)
+        console.log(e.message)
+        res.json({customer:null, error: e.message})
     }
 });
 
@@ -71,7 +72,8 @@ router.post('/login', async (req,res) => {
             );
         res.json(token);
     } catch (error) {
-        res.json(error.message)
+        console.log(error.message)
+        res.json({token:null, error: error.message})
     }
 })
 
@@ -97,7 +99,8 @@ router.post('/editProfile', async (req,res) => {
             );
         res.json(profile);
     } catch (error) {
-        res.json(error.message)
+        console.log(error.message)
+        res.json({profile:null, error:error.message})
     }
         
 });

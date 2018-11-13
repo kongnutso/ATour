@@ -39,17 +39,6 @@ export type EditCustomerProfileService = (
     gender: "Male"| "Female"
 ) => Promise<UserProfile>;
 
-export type ChangeCustomerEmailService = (
-    customerId:string,
-    email:string
-) => Promise<void>;
-
-export type ChangeCustomerPasswordService = (
-    customerId: string,
-    oldPassword: string,
-    newPassword: string
-) => Promise<boolean>;
-
 export function registerCustomerService(
     checkCustomerUsernameDuplicate: CheckCustomerUsernameDuplicate,
     saveCustomerDb: SaveCustomerDb,
