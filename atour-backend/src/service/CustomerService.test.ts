@@ -8,7 +8,7 @@ import {
     ChangeCustomerPasswordDb,
     GetCustomerDb
  } from '../repository/Customer';
-import {Customer} from '../domain/types';
+import {Customer, UserProfile} from '../domain/types';
 describe('CustomerService', () => {
   test('registerCustomer', async () => {
     const fakeCheckCustomerUserNameDuplicated: CheckCustomerUsernameDuplicate = async () => false;
@@ -59,7 +59,7 @@ describe('CustomerService', () => {
 
   test('editCustomerProfile', async () => {
     const fakeEditCustomerProfile: EditCustomerProfileDb = async (customerId, profile) => console.log(customerId, profile);
-    await CustomerService.editCustomerProfileService(fakeEditCustomerProfile)(
+    const result = await CustomerService.editCustomerProfileService(fakeEditCustomerProfile)(
         'customerId',
         'Customername',
         'Clastname',
@@ -67,6 +67,16 @@ describe('CustomerService', () => {
         new Date('1997-05-07'),
         'Female'
     );
+
+    const expectedProfile: UserProfile = {
+        firstName: 'Customername',
+        lastName: 'Clastname',
+        phoneNumber: '0811111111',
+        birthDate: new Date('1997-05-07'),
+        gender: 'Female'
+    };
+    
+    expect(result).toEqual(expectedProfile);
   })
 
   test('changeCustomerEmail', async () => {
@@ -97,11 +107,19 @@ describe('CustomerService', () => {
         return customer
     }
     const fakeChangeCustomerPassword: ChangeCustomerPasswordDb = async (customerId, password) => console.log(customerId, password)
-    await CustomerService.changeCustomerPasswordService(fakeGetCustomer, fakeChangeCustomerPassword)(
+    const trueresult = await CustomerService.changeCustomerPasswordService(fakeGetCustomer, fakeChangeCustomerPassword)(
         'customerId',
         'password',
         'newpassword'
     );
+    const falseresult = await CustomerService.changeCustomerPasswordService(fakeGetCustomer, fakeChangeCustomerPassword)(
+        'customerId',
+        'nopassword',
+        'newpassword'
+    );
+
+    expect(trueresult).toEqual(true)
+    expect(falseresult).toEqual(false)
   })
 
 })

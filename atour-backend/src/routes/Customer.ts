@@ -24,21 +24,9 @@ router.get('/', (req,res) => {
 });
 
 router.post('/register', async (req,res) => {
-    const db: Db = res.locals.db;
-    const {
-        userName,
-        password,
-        email,
-        firstName,
-        lastName,
-        personalId,
-        phoneNumber,
-        birthDate,
-        gender
-    } = req.body;
-    await registerCustomerService(
-        checkCustomerUsernameDuplicate(userName, db),
-        saveCustomer(db))(
+    try {
+        const db: Db = res.locals.db;
+        const {
             userName,
             password,
             email,
@@ -48,22 +36,43 @@ router.post('/register', async (req,res) => {
             phoneNumber,
             birthDate,
             gender
-        );
-        res.send('Customer register');
+        } = req.body;
+        const result = await registerCustomerService(
+            checkCustomerUsernameDuplicate(userName, db),
+            saveCustomer(db))(
+                userName,
+                password,
+                email,
+                firstName,
+                lastName,
+                personalId,
+                phoneNumber,
+                birthDate,
+                gender
+            );
+        res.json(result);
+    }catch(e){
+        res.json(e.message)
+    }
 });
 
 router.post('/login', async (req,res) => {
-    const db: Db = res.locals.db;
-    const {
-        userName,
-        password
-    } = req.body;
-    const customer = await loginService(
-        login(db))(
+    try {
+        const db: Db = res.locals.db;
+        const {
             userName,
             password
-        );
-    res.send(customer);
+        } = req.body;
+        const customer = await loginService(
+            login(db))(
+                userName,
+                password
+            );
+        res.json(customer);
+    } catch (error) {
+        res.json(error.message)
+    }
+    
 
 
 })
@@ -91,32 +100,41 @@ router.post('/editProfile', async (req,res) => {
 });
 
 router.post('/changeEmail', async (req,res) => {
-    const db: Db = res.locals.db;
-    const {
-        customerId,
-        email
-    } = req.body;
-    await changeCustomerEmailService(
-        changeCustomerEmail(db))(
+    try {
+        const db: Db = res.locals.db;
+        const {
             customerId,
             email
-        );
-        res.send('Customer email saved');
+        } = req.body;
+        await changeCustomerEmailService(
+            changeCustomerEmail(db))(
+                customerId,
+                email
+            );
+        res.json({result: true})
+    } catch (error) {
+        res.json(error.message)
+    }
 });
 
 router.post('/changePassword', async (req,res) => {
-    const db:Db = res.locals.db;
-    const {
-        customerId,
-        oldPassword,
-        newPassword
-    } = req.body;
-    await changeCustomerPasswordService(getCustomer(db),changeCustomerPassword(db))(
-        customerId,
-        oldPassword,
-        newPassword
-    );
-    res.send('Customer password changed')
+    try {
+        const db:Db = res.locals.db;
+        const {
+            customerId,
+            oldPassword,
+            newPassword
+        } = req.body;
+        await changeCustomerPasswordService(getCustomer(db),changeCustomerPassword(db))(
+            customerId,
+            oldPassword,
+            newPassword
+        );
+        res.json({result:true})
+    } catch (error) {
+        res.json(error.message)
+    }
+        
 })
 
 export default router;

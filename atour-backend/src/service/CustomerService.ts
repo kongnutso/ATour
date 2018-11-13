@@ -12,7 +12,7 @@ import {
     registerCustomer,
     customerProfile
 } from '../domain/Customer';
-import { Customer } from 'domain/types';
+import { Customer, UserProfile } from 'domain/types';
 
 export type RegisterCustomerService = (
     userName: string,
@@ -24,7 +24,7 @@ export type RegisterCustomerService = (
     phoneNumber: string,
     birthDate: Date,
     gender: "Male" | "Female"
-) => Promise<void>;
+) => Promise<Customer>;
 
 export type LoginService = (
     userName: string,
@@ -38,7 +38,7 @@ export type EditCustomerProfileService = (
     phoneNumber: string,
     birthDate: Date,
     gender: "Male"| "Female"
-) => Promise<void>;
+) => Promise<UserProfile>;
 
 export type ChangeCustomerEmailService = (
     customerId:string,
@@ -49,7 +49,7 @@ export type ChangeCustomerPasswordService = (
     customerId: string,
     oldPassword: string,
     newPassword: string
-) => Promise<void>;
+) => Promise<boolean>;
 
 export function registerCustomerService(checkCustomerUsernameDuplicate: CheckCustomerUsernameDuplicate,saveCustomerDb: SaveCustomerDb): RegisterCustomerService {
         return async (
@@ -78,6 +78,7 @@ export function registerCustomerService(checkCustomerUsernameDuplicate: CheckCus
                 gender
             );
             await saveCustomerDb(customer);
+            return customer;
         }
     }
 
@@ -111,6 +112,7 @@ export function editCustomerProfileService(editCustomerProfileDb: EditCustomerPr
             gender
         );
         await editCustomerProfileDb (customerId, profile);
+        return profile;
     }
 }
 
@@ -132,6 +134,8 @@ export function changeCustomerPasswordService(getCustomerDb: GetCustomerDb, chan
         const customer = await getCustomerDb(customerId);
         if(customer.password === oldPassword){
             await changeCustomerPasswordDb(customerId, newPassword)
+            return true
         }
+        return false
     }
 }
