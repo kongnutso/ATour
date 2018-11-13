@@ -4,6 +4,9 @@ import { Link } from 'react-router-dom';
 import { Flex, Box } from 'rebass';
 import autobind from 'react-autobind';
 import { Rating, Form, TextArea } from 'semantic-ui-react';
+import WarningModal from '../WarningModal/WarningModal';
+import { warningModal } from '../../action/ModalAction';
+import { setWarningType } from '../../action/ApplicationAction';
 import './styles.css';
 
 class BookedHistoryInfo extends React.Component {
@@ -16,7 +19,8 @@ class BookedHistoryInfo extends React.Component {
       'classNameText',
       'renderReview',
       'onClickChooseFile',
-      'renderRedButton'
+      'renderRedButton',
+      'setWarningType'
     );
   }
 
@@ -46,6 +50,11 @@ class BookedHistoryInfo extends React.Component {
     else {
       console.log('choose file');
     }
+  }
+
+  setWarningType() {
+    if (this.props.status <= 2) this.props.setWarningType('Cancel');
+    else if (this.props.status === 3) this.props.setWarningType('Refund');
   }
 
   renderRate(statusNumber) {
@@ -95,18 +104,22 @@ class BookedHistoryInfo extends React.Component {
       return (
         <div
           className="bookedhistoryinfo-headbutton"
-          onClick={() => console.log('cancel')}
+          onClick={() => {
+            this.props.openWarningModal();
+          }}
         >
-          X cancel
+          Cancel
         </div>
       );
     } else if (this.props.status === 3) {
       return (
         <div
           className="bookedhistoryinfo-headbutton"
-          onClick={() => console.log('click')}
+          onClick={() => {
+            this.props.openWarningModal();
+          }}
         >
-          refund
+          Refund
         </div>
       );
     } else {
@@ -115,6 +128,7 @@ class BookedHistoryInfo extends React.Component {
   }
 
   render() {
+    this.setWarningType();
     return (
       <div className="bookedhistoryinfo-page">
         <div className="bookedhistoryinfo-header">
@@ -123,6 +137,7 @@ class BookedHistoryInfo extends React.Component {
           {this.props.bookedId}
           {this.renderRedButton()}
         </div>
+        <WarningModal />
         <hr className="bookedhistoryinfo-line" />
         <div>
           Status
@@ -208,8 +223,14 @@ const mapStateToProps = state => {
     bookedDate: state.bookedHistoryInfo.bookedDate,
     uploadedFileDate: state.bookedHistoryInfo.uploadedFileDate,
     bookedId: state.bookedHistoryInfo.bookedId,
-    image: state.bookedHistoryInfo.image
+    image: state.bookedHistoryInfo.image,
+    modalType: state.bookedHistoryInfo.modalType
   };
 };
 
-export default connect(mapStateToProps, null)(BookedHistoryInfo);
+const mapDispatchToProps = dispatch => ({
+  openWarningModal: () => dispatch(warningModal(true)),
+  setWarningType: type => dispatch(setWarningType(type))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(BookedHistoryInfo);
