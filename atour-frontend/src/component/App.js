@@ -1,8 +1,13 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
+import TourInfo from './TourInfo/TourInfo';
 
 class App extends Component {
   render() {
-    return <div className="App">HomePage</div>;
+    return (
+      <div className="App">
+        <TourInfo />
+      </div>
+    );
   }
 }
 

@@ -13,22 +13,6 @@ export function logout() {
   };
 }
 
-export const EDIT_USER_INFO = 'EDIT_USER_INFO';
-export function editUserInfo(userInfo) {
-  return {
-    type: EDIT_USER_INFO,
-    payload: userInfo
-  };
-}
-
-export const SET_WARNING_TYPE = 'SET_WARNING_TYPE';
-export function setWarningType(type) {
-  return {
-    type: SET_WARNING_TYPE,
-    payload: type
-  };
-}
-
 export const RESIZE_WINDOW = 'RESIZE_WIDNOW';
 export function resizeWindow(width) {
   return {

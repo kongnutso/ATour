@@ -64,7 +64,7 @@ class LoginModal extends React.Component {
         ariaHideApp={false}
       >
         <PopUpModal
-          isOpen={errorMessage}
+          isOpen={errorMessage ? true : false}
           onCloseModal={() => this.setState({ errorMessage: '' })}
           headerText={'Login Fail'}
           bodyText={errorMessage}
