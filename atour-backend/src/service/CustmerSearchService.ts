@@ -5,7 +5,7 @@ import {
 import {
     Tour,
     Guide
-} from 'domain/types';
+} from '../domain/types';
 
 export type SearchTourService = (
     keyword: string
