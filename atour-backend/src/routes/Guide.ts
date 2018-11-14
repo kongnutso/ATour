@@ -32,6 +32,14 @@ router.post('/login', async (req, res) => {
   }
 });
 
+router.get('/:guideId', async (req, res) => {
+  const db: Db = res.locals.db;
+  const { guideId } = req.params;
+
+  const guide = await db.collection('guide').findOne({ guideId });
+  res.json(guide);
+});
+
 router.post('/', async (req, res) => {
   try {
     const db: Db = res.locals.db;

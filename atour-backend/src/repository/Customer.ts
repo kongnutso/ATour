@@ -12,7 +12,7 @@ export type GetCustomerLogin = (
 ) => Promise<Customer>;
 
 export type EditCustomerProfileDb = (
-    customerId: string,
+    userName: string,
     profile: UserProfile
 ) => Promise<void>;
 
@@ -25,9 +25,22 @@ export type GetCustomerTokenDb = (
     customerId: string
 ) => Promise<string>
 
+<<<<<<< HEAD
 export type UpdateCustomerDb = (
     customer: Customer
 ) => Promise<void>
+=======
+export type GetCustomerProfileDb = (
+    userName: string
+) => Promise<UserProfile>;
+
+export function getCustomerProfile(db:Db):GetCustomerProfileDb {
+    return async (userName) => {
+        const customer = await db.collection('customer').findOne({userName});
+        return customer.profile;
+    }
+}
+>>>>>>> origin/master
 
 export function getCustomerToken(db:Db):GetCustomerTokenDb {
     return async (customerId) => {
@@ -59,11 +72,11 @@ export function saveCustomer(db: Db): SaveCustomerDb {
 }
 
 export function checkCustomerUsernameDuplicate(
-    customerUsername:string,
+    userName:string,
     db: Db    
 ): CheckCustomerUsernameDuplicate{
     return async customerUsername => {
-        const result = await db.collection('customer').findOne({customerUsername});
+        const result = await db.collection('customer').findOne({userName});
         if (result){
             return true;
         }
@@ -83,10 +96,10 @@ export function login(db:Db): GetCustomerLogin {
 
 export function editCustomerProfile(db: Db): EditCustomerProfileDb {
     return async (
-        customerId,
+        userName,
         profile
     ) => {
-        await db.collection('customer').update({customerId: customerId}, {$set :{
+        await db.collection('customer').update({userName:userName}, {$set :{
             profile
             }  
         });
