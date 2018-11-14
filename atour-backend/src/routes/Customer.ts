@@ -108,21 +108,33 @@ router.post('/editProfile', async (req,res) => {
 });
 
 router.post('searchTour', async (req,res) => {
-    const db:Db = res.locals.db;
-    const {keyword} = req.body;
-    const results = await searchTourService(searchTour(db))(
-        keyword
-    );
-    res.send(results);
+    try {
+        const db:Db = res.locals.db;
+        const {keyword} = req.body;
+        const results = await searchTourService(searchTour(db))(
+            keyword
+        );
+        res.json(results);
+    } catch (error) {
+        console.log(error.message)
+        res.json({results:null, error: error.message})
+    }
+
 })
 
 router.post('searchGuide', async (req,res) => {
-    const db:Db = res.locals.db;
-    const {keyword} = req.body;
-    const results = await searchGuideService(searchGuide(db))(
-        keyword
-    );
-    res.send(results);
+    try {
+        const db:Db = res.locals.db;
+        const {keyword} = req.body;
+        const results = await searchGuideService(searchGuide(db))(
+            keyword
+        );
+        res.json(results);
+    } catch (error) {
+        console.log(error.message)
+        res.json({results:null, error: error.message})
+    }
+        
 })
 
 export default router;
