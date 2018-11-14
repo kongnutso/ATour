@@ -5,13 +5,18 @@ import { Flex, Box } from 'rebass';
 import autobind from 'react-autobind';
 import { Rating, Form, TextArea } from 'semantic-ui-react';
 import PopUpModal from '../PopUpModal/PopUpModal';
+import { setImageSlip } from '../../action/BookAction';
 import './styles.css';
 
 class BookedHistoryInfo extends React.Component {
   constructor() {
     super();
     autobind(this);
-    this.state = { confirmationModal: false };
+    this.state = {
+      confirmationModal: false,
+      inputImg: '',
+      confirmModal: false
+    };
   }
 
   classNameStatus(statusNumber) {
@@ -35,11 +40,15 @@ class BookedHistoryInfo extends React.Component {
     else return 'bookedhistoryinfo-bluebutton';
   }
 
-  onClickChooseFile(statusNumber) {
+  onClickSaveSlip(statusNumber) {
     if (statusNumber !== this.props.status) return;
     else {
-      console.log('choose file');
+      this.props.setImageSlip(this.state.inputImg, this.props.bookedId);
     }
+  }
+
+  inputChange(event) {
+    this.setState({ inputImg: event.target.value });
   }
 
   renderRate(statusNumber) {
@@ -122,6 +131,14 @@ class BookedHistoryInfo extends React.Component {
           {this.renderRedButton()}
         </div>
         <PopUpModal
+          isOpen={this.state.confirmModal}
+          onCloseModal={() => this.setState({ confirmModal: false })}
+          headerText={'Upload Confirmation'}
+          bodyText="Do you want to upload this link? "
+          type="Confirmation"
+          onConfirm={() => this.onClickSaveSlip(2)}
+        />
+        <PopUpModal
           isOpen={this.state.confirmationModal}
           onCloseModal={() => this.setState({ confirmationModal: false })}
           headerText={`${message} Confirmation`}
@@ -156,12 +173,28 @@ class BookedHistoryInfo extends React.Component {
               <Flex>
                 <Box width={1 / 15} />
                 <Box p={3} width={1} style={{ display: 'flex' }}>
+                  <input
+                    value={this.state.inputImg}
+                    onChange={this.inputChange}
+                  />
                   <div
+                    className={this.classNameColorButton(2)}
+                    onClick={() => this.setState({ confirmModal: true })}
+                  >
+                    Save
+                  </div>
+
+                  {/* <div
                     className={this.classNameColorButton(2)}
                     onClick={() => this.onClickChooseFile(2)}
                   >
                     Choose file
-                  </div>
+                  </div> */}
+                </Box>
+              </Flex>
+              <Flex>
+                <Box width={1 / 15} />
+                <Box p={3} width={1} style={{ display: 'flex' }}>
                   <div className="bookedhistoryinfo-upliadfile">
                     {this.props.slip}
                   </div>
@@ -219,7 +252,9 @@ const mapStateToProps = state => {
   };
 };
 
-const mapDispatchToProps = dispatch => ({});
+const mapDispatchToProps = dispatch => ({
+  setImageSlip: (img, bookedId) => dispatch(setImageSlip(img, bookedId))
+});
 
 export default connect(
   mapStateToProps,

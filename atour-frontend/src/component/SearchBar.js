@@ -31,11 +31,22 @@ const GridWithBackground = styled(Grid)`
 
 class SearchBar extends React.Component {
   componentDidMount() {
-    console.log('mount here', this.props);
+    window.addEventListener('resize', this.updateWindowDimensions);
+    this.resize();
   }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.updateWindowDimensions);
+  }
+
+  resize() {
+    this.setState({ mobile: window.innerWidth <= 760 });
+  }
+
   state = {
     searchType: 'tourName',
     tours: ['Japan', 'England', 'Thailand', 'Taiwan', 'Tongchai'],
+    mobile: true,
   };
 
   onEnter = () => {
@@ -44,6 +55,7 @@ class SearchBar extends React.Component {
   };
   render() {
     const { term, onChange, onSearch } = this.props;
+    const { mobile } = this.state;
     return (
       <SearchContainer mx={[4, 2]} px={[4, 0]} width={[1, 4 / 5, 7 / 10]}>
         <Box width={[1, 4 / 5]}>
@@ -65,7 +77,7 @@ class SearchBar extends React.Component {
               <Link to="/searchForTour">
                 <SearchButton onClick={() => onSearch(term)}>
                   <Icon name="search" />
-                  Search
+                  {!mobile && 'Search'}
                 </SearchButton>
               </Link>
             </Box>

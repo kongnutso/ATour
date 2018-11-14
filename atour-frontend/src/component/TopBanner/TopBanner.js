@@ -13,14 +13,19 @@ import SideMenu from '../SideMenu/SideMenu';
 import ClickOutSide from 'react-click-outside-component';
 
 class TopBanner extends React.Component {
-  constructor() {
-    super();
-    this.state = { isClickedDropdown: false, sideMenuStatus: 'hidden' };
+  constructor(props) {
+    super(props);
+    this.state = {
+      isClickedDropdown: false,
+      sideMenuStatus: 'hidden',
+      topTransparent: props.transparent
+    };
     autobind(this);
   }
 
   componentDidMount() {
     const { resizeWindow } = this.props;
+    document.addEventListener('scroll', this.onScroll);
     window.onresize = function() {
       resizeWindow(window.innerWidth);
     };
@@ -33,6 +38,25 @@ class TopBanner extends React.Component {
     if (nextProps.width > 710) {
       this.setState({ sideMenuStatus: 'hidden' });
     }
+    if (nextProps.transparent !== this.props.transparent) {
+      this.setState({ topTransparent: nextProps.transparent });
+    }
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('scroll', this.onScroll);
+  }
+
+  onScroll() {
+    // This also can change to dispatch transparent action
+    // May need to have variable to know which page need transparent
+    const documentBody =
+      document.body.scrollTop || document.documentElement.scrollTop;
+    if (documentBody > 90 || !this.props.transparent) {
+      this.setState({ topTransparent: false });
+    } else {
+      this.setState({ topTransparent: true });
+    }
   }
 
   setSideMenuStatus(status) {
@@ -40,10 +64,19 @@ class TopBanner extends React.Component {
   }
 
   onClickOpenMenu() {
+    const documentBody =
+      document.body.scrollTop || document.documentElement.scrollTop;
     const { sideMenuStatus } = this.state;
     let nextStatus;
-    if (sideMenuStatus === 'hidden') nextStatus = 'isShowing';
-    else if (sideMenuStatus === 'isShowing') nextStatus = 'isHidding';
+    if (sideMenuStatus === 'hidden') {
+      nextStatus = 'isShowing';
+      this.setState({ topTransparent: false });
+    } else if (sideMenuStatus === 'isShowing') {
+      nextStatus = 'isHidding';
+      if (documentBody <= 90) {
+        this.setState({ topTransparent: true });
+      }
+    }
     // else if (sideMenuStatus === "isHidding") nextStatus = "isShowing";
     else return;
     this.setState({ sideMenuStatus: nextStatus });
@@ -183,7 +216,7 @@ class TopBanner extends React.Component {
   }
 
   render() {
-    const { sideMenuStatus } = this.state;
+    const { sideMenuStatus, topTransparent } = this.state;
     const path = this.props.location.pathname;
     const renderMenu =
       this.props.width <= 710 ? this.renderSideMenuButton() : this.renderMenu();
@@ -197,7 +230,11 @@ class TopBanner extends React.Component {
             setSideMenuStatus={this.setSideMenuStatus}
             path={path}
           />
-          <div className="topbanner-banner">
+          <div
+            className={`topbanner-banner${
+              topTransparent ? '--transparent' : ''
+            }`}
+          >
             <div className="topbanner-logo-container">
               <div className="topbanner-logo">
                 <Link to="/">
@@ -218,12 +255,10 @@ class TopBanner extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    userInfo: state.user,
-    width: state.app.width
-  };
-};
+const mapStateToProps = state => ({
+  userInfo: state.user,
+  width: state.app.width
+});
 
 const mapDispatchToProps = dispatch => ({
   openRegisterModal: () => dispatch(registerModal(true)),

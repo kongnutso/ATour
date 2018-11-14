@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import { BOOK_TRIP } from '../action/BookAction';
+import { BOOK_TRIP, SET_IMAGE_SLIP } from '../action/BookAction';
 
 const initialState = {
   bookedList: [
@@ -34,9 +34,8 @@ const initialState = {
 
 const defaults = {
   status: 'IN PROCESS',
-  tourStatus: 1,
+  tourStatus: 2,
   uploadedFileDate: '',
-  bookedId: Math.floor(Math.random() * 10000),
   slip: ''
 };
 
@@ -48,7 +47,8 @@ function bookedList(state = initialState.bookedList, action) {
         date,
         size,
         today,
-        guideName
+        guideName,
+        bookedId
       } = action.payload;
 
       const news = {
@@ -58,9 +58,20 @@ function bookedList(state = initialState.bookedList, action) {
         guide: guideName,
         bookedDate: today,
         tourId,
+        bookedId,
         ...defaults
       };
       return [...state, news];
+    case SET_IMAGE_SLIP:
+      const res = state.map(e => {
+        if (e.bookedId === action.payload.bookedId) {
+          e.tourStatus = 3;
+          e.slip = action.payload.url;
+          e.bookedDate = action.payload.today;
+        }
+        return e;
+      });
+      return res;
     default:
       return state;
   }

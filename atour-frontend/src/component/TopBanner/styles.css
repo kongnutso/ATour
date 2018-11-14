@@ -74,7 +74,6 @@
   position: fixed;
   width: 100%;
   z-index: 100000;
-  background-color: white;
 }
 
 .topbanner-menu {
@@ -115,6 +114,18 @@
   border-style: solid;
   border-color: #e3e3e3;
   box-shadow: 0px 1px 10px #d5cfcf;
+  background-color: rgba(255, 255, 255, 0.97);
+  height: 50px;
+}
+
+.topbanner-banner--transparent {
+  display: flex;
+  border-width: 0px 0px 1px 0px;
+  border-style: solid;
+  border-color: #e3e3e3;
+  background-color: transparent !important;
+  transition-duration: 1s;
+  border-bottom: 0px !important;
   height: 50px;
 }
 
@@ -143,7 +154,6 @@
   .topbanner-right {
     padding-left: 30px;
   }
-
   .topbanner-right-container {
     margin-right: 50px;
   }

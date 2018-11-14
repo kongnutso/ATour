@@ -89,6 +89,7 @@
   cursor: pointer;
   width: 150px;
   border-radius: 4px;
+  margin-left: 5px;
   text-align: center;
   background-color: #26abdc;
   color: #ffffff;
@@ -97,6 +98,7 @@
 .bookedhistoryinfo-graybutton {
   width: 150px;
   border-radius: 4px;
+  margin-left: 5px;
   text-align: center;
   background-color: #cccccc;
   color: #ffffff;

@@ -1,8 +1,12 @@
 import { combineReducers } from 'redux';
-import { BOOK_TRIP, SELECT_BOOKED_TRIP } from '../action/BookAction';
+import {
+  BOOK_TRIP,
+  SELECT_BOOKED_TRIP,
+  SET_IMAGE_SLIP
+} from '../action/BookAction';
 
 const initialState = {
-  tourStatus: 3,
+  tourStatus: 2,
   bookedDate: '1/1/2018',
   uploadedFileDate: '31/12/2018',
   bookedId: '1234',
@@ -12,9 +16,11 @@ const initialState = {
 function tourStatus(state = initialState.tourStatus, action) {
   switch (action.type) {
     case BOOK_TRIP:
-      return 1;
+      return 2;
     case SELECT_BOOKED_TRIP:
       return action.payload.tourStatus;
+    case SET_IMAGE_SLIP:
+      if (state === 2) return 3;
     default:
       return state;
   }
@@ -37,6 +43,8 @@ function uploadedFileDate(state = initialState.uploadedFileDate, action) {
       return '';
     case SELECT_BOOKED_TRIP:
       return action.payload.uploadedFileDate;
+    case SET_IMAGE_SLIP:
+      return action.payload.today;
     default:
       return state;
   }
@@ -45,7 +53,7 @@ function uploadedFileDate(state = initialState.uploadedFileDate, action) {
 function bookedId(state = initialState.bookedId, action) {
   switch (action.type) {
     case BOOK_TRIP:
-      return Math.floor(Math.random() * 10000);
+      return action.payload.bookedId;
     case SELECT_BOOKED_TRIP:
       return action.payload.bookedId;
     default:
@@ -55,6 +63,10 @@ function bookedId(state = initialState.bookedId, action) {
 
 function slip(state = initialState.slip, action) {
   switch (action.type) {
+    case SET_IMAGE_SLIP:
+      console.log(action.payload);
+      return action.payload.url;
+
     case BOOK_TRIP:
       return '';
     case SELECT_BOOKED_TRIP:
