@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux';
-import { SET_WARNING_TYPE } from '../action/ApplicationAction';
+import { SET_WARNING_TYPE, SET_IMAGE } from '../action/ApplicationAction';
 
 const initialState = {
-  tourStatus: 3,
+  tourStatus: 2,
   bookedDate: '1/1/2018',
   uploadedFileDate: '31/12/2018',
   bookedId: '1234',
@@ -40,6 +40,10 @@ function bookedId(state = initialState.bookedId, action) {
 
 function image(state = initialState.image, action) {
   switch (action.type) {
+    case SET_IMAGE: {
+      state = action.payload;
+      return state;
+    }
     default:
       return state;
   }

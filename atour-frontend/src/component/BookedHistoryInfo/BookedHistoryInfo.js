@@ -5,6 +5,7 @@ import { Flex, Box } from 'rebass';
 import autobind from 'react-autobind';
 import { Rating, Form, TextArea } from 'semantic-ui-react';
 import PopUpModal from '../PopUpModal/PopUpModal';
+import { setImage } from '../../action/ApplicationAction';
 import './styles.css';
 
 class BookedHistoryInfo extends React.Component {
@@ -16,22 +17,25 @@ class BookedHistoryInfo extends React.Component {
       'classNameColorButton',
       'classNameText',
       'renderReview',
-      'onClickChooseFile',
       'renderRedButton',
-      'setWarningType'
+      'inputChange'
     );
-    this.state = { confirmationModal: false };
+    this.state = { confirmationModal: false, inputImg: '' };
   }
 
   classNameStatus(statusNumber) {
-    if (statusNumber === this.props.status) return 'bookedhistoryinfo-status-inprocess';
-    else if (statusNumber < this.props.status) return 'bookedhistoryinfo-status-finish';
+    if (statusNumber === this.props.status)
+      return 'bookedhistoryinfo-status-inprocess';
+    else if (statusNumber < this.props.status)
+      return 'bookedhistoryinfo-status-finish';
     else return 'bookedhistoryinfo-status-coming';
   }
 
   classNameText(statusNumber) {
-    if (statusNumber === this.props.status) return 'bookedhistoryinfo-text-inprocess';
-    else if (statusNumber < this.props.status) return 'bookedhistoryinfo-text-finish';
+    if (statusNumber === this.props.status)
+      return 'bookedhistoryinfo-text-inprocess';
+    else if (statusNumber < this.props.status)
+      return 'bookedhistoryinfo-text-finish';
     else return 'bookedhistoryinfo-text-coming';
   }
 
@@ -40,11 +44,15 @@ class BookedHistoryInfo extends React.Component {
     else return 'bookedhistoryinfo-bluebutton';
   }
 
-  onClickChooseFile(statusNumber) {
+  onClickSaveSlip(statusNumber) {
     if (statusNumber !== this.props.status) return;
     else {
-      console.log('choose file');
+      this.props.setImage(this.state.inputImg);
     }
+  }
+
+  inputChange(event) {
+    this.setState({ inputImg: event.target.value });
   }
 
   renderRate(statusNumber) {
@@ -52,7 +60,11 @@ class BookedHistoryInfo extends React.Component {
     else
       return (
         <div>
-          <Rating maxRating={5} clearable className="bookedhistoryinfo-rating" />
+          <Rating
+            maxRating={5}
+            clearable
+            className="bookedhistoryinfo-rating"
+          />
         </div>
       );
   }
@@ -73,7 +85,10 @@ class BookedHistoryInfo extends React.Component {
           <Flex>
             <Box p={2} width={1 / 15} />
             <Box p={3} width={14 / 15}>
-              <div className={this.classNameColorButton(5)} onClick={() => console.log('submit')}>
+              <div
+                className={this.classNameColorButton(5)}
+                onClick={() => console.log('submit')}
+              >
                 Submit
               </div>
             </Box>
@@ -157,13 +172,31 @@ class BookedHistoryInfo extends React.Component {
               <Flex>
                 <Box width={1 / 15} />
                 <Box p={3} width={1} style={{ display: 'flex' }}>
+                  <input
+                    value={this.state.inputImg}
+                    onChange={this.inputChange}
+                  />
                   <div
+                    className={this.classNameColorButton(2)}
+                    onClick={() => this.onClickSaveSlip(2)}
+                  >
+                    Save
+                  </div>
+
+                  {/* <div
                     className={this.classNameColorButton(2)}
                     onClick={() => this.onClickChooseFile(2)}
                   >
                     Choose file
+                  </div> */}
+                </Box>
+              </Flex>
+              <Flex>
+                <Box width={1 / 15} />
+                <Box p={3} width={1} style={{ display: 'flex' }}>
+                  <div className="bookedhistoryinfo-upliadfile">
+                    {this.props.image}
                   </div>
-                  <div className="bookedhistoryinfo-upliadfile">{this.props.image}</div>
                 </Box>
               </Flex>
             </div>
@@ -214,13 +247,12 @@ const mapStateToProps = state => {
     bookedDate: state.bookedHistoryInfo.bookedDate,
     uploadedFileDate: state.bookedHistoryInfo.uploadedFileDate,
     bookedId: state.bookedHistoryInfo.bookedId,
-    image: state.bookedHistoryInfo.image,
+    image: state.bookedHistoryInfo.image
   };
 };
 
-const mapDispatchToProps = dispatch => ({});
+const mapDispatchToProps = dispatch => ({
+  setImage: img => dispatch(setImage(img))
+});
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(BookedHistoryInfo);
+export default connect(mapStateToProps, mapDispatchToProps)(BookedHistoryInfo);

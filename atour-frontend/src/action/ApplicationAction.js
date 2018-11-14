@@ -36,3 +36,11 @@ export function resizeWindow(width) {
     payload: width
   };
 }
+
+export const SET_IMAGE = 'SET_IMAGE';
+export function setImage(url) {
+  return {
+    type: SET_IMAGE,
+    payload: url
+  };
+}
