@@ -5,21 +5,13 @@ import { Flex, Box } from 'rebass';
 import autobind from 'react-autobind';
 import { Rating, Form, TextArea } from 'semantic-ui-react';
 import PopUpModal from '../PopUpModal/PopUpModal';
-import { setImage } from '../../action/ApplicationAction';
+import { setImageSlip } from '../../action/BookAction';
 import './styles.css';
 
 class BookedHistoryInfo extends React.Component {
   constructor() {
     super();
-    autobind(
-      this,
-      'classNameStatus',
-      'classNameColorButton',
-      'classNameText',
-      'renderReview',
-      'renderRedButton',
-      'inputChange'
-    );
+    autobind(this);
     this.state = { confirmationModal: false, inputImg: '' };
   }
 
@@ -47,7 +39,7 @@ class BookedHistoryInfo extends React.Component {
   onClickSaveSlip(statusNumber) {
     if (statusNumber !== this.props.status) return;
     else {
-      this.props.setImage(this.state.inputImg);
+      this.props.setImageSlip(this.state.inputImg);
     }
   }
 
@@ -121,25 +113,22 @@ class BookedHistoryInfo extends React.Component {
   render() {
     const { status } = this.props;
     let message;
-    let modalName;
     if (status <= 2) {
       message = 'Cancel';
-      modalName = 'cancelTrip-confirmation';
     } else if (status === 3) {
       message = 'Refund';
-      modalName = 'refund-conafirmation';
     }
     return (
       <div className="bookedhistoryinfo-page">
         <div className="bookedhistoryinfo-header">
           <i className="fa fa-calendar topbanner-icon" />
-          <Link to="/bookedHistory">Booked History</Link> / Book ID :{this.props.bookedId}
+          <Link to="/bookedHistory">Booked History</Link> / Book ID :
+          {this.props.bookedId}
           {this.renderRedButton()}
         </div>
         <PopUpModal
           isOpen={this.state.confirmationModal}
           onCloseModal={() => this.setState({ confirmationModal: false })}
-          modalName={modalName}
           headerText={`${message} Confirmation`}
           bodyText={`Do you want to [${message}] ? `}
           // onConfirm
@@ -195,7 +184,7 @@ class BookedHistoryInfo extends React.Component {
                 <Box width={1 / 15} />
                 <Box p={3} width={1} style={{ display: 'flex' }}>
                   <div className="bookedhistoryinfo-upliadfile">
-                    {this.props.image}
+                    {this.props.slip}
                   </div>
                 </Box>
               </Flex>
@@ -247,12 +236,12 @@ const mapStateToProps = state => {
     bookedDate: state.bookedHistoryInfo.bookedDate,
     uploadedFileDate: state.bookedHistoryInfo.uploadedFileDate,
     bookedId: state.bookedHistoryInfo.bookedId,
-    image: state.bookedHistoryInfo.image
+    slip: state.bookedHistoryInfo.slip
   };
 };
 
 const mapDispatchToProps = dispatch => ({
-  setImage: img => dispatch(setImage(img))
+  setImageSlip: img => dispatch(setImageSlip(img))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(BookedHistoryInfo);

@@ -1,8 +1,8 @@
-import { combineReducers } from 'redux';
-import { OPEN_MODAL } from '../action/ModalAction';
+import { combineReducers } from "redux";
+import { OPEN_MODAL } from "../action/ModalAction";
 
 const initialState = {
-  modalName: ''
+  modalName: ""
 };
 
 function modalName(state = initialState.modalName, action) {
