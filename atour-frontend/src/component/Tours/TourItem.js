@@ -7,7 +7,6 @@ import StarRatingComponent from 'react-star-rating-component';
 // target props: tourName, tourImage, tourRating, tourPrice, tourLocation
 
 const TourItem = props => {
-  console.log('proppp', props);
   return (
     <Box width={[1, 1 / 2, 1 / 2, 1 / 3]} p={2} my={2}>
       <Card>

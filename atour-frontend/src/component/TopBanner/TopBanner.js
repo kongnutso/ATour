@@ -25,7 +25,6 @@ class TopBanner extends React.Component {
 
   componentDidMount() {
     const { resizeWindow } = this.props;
-    console.log(this.props);
     document.addEventListener('scroll', this.onScroll);
     window.onresize = function() {
       resizeWindow(window.innerWidth);
