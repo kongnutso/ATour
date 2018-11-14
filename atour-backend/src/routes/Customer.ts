@@ -107,7 +107,7 @@ router.post('/editProfile', async (req,res) => {
         
 });
 
-router.post('searchTour', async (req,res) => {
+router.post('/searchTour', async (req,res) => {
     try {
         const db:Db = res.locals.db;
         const {keyword} = req.body;
@@ -122,7 +122,7 @@ router.post('searchTour', async (req,res) => {
 
 })
 
-router.post('searchGuide', async (req,res) => {
+router.post('/searchGuide', async (req,res) => {
     try {
         const db:Db = res.locals.db;
         const {keyword} = req.body;
