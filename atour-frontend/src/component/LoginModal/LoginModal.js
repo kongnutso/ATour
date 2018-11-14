@@ -22,21 +22,26 @@ class LoginModal extends React.Component {
 
   login() {
     const { username, password, asCustomer } = this.state;
-    if (
-      (username === 'kongnut' || username === 'kongnut1') &&
-      password === '123456'
-    ) {
-      this.props.onCloseModal();
-      this.props.login(username, password, asCustomer ? 'Customer' : 'Guide');
-      this.setState({
-        asCustomer: true,
-        username: '',
-        password: '',
-        errorMessage: ''
-      });
-    } else {
-      this.setState({ errorMessage: 'Invalid username or password' });
-    }
+    // const res = await axios
+    //     .post('http://localhost:3000/customer/login', {userName: username, password})
+    //     .then(res => {
+    //       return res.data;
+    //     });
+    // if (
+    //   (username === 'kongnut' || username === 'kongnut1') &&
+    //   password === '123456'
+    // ) {
+    // this.props.onCloseModal();
+    this.props.login(username, password, asCustomer ? 'Customer' : 'Guide');
+    this.setState({
+      asCustomer: true,
+      username: '',
+      password: '',
+      errorMessage: ''
+    });
+    // } else {
+    //   this.setState({ errorMessage: 'Invalid username or password' });
+    // }
   }
 
   switchToSignUp() {
