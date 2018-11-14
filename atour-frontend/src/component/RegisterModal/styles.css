@@ -19,6 +19,10 @@
   margin-bottom: 100px;
 }
 
+.registerModal-formProgress-container {
+  margin-bottom: 20px;
+}
+
 .registerModal-next-btn {
   width: 300px;
   background-color: #26abdc;
