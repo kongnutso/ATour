@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { createStore, applyMiddleware } from 'redux';
+import { createStore, applyMiddleware, compose } from 'redux';
 
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import promise from 'redux-promise';
@@ -15,11 +15,18 @@ import BookedHistoryInfo from './component/BookedHistoryInfo/BookedHistoryInfo';
 import AdminApprovePage from './component/AdminApprovePage';
 import AdminSearchPage from './component/AdminSearchPage';
 import ViewDealtTripPage from './component/ViewDealtTripPage';
+import SearchForTour from './component/SearchForTourPage';
 
-const createStoreWithMiddleware = applyMiddleware(promise)(createStore);
+// const createStoreWithMiddleware = applyMiddleware(promise)(createStore);
+
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const store = createStore(
+  reducers,
+  /* preloadedState, */ composeEnhancers(applyMiddleware(promise))
+);
 
 ReactDOM.render(
-  <Provider store={createStoreWithMiddleware(reducers)}>
+  <Provider store={store}>
     <BrowserRouter>
       <div>
         <Route path="/" component={TopBanner} />
@@ -31,6 +38,7 @@ ReactDOM.render(
           <Route exact path="/adminApprove" component={AdminApprovePage} />
           <Route exact path="/adminSearch" component={AdminSearchPage} />
           <Route exact path="/viewDealtTrips" component={ViewDealtTripPage} />
+          <Route exact path="/searchForTour" component={SearchForTour} />
         </Switch>
       </div>
     </BrowserRouter>
