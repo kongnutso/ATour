@@ -55,11 +55,11 @@ export function saveCustomer(db: Db): SaveCustomerDb {
 }
 
 export function checkCustomerUsernameDuplicate(
-    customerUsername:string,
+    userName:string,
     db: Db    
 ): CheckCustomerUsernameDuplicate{
     return async customerUsername => {
-        const result = await db.collection('customer').findOne({customerUsername});
+        const result = await db.collection('customer').findOne({userName});
         if (result){
             return true;
         }
