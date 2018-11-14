@@ -5,6 +5,7 @@ import {
     GetCustomerTokenDb,
     SaveCustomerTokenDb,
     EditCustomerProfileDb,
+    GetCustomerProfileDb,
 
 } from '../repository/Customer';
 import { 
@@ -31,13 +32,24 @@ export type LoginService = (
 ) => Promise<string>;
 
 export type EditCustomerProfileService = (
-    customerId: string,
+    userName: string,
     firstName: string,
     lastName: string,
     phoneNumber: string,
     birthDate: Date,
     gender: "Male"| "Female"
 ) => Promise<UserProfile>;
+
+export type GetCustomerProfileService = (
+    userName: string
+) => Promise<UserProfile>;
+
+export function getCustomerProfileService(getCustomerProfile: GetCustomerProfileDb): GetCustomerProfileService {
+    return async (userName)=>{
+        const profile = await getCustomerProfile(userName);
+        return profile;
+    }
+}
 
 export function registerCustomerService(
     checkCustomerUsernameDuplicate: CheckCustomerUsernameDuplicate,
@@ -89,7 +101,7 @@ export function loginService(login: GetCustomerLogin, getToken: GetCustomerToken
 
 export function editCustomerProfileService(editCustomerProfileDb: EditCustomerProfileDb): EditCustomerProfileService{
     return async (
-        customerId,
+        userName,
         firstName,
         lastName,
         phoneNumber,
@@ -103,7 +115,7 @@ export function editCustomerProfileService(editCustomerProfileDb: EditCustomerPr
             birthDate,
             gender
         );
-        await editCustomerProfileDb (customerId, profile);
+        await editCustomerProfileDb (userName, profile);
         return profile;
     }
 }
