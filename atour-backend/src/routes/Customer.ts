@@ -15,6 +15,8 @@ import {
     editCustomerProfileService,
     getCustomerProfileService,
 } from '../service/CustomerService';
+import { searchTourService, searchGuideService } from '../service/CustmerSearchService';
+import { searchTour, searchGuide } from '../repository/CustomerSearch';
 
 import * as uuid from 'uuid/v4';
 const router = express.Router();
@@ -124,5 +126,36 @@ router.post('/getProfile', async (req,res) => {
     }
         
 });
+
+router.post('/searchTour', async (req,res) => {
+    try {
+        const db:Db = res.locals.db;
+        const {keyword} = req.body;
+        const results = await searchTourService(searchTour(db))(
+            keyword
+        );
+        res.json(results);
+    } catch (error) {
+        console.log(error.message)
+        res.json({results:null, error: error.message})
+    }
+
+})
+
+router.post('/searchGuide', async (req,res) => {
+    try {
+        const db:Db = res.locals.db;
+        const {keyword} = req.body;
+        const results = await searchGuideService(searchGuide(db))(
+            keyword
+        );
+        res.json(results);
+    } catch (error) {
+        console.log(error.message)
+        res.json({results:null, error: error.message})
+    }
+        
+})
+
 
 export default router;

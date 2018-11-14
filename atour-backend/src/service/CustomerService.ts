@@ -12,8 +12,8 @@ import {
     registerCustomer,
     customerProfile
 } from '../domain/Customer';
-import { Customer, UserProfile } from 'domain/types';
-import {IdGenerator} from 'domain/Tour';
+import { Customer, UserProfile } from '../domain/types';
+import {IdGenerator} from '../domain/Tour';
 export type RegisterCustomerService = (
     userName: string,
     password: string,
