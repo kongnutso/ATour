@@ -7,7 +7,7 @@ import GuideHome from '../component/Guide/GuideHome';
 class App extends Component {
   render() {
     return (
-      <div className="App" tour>
+      <div className="App">
         {/* <GuideTourInfo tour={mockTour} /> */}
         {/* <GuideViewPublishedTour /> */}
         <GuideHome />
