@@ -1,6 +1,5 @@
 import { Customer, UserProfile } from 'domain/types';
 import { Db } from 'mongodb';
-import { CheckGuideUserNameDuplicate } from './Guide';
 
 export type GetCustomerDb = (customerId: string)=> Promise<Customer>;
 export type SaveCustomerDb = (customer: Customer) => Promise<void>;
