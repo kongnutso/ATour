@@ -105,9 +105,18 @@ export type Tour = {
   detail: string;
   trips: Trip[];
   reviews: Review[];
+  guideId: string;
 };
 
-export type Gender = "Male"| "Female";
+export type PartialTour = {
+  tourName?: string;
+  minimumSize?: number;
+  maximumSize?: number;
+  price?: number;
+  detail?: string;
+};
+
+export type Gender = 'Male' | 'Female';
 
 export type UserProfile = {
   firstName: string;

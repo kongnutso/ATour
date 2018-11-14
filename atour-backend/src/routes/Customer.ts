@@ -5,20 +5,18 @@ import {
     checkCustomerUsernameDuplicate,
     editCustomerProfile,
     login,
-    changeCustomerEmail,
-    changeCustomerPassword,
-    getCustomer
+    saveCustomerToken,
+    getCustomerToken
 } from '../repository/Customer';
 import {
     registerCustomerService,
     loginService,
     editCustomerProfileService,
-    changeCustomerEmailService,
-    changeCustomerPasswordService
 } from '../service/CustomerService';
 import { searchTourService, searchGuideService } from 'service/CustmerSearchService';
 import { searchTour, searchGuide } from 'repository/CustomerSearch';
 
+import * as uuid from 'uuid/v4';
 const router = express.Router();
 
 router.get('/', (req,res) => {
@@ -39,9 +37,12 @@ router.post('/register', async (req,res) => {
             birthDate,
             gender
         } = req.body;
-        const result = await registerCustomerService(
+        const customer = await registerCustomerService(
             checkCustomerUsernameDuplicate(userName, db),
-            saveCustomer(db))(
+            saveCustomer(db),
+            saveCustomerToken(db),
+            () => uuid()
+        )(
                 userName,
                 password,
                 email,
@@ -52,9 +53,10 @@ router.post('/register', async (req,res) => {
                 birthDate,
                 gender
             );
-        res.json(result);
+        res.json(customer);
     }catch(e){
-        res.json(e.message)
+        console.log(e.message)
+        res.json({customer:null, error: e.message})
     }
 });
 
@@ -65,18 +67,16 @@ router.post('/login', async (req,res) => {
             userName,
             password
         } = req.body;
-        const customer = await loginService(
-            login(db))(
+        const token = await loginService(
+            login(db), getCustomerToken(db))(
                 userName,
                 password
             );
-        res.json(customer);
+        res.json(token);
     } catch (error) {
-        res.json(error.message)
+        console.log(error.message)
+        res.json({token:null, error: error.message})
     }
-    
-
-
 })
 
 router.post('/editProfile', async (req,res) => {
@@ -101,29 +101,26 @@ router.post('/editProfile', async (req,res) => {
             );
         res.json(profile);
     } catch (error) {
-        res.json(error.message)
+        console.log(error.message)
+        res.json({profile:null, error:error.message})
     }
         
 });
 
-router.post('/changeEmail', async (req,res) => {
+router.post('/searchTour', async (req,res) => {
     try {
-        const db: Db = res.locals.db;
-        const {
-            customerId,
-            email
-        } = req.body;
-        await changeCustomerEmailService(
-            changeCustomerEmail(db))(
-                customerId,
-                email
-            );
-        res.json({result: true})
+        const db:Db = res.locals.db;
+        const {keyword} = req.body;
+        const results = await searchTourService(searchTour(db))(
+            keyword
+        );
+        res.json(results);
     } catch (error) {
-        res.json(error.message)
+        console.log(error.message)
+        res.json({results:null, error: error.message})
     }
-});
 
+<<<<<<< HEAD
 router.post('searchTour', async (req,res) => {
     const db:Db = res.locals.db;
     const {keyword} = req.body;
@@ -141,6 +138,23 @@ router.post('searchGuide', async (req,res) => {
     );
     res.send(results);
 
+=======
+})
+
+router.post('/searchGuide', async (req,res) => {
+    try {
+        const db:Db = res.locals.db;
+        const {keyword} = req.body;
+        const results = await searchGuideService(searchGuide(db))(
+            keyword
+        );
+        res.json(results);
+    } catch (error) {
+        console.log(error.message)
+        res.json({results:null, error: error.message})
+    }
+        
+>>>>>>> origin/master
 })
 
 export default router;
