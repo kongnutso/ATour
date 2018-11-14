@@ -85,14 +85,11 @@ export function validateBankAccountNumber(bankAccountNumber) {
   return false;
 }
 
-const emailRegex = /\w+@\w+\.\w+/;
-
-function SID(sid) {
-  if (sid.length !== 13) return false;
-  let sum = 0;
-  for (let i = 0; i < 12; i++) sum += parseFloat(sid.charAt(i)) * (13 - i);
-  if ((11 - (sum % 11)) % 10 !== parseFloat(sid.charAt(12))) return false;
-  return true;
+export function validateTourName(tourName) {
+  if (!tourName || tourName.length > 50) {
+    return "Tour name must ...";
+  }
+  return false;
 }
 
 export function validateMinGroupSize(minGroupSize) {
@@ -104,21 +101,6 @@ export function validateMinGroupSize(minGroupSize) {
   return false;
 }
 
-export function validateTourName(tourName) {
-  if (!tourName || tourName.length > 50) {
-    return "Tour name must ...";
-  }
-  return false;
-}
-
-export function validatePrice(price) {
-  let regex = /^(\$|)([1-9]\d{0,2}(\,\d{3})*|([1-9]\d*))(\.\d{2})?$/;
-  let passed = price.match(regex);
-  if (passed == null || price.length > 50 || isNaN(price)) {
-    return "price must ...";
-  }
-  return false;
-}
 export function validateMaxGroupSize(minGroupSize, maxGroupSize) {
   let regex = /^(\$|)([1-9]\d{0,2}(\,\d{3})*|([1-9]\d*))(\.\d{2})?$/;
   let passed = maxGroupSize.match(regex);
@@ -130,6 +112,34 @@ export function validateMaxGroupSize(minGroupSize, maxGroupSize) {
     parseInt(minGroupSize) > parseInt(maxGroupSize)
   ) {
     return "maximum group size must ...";
+  }
+  return false;
+}
+
+// export function validateMaxGroupSize(maxGroupSize) {
+//   let regex = /^(\$|)([1-9]\d{0,2}(\,\d{3})*|([1-9]\d*))(\.\d{2})?$/;
+//   let passed = price.match(regex);
+//   if (!price || price.length > 50 || isNaN(price)) {
+//     return "price must ...";
+//   }
+//   return false;
+// }
+
+const emailRegex = /\w+@\w+\.\w+/;
+
+function SID(sid) {
+  if (sid.length !== 13) return false;
+  let sum = 0;
+  for (let i = 0; i < 12; i++) sum += parseFloat(sid.charAt(i)) * (13 - i);
+  if ((11 - (sum % 11)) % 10 !== parseFloat(sid.charAt(12))) return false;
+  return true;
+}
+
+export function validatePrice(price) {
+  let regex = /^(\$|)([1-9]\d{0,2}(\,\d{3})*|([1-9]\d*))(\.\d{2})?$/;
+  let passed = price.match(regex);
+  if (passed == null || price.length > 50 || isNaN(price)) {
+    return "price must ...";
   }
   return false;
 }
