@@ -120,25 +120,6 @@ router.post('/searchTour', async (req,res) => {
         res.json({results:null, error: error.message})
     }
 
-<<<<<<< HEAD
-router.post('searchTour', async (req,res) => {
-    const db:Db = res.locals.db;
-    const {keyword} = req.body;
-    const results = await searchTourService(searchTour(db))(
-        keyword
-    );
-    res.send(results);
-})
-
-router.post('searchGuide', async (req,res) => {
-    const db:Db = res.locals.db;
-    const {keyword} = req.body;
-    const results = await searchGuideService(searchGuide(db))(
-        keyword
-    );
-    res.send(results);
-
-=======
 })
 
 router.post('/searchGuide', async (req,res) => {
@@ -154,7 +135,6 @@ router.post('/searchGuide', async (req,res) => {
         res.json({results:null, error: error.message})
     }
         
->>>>>>> origin/master
 })
 
 export default router;
