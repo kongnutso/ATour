@@ -1,8 +1,8 @@
-export const OPEN_MODAL = 'OPEN_MODAL';
+export const OPEN_MODAL = "OPEN_MODAL";
 export function registerModal(isOpen) {
-  let payload = '';
+  let payload = "";
   if (isOpen) {
-    payload = 'register';
+    payload = "register";
   }
   return {
     type: OPEN_MODAL,
@@ -11,9 +11,9 @@ export function registerModal(isOpen) {
 }
 
 export function loginModal(isOpen) {
-  let payload = '';
+  let payload = "";
   if (isOpen) {
-    payload = 'login';
+    payload = "login";
   }
   return {
     type: OPEN_MODAL,
@@ -24,6 +24,28 @@ export function loginModal(isOpen) {
 export function closeAllModal() {
   return {
     type: OPEN_MODAL,
-    payload: ''
+    payload: ""
+  };
+}
+
+export function publishNewTour(isOpen) {
+  let payload = "";
+  if (isOpen) {
+    payload = "publishNewTour";
+  }
+  return {
+    type: OPEN_MODAL,
+    payload
+  };
+}
+
+export function editTour(isOpen) {
+  let payload = "";
+  if (isOpen) {
+    payload = "editTour";
+  }
+  return {
+    type: OPEN_MODAL,
+    payload
   };
 }
