@@ -57,9 +57,7 @@ const defaultValue = () => ({
   asCustomer: true,
   accountInfo: true,
   errorPopUp: {
-    username: '',
-    email: '',
-    sid: ''
+    username: ''
   },
   value: {
     username: '',
@@ -131,10 +129,12 @@ class RegisterModal extends React.Component {
 
   onSubmitUserInfo() {
     const { errorPopUp } = this.state;
-    errorPopUp.username = 'already in used';
-    errorPopUp.sid = 'already apsjpadfjas';
-    errorPopUp.email = 'ez';
-    this.setState({ errorPopUp });
+    if (this.state.value.username === 'kongnut') {
+      errorPopUp.username = 'this username was already used';
+      this.setState({ errorPopUp });
+    } else {
+      this.onCloseModal();
+    }
     console.log('from submit');
   }
 
