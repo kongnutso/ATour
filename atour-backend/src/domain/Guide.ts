@@ -5,12 +5,8 @@ import {
   GuideType,
   UnApprovedGuide,
   ApprovalStatus,
-<<<<<<< HEAD
-  Gender
-=======
   Gender,
   UserProfile
->>>>>>> origin/master
 } from './types';
 import { IdGenerator } from './Tour';
 
