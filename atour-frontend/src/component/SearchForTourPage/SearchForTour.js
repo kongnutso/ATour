@@ -16,29 +16,29 @@ const tours = [
     tourImage: '../../image/Atour-logo.jpg',
     tourRating: '3',
     tourPrice: '3000 baht',
-    tourLocation: 'Bangkok',
+    tourLocation: 'Bangkok'
   },
   {
     tourName: 'Tour Name',
     tourImage: '../../image/TourImage.png',
     tourRating: '3',
     tourPrice: '3000 baht',
-    tourLocation: 'Bangkok',
+    tourLocation: 'Bangkok'
   },
   {
     tourName: 'Tour Name',
     tourImage: '../../image/TourImage.png',
     tourRating: '3',
     tourPrice: '3000 baht',
-    tourLocation: 'Bangkok',
+    tourLocation: 'Bangkok'
   },
   {
     tourName: 'Tour Name',
     tourImage: '../../image/TourImage.png',
     tourRating: '3',
     tourPrice: '3000 baht',
-    tourLocation: 'Bangkok',
-  },
+    tourLocation: 'Bangkok'
+  }
 ];
 class SearchForTour extends Component {
   render() {
@@ -52,16 +52,22 @@ class SearchForTour extends Component {
               Search For Tour
             </Text>
 
-            <Flex alignItems="flex-start" justifyContent="flex-start" mb={[3, 4]} width={1}>
+            <Flex
+              alignItems="flex-start"
+              justifyContent="flex-start"
+              mb={[3, 4]}
+              width={1}
+            >
               <Box my={1} width={4 / 5}>
                 <Input
                   placeholder="Tour Name"
                   onChange={e => onChange(e.target.value)}
                   value={term}
+                  onEnterText={() => onSearch(term)}
                 />
               </Box>
               <Box my={1} width={1 / 5}>
-                <SearchButton onClick={() => onSearch()}>
+                <SearchButton onClick={() => onSearch(term)}>
                   <Icon name="search" />
                   Search
                 </SearchButton>
@@ -69,7 +75,7 @@ class SearchForTour extends Component {
             </Flex>
 
             <Flex>
-              <Tours tours={tours} />
+              <Tours tours={this.props.tours} />
             </Flex>
           </Box>
         </Flex>
@@ -79,6 +85,6 @@ class SearchForTour extends Component {
 }
 
 export default connect(
-  state => ({ term: state.search }),
+  state => ({ term: state.search, tours: state.tour.tourList }),
   { onChange, onSearch }
 )(SearchForTour);

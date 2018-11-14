@@ -45,6 +45,28 @@ export function getUserInfo(userName, token) {
   };
 }
 
+export const GET_GUIDE_INFO = 'GET_GUIDE_INFO';
+export function getGuideInfo(guideId) {
+  return async dispatch => {
+    try {
+      if (guideId) {
+        const userInfo = await axios
+          .post('http://localhost:3000/guide/guideid', guideId)
+          .then(res => {
+            return res.data;
+          });
+        console.log(userInfo);
+        return dispatch({
+          type: GET_GUIDE_INFO,
+          payload: userInfo
+        });
+      } else return dispatch({ type: 'INVALID' });
+    } catch (e) {}
+  };
+}
+
+// export const
+
 export const EDIT_PROFILE = 'EDIT_PROFILE';
 export function editProfile() {
   return { type: EDIT_PROFILE };

@@ -4,7 +4,8 @@ import {
   EDIT_USER_INFO,
   VIEW_PROFILE,
   EDIT_PROFILE,
-  GET_USER_INFO
+  GET_USER_INFO,
+  GET_GUIDE_INFO
 } from '../action/UserInfoAction';
 
 const initialState = {
@@ -20,14 +21,15 @@ const initialState = {
     phoneNumber: '',
     email: 'kongnut.s@hotmail.com'
   },
-  otherInfo: {
+  guideInfo: {
     gender: 'Male',
     firstName: 'AAA',
     lastName: 'BBB',
     socialID: '1172620370761',
-    birthDate: '03/10/2540',
+    birthDate: '1997/13/05',
     phoneNumber: '0817276720',
-    email: 'kongnut.so@gmail.com'
+    email: 'aaaa.so@gmail.com',
+    userName: ''
   },
   isView: false
 };
@@ -81,7 +83,24 @@ function userInfo(state = initialState.userInfo, action) {
       return state;
   }
 }
+function guideInfo(state = initialState.guideInfo, action) {
+  switch (action.type) {
+    case GET_GUIDE_INFO:
+      const { phoneNumber, gender, birthDate } = state;
+      const fullName = 'ABCDE FGHT';
+      return {
+        ...action.payload,
+        socialID: action.payload.personalId,
+        name: fullName,
+        phoneNumber,
+        gender,
+        birthDate
+      };
 
+    default:
+      return state;
+  }
+}
 function role(state = initialState.role, action) {
   switch (action.type) {
     case LOGIN_SUCCESS:
@@ -93,16 +112,12 @@ function role(state = initialState.role, action) {
   }
 }
 
-function otherInfo(state = initialState.otherInfo, action) {
-  return state;
-}
-
 const reducer = combineReducers({
   username,
   userInfo,
   role,
   isView,
-  otherInfo,
+  guideInfo,
   token
 });
 

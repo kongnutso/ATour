@@ -1,5 +1,6 @@
 export const BOOK_TRIP = 'BOOK_TRIP';
-export function bookTrip(tourInfo, date, size) {
+export function bookTrip(tourInfo, date, size, guideName) {
+  console.log(guideName);
   const dates = new Date();
   const dd = dates.getDate();
   const mm = dates.getMonth() + 1;
@@ -7,7 +8,7 @@ export function bookTrip(tourInfo, date, size) {
   const today = mm + '/' + dd + '/' + yyyy;
   return {
     type: BOOK_TRIP,
-    payload: { tourInfo, date, size, today }
+    payload: { tourInfo, date, size, today, guideName }
   };
 }
 

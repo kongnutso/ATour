@@ -7,7 +7,8 @@ import PopUpModal from '../PopUpModal/PopUpModal';
 import { bookTrip } from '../../action/BookAction';
 import autobind from 'react-autobind';
 import { Redirect } from 'react-router-dom';
-import { viewProfile } from '../../action/UserInfoAction';
+import { viewProfile, getGuideInfo } from '../../action/UserInfoAction';
+import tourImage from '../../image/TourImage.png';
 
 class TourInfo extends React.Component {
   constructor() {
@@ -26,6 +27,7 @@ class TourInfo extends React.Component {
 
   componentDidMount() {
     this.setState({ groupSize: this.props.tourInfo.minGroupSize });
+    this.props.getGuideInfo(this.props.tourInfo.guideId);
   }
 
   onConfirm() {
@@ -33,25 +35,26 @@ class TourInfo extends React.Component {
     this.props.bookTrip(
       this.props.tourInfo,
       this.state.bookingDate,
-      this.state.groupSize
+      this.state.groupSize,
+      this.props.guide
     );
     this.setState({ redirect: true, to: '/bookedHistoryInfo' });
   }
 
   onSubmit() {
-    const { maxGroupSize, minGroupSize } = this.props.tourInfo;
+    const { maximumSize, minimumSize } = this.props.tourInfo;
     const { groupSize, bookingDate } = this.state;
     if (!bookingDate) {
       this.setState({
         errorDialog: true,
         errorMessage: 'Please select booking date'
       });
-    } else if (groupSize <= maxGroupSize && groupSize >= minGroupSize) {
+    } else if (groupSize <= maximumSize && groupSize >= minimumSize) {
       this.setState({ openConfirm: true });
     } else {
       this.setState({
         errorDialog: true,
-        errorMessage: `Group size must in between ${minGroupSize} and ${maxGroupSize}`
+        errorMessage: `Group size must in between ${minimumSize} and ${maximumSize}`
       });
     }
   }
@@ -59,15 +62,19 @@ class TourInfo extends React.Component {
   render() {
     const {
       tourName,
-      tourimage,
-      tourRating,
+      // tourimage,
+      // tourRating,
       price,
       //   tourLocation,
-      tourDetail,
-      maxGroupSize,
-      availableDates,
+      detail,
+      maximumSize,
       guideName
     } = this.props.tourInfo;
+    const availableDates = [
+      { key: 1, text: '01/01/2561', value: '01/01/2561' },
+      { key: 2, text: '02/01/2561', value: '02/01/2561' },
+      { key: 3, text: '03/01/2561', value: '03/01/2561' }
+    ];
     if (this.state.redirect) {
       return <Redirect to={this.state.to} />;
     }
@@ -87,18 +94,18 @@ class TourInfo extends React.Component {
           headerText={'Book Fail'}
           bodyText={this.state.errorMessage}
         />
-        <img src={tourimage} className="tourInfo-image" alt="" />
+        <img src={tourImage} className="tourInfo-image" alt="" />
         <div className="tourInfo-container">
           <div className="tourInfo-above-divider">
             <div className="tourInfo-header">
               <div className="tourInfo-headerText">{tourName}</div>
-              <StarRatingComponent
+              {/* <StarRatingComponent
                 className="tourInfo-stars"
                 starCount={5}
                 value={tourRating}
                 name="tour rating"
                 editing={false}
-              />
+              /> */}
             </div>
             <div className="tourInfo-guide-container">
               <div
@@ -108,13 +115,13 @@ class TourInfo extends React.Component {
                 }}
                 className="tourInfo-guideName"
               >
-                by {guideName}
+                by {this.props.guide}
               </div>
             </div>
           </div>
           <hr className="tourInfo-divider" />
           <div className="tourInfo-detail-container">
-            <div className="tourInfo-detail">{tourDetail}</div>
+            <div className="tourInfo-detail">{detail}</div>
             <div className="tourInfo-booking-container">
               Available date
               <Dropdown
@@ -139,16 +146,20 @@ class TourInfo extends React.Component {
                 value={this.state.groupSize}
                 onChange={e => this.setState({ groupSize: e.target.value })}
               />
-              {` / ${maxGroupSize}`}
+              {` / ${maximumSize}`}
               <br />
               Price <br />
               <div className="tourInfo-booking-price-container">
                 THB
-                <div className="tourInfo-booking-price">{price}</div>
+                <div className="tourInfo-booking-price">{price} bath</div>
               </div>
               <button
                 onClick={() => this.onSubmit()}
-                className="tourInfo-booking-submit"
+                className={
+                  'tourInfo-booking-submit' +
+                  (!this.props.user ? '-disabled' : '')
+                }
+                disabled={!this.props.user}
               >
                 Submit
               </button>
@@ -162,13 +173,17 @@ class TourInfo extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    tourInfo: state.tourInfo
+    tourInfo: state.tour.selectedTour,
+    guide: state.user.guideInfo.userName,
+    user: state.user.username
   };
 };
 
 const mapDispatchToProps = dispatch => ({
-  bookTrip: (tourInfo, date, size) => dispatch(bookTrip(tourInfo, date, size)),
-  viewProfile: () => dispatch(viewProfile())
+  bookTrip: (tourInfo, date, size, guideName) =>
+    dispatch(bookTrip(tourInfo, date, size, guideName)),
+  viewProfile: () => dispatch(viewProfile()),
+  getGuideInfo: guideId => dispatch(getGuideInfo(guideId))
 });
 
 export default connect(

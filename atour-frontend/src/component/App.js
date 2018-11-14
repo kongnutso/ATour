@@ -14,6 +14,7 @@ import Tours from './Tours/Tours';
 import SearchBar from './SearchBar';
 import { mockTour } from './mock';
 import homeImage from '../image/home-background.jpg';
+import { onSearch } from '../action/SearchAction';
 
 // const ResponsiveContainer = ({ children }) => (
 //   <div>
@@ -36,6 +37,9 @@ const Flexh100 = styled(Flex)`
 `;
 
 class App extends React.Component {
+  componentDidMount() {
+    this.props.getAllTour();
+  }
   render() {
     return (
       <div>
@@ -81,9 +85,12 @@ class App extends React.Component {
   }
 }
 const mapStateToProps = state => ({
-  tours: state.tour
+  tours: state.tour.tourList
+});
+const mapDispatchToProps = dispatch => ({
+  getAllTour: () => dispatch(onSearch(''))
 });
 export default connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
 )(App);

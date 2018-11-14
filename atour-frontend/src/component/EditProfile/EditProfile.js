@@ -171,8 +171,8 @@ class EditProfile extends React.Component {
 }
 
 const mapStateToProps = state => {
-  const { isView, userInfo, otherInfo, token } = state.user;
-  return { userInfo: isView ? otherInfo : userInfo, isView, token };
+  const { isView, userInfo, guideInfo, token } = state.user;
+  return { userInfo: isView ? guideInfo : userInfo, isView, token };
 };
 
 const mapDispatchToProps = dispatch => ({

@@ -1,13 +1,14 @@
 import { combineReducers } from 'redux';
-
+import { SELECT_TOUR } from '../action/TourAction';
+import { ON_SEARCH } from '../action/SearchAction';
 const initialState = {
-  tour: [],
+  tourList: [],
   selectedTour: {
     tourName: '',
     tourimage: '',
     tourRating: '',
     price: '',
-    tourDetail: '',
+    detail: '',
     minGroupSize: '',
     maxGroupSize: '',
     availableDates: '',
@@ -16,8 +17,10 @@ const initialState = {
   }
 };
 
-function tour(state = initialState.tour, action) {
+function tourList(state = initialState.tourList, action) {
   switch (action.type) {
+    case ON_SEARCH:
+      return action.payload;
     default:
       return state;
   }
@@ -32,5 +35,5 @@ function selectedTour(state = initialState.selectedTour, action) {
   }
 }
 
-const reducer = combineReducers({ tour, selectedTour });
+const reducer = combineReducers({ tourList, selectedTour });
 export default reducer;

@@ -19,7 +19,6 @@ class TourItem extends React.Component {
       <Link to="/customerTourInfo">
         <Card
           onClick={() => {
-            console.log(this.props.tour);
             this.selectTour(this.props.tour);
           }}
         >

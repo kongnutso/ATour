@@ -45,7 +45,7 @@ function uploadedFileDate(state = initialState.uploadedFileDate, action) {
 function bookedId(state = initialState.bookedId, action) {
   switch (action.type) {
     case BOOK_TRIP:
-      return '1';
+      return Math.floor(Math.random() * 10000);
     case SELECT_BOOKED_TRIP:
       return action.payload.bookedId;
     default:
