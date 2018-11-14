@@ -10,6 +10,7 @@ export type SlipImage = {
 };
 
 export type UnbookedTrip = {
+  _type: TripType.UnbookedTrip;
   tripId: string;
   tripDate: Date;
 };
@@ -17,35 +18,42 @@ export type UnbookedTrip = {
 export type BookInfo = {
   bookDate: Date;
   customerId: string;
+  size: number;
+  price: number;
 };
 
 export type BookedTrip = {
+  _type: TripType.BookedTrip;
   tripId: string;
   tripDate: Date;
   bookInfo: BookInfo;
+  
 };
 
 export type PaidTrip = {
-  tripId: string;
+  _type: TripType.PaidTrip;
+  tripId: string; 
   tripDate: Date;
-  bookDate: Date;
+  bookInfo: BookInfo;
   paidDate: Date;
   slipImages: SlipImage[];
 };
 
 export type ApprovedTrip = {
+  _type: TripType.ApprovedTrip;
   tripId: string;
   tripDate: Date;
-  bookDate: Date;
+  bookInfo: BookInfo;
   paidDate: Date;
   slipImages: SlipImage[];
   approveDate: Date;
 };
 
 export type RefundedTrip = {
+  _type: TripType.RefundedTrip;
   tripId: string;
   tripDate: Date;
-  bookDate: Date;
+  bookInfo: BookInfo;
   paidDate: Date;
   slipImages: SlipImage[];
   approveDate: Date;
@@ -53,9 +61,10 @@ export type RefundedTrip = {
 };
 
 export type FinishedTrip = {
+  _type: TripType.FinishedTrip;
   tripId: string;
   tripDate: Date;
-  bookDate: Date;
+  bookInfo: BookInfo;
   paidDate: Date;
   slipImages: SlipImage[];
   approveDate: Date;
@@ -63,6 +72,7 @@ export type FinishedTrip = {
 };
 
 export type CancelledTrip = {
+  _type: TripType.CancelledTrip;
   tripId: string;
   tripDate: Date;
   cancelDate: string;
@@ -76,6 +86,15 @@ export type Trip =
   | RefundedTrip
   | FinishedTrip
   | CancelledTrip;
+export enum TripType {
+  UnbookedTrip,
+  BookedTrip,
+  PaidTrip,
+  ApprovedTrip,
+  RefundedTrip,
+  FinishedTrip,
+  CancelledTrip
+}
 
 export type Tour = {
   tourId: string;

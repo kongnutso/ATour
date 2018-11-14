@@ -16,6 +16,8 @@ import {
     changeCustomerEmailService,
     changeCustomerPasswordService
 } from '../service/CustomerService';
+import { searchTourService, searchGuideService } from 'service/CustmerSearchService';
+import { searchTour, searchGuide } from 'repository/CustomerSearch';
 
 const router = express.Router();
 
@@ -122,24 +124,23 @@ router.post('/changeEmail', async (req,res) => {
     }
 });
 
-router.post('/changePassword', async (req,res) => {
-    try {
-        const db:Db = res.locals.db;
-        const {
-            customerId,
-            oldPassword,
-            newPassword
-        } = req.body;
-        await changeCustomerPasswordService(getCustomer(db),changeCustomerPassword(db))(
-            customerId,
-            oldPassword,
-            newPassword
-        );
-        res.json({result:true})
-    } catch (error) {
-        res.json(error.message)
-    }
-        
+router.post('searchTour', async (req,res) => {
+    const db:Db = res.locals.db;
+    const {keyword} = req.body;
+    const results = await searchTourService(searchTour(db))(
+        keyword
+    );
+    res.send(results);
+})
+
+router.post('searchGuide', async (req,res) => {
+    const db:Db = res.locals.db;
+    const {keyword} = req.body;
+    const results = await searchGuideService(searchGuide(db))(
+        keyword
+    );
+    res.send(results);
+>>>>>>> origin/sun/customerSearch
 })
 
 export default router;
