@@ -29,7 +29,7 @@ ReactDOM.render(
   <Provider store={store}>
     <BrowserRouter>
       <div>
-        <Route path="/" component={TopBanner} />
+        <Route path="/" render={props => <TopBanner transparent {...props} />} />
         <Switch>
           <Route exact path="/" component={App} />
           <Route exact path="/bookedHistory" component={BookedHistory} />
