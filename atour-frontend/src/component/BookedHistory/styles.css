@@ -19,6 +19,9 @@
 .bookedhistory-table {
   color: #000000;
 }
+.bookedhistory-table:hover {
+  background-color: #e3e3e3;
+}
 
 .bookedhistiry-list {
   margin-left: 100px;

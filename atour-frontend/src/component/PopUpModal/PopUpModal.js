@@ -54,8 +54,8 @@ class PopUpModal extends React.Component {
         className="modal-container-popUpModal"
         style={{
           overlay: {
-            overflow: 'auto'
-          }
+            overflow: 'auto',
+          },
         }}
         isOpen={this.props.isOpen}
         onRequestClose={this.props.onCloseModal}
