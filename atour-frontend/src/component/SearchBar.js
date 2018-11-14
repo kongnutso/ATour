@@ -1,15 +1,20 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { Box, Flex, Text } from 'rebass';
 import { Link } from 'react-router-dom';
 import Modal from 'react-modal';
 import autobind from 'react-autobind';
 import classNames from 'classnames';
-import { Container, Input, Button, Grid, Header, Search } from 'semantic-ui-react';
+import { SearchButton, Input } from '../component/BaseComponent';
+import { Icon, Grid } from 'semantic-ui-react';
 import styled from 'styled-components';
+import { onChange, onSearch } from '../action/SearchAction';
 
-const SearchContainer = styled(Container)`
+const SearchContainer = styled(Flex)`
   background-color: rgb(22,22,22,0.7);
-  padding-bottom : 20px;
+  padding-bottom : 15px;
+  padding-top: 20px;
+  justify-content: center;
   /* // background-image: url(${require('../image/Studio-Tour.jpg')}); */
 /* //   width: 2000px; */
 /* //   height: 2000px; */
@@ -25,48 +30,53 @@ const GridWithBackground = styled(Grid)`
 `;
 
 class SearchBar extends React.Component {
+  componentDidMount() {
+    console.log('mount here', this.props);
+  }
   state = {
-    terms: '',
     searchType: 'tourName',
     tours: ['Japan', 'England', 'Thailand', 'Taiwan', 'Tongchai'],
   };
-  someFunction() {}
+
+  onEnter = () => {
+    console.log('Enter leaw', this.props.term);
+    onSearch(this.props.term);
+  };
   render() {
+    const { term, onChange, onSearch } = this.props;
     return (
-      //   <Header
-      //     as="h1"
-      //     content="Imagine-a-Company"
-      //     inverted
-      //     style={{
-      //       fontSize: "4em",
-      //       fontWeight: "normal",
-      //       marginBottom: 0,
-      //       marginTop: "3em"
-      //     }}
-      //   />
-      <SearchContainer>
-        <Grid textAlign="center" style={{ height: '100%' }} verticalAlign="middle">
-          <Grid.Row centered={true} columns={12} stretched>
-            <Grid.Column width={12} text>
-              <Header as="h4" inverted color="grey">
-                Where to ?
-              </Header>
-            </Grid.Column>
-          </Grid.Row>
-          <Grid.Row centered={true} columns={12} stretched>
-            <Grid.Column width={8}>
-              <Input focus placeholder={`Search by ${this.state.searchType}`} fluid />
-            </Grid.Column>
-            <Grid.Column width={4}>
-              <Button color="blue" icon="search" style={{ height: '42px' }}>
-                Search
-              </Button>
-            </Grid.Column>
-          </Grid.Row>
-        </Grid>
+      <SearchContainer mx={[4, 2]} px={[4, 0]} width={[1, 4 / 5, 7 / 10]}>
+        <Box width={[1, 4 / 5]}>
+          <Text fontSize={4} mb={4} color="white">
+            <i style={{ marginRight: '10px' }} className="fa fa-search" />
+            Where to ?
+          </Text>
+
+          <Flex alignItems="flex-start" justifyContent="flex-start" mb={[3]} width={1}>
+            <Box my={1} width={4 / 5} pr={2}>
+              <Input
+                placeholder=" Tour Name"
+                onChange={e => onChange(e.target.value)}
+                onEnterText={this.onEnter}
+                value={term}
+              />
+            </Box>
+            <Box my={1} width={1 / 5}>
+              <Link to="/searchForTour">
+                <SearchButton onClick={() => onSearch(term)}>
+                  <Icon name="search" />
+                  Search
+                </SearchButton>
+              </Link>
+            </Box>
+          </Flex>
+        </Box>
       </SearchContainer>
     );
   }
 }
 
-export default SearchBar;
+export default connect(
+  state => ({ term: state.search }),
+  { onChange, onSearch }
+)(SearchBar);
