@@ -8,27 +8,27 @@ import { validateEmail, validatePhone } from '../../utils/validation';
 class EditProfile extends React.Component {
   constructor() {
     super();
-    this.state = { email: '', phone: '' };
+    this.state = { email: '', phoneNumber: '' };
   }
   componentWillReceiveProps(nextProps) {
-    console.log('nextProps');
-    const { email, phone } = nextProps.userInfo;
-    this.setState({ email, phone });
+    const { email, phoneNumber } = nextProps.userInfo;
+    this.setState({ email, phoneNumber });
   }
 
   componentDidMount() {
-    const { email, phone } = this.props.userInfo;
-    this.setState({ email, phone });
+    const { email, phoneNumber } = this.props.userInfo;
+    this.setState({ email, phoneNumber });
   }
 
   editUserInfo() {
-    const { email, phone } = this.state;
+    const { email, phoneNumber } = this.state;
+    const { userInfo, token } = this.props;
     if (
       email !== this.props.userInfo.email ||
-      phone !== this.props.userInfo.phone
+      phoneNumber !== this.props.userInfo.phoneNumber
     ) {
       const emailError = validateEmail(email);
-      const phoneError = validatePhone(phone);
+      const phoneError = validatePhone(phoneNumber);
       let errorMessage =
         emailError && phoneError
           ? emailError + '\n' + phoneError
@@ -38,14 +38,17 @@ class EditProfile extends React.Component {
           ? phoneError
           : '';
       if (!errorMessage) {
-        this.props.editUserInfo({ email, phone });
+        const res = userInfo;
+        res.email = email;
+        res.phoneNumber = phoneNumber;
+        this.props.editUserInfo(res, token);
       }
     }
   }
 
   render() {
     const { name, socialID, gender, birthDate } = this.props.userInfo;
-    const { email, phone } = this.state;
+    const { email, phoneNumber } = this.state;
     const { isView } = this.props;
     return (
       <div className="editProfilePage">
@@ -124,12 +127,14 @@ class EditProfile extends React.Component {
                   </Box>
                   <Box p={3} width={1 / 2}>
                     {isView ? (
-                      <div>{phone}</div>
+                      <div>{phoneNumber}</div>
                     ) : (
                       <input
                         className="form-control"
-                        value={phone}
-                        onChange={e => this.setState({ phone: e.target.value })}
+                        value={phoneNumber}
+                        onChange={e =>
+                          this.setState({ phoneNumber: e.target.value })
+                        }
                       />
                     )}
                   </Box>
@@ -166,13 +171,12 @@ class EditProfile extends React.Component {
 }
 
 const mapStateToProps = state => {
-  const { isView, userInfo, otherInfo } = state.user;
-  console.log(otherInfo);
-  return { userInfo: isView ? otherInfo : userInfo, isView };
+  const { isView, userInfo, otherInfo, token } = state.user;
+  return { userInfo: isView ? otherInfo : userInfo, isView, token };
 };
 
 const mapDispatchToProps = dispatch => ({
-  editUserInfo: userInfo => dispatch(editUserInfo(userInfo))
+  editUserInfo: (userInfo, token) => dispatch(editUserInfo(userInfo, token))
 });
 
 export default connect(

@@ -218,10 +218,12 @@ class TopBanner extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
-  userInfo: state.user,
-  width: state.app.width
-});
+const mapStateToProps = state => {
+  return {
+    userInfo: state.user,
+    width: state.app.width
+  };
+};
 
 const mapDispatchToProps = dispatch => ({
   openRegisterModal: () => dispatch(registerModal(true)),

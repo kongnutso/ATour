@@ -2,11 +2,13 @@ import React from 'react';
 import Modal from 'react-modal';
 import { connect } from 'react-redux';
 import { loginModal, registerModal } from '../../action/ModalAction';
-import { login } from '../../action/ApplicationAction';
+import { loginSuccess } from '../../action/ApplicationAction';
+import { getUserInfo } from '../../action/UserInfoAction';
 import classNames from 'classnames';
 import autobind from 'react-autobind';
 import PopUpModal from '../../component/PopUpModal/PopUpModal';
 import './styles.css';
+import axios from 'axios';
 
 class LoginModal extends React.Component {
   constructor() {
@@ -20,28 +22,29 @@ class LoginModal extends React.Component {
     autobind(this, 'switchToSignUp', 'login');
   }
 
-  login() {
+  async login() {
     const { username, password, asCustomer } = this.state;
-    // const res = await axios
-    //     .post('http://localhost:3000/customer/login', {userName: username, password})
-    //     .then(res => {
-    //       return res.data;
-    //     });
-    // if (
-    //   (username === 'kongnut' || username === 'kongnut1') &&
-    //   password === '123456'
-    // ) {
-    // this.props.onCloseModal();
-    this.props.login(username, password, asCustomer ? 'Customer' : 'Guide');
-    this.setState({
-      asCustomer: true,
-      username: '',
-      password: '',
-      errorMessage: ''
-    });
-    // } else {
-    //   this.setState({ errorMessage: 'Invalid username or password' });
-    // }
+    const res = await axios
+      .post('http://localhost:3000/customer/login', {
+        userName: username,
+        password
+      })
+      .then(res => {
+        return res.data;
+      });
+    if (res.error) {
+      this.setState({ errorMessage: 'Invalid username or password' });
+    } else {
+      this.props.loginSuccess(res, asCustomer, username);
+      this.props.getUserInfo(username, res);
+      this.setState({
+        asCustomer: true,
+        username: '',
+        password: '',
+        errorMessage: ''
+      });
+      this.props.onCloseModal();
+    }
   }
 
   switchToSignUp() {
@@ -146,7 +149,9 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => ({
   onCloseModal: () => dispatch(loginModal(false)),
   onOpenRegisterModal: () => dispatch(registerModal(true)),
-  login: (username, password, role) => dispatch(login(username, password, role))
+  loginSuccess: (token, role, username) =>
+    dispatch(loginSuccess(token, role, username)),
+  getUserInfo: (username, token) => dispatch(getUserInfo(username, token))
 });
 
 export default connect(

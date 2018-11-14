@@ -1,28 +1,32 @@
 import { combineReducers } from 'redux';
-import { LOGIN, LOGOUT } from '../action/ApplicationAction';
+import { LOGOUT, LOGIN_SUCCESS } from '../action/ApplicationAction';
 import {
   EDIT_USER_INFO,
   VIEW_PROFILE,
-  EDIT_PROFILE
+  EDIT_PROFILE,
+  GET_USER_INFO
 } from '../action/UserInfoAction';
 
 const initialState = {
   username: '',
+  token: '',
   role: 'Guide',
   userInfo: {
-    gender: 'Male',
-    name: 'Kongnut Songwattana',
+    gender: '',
+    firstName: '',
+    lastName: '',
     socialID: '1100600370761',
-    birthDate: '03/13/2540',
-    phone: '0817776720',
+    birthDate: '',
+    phoneNumber: '',
     email: 'kongnut.s@hotmail.com'
   },
   otherInfo: {
     gender: 'Male',
-    name: 'AAA BBB',
+    firstName: 'AAA',
+    lastName: 'BBB',
     socialID: '1172620370761',
     birthDate: '03/10/2540',
-    phone: '0817276720',
+    phoneNumber: '0817276720',
     email: 'kongnut.so@gmail.com'
   },
   isView: false
@@ -39,9 +43,18 @@ function isView(state = initialState.isView, action) {
   }
 }
 
+function token(state = initialState.token, action) {
+  switch (action.type) {
+    case LOGIN_SUCCESS:
+      return action.payload.token;
+    default:
+      return state;
+  }
+}
+
 function username(state = initialState.username, action) {
   switch (action.type) {
-    case LOGIN:
+    case LOGIN_SUCCESS:
       return action.payload.username;
     case LOGOUT:
       return '';
@@ -52,11 +65,14 @@ function username(state = initialState.username, action) {
 
 function userInfo(state = initialState.userInfo, action) {
   switch (action.type) {
-    // case LOGIN:
-    //   return action.payload.userInfo;
+    case GET_USER_INFO:
+      const { socialID, email } = state;
+      const { firstName, lastName } = action.payload;
+      const fullName = firstName + ' ' + lastName;
+      return { ...action.payload, socialID, name: fullName, email };
     case EDIT_USER_INFO:
       const input = action.payload;
-      state.phone = input.phone;
+      state.phoneNumber = input.phoneNumber;
       state.email = input.email;
       return state;
     case LOGOUT:
@@ -68,7 +84,7 @@ function userInfo(state = initialState.userInfo, action) {
 
 function role(state = initialState.role, action) {
   switch (action.type) {
-    case LOGIN:
+    case LOGIN_SUCCESS:
       return action.payload.role;
     case LOGOUT:
       return '';
@@ -86,7 +102,8 @@ const reducer = combineReducers({
   userInfo,
   role,
   isView,
-  otherInfo
+  otherInfo,
+  token
 });
 
 export default reducer;
