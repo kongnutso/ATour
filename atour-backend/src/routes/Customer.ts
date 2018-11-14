@@ -6,12 +6,14 @@ import {
     editCustomerProfile,
     login,
     saveCustomerToken,
-    getCustomerToken
+    getCustomerToken,
+    getCustomerProfile
 } from '../repository/Customer';
 import {
     registerCustomerService,
     loginService,
     editCustomerProfileService,
+    getCustomerProfileService,
 } from '../service/CustomerService';
 import { searchTourService, searchGuideService } from '../service/CustmerSearchService';
 import { searchTour, searchGuide } from '../repository/CustomerSearch';
@@ -83,7 +85,7 @@ router.post('/editProfile', async (req,res) => {
     try {
         const db: Db = res.locals.db;
         const {
-            customerId,
+            userName,
             firstName,
             lastName,
             phoneNumber,
@@ -92,12 +94,30 @@ router.post('/editProfile', async (req,res) => {
         } = req.body;
         const profile = await editCustomerProfileService(
             editCustomerProfile(db))(
-                customerId,
+                userName,
                 firstName,
                 lastName,
                 phoneNumber,
                 birthDate,
                 gender
+            );
+        res.json(profile);
+    } catch (error) {
+        console.log(error.message)
+        res.json({profile:null, error:error.message})
+    }
+        
+});
+
+router.post('/getProfile', async (req,res) => {
+    try {
+        const db: Db = res.locals.db;
+        const {
+            userName
+        } = req.body;
+        const profile = await getCustomerProfileService(
+            getCustomerProfile(db))(
+                userName
             );
         res.json(profile);
     } catch (error) {
@@ -136,5 +156,6 @@ router.post('/searchGuide', async (req,res) => {
     }
         
 })
+
 
 export default router;
