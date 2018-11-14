@@ -1,5 +1,6 @@
 import { Customer, UserProfile } from 'domain/types';
 import { Db } from 'mongodb';
+import { CheckGuideUserNameDuplicate } from './Guide';
 
 export type GetCustomerDb = (customerId: string)=> Promise<Customer>;
 export type SaveCustomerDb = (customer: Customer) => Promise<void>;
@@ -12,7 +13,7 @@ export type GetCustomerLogin = (
 ) => Promise<Customer>;
 
 export type EditCustomerProfileDb = (
-    customerId: string,
+    userName: string,
     profile: UserProfile
 ) => Promise<void>;
 
@@ -24,6 +25,17 @@ export type SaveCustomerTokenDb = (
 export type GetCustomerTokenDb = (
     customerId: string
 ) => Promise<string>
+
+export type GetCustomerProfileDb = (
+    userName: string
+) => Promise<UserProfile>;
+
+export function getCustomerProfile(db:Db):GetCustomerProfileDb {
+    return async (userName) => {
+        const customer = await db.collection('customer').findOne({userName});
+        return customer.profile;
+    }
+}
 
 export function getCustomerToken(db:Db):GetCustomerTokenDb {
     return async (customerId) => {
@@ -79,10 +91,10 @@ export function login(db:Db): GetCustomerLogin {
 
 export function editCustomerProfile(db: Db): EditCustomerProfileDb {
     return async (
-        customerId,
+        userName,
         profile
     ) => {
-        await db.collection('customer').update({customerId: customerId}, {$set :{
+        await db.collection('customer').update({userName:userName}, {$set :{
             profile
             }  
         });
