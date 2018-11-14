@@ -15,3 +15,11 @@ export const SELECT_BOOKED_TRIP = 'SELECT_BOOKED_TRIP';
 export function selectBookedTrip(trip) {
   return { type: SELECT_BOOKED_TRIP, payload: trip };
 }
+
+export const SET_IMAGE_SLIP = 'SET_IMAGE_SLIP';
+export function setImageSlip(url) {
+  return {
+    type: SET_IMAGE_SLIP,
+    payload: url
+  };
+}

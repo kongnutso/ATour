@@ -5,13 +5,14 @@ import { Flex, Box } from 'rebass';
 import autobind from 'react-autobind';
 import { Rating, Form, TextArea } from 'semantic-ui-react';
 import PopUpModal from '../PopUpModal/PopUpModal';
+import { setImageSlip } from '../../action/BookAction';
 import './styles.css';
 
 class BookedHistoryInfo extends React.Component {
   constructor() {
     super();
     autobind(this);
-    this.state = { confirmationModal: false };
+    this.state = { confirmationModal: false, inputImg: '' };
   }
 
   classNameStatus(statusNumber) {
@@ -35,11 +36,15 @@ class BookedHistoryInfo extends React.Component {
     else return 'bookedhistoryinfo-bluebutton';
   }
 
-  onClickChooseFile(statusNumber) {
+  onClickSaveSlip(statusNumber) {
     if (statusNumber !== this.props.status) return;
     else {
-      console.log('choose file');
+      this.props.setImageSlip(this.state.inputImg);
     }
+  }
+
+  inputChange(event) {
+    this.setState({ inputImg: event.target.value });
   }
 
   renderRate(statusNumber) {
@@ -156,12 +161,28 @@ class BookedHistoryInfo extends React.Component {
               <Flex>
                 <Box width={1 / 15} />
                 <Box p={3} width={1} style={{ display: 'flex' }}>
+                  <input
+                    value={this.state.inputImg}
+                    onChange={this.inputChange}
+                  />
                   <div
+                    className={this.classNameColorButton(2)}
+                    onClick={() => this.onClickSaveSlip(2)}
+                  >
+                    Save
+                  </div>
+
+                  {/* <div
                     className={this.classNameColorButton(2)}
                     onClick={() => this.onClickChooseFile(2)}
                   >
                     Choose file
-                  </div>
+                  </div> */}
+                </Box>
+              </Flex>
+              <Flex>
+                <Box width={1 / 15} />
+                <Box p={3} width={1} style={{ display: 'flex' }}>
                   <div className="bookedhistoryinfo-upliadfile">
                     {this.props.slip}
                   </div>
@@ -219,9 +240,8 @@ const mapStateToProps = state => {
   };
 };
 
-const mapDispatchToProps = dispatch => ({});
+const mapDispatchToProps = dispatch => ({
+  setImageSlip: img => dispatch(setImageSlip(img))
+});
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(BookedHistoryInfo);
+export default connect(mapStateToProps, mapDispatchToProps)(BookedHistoryInfo);

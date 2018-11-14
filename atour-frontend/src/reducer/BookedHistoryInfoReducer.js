@@ -1,8 +1,12 @@
 import { combineReducers } from 'redux';
-import { BOOK_TRIP, SELECT_BOOKED_TRIP } from '../action/BookAction';
+import {
+  BOOK_TRIP,
+  SELECT_BOOKED_TRIP,
+  SET_IMAGE_SLIP
+} from '../action/BookAction';
 
 const initialState = {
-  tourStatus: 3,
+  tourStatus: 2,
   bookedDate: '1/1/2018',
   uploadedFileDate: '31/12/2018',
   bookedId: '1234',
@@ -55,6 +59,10 @@ function bookedId(state = initialState.bookedId, action) {
 
 function slip(state = initialState.slip, action) {
   switch (action.type) {
+    case SET_IMAGE_SLIP: {
+      state = action.payload;
+      return state;
+    }
     case BOOK_TRIP:
       return '';
     case SELECT_BOOKED_TRIP:
