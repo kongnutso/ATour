@@ -2,20 +2,31 @@ import React from 'react';
 import { connect } from 'react-redux';
 import autobind from 'react-autobind';
 import { Flex, Box } from 'rebass';
-import { Link } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import tour from '../../image/Tour.jpg';
+import { selectBookedTrip } from '../../action/BookAction';
 import './styles.css';
 
 class BookedHistory extends React.Component {
   constructor() {
     super();
-    autobind(this, 'renderTour');
+    this.state = { redirect: false };
+    autobind(this);
+  }
+
+  onSelect(tour) {
+    this.props.selectBookedTrip(tour);
+    this.setState({ redirect: true });
   }
 
   renderTour(item) {
     return (
-      <div key={item.tourId} className="bookedhistiry-list">
-        <Link to="/bookedHistoryInfo">
+      <div key={item.tourId} className="bookedhistory-list">
+        <div
+          onClick={() => {
+            this.onSelect(item);
+          }}
+        >
           <div className="bookedhistory-table">
             <Flex>
               <Box p={2} width={[4 / 10, 5 / 15]}>
@@ -69,16 +80,20 @@ class BookedHistory extends React.Component {
               </Box>
             </Flex>
           </div>
-        </Link>
+        </div>
       </div>
     );
   }
 
   render() {
+    if (this.state.redirect) {
+      return <Redirect to="/bookedHistoryInfo" />;
+    }
     return (
       <div className="bookedhistory-page">
         <div className="bookedhistory-header">
-          <i className="fa fa-calendar topbanner-icon" />Booked History
+          <i className="fa fa-calendar topbanner-icon" />
+          Booked History
         </div>
         <hr className="bookedhistory-line" />
         <div>{this.props.bookedList.map(item => this.renderTour(item))}</div>
@@ -93,4 +108,11 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps, null)(BookedHistory);
+const mapDispatchToProps = dispatch => ({
+  selectBookedTrip: tour => dispatch(selectBookedTrip(tour))
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(BookedHistory);

@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import RegisterModal from '../RegisterModal/RegisterModal';
 import { loginModal, registerModal } from '../../action/ModalAction';
 import { logout, resizeWindow } from '../../action/ApplicationAction';
+import { editProfile } from '../../action/UserInfoAction';
 import LoginModal from '../LoginModal/LoginModal';
 import logo from '../../image/Atour-logo.jpg';
 import autobind from 'react-autobind';
@@ -109,7 +110,10 @@ class TopBanner extends React.Component {
           <Link to="/editProfile" className="topbanner-link">
             <div
               className="dropdown-item"
-              onClick={() => this.setState({ isClickedDropdown: false })}
+              onClick={() => {
+                this.props.editProfile();
+                this.setState({ isClickedDropdown: false });
+              }}
             >
               <i className="fa fa-cog topbanner-icon" />
               Edit Profile
@@ -223,7 +227,8 @@ const mapDispatchToProps = dispatch => ({
   openRegisterModal: () => dispatch(registerModal(true)),
   openLoginModal: () => dispatch(loginModal(true)),
   logout: () => dispatch(logout()),
-  resizeWindow: width => dispatch(resizeWindow(width))
+  resizeWindow: width => dispatch(resizeWindow(width)),
+  editProfile: () => dispatch(editProfile())
 });
 
 export default connect(

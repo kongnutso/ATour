@@ -15,8 +15,7 @@ class PopUpModal extends React.Component {
             <button
               className={'popUpModal-confirm' + (isDanger ? '-danger' : '')}
               onClick={() => {
-                console.log('confirm');
-                // this.props.onConfirm();
+                this.props.onConfirm();
                 this.props.onCloseModal();
               }}
             >
@@ -54,8 +53,8 @@ class PopUpModal extends React.Component {
         className="modal-container-popUpModal"
         style={{
           overlay: {
-            overflow: 'auto',
-          },
+            overflow: 'auto'
+          }
         }}
         isOpen={this.props.isOpen}
         onRequestClose={this.props.onCloseModal}

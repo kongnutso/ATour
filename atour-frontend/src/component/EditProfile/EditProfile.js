@@ -1,17 +1,17 @@
-import React from "react";
-import { connect } from "react-redux";
-import { Flex, Box, Image } from "rebass";
-import { editUserInfo } from "../../action/ApplicationAction";
-import "./styles.css";
-import { validateEmail, validatePhone } from "../../utils/validation";
+import React from 'react';
+import { connect } from 'react-redux';
+import { Flex, Box, Image } from 'rebass';
+import { editUserInfo } from '../../action/UserInfoAction';
+import './styles.css';
+import { validateEmail, validatePhone } from '../../utils/validation';
 
 class EditProfile extends React.Component {
   constructor() {
     super();
-    this.state = { email: "", phone: "" };
+    this.state = { email: '', phone: '' };
   }
   componentWillReceiveProps(nextProps) {
-    console.log("nextProps");
+    console.log('nextProps');
     const { email, phone } = nextProps.userInfo;
     this.setState({ email, phone });
   }
@@ -31,12 +31,12 @@ class EditProfile extends React.Component {
       const phoneError = validatePhone(phone);
       let errorMessage =
         emailError && phoneError
-          ? emailError + "\n" + phoneError
+          ? emailError + '\n' + phoneError
           : emailError
           ? emailError
           : phoneError
           ? phoneError
-          : "";
+          : '';
       if (!errorMessage) {
         this.props.editUserInfo({ email, phone });
       }
@@ -46,6 +46,7 @@ class EditProfile extends React.Component {
   render() {
     const { name, socialID, gender, birthDate } = this.props.userInfo;
     const { email, phone } = this.state;
+    const { isView } = this.props;
     return (
       <div className="editProfilePage">
         <div className="editProfilePage-header">
@@ -69,7 +70,7 @@ class EditProfile extends React.Component {
               p={3}
               width={[1, 1, 3 / 4, 1 / 2]}
             >
-              <div style={{ fontWeight: "600" }}>Personnal Info</div>
+              <div style={{ fontWeight: '600' }}>Personnal Info</div>
               <div className="editProfilePage-content-info">
                 <Flex>
                   <Box p={3} width={[1, 1, 1 / 2]}>
@@ -113,7 +114,7 @@ class EditProfile extends React.Component {
                 </Flex>
               </div>
 
-              <div style={{ fontWeight: "600", marginTop: "30px" }}>
+              <div style={{ fontWeight: '600', marginTop: '30px' }}>
                 Contact Info
               </div>
               <div className="editProfilePage-content-info">
@@ -122,11 +123,15 @@ class EditProfile extends React.Component {
                     <div>Phone Number</div>
                   </Box>
                   <Box p={3} width={1 / 2}>
-                    <input
-                      className="form-control"
-                      value={phone}
-                      onChange={e => this.setState({ phone: e.target.value })}
-                    />
+                    {isView ? (
+                      <div>{phone}</div>
+                    ) : (
+                      <input
+                        className="form-control"
+                        value={phone}
+                        onChange={e => this.setState({ phone: e.target.value })}
+                      />
+                    )}
                   </Box>
                 </Flex>
                 <Flex>
@@ -134,11 +139,15 @@ class EditProfile extends React.Component {
                     <div>Email</div>
                   </Box>
                   <Box p={3} width={1 / 2}>
-                    <input
-                      className="form-control"
-                      value={email}
-                      onChange={e => this.setState({ email: e.target.value })}
-                    />
+                    {isView ? (
+                      <div>{email}</div>
+                    ) : (
+                      <input
+                        className="form-control"
+                        value={email}
+                        onChange={e => this.setState({ email: e.target.value })}
+                      />
+                    )}
                   </Box>
                 </Flex>
               </div>
@@ -157,7 +166,9 @@ class EditProfile extends React.Component {
 }
 
 const mapStateToProps = state => {
-  return { userInfo: state.user.userInfo };
+  const { isView, userInfo, otherInfo } = state.user;
+  console.log(otherInfo);
+  return { userInfo: isView ? otherInfo : userInfo, isView };
 };
 
 const mapDispatchToProps = dispatch => ({
