@@ -13,6 +13,8 @@ import {
     loginService,
     editCustomerProfileService,
 } from '../service/CustomerService';
+import { searchTourService, searchGuideService } from 'service/CustmerSearchService';
+import { searchTour, searchGuide } from 'repository/CustomerSearch';
 
 import * as uuid from 'uuid/v4';
 const router = express.Router();
@@ -104,5 +106,23 @@ router.post('/editProfile', async (req,res) => {
     }
         
 });
+
+router.post('searchTour', async (req,res) => {
+    const db:Db = res.locals.db;
+    const {keyword} = req.body;
+    const results = await searchTourService(searchTour(db))(
+        keyword
+    );
+    res.send(results);
+})
+
+router.post('searchGuide', async (req,res) => {
+    const db:Db = res.locals.db;
+    const {keyword} = req.body;
+    const results = await searchGuideService(searchGuide(db))(
+        keyword
+    );
+    res.send(results);
+})
 
 export default router;
