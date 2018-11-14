@@ -6,8 +6,16 @@ import {
     editCustomerProfile,
     login,
     saveCustomerToken,
-    getCustomerToken
+    getCustomerToken,
+    getCustomer,
+    updateCustomer
 } from '../repository/Customer';
+
+import {
+    getTour,
+    updateTour,
+    updateTrip
+} from '../repository/Tour';
 import {
     registerCustomerService,
     loginService,
@@ -17,6 +25,7 @@ import { searchTourService, searchGuideService } from 'service/CustmerSearchServ
 import { searchTour, searchGuide } from 'repository/CustomerSearch';
 
 import * as uuid from 'uuid/v4';
+import { bookTripService } from 'service/CustomerTourService';
 const router = express.Router();
 
 router.get('/', (req,res) => {
@@ -137,4 +146,35 @@ router.post('/searchGuide', async (req,res) => {
         
 })
 
+router.post('/bookTrip', async (req,res) => {
+    try{
+        const db:Db = res.locals.db;
+        const {
+            tourId,
+            tripId,
+            tripDate,
+            customerId,
+            size,
+            price
+        } = req.body;
+        const trip = await bookTripService(
+            getCustomer(db),
+            getTour(db),
+            updateTour(db),
+            updateTrip(db),
+            updateCustomer(db)
+        )(
+            tourId,
+            tripId,
+            tripDate,
+            customerId,
+            size,
+            price
+        );
+        res.json(trip);
+    }catch (error) {
+        console.log(error.message);
+        res.json({ trip: null, error: error.message })
+    }
+})
 export default router;

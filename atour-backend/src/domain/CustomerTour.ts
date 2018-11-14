@@ -1,3 +1,4 @@
+import { List } from 'immutable';
 import{
     Customer,
     Tour,
@@ -50,7 +51,7 @@ type AddReviewToTour = (
     review: Review
 ) => Tour
 
-type RemoveReview = (
+type RemoveReviewFromTour = (
     tour: Tour,
     review: Review
 ) => Tour
@@ -58,6 +59,16 @@ type RemoveReview = (
 type SeeBookHistory = (
     customer: Customer
 ) => Trip[]
+
+type UpdateTripToTour = (
+    tour: Tour,
+    trip: Trip
+) => Tour
+
+type UpdateCustomerTripHistory = (
+    customer: Customer,
+    trip: Trip
+) => Customer
 
 export function bookTrip() : BookTrip{
     return (
@@ -166,15 +177,19 @@ export function addReviewToTour() : AddReviewToTour {
     }
 }
 
-export function removeReview() : RemoveReview {
+export function removeReview() : RemoveReviewFromTour {
     return (tour, review)=>{
-        const index = tour.reviews.indexOf(review);
-        if( index > -1){
-            const removedReviews = tour.reviews.splice(index,1);
+        const { reviews } = tour;
+        const reviewList = List(reviews);
+        const deleteIdx = reviewList.findIndex(
+            t => t.reviewId === review.reviewId
+        );
+        if (deleteIdx != -1) {
+            const updatedList = reviewList.delete(deleteIdx);
             return {
                 ...tour,
-                reviews: removedReviews
-            };
+                reviews: updatedList.toArray()
+            }
         }
         return tour;
     }
@@ -186,3 +201,39 @@ export function seeBookHistory() : SeeBookHistory {
     };
 }
 
+export function updateTripToTour() : UpdateTripToTour {
+    return (tour,trip) => {
+        const { trips } = tour;
+        const tripList = List(trips);
+        const updateIdx = tripList.findIndex(
+            t => t.tripId === trip.tripId
+        );
+        if (updateIdx != -1){
+            const updatedList = tripList.set(updateIdx, trip);
+            return {
+                ...tour,
+                trips: updatedList.toArray()
+            }
+        }
+        return tour;
+    }
+}
+
+export function updateCustomerTripHistory(): UpdateCustomerTripHistory {
+    return (customer,trip) => {
+        const { tripHistory } = customer;
+        const tripList = List(tripHistory);
+        const updateIdx = tripList.findIndex(
+            t => t.tripId === trip.tripId
+        );
+        if (updateIdx != -1) {
+            const updatedList = tripList.set(updateIdx, trip);
+            return {
+                ...customer,
+                trips: updatedList.toArray()
+            }
+        }
+
+        return customer
+    }
+}

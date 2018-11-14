@@ -25,6 +25,10 @@ export type GetCustomerTokenDb = (
     customerId: string
 ) => Promise<string>
 
+export type UpdateCustomerDb = (
+    customer: Customer
+) => Promise<void>
+
 export function getCustomerToken(db:Db):GetCustomerTokenDb {
     return async (customerId) => {
         const customerToken = await db.collection('customerToken').findOne({customerId})
@@ -89,3 +93,9 @@ export function editCustomerProfile(db: Db): EditCustomerProfileDb {
     }
 }
 
+export function updateCustomer(db: Db): UpdateCustomerDb {
+    return async (customer) => {
+        await db.collection('customer')
+            .update({ customerId: customer.customerId }, { $set: { customer } });
+    };
+}

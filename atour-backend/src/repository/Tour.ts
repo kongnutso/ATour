@@ -1,14 +1,14 @@
 import { 
   Tour,
   Trip,
-  UnbookedTrip,
-  BookedTrip,
-  BookInfo,
-  PaidTrip,
-  SlipImage,
-  FinishedTrip,
-  ApprovedTrip,
-  CancelledTrip
+  // UnbookedTrip,
+  // BookedTrip,
+  // BookInfo,
+  // PaidTrip,
+  // SlipImage,
+  // FinishedTrip,
+  // ApprovedTrip,
+  // CancelledTrip
 
 } from 'domain/types';
 import { Db } from 'mongodb';
@@ -32,26 +32,26 @@ export function saveTour(db: Db): SaveTourDb {
   };
 }
 
-export function getTripDb(db: Db): GetTripDb {
+export function getTrip(db: Db): GetTripDb {
   return async (tripId) => {
     return await db.collection('trip').findOne({ tripId});
   }
 } 
 
-export function saveTripDb(db: Db): SaveTripDb {
+export function saveTrip(db: Db): SaveTripDb {
   return async (trip) => {
     await db.collection('trip').insert(trip);
   }
 }
 
-export function updateTourDb(db: Db): UpdateTourDb {
+export function updateTour(db: Db): UpdateTourDb {
   return async (tour) =>{
     await db.collection('tour')
     .update({tourId: tour.tourId},{$set :{tour}});
   };
 }
 
-export function updateTripDb(db: Db): UpdateTripDb {
+export function updateTrip(db: Db): UpdateTripDb {
   return async (trip) => {
     await db.collection('trip')
       .update({ tripId: trip.tripId }, { $set: { trip } });
