@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 // import Modal from "react-modal";
 // import "./styles.css";
 // import { registerModal } from "../../action/modalAction";
-import { Flex, Box } from 'rebass';
+import { Flex, Box, Text } from 'rebass';
 import styled from 'styled-components';
 import autobind from 'react-autobind';
 import * as validation from '../utils/validation';
@@ -69,10 +69,14 @@ const tours = [
 const App = props => (
   <div>
     <StyledApp style={{ backgroundImage: `url(${homeImage})` }}>
-      <Flexh100 width={1} alignItems="center" justifyContent="center">
-        <Box width={1}>
-          <SearchBar />
-        </Box>
+      <Flexh100 width={1} pt={7} alignItems="center" justifyContent="center" flexWrap="wrap">
+        <SearchBar />
+        <Flex width={1} textAlign="center" flexDirection="column" alignItems="center" color="white">
+          <Text fontSize={3}>Find out more</Text>
+          <Text fontSize={5}>
+            <i className="fa fa-angle-double-down" />
+          </Text>
+        </Flex>
       </Flexh100>
     </StyledApp>
     <Container>
