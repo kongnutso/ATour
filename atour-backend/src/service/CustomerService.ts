@@ -57,7 +57,7 @@ export function registerCustomerService(
             gender: "Male" | "Female"
         ) => {
             if (await checkCustomerUsernameDuplicate(userName)){
-                throw new Error('Customer username is duplicated');
+                throw new Error('Customer username is duplicated');          
             }
             const customer = registerCustomer(idGenerator)(
                 userName,
