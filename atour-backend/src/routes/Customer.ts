@@ -13,8 +13,8 @@ import {
     loginService,
     editCustomerProfileService,
 } from '../service/CustomerService';
-import { searchTourService, searchGuideService } from 'service/CustmerSearchService';
-import { searchTour, searchGuide } from 'repository/CustomerSearch';
+import { searchTourService, searchGuideService } from '../service/CustmerSearchService';
+import { searchTour, searchGuide } from '../repository/CustomerSearch';
 
 import * as uuid from 'uuid/v4';
 const router = express.Router();
