@@ -3,7 +3,8 @@ import {
   Guide,
   GuideType,
   UnApprovedGuide,
-  ApprovalStatus
+  ApprovalStatus,
+  Gender
 } from './types';
 import { IdGenerator } from './Tour';
 
@@ -17,7 +18,8 @@ type RegisterGuide = (
   phoneNumber: string,
   birthDate: Date,
   bankAccountNumber: string,
-  bankName: string
+  bankName: string,
+  gender: Gender
 ) => UnApprovedGuide;
 
 type AddPublishedTour = (c: Guide, t: Tour) => Guide;
@@ -33,7 +35,8 @@ export function registerGuide(idGenerator: IdGenerator): RegisterGuide {
     phoneNumber,
     birthDate,
     bankAccountNumber,
-    bankName
+    bankName,
+    gender
   ) => {
     const guide: UnApprovedGuide = {
       _type: GuideType.UnApprovedGuide,
@@ -48,7 +51,8 @@ export function registerGuide(idGenerator: IdGenerator): RegisterGuide {
         firstName,
         lastName,
         birthDate,
-        phoneNumber
+        phoneNumber,
+        gender
       },
       approvalStatus: ApprovalStatus.NotApprove
     };

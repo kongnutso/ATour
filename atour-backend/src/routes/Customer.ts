@@ -140,7 +140,7 @@ router.post('searchGuide', async (req,res) => {
         keyword
     );
     res.send(results);
->>>>>>> origin/sun/customerSearch
+
 })
 
 export default router;
