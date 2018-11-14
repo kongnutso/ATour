@@ -1,27 +1,27 @@
 export function validateUsername(username) {
-  if (!username || username.length < 6) {
-    return "Username must be ...";
+  if (!username || (username.length < 6 && username.length <= 15)) {
+    return 'Username must between 6 and 15 characters';
   }
   return false;
 }
 
 export function validatePassword(password) {
   if (!password || password.length < 6) {
-    return "Password length must more than 6";
+    return 'Password length must more than 6';
   }
   return false;
 }
 
 export function validateEmail(email) {
   if (!email || !emailRegex.test(email)) {
-    return "Please enter email in the correct format";
+    return 'Please enter email in the correct format';
   }
   return false;
 }
 
 export function validateSID(sid) {
   if (!sid || !SID(sid)) {
-    return "Invalid Personnal ID";
+    return 'Invalid Personnal ID';
   }
   return false;
 }
@@ -39,7 +39,7 @@ export function validateBirthDate(birthDate) {
       birthDate.substring(8, 10)
     );
     if (currentDate - inputDate < 567993600000) {
-      return "your age must higher than 12";
+      return 'your age must higher than 18';
     }
   }
 
@@ -48,28 +48,28 @@ export function validateBirthDate(birthDate) {
 
 export function validatePhone(phone) {
   if (!phone || (phone.length !== 10 || isNaN(phone))) {
-    return "Invalid Phone number";
+    return 'Invalid Phone number';
   }
   return false;
 }
 
 export function validateAddress(address) {
   if (!address || address.length < 20) {
-    return "Address length must more than 20";
+    return 'Address length must more than 20';
   }
   return false;
 }
 
 export function validateName(name) {
-  if (!name || name.length < 5) {
-    return "Name must ...";
+  if (!name || name.length < 6) {
+    return 'Name must longer than 6';
   }
   return false;
 }
 
 export function validateBankAccountName(bankAccountName) {
-  if (!bankAccountName || bankAccountName.length < 5) {
-    return "Bank Account Name must ...";
+  if (!bankAccountName || bankAccountName.length < 6) {
+    return 'Bank Account Name must longer than 6';
   }
   return false;
 }
@@ -80,7 +80,8 @@ export function validateBankAccountNumber(bankAccountNumber) {
     bankAccountNumber.length !== 7 ||
     isNaN(bankAccountNumber)
   ) {
-    return "Bank Account Number must ...";
+    if (bankAccountNumber.length !== 7) return 'Bank Account Number is invalid';
+    return 'Bank Account Number must be number';
   }
   return false;
 }

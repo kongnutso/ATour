@@ -11,7 +11,6 @@ import TourItem from "./TourItem";
 // target props: tours
 // tourName, tourImage, tourRating, tourPrice, tourLocation
 const Tours = props => {
-  console.log("PPP", props);
   return (
     <Card.Group itemsPerRow={3}>
       {props.tours.map(tour => (

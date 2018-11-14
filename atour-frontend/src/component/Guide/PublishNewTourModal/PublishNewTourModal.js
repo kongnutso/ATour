@@ -189,22 +189,6 @@ class PublishNewTourModal extends React.Component {
             }
             error={this.state.error.minGroupSize}
           />
-          {/* <Field
-            label="to"
-            value={{
-              minGroupSize: this.state.value.maxGroupSize,
-              maxGroupSize: value.maxGroupSize
-            }}
-            onChange={e =>
-              this.onFieldChange(
-                "maxGroupSize",
-                e.target.value,
-                this.maxGroupSizeValidation()
-              )
-            }
-            error={this.state.error.maxGroupSize}
-            isMinMaxSizes={true}
-          /> */}
         </div>
         <Field
           label="Details"
@@ -238,7 +222,7 @@ class PublishNewTourModal extends React.Component {
             overflow: "auto"
           }
         }}
-        isOpen={this.props.isOpen}
+        isOpen={this.props.isOpen == "publishNewTour"}
         onRequestClose={this.onCloseModal}
         ariaHideApp={false}
       >
@@ -249,7 +233,7 @@ class PublishNewTourModal extends React.Component {
 }
 
 const mapStateToProps = state => {
-  return { isOpen: state.modal.publishNewTour };
+  return { isOpen: state.modal.modalName };
 };
 
 const mapDispatchToProps = dispatch => ({

@@ -215,7 +215,7 @@ class EditTourModal extends React.Component {
             overflow: "auto"
           }
         }}
-        isOpen={this.props.isOpen}
+        isOpen={this.props.isOpen == "editTour"}
         // isOpen={true}
         onRequestClose={this.onCloseModal}
         ariaHideApp={false}
@@ -227,7 +227,7 @@ class EditTourModal extends React.Component {
 }
 
 const mapStateToProps = state => {
-  return { isOpen: state.modal.editTour };
+  return { isOpen: state.modal.modalName };
 };
 
 const mapDispatchToProps = dispatch => ({

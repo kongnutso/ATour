@@ -1,24 +1,42 @@
-import React from "react";
-import Modal from "react-modal";
-import { connect } from "react-redux";
-import { loginModal, registerModal } from "../../action/ModalAction";
-import { login } from "../../action/ApplicationAction";
-import classNames from "classnames";
-import autobind from "react-autobind";
-import "./styles.css";
+import React from 'react';
+import Modal from 'react-modal';
+import { connect } from 'react-redux';
+import { loginModal, registerModal } from '../../action/ModalAction';
+import { login } from '../../action/ApplicationAction';
+import classNames from 'classnames';
+import autobind from 'react-autobind';
+import PopUpModal from '../../component/PopUpModal/PopUpModal';
+import './styles.css';
 
 class LoginModal extends React.Component {
   constructor() {
     super();
-    this.state = { asCustomer: true, username: "", password: "" };
-    autobind(this, "switchToSignUp", "login");
+    this.state = {
+      asCustomer: true,
+      username: '',
+      password: '',
+      errorMessage: ''
+    };
+    autobind(this, 'switchToSignUp', 'login');
   }
 
   login() {
     const { username, password, asCustomer } = this.state;
-    this.props.onCloseModal();
-    this.props.login(username, password, asCustomer ? "Customer" : "Guide");
-    this.setState({ asCustomer: true, username: "", password: "" });
+    if (
+      (username === 'kongnut' || username === 'kongnut1') &&
+      password === '123456'
+    ) {
+      this.props.onCloseModal();
+      this.props.login(username, password, asCustomer ? 'Customer' : 'Guide');
+      this.setState({
+        asCustomer: true,
+        username: '',
+        password: '',
+        errorMessage: ''
+      });
+    } else {
+      this.setState({ errorMessage: 'Invalid username or password' });
+    }
   }
 
   switchToSignUp() {
@@ -27,24 +45,31 @@ class LoginModal extends React.Component {
   }
 
   onCloseLoginModal() {
-    this.setState({ asCustomer: true, username: "", password: "" });
+    this.setState({ asCustomer: true, username: '', password: '' });
     this.props.onCloseModal();
   }
 
   render() {
-    const { asCustomer, username, password } = this.state;
+    const { asCustomer, username, password, errorMessage } = this.state;
     return (
       <Modal
         className="modal-container-loginModal"
         style={{
           overlay: {
-            overflow: "auto"
+            overflow: 'auto'
           }
         }}
         isOpen={this.props.isOpen}
         onRequestClose={() => this.onCloseLoginModal()}
         ariaHideApp={false}
       >
+        <PopUpModal
+          isOpen={errorMessage}
+          onCloseModal={() => this.setState({ errorMessage: '' })}
+          headerText={'Login Fail'}
+          bodyText={errorMessage}
+          // onConfirm
+        />
         <div
           onKeyPress={e => {
             if (e.which === 13) {
@@ -56,8 +81,8 @@ class LoginModal extends React.Component {
           <button
             onClick={() => this.setState({ asCustomer: true })}
             className={classNames({
-              "btn loginModal-selectiveButton": true,
-              "loginModal-selected": asCustomer
+              'btn loginModal-selectiveButton': true,
+              'loginModal-selected': asCustomer
             })}
           >
             Customer
@@ -65,8 +90,8 @@ class LoginModal extends React.Component {
           <button
             onClick={() => this.setState({ asCustomer: false })}
             className={classNames({
-              "btn loginModal-selectiveButton": true,
-              "loginModal-selected": !asCustomer
+              'btn loginModal-selectiveButton': true,
+              'loginModal-selected': !asCustomer
             })}
           >
             Guide
@@ -109,7 +134,7 @@ class LoginModal extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    isOpen: state.modal.login
+    isOpen: state.modal.modalName === 'login'
   };
 };
 

@@ -26,7 +26,6 @@ const GuideTourInfo = props => {
     maxGroupSize,
     availableDates
   } = props.tour;
-  console.log("to send ", props);
   return (
     <Container>
       <div className="topbanner-user-container">
@@ -86,11 +85,13 @@ const GuideTourInfo = props => {
 };
 
 const mapStateToProps = state => {
-  return;
+  return { isOpen: state.modal.modalName };
 };
 
 const mapDispatchToProps = dispatch => ({
-  onClickEditTour: () => dispatch(editTour(true))
+  onClickEditTour: () => {
+    dispatch(editTour(true));
+  }
 });
 
 export default connect(

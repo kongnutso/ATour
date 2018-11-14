@@ -1,50 +1,49 @@
-import React from "react";
-import { connect } from "react-redux";
-import { Link } from "react-router-dom";
-import { Flex, Box } from "rebass";
-import autobind from "react-autobind";
-import { Rating, Form, TextArea } from "semantic-ui-react";
-import "./styles.css";
+import React from 'react';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { Flex, Box } from 'rebass';
+import autobind from 'react-autobind';
+import { Rating, Form, TextArea } from 'semantic-ui-react';
+import PopUpModal from '../PopUpModal/PopUpModal';
+import './styles.css';
 
 class BookedHistoryInfo extends React.Component {
   constructor() {
     super();
     autobind(
       this,
-      "classNameStatus",
-      "classNameColorButton",
-      "classNameText",
-      "renderReview",
-      "onClickChooseFile",
-      "renderRedButton"
+      'classNameStatus',
+      'classNameColorButton',
+      'classNameText',
+      'renderReview',
+      'onClickChooseFile',
+      'renderRedButton',
+      'setWarningType'
     );
+    this.state = { confirmationModal: false };
   }
 
   classNameStatus(statusNumber) {
-    if (statusNumber === this.props.status)
-      return "bookedhistoryinfo-status-inprocess";
-    else if (statusNumber < this.props.status)
-      return "bookedhistoryinfo-status-finish";
-    else return "bookedhistoryinfo-status-coming";
+    if (statusNumber === this.props.status) return 'bookedhistoryinfo-status-inprocess';
+    else if (statusNumber < this.props.status) return 'bookedhistoryinfo-status-finish';
+    else return 'bookedhistoryinfo-status-coming';
   }
 
   classNameText(statusNumber) {
-    if (statusNumber === this.props.status)
-      return "bookedhistoryinfo-text-inprocess";
-    else if (statusNumber < this.props.status)
-      return "bookedhistoryinfo-text-finish";
-    else return "bookedhistoryinfo-text-coming";
+    if (statusNumber === this.props.status) return 'bookedhistoryinfo-text-inprocess';
+    else if (statusNumber < this.props.status) return 'bookedhistoryinfo-text-finish';
+    else return 'bookedhistoryinfo-text-coming';
   }
 
   classNameColorButton(statusNumber) {
-    if (statusNumber < this.props.status) return "bookedhistoryinfo-graybutton";
-    else return "bookedhistoryinfo-bluebutton";
+    if (statusNumber < this.props.status) return 'bookedhistoryinfo-graybutton';
+    else return 'bookedhistoryinfo-bluebutton';
   }
 
   onClickChooseFile(statusNumber) {
     if (statusNumber !== this.props.status) return;
     else {
-      console.log("choose file");
+      console.log('choose file');
     }
   }
 
@@ -53,11 +52,7 @@ class BookedHistoryInfo extends React.Component {
     else
       return (
         <div>
-          <Rating
-            maxRating={5}
-            clearable
-            className="bookedhistoryinfo-rating"
-          />
+          <Rating maxRating={5} clearable className="bookedhistoryinfo-rating" />
         </div>
       );
   }
@@ -78,10 +73,7 @@ class BookedHistoryInfo extends React.Component {
           <Flex>
             <Box p={2} width={1 / 15} />
             <Box p={3} width={14 / 15}>
-              <div
-                className={this.classNameColorButton(5)}
-                onClick={() => console.log("submit")}
-              >
+              <div className={this.classNameColorButton(5)} onClick={() => console.log('submit')}>
                 Submit
               </div>
             </Box>
@@ -91,38 +83,50 @@ class BookedHistoryInfo extends React.Component {
   }
 
   renderRedButton() {
-    if (this.props.status < 3) {
+    const { status } = this.props;
+    let text;
+    if (status < 3) text = 'Cancel';
+    else if (status === 3) text = 'Refund';
+    if (this.props.status <= 3) {
       return (
         <div
           className="bookedhistoryinfo-headbutton"
-          onClick={() => console.log("cancel")}
+          onClick={() => {
+            this.setState({ confirmationModal: true });
+          }}
         >
-          Cancel
-        </div>
-      );
-    } else if (this.props.status === 3) {
-      return (
-        <div
-          className="bookedhistoryinfo-headbutton"
-          onClick={() => console.log("click")}
-        >
-          Refund
+          {text}
         </div>
       );
     } else {
-      return <div className="bookedhistoryinfo-headbutton-gray">refund</div>;
+      return <div className="bookedhistoryinfo-headbutton-gray">Refund</div>;
     }
   }
 
   render() {
+    const { status } = this.props;
+    let message;
+    if (status <= 2) {
+      message = 'Cancel';
+    } else if (status === 3) {
+      message = 'Refund';
+    }
     return (
       <div className="bookedhistoryinfo-page">
         <div className="bookedhistoryinfo-header">
           <i className="fa fa-calendar topbanner-icon" />
-          <Link to="/bookedHistory">Booked History</Link> / Book ID :
-          {this.props.bookedId}
+          <Link to="/bookedHistory">Booked History</Link> / Book ID :{this.props.bookedId}
           {this.renderRedButton()}
         </div>
+        <PopUpModal
+          isOpen={this.state.confirmationModal}
+          onCloseModal={() => this.setState({ confirmationModal: false })}
+          headerText={`${message} Confirmation`}
+          bodyText={`Do you want to [${message}] ? `}
+          // onConfirm
+          isDanger
+          type="Confirmation"
+        />
         <hr className="bookedhistoryinfo-line" />
         <div>
           Status
@@ -148,16 +152,14 @@ class BookedHistoryInfo extends React.Component {
               </Flex>
               <Flex>
                 <Box width={1 / 15} />
-                <Box p={3} width={1} style={{ display: "flex" }}>
+                <Box p={3} width={1} style={{ display: 'flex' }}>
                   <div
                     className={this.classNameColorButton(2)}
                     onClick={() => this.onClickChooseFile(2)}
                   >
                     Choose file
                   </div>
-                  <div className="bookedhistoryinfo-upliadfile">
-                    {this.props.image}
-                  </div>
+                  <div className="bookedhistoryinfo-upliadfile">{this.props.image}</div>
                 </Box>
               </Flex>
             </div>
@@ -208,11 +210,13 @@ const mapStateToProps = state => {
     bookedDate: state.bookedHistoryInfo.bookedDate,
     uploadedFileDate: state.bookedHistoryInfo.uploadedFileDate,
     bookedId: state.bookedHistoryInfo.bookedId,
-    image: state.bookedHistoryInfo.image
+    image: state.bookedHistoryInfo.image,
   };
 };
 
+const mapDispatchToProps = dispatch => ({});
+
 export default connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
 )(BookedHistoryInfo);
