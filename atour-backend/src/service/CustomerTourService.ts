@@ -1,25 +1,20 @@
 import {
-    GetCustomerDB, SaveCustomerDb, GetCustomerDb, updateCustomerDb, UpdateCustomerDb
+    GetCustomerDb, UpdateCustomerDb
 } from '../repository/Customer';
 
 import {
     GetTourDb,
-    GetTripDb,
     UpdateTourDb,
     UpdateTripDb,
-    SaveTourDb,
-    SaveTripDb,
     
 } from '../repository/Tour'
 
 import {
-    Tour,
-    Trip,
-    Customer
+    Trip
 } from '../domain/types';
 
 import { bookTrip, updateTripToTour, updateCustomerTripHistory } from '../domain/CustomerTour'
-import { IdGenerator } from 'domain/Tour';
+// import { IdGenerator } from 'domain/Tour';
 
 export type BookTripService = (
     tourId: string,

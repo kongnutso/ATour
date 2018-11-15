@@ -1,4 +1,4 @@
-import { Tour, UnbookedTrip, PartialTour } from './types';
+import { Tour, UnbookedTrip, PartialTour, TripType } from './types';
 
 export type IdGenerator = () => string;
 
@@ -50,7 +50,7 @@ export function editTour(): EditTour {
 
 export function addTrip(idGenerator: IdGenerator): AddTrip {
   return (tour: Tour, tripDate: Date): Tour => {
-    const addedTrip: UnbookedTrip = { tripId: idGenerator(), tripDate };
+    const addedTrip: UnbookedTrip = {_type: TripType.UnbookedTrip, tripId: idGenerator(), tripDate };
     const newTrips = [...tour.trips, addedTrip];
     return {
       ...tour,

@@ -32,7 +32,7 @@ import {
 import { searchTour, searchGuide } from '../repository/CustomerSearch';
 
 import * as uuid from 'uuid/v4';
-import { bookTripService } from 'service/CustomerTourService';
+import { bookTripService } from '../service/CustomerTourService';
 const router = express.Router();
 
 router.get('/', (req, res) => {

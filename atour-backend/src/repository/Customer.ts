@@ -25,11 +25,10 @@ export type GetCustomerTokenDb = (
     customerId: string
 ) => Promise<string>
 
-<<<<<<< HEAD
 export type UpdateCustomerDb = (
     customer: Customer
 ) => Promise<void>
-=======
+
 export type GetCustomerProfileDb = (
     userName: string
 ) => Promise<UserProfile>;
@@ -40,7 +39,6 @@ export function getCustomerProfile(db:Db):GetCustomerProfileDb {
         return customer.profile;
     }
 }
->>>>>>> origin/master
 
 export function getCustomerToken(db:Db):GetCustomerTokenDb {
     return async (customerId) => {
