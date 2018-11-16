@@ -48,7 +48,8 @@ export function bookTripService(
                 tripDate,
                 customerId,
                 size,
-                price
+                price,
+                new Date()
             );
             const updatedTour = updateTripToTour()(
                 tour,trip

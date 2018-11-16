@@ -4,14 +4,9 @@ import{
     Tour,
     Review,
     BookedTrip,
-    // UnbookedTrip,
     SlipImage,
-    // BookInfo,
     PaidTrip,
-    // ApprovedTrip,
-    // RefundedTrip,
     FinishedTrip,
-    // CancelledTrip,
     Trip,
     TripType
     
@@ -25,25 +20,28 @@ type BookTrip = (
     tripDate: Date,
     customerId: string,
     size: number,
-    price: number
-    // BookDate: Date
+    price: number,
+    BookDate: Date
 
 )=> BookedTrip;
 
 type UploadPayment = (
     trip: Trip,
-    slipImage: SlipImage
+    slipImage: SlipImage,
+    paidDate: Date
 ) => PaidTrip;
 
 type CreateReview = (
     trip: FinishedTrip,
     authorId: string,
-    comment: string
+    comment: string,
+    date: Date
 ) => Review
 
 type EditReview = (
     review: Review,
     comment: string,
+    date: Date
 ) => Review
 
 type AddReviewToTour = (
@@ -76,15 +74,15 @@ export function bookTrip() : BookTrip{
         tripDate,
         customerId,
         size,
-        price
-        // bookDate
+        price,
+        bookDate
     ) => {
         const trip: BookedTrip = {
             _type: TripType.BookedTrip,
             tripId,
             tripDate,
             bookInfo: {
-                bookDate : new Date(),
+                bookDate,
                 customerId,
                 size,
                 price
@@ -97,7 +95,8 @@ export function bookTrip() : BookTrip{
 export function uploadPayment(): UploadPayment{
     return (
         trip,
-        slipImage
+        slipImage,
+        paidDate
     ) => {
         switch(trip._type){
             case TripType.BookedTrip: {
@@ -106,7 +105,7 @@ export function uploadPayment(): UploadPayment{
                     tripId: trip.tripId,
                     tripDate: trip.tripDate,
                     bookInfo: trip.bookInfo,
-                    paidDate: new Date(),
+                    paidDate: paidDate,
                     slipImages: [slipImage] 
 
                 }
@@ -116,6 +115,7 @@ export function uploadPayment(): UploadPayment{
                 const addedSlipImages = [...trip.slipImages, slipImage];
                 return {
                     ...trip,
+                    paidDate: paidDate,
                     slipImages: addedSlipImages
                 };
             }
@@ -133,7 +133,8 @@ export function createReview(idGenerator : IdGenerator) : CreateReview {
     return (
         trip,
         authorId,
-        comment
+        comment,
+        date
     ) => {
         switch (trip._type){
             case TripType.FinishedTrip: {
@@ -141,7 +142,7 @@ export function createReview(idGenerator : IdGenerator) : CreateReview {
                     reviewId: idGenerator(),
                     authorId,
                     comment,
-                    date: new Date(),
+                    date: date
 
                 }
                 return review;
@@ -156,12 +157,13 @@ export function createReview(idGenerator : IdGenerator) : CreateReview {
 export function editReview() : EditReview {
     return (
         review,
-        comment
+        comment,
+        date
     ) => {
         const newReview: Review = {
             ...review,
             comment,
-            date: new Date()
+            date: date
         }
         return newReview;
     };
@@ -177,7 +179,7 @@ export function addReviewToTour() : AddReviewToTour {
     }
 }
 
-export function removeReview() : RemoveReviewFromTour {
+export function removeReviewFromTour() : RemoveReviewFromTour {
     return (tour, review)=>{
         const { reviews } = tour;
         const reviewList = List(reviews);
@@ -222,15 +224,15 @@ export function updateTripToTour() : UpdateTripToTour {
 export function updateCustomerTripHistory(): UpdateCustomerTripHistory {
     return (customer,trip) => {
         const { tripHistory } = customer;
-        const tripList = List(tripHistory);
-        const updateIdx = tripList.findIndex(
+        const historyTripList = List(tripHistory);
+        const updateIdx = historyTripList.findIndex(
             t => t.tripId === trip.tripId
         );
         if (updateIdx != -1) {
-            const updatedList = tripList.set(updateIdx, trip);
+            const updatedList = historyTripList.set(updateIdx, trip);
             return {
                 ...customer,
-                trips: updatedList.toArray()
+                tripHistory: updatedList.toArray()
             }
         }
 
