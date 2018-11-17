@@ -12,7 +12,7 @@ import {
     registerCustomer,
     customerProfile
 } from '../domain/Customer';
-import { Customer, UserProfile } from '../domain/types';
+import { Customer } from '../domain/types';
 import {IdGenerator} from '../domain/Tour';
 export type RegisterCustomerService = (
     userName: string,
@@ -38,16 +38,16 @@ export type EditCustomerProfileService = (
     phoneNumber: string,
     birthDate: Date,
     gender: "Male"| "Female"
-) => Promise<UserProfile>;
+) => Promise<Customer>;
 
 export type GetCustomerProfileService = (
     userName: string
-) => Promise<UserProfile>;
+) => Promise<Customer>;
 
 export function getCustomerProfileService(getCustomerProfile: GetCustomerProfileDb): GetCustomerProfileService {
     return async (userName)=>{
-        const profile = await getCustomerProfile(userName);
-        return profile;
+        const customer = await getCustomerProfile(userName);
+        return customer;
     }
 }
 

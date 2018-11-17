@@ -18,7 +18,7 @@ import {
 import {
   searchTourService,
   searchGuideService
-} from '../service/CustmerSearchService';
+} from '../service/CustomerSearchService';
 import { searchTour, searchGuide } from '../repository/CustomerSearch';
 
 import * as uuid from 'uuid/v4';

@@ -27,12 +27,12 @@ export type GetCustomerTokenDb = (
 
 export type GetCustomerProfileDb = (
     userName: string
-) => Promise<UserProfile>;
+) => Promise<Customer>;
 
 export function getCustomerProfile(db:Db):GetCustomerProfileDb {
     return async (userName) => {
         const customer = await db.collection('customer').findOne({userName});
-        return customer.profile;
+        return customer;
     }
 }
 
