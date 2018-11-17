@@ -136,21 +136,13 @@ export function createReview(idGenerator : IdGenerator) : CreateReview {
         comment,
         date
     ) => {
-        switch (trip._type){
-            case TripType.FinishedTrip: {
-                const review: Review = {
-                    reviewId: idGenerator(),
-                    authorId,
-                    comment,
-                    date: date
-
-                }
-                return review;
+            const review: Review = {
+            reviewId: idGenerator(),
+            authorId,
+            comment,
+            date: date
             }
-            default: {
-                throw new Error('Your trip is not finished');
-            }
-        }
+            return review;
     };
 }
 
