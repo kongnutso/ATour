@@ -50,11 +50,12 @@ class EditProfile extends React.Component {
     const { name, socialID, gender, birthDate } = this.props.userInfo;
     const { email, phoneNumber } = this.state;
     const { isView } = this.props;
+    const headerText = isView ? 'Guide Profile' : 'Edit Profile';
     return (
       <div className="editProfilePage">
         <div className="editProfilePage-header">
           <i className="fa fa-cog editProfilePage-header-icon" />
-          <div className="editProfilePage-header-text">Edit Profile</div>
+          <div className="editProfilePage-header-text">{headerText}</div>
         </div>
         <div className="editProfilePage-content-container">
           <Flex className="editProfilePage-content">
@@ -156,12 +157,14 @@ class EditProfile extends React.Component {
                   </Box>
                 </Flex>
               </div>
-              <button
-                onClick={() => this.editUserInfo()}
-                className="btn btn-primary editProfilePage-save-btn"
-              >
-                Save
-              </button>
+              {isView ? null : (
+                <button
+                  onClick={() => this.editUserInfo()}
+                  className="btn btn-primary editProfilePage-save-btn"
+                >
+                  Save
+                </button>
+              )}
             </Box>
           </Flex>
         </div>
