@@ -1,5 +1,9 @@
 import { combineReducers } from 'redux';
-import { LOGOUT, LOGIN_SUCCESS } from '../action/ApplicationAction';
+import {
+  LOGOUT,
+  LOGIN_SUCCESS,
+  LOGIN_FAILED
+} from '../action/ApplicationAction';
 import {
   EDIT_USER_INFO,
   VIEW_PROFILE,
@@ -9,7 +13,8 @@ import {
 } from '../action/UserInfoAction';
 
 const initialState = {
-  username: '',
+  isLoginSuccess: null,
+  userName: '',
   token: '',
   role: 'Guide',
   userInfo: {
@@ -34,6 +39,19 @@ const initialState = {
   isView: false
 };
 
+function isLoginSuccess(state = initialState.isLoginSuccess, action) {
+  switch (action.type) {
+    case LOGIN_SUCCESS:
+      return true;
+    case LOGIN_FAILED:
+      return false;
+    case LOGOUT:
+      return;
+    default:
+      return state;
+  }
+}
+
 function isView(state = initialState.isView, action) {
   switch (action.type) {
     case VIEW_PROFILE:
@@ -47,6 +65,8 @@ function isView(state = initialState.isView, action) {
 
 function token(state = initialState.token, action) {
   switch (action.type) {
+    case LOGOUT:
+      return '';
     case LOGIN_SUCCESS:
       return action.payload.token;
     default:
@@ -54,10 +74,10 @@ function token(state = initialState.token, action) {
   }
 }
 
-function username(state = initialState.username, action) {
+function userName(state = initialState.userName, action) {
   switch (action.type) {
     case LOGIN_SUCCESS:
-      return action.payload.username;
+      return action.payload.userName;
     case LOGOUT:
       return '';
     default:
@@ -78,7 +98,7 @@ function userInfo(state = initialState.userInfo, action) {
       state.email = input.email;
       return state;
     case LOGOUT:
-      return state;
+      return {};
     default:
       return state;
   }
@@ -96,6 +116,8 @@ function guideInfo(state = initialState.guideInfo, action) {
         gender,
         birthDate
       };
+    case LOGOUT:
+      return {};
 
     default:
       return state;
@@ -113,12 +135,13 @@ function role(state = initialState.role, action) {
 }
 
 const reducer = combineReducers({
-  username,
+  userName,
   userInfo,
   role,
   isView,
   guideInfo,
-  token
+  token,
+  isLoginSuccess
 });
 
 export default reducer;

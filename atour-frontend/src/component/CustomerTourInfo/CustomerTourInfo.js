@@ -175,7 +175,7 @@ const mapStateToProps = state => {
   return {
     tourInfo: state.tour.selectedTour,
     guide: state.user.guideInfo.userName,
-    user: state.user.username
+    user: state.user.userName
   };
 };
 

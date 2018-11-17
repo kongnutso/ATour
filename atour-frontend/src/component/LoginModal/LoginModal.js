@@ -2,7 +2,7 @@ import React from 'react';
 import Modal from 'react-modal';
 import { connect } from 'react-redux';
 import { loginModal, registerModal } from '../../action/ModalAction';
-import { loginSuccess } from '../../action/ApplicationAction';
+import { login } from '../../action/ApplicationAction';
 import { getUserInfo } from '../../action/UserInfoAction';
 import classNames from 'classnames';
 import autobind from 'react-autobind';
@@ -15,36 +15,29 @@ class LoginModal extends React.Component {
     super();
     this.state = {
       asCustomer: true,
-      username: '',
+      userName: '',
       password: '',
-      errorMessage: ''
+      errorMessage: '',
+      sendRequest: false
     };
     autobind(this, 'switchToSignUp', 'login');
   }
 
-  async login() {
-    const { username, password, asCustomer } = this.state;
-    const res = await axios
-      .post('http://localhost:3000/customer/login', {
-        userName: username,
-        password
-      })
-      .then(res => {
-        return res.data;
-      });
-    if (res.error) {
-      this.setState({ errorMessage: 'Invalid username or password' });
-    } else {
-      this.props.loginSuccess(res, asCustomer, username);
-      this.props.getUserInfo(username, res);
+  componentWillReceiveProps(nextProps) {
+    if (this.state.sendRequest && nextProps.isLoginSuccess) {
+      this.onCloseLoginModal();
+    } else if (this.state.sendRequest && !nextProps.isLoginSuccess) {
       this.setState({
-        asCustomer: true,
-        username: '',
-        password: '',
-        errorMessage: ''
+        errorMessage: 'Invalid Username or Password',
+        sendRequest: false
       });
-      this.props.onCloseModal();
     }
+  }
+
+  login() {
+    const { userName, password, asCustomer } = this.state;
+    this.setState({ sendRequest: true });
+    this.props.login(userName, password, asCustomer);
   }
 
   switchToSignUp() {
@@ -53,12 +46,17 @@ class LoginModal extends React.Component {
   }
 
   onCloseLoginModal() {
-    this.setState({ asCustomer: true, username: '', password: '' });
+    this.setState({
+      asCustomer: true,
+      userName: '',
+      password: '',
+      sendRequest: false
+    });
     this.props.onCloseModal();
   }
 
   render() {
-    const { asCustomer, username, password, errorMessage } = this.state;
+    const { asCustomer, userName, password, errorMessage } = this.state;
     return (
       <Modal
         className="modal-container-loginModal"
@@ -107,8 +105,8 @@ class LoginModal extends React.Component {
           <div className="loginModal-login-label">Username</div>
           <input
             className="loginModal-text-field"
-            value={username}
-            onChange={e => this.setState({ username: e.target.value })}
+            value={userName}
+            onChange={e => this.setState({ userName: e.target.value })}
           />
           <div className="loginModal-login-label">Password</div>
           <input
@@ -142,16 +140,17 @@ class LoginModal extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    isOpen: state.modal.modalName === 'login'
+    isOpen: state.modal.modalName === 'login',
+    isLoginSuccess: state.user.isLoginSuccess
   };
 };
 
 const mapDispatchToProps = dispatch => ({
   onCloseModal: () => dispatch(loginModal(false)),
   onOpenRegisterModal: () => dispatch(registerModal(true)),
-  loginSuccess: (token, role, username) =>
-    dispatch(loginSuccess(token, role, username)),
-  getUserInfo: (username, token) => dispatch(getUserInfo(username, token))
+  login: (userName, password, role) =>
+    dispatch(login(userName, password, role)),
+  getUserInfo: (userName, token) => dispatch(getUserInfo(userName, token))
 });
 
 export default connect(

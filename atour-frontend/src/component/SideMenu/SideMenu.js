@@ -52,7 +52,7 @@ class SideMenu extends React.Component {
   renderSignInSideMenu() {
     const {
       path,
-      userInfo: { role, username }
+      userInfo: { role, userName }
     } = this.props;
     const userFunction =
       role === 'Customer' ? (
@@ -101,7 +101,7 @@ class SideMenu extends React.Component {
         <div className="dropdown-item side-menu-userInfo">
           {role}
           {': '}
-          {username.substring(0, 8)}
+          {userName.substring(0, 8)}
         </div>
         {userFunction}
         <Link className="side-menu-link" to="/editProfile">
@@ -130,7 +130,7 @@ class SideMenu extends React.Component {
   }
 
   renderSideMenu() {
-    const renderUserInfo = this.props.userInfo.username
+    const renderUserInfo = this.props.userInfo.userName
       ? this.renderSignInSideMenu()
       : this.renderNotSignInSideMenu();
     return (

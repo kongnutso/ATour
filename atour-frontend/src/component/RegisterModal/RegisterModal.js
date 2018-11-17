@@ -60,7 +60,7 @@ const defaultValue = () => ({
   successful: false,
   errorPopUp: '',
   value: {
-    username: '',
+    userName: '',
     password: '',
     email: '',
     name: '',
@@ -74,7 +74,7 @@ const defaultValue = () => ({
     bankAccountNumber: ''
   },
   error: {
-    username: true,
+    userName: true,
     password: true,
     email: true,
     name: true,
@@ -113,9 +113,9 @@ class RegisterModal extends React.Component {
 
   onSubmitAccountInfo() {
     const {
-      error: { username, password, email }
+      error: { userName, password, email }
     } = this.state;
-    if (!username && !password && !email) {
+    if (!userName && !password && !email) {
       this.setState({ accountInfo: false });
     }
   }
@@ -124,7 +124,7 @@ class RegisterModal extends React.Component {
     const {
       asCustomer,
       value: {
-        username,
+        userName,
         email,
         password,
         name,
@@ -140,7 +140,7 @@ class RegisterModal extends React.Component {
     const firstName = name.split(' ')[0];
     const lastName = name.split(' ')[1];
     let payload = {
-      userName: username,
+      userName,
       email,
       password,
       firstName,
@@ -228,15 +228,15 @@ class RegisterModal extends React.Component {
         </button>
         <Field
           label="Username: "
-          value={value.username}
+          value={value.userName}
           onChange={e =>
             this.onFieldChange(
-              'username',
+              'userName',
               e.target.value,
               validation.validateUsername
             )
           }
-          error={this.state.error.username}
+          error={this.state.error.userName}
         />
         <Field
           label="Password: "
@@ -269,9 +269,6 @@ class RegisterModal extends React.Component {
         >
           Next
         </button>
-        {/* <button onClick={() => this.onCloseModal()} className="btn btn-danger">
-          Cancel
-        </button> */}
         <div className="to-login-container">
           <div className="to-login-text">Already have an account ?</div>
           <div onClick={() => this.switchToLogin()} className="to-login-link">

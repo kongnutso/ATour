@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import RegisterModal from '../RegisterModal/RegisterModal';
 import { loginModal, registerModal } from '../../action/ModalAction';
 import { logout, resizeWindow } from '../../action/ApplicationAction';
-import { editProfile } from '../../action/UserInfoAction';
+import { editProfile, getUserInfo } from '../../action/UserInfoAction';
 import LoginModal from '../LoginModal/LoginModal';
 import logo from '../../image/Atour-logo.jpg';
 import autobind from 'react-autobind';
@@ -32,7 +32,7 @@ class TopBanner extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.userInfo.username !== this.props.userInfo.username) {
+    if (nextProps.userInfo.userName !== this.props.userInfo.userName) {
       this.setState({ isClickedDropdown: false });
     }
     if (nextProps.width > 710) {
@@ -40,6 +40,15 @@ class TopBanner extends React.Component {
     }
     if (nextProps.transparent !== this.props.transparent) {
       this.setState({ topTransparent: nextProps.transparent });
+    }
+    if (
+      this.props.isLoginSuccess !== nextProps.isLoginSuccess &&
+      nextProps.isLoginSuccess
+    ) {
+      this.props.getUserInfo(
+        nextProps.userInfo.userName,
+        nextProps.userInfo.token
+      );
     }
   }
 
@@ -174,7 +183,7 @@ class TopBanner extends React.Component {
         >
           <div className="topbanner-role">{this.props.userInfo.role}</div>
           <div className="topbanner-as-username">
-            {this.props.userInfo.username.substring(0, 8)}
+            {this.props.userInfo.userName.substring(0, 8)}
           </div>
           <i className="fa fa-arrow-circle-down topbanner-dropdown-arrow" />
         </div>
@@ -199,7 +208,7 @@ class TopBanner extends React.Component {
   }
 
   renderMenu() {
-    const renderSignIn = this.props.userInfo.username
+    const renderSignIn = this.props.userInfo.userName
       ? this.renderSignIn()
       : this.renderNotSignIn();
     return (
@@ -257,7 +266,8 @@ class TopBanner extends React.Component {
 
 const mapStateToProps = state => ({
   userInfo: state.user,
-  width: state.app.width
+  width: state.app.width,
+  isLoginSuccess: state.user.isLoginSuccess
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -265,7 +275,8 @@ const mapDispatchToProps = dispatch => ({
   openLoginModal: () => dispatch(loginModal(true)),
   logout: () => dispatch(logout()),
   resizeWindow: width => dispatch(resizeWindow(width)),
-  editProfile: () => dispatch(editProfile())
+  editProfile: () => dispatch(editProfile()),
+  getUserInfo: (userName, token) => dispatch(getUserInfo(userName, token))
 });
 
 export default connect(

@@ -5,7 +5,7 @@ export function editUserInfo(userInfo, token) {
   return async dispatch => {
     try {
       const payload = {
-        userName: userInfo.username,
+        userName: userInfo.userName,
         token,
         ...userInfo
       };
