@@ -6,9 +6,7 @@ import {
   UnApprovedGuide,
   ApprovalStatus,
   Gender,
-  UserProfile,
-  ApprovedGuide,
-  BadGuide
+  UserProfile
 } from './types';
 import { IdGenerator } from './Tour';
 
@@ -25,10 +23,6 @@ type RegisterGuide = (
   bankName: string,
   gender: Gender
 ) => UnApprovedGuide;
-
-type ApproveGuide = (g: Guide) => ApprovedGuide
-
-type MarkBadGuide = (g: Guide) => BadGuide
 
 type AddPublishedTour = (c: Guide, t: Tour) => Guide;
 
@@ -71,56 +65,6 @@ export function registerGuide(idGenerator: IdGenerator): RegisterGuide {
     return guide;
   };
 }
-
-export function approveGuide(): ApproveGuide {
-  return (guide: Guide) => {
-    const approvedGuide: ApprovedGuide = {
-      _type: GuideType.ApprovedGuide,
-      guideId: guide.guideId,
-      userName: guide.userName,
-      password: guide.password,
-      personalId: guide.personalId,
-      bankAccountNumber: guide.bankAccountNumber,
-      bankName: guide.bankName,
-      email: guide.email,
-      profile: guide.profile,
-      approvalStatus: ApprovalStatus.Approved,
-      availableDate: [],
-      dealtTrips: [],
-      publishedTours: []
-    }
-    return approvedGuide;
-  }
-}
-
-export function markBadGuide(): MarkBadGuide {
-  return (guide: Guide) => {
-    switch (guide._type) {
-      case GuideType.ApprovedGuide: {
-        const badGuide: BadGuide = {
-          _type: GuideType.BadGuide,
-          guideId: guide.guideId,
-          userName: guide.userName,
-          password: guide.password,
-          personalId: guide.personalId,
-          bankAccountNumber: guide.bankAccountNumber,
-          bankName: guide.bankName,
-          email: guide.email,
-          profile: guide.profile,
-          approvalStatus: guide.approvalStatus,
-          availableDate: guide.availableDate,
-          dealtTrips: guide.dealtTrips,
-          publishedTours: guide.publishedTours
-        }
-        return badGuide;
-      }
-      default: {
-        throw new Error('Guide must be approved to be marked bad');
-      }
-    }
-  }
-}
-
 export function addPublishedTour(): AddPublishedTour {
   return (guide: Guide, tour: Tour) => {
     switch (guide._type) {
