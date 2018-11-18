@@ -17,8 +17,6 @@ async function main() {
     next();
   });
 
-  app.use()
-
   app.use('/tour', Tour);
   app.use('/guide', Guide);
   app.use('/customer', Customer);
