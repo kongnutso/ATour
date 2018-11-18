@@ -7,7 +7,7 @@ import { GetCustomerDb, UpdateCustomerDb} from '../repository/Customer';
 import { Customer, Guide, Trip } from '../domain/types';
 import { GetTourDb, GetTripDb, UpdateTourDb, UpdateTripDb } from '../repository/Tour';
 import { DateGenerator } from '../domain/Tour';
-import { approveTrip } from '../domain/Admin';
+import { approveTrip, refundTrip } from '../domain/Admin';
 import { updateTripToTour, updateCustomerTripHistory } from '../domain/CustomerTour';
 
 export type ApproveGuideService = (
@@ -24,8 +24,49 @@ export function approveGuideService(getGuide: GetGuideDb, saveGuide: SaveGuideDb
 }
 
 export type ApproveRefundService = (
-  tripId: string
-) => Promise<void>;
+  tourId: string,
+  tripId: string,
+  customerId: string
+) => Promise<Trip>;
+
+export function approveRefundService(
+  getCustomerDb: GetCustomerDb,
+  getTourDb: GetTourDb,
+  getTripDb: GetTripDb,
+  updateTourDb: UpdateTourDb,
+  updateTripDb: UpdateTripDb,
+  updateCustomerDb: UpdateCustomerDb,
+  dateGenerator: DateGenerator
+): ApproveRefundService {
+  return async (
+    tourId,
+    tripId,
+    customerId
+  ) => {
+    const requestedTrip = await getTripDb(tripId);
+    const tour = await getTourDb(tourId);
+    const customer = await getCustomerDb(customerId);
+
+    const refundedTrip = await refundTrip()(
+      requestedTrip, 
+      dateGenerator()
+    );
+    const updatedTour = await updateTripToTour()(
+      tour, 
+      refundedTrip
+    );
+    const updatedCustomer = await updateCustomerTripHistory()(
+      customer, 
+      refundedTrip
+    );
+
+    await updateCustomerDb(updatedCustomer);
+    await updateTourDb(updatedTour);
+    await updateTripDb(refundedTrip);
+
+    return refundedTrip;
+  }
+}
 
 export type SearchCustomerService = (
   customerId: string
