@@ -9,8 +9,7 @@ import {
 
 } from '../repository/Customer';
 import { 
-    registerCustomer,
-    customerProfile
+    registerCustomer
 } from '../domain/Customer';
 import { Customer } from '../domain/types';
 import {IdGenerator} from '../domain/Tour';
@@ -32,12 +31,9 @@ export type LoginService = (
 ) => Promise<string>;
 
 export type EditCustomerProfileService = (
-    userName: string,
-    firstName: string,
-    lastName: string,
-    phoneNumber: string,
-    birthDate: Date,
-    gender: "Male"| "Female"
+    customerId: string,
+    email: string,
+    phoneNumber: string
 ) => Promise<Customer>;
 
 export type GetCustomerProfileService = (
@@ -101,22 +97,12 @@ export function loginService(login: GetCustomerLogin, getToken: GetCustomerToken
 
 export function editCustomerProfileService(editCustomerProfileDb: EditCustomerProfileDb): EditCustomerProfileService{
     return async (
-        userName,
-        firstName,
-        lastName,
-        phoneNumber,
-        birthDate,
-        gender
+        customerId,
+        email,
+        phoneNumber
     ) => {
-        const profile = customerProfile()(
-            firstName,
-            lastName,
-            phoneNumber,
-            birthDate,
-            gender
-        );
-        await editCustomerProfileDb (userName, profile);
-        return profile;
+        const customer = await editCustomerProfileDb (customerId, email, phoneNumber);
+        return customer;
     }
 }
 

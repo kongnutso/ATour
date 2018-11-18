@@ -84,25 +84,19 @@ router.post('/editProfile', async (req, res) => {
   try {
     const db: Db = res.locals.db;
     const {
-      userName,
-      firstName,
-      lastName,
-      phoneNumber,
-      birthDate,
-      gender
+          customerId,
+          email,
+          phoneNumber
     } = req.body;
-    const profile = await editCustomerProfileService(editCustomerProfile(db))(
-      userName,
-      firstName,
-      lastName,
-      phoneNumber,
-      birthDate,
-      gender
+    const customer = await editCustomerProfileService(editCustomerProfile(db))(
+        customerId,
+        email,
+        phoneNumber
     );
-    res.json(profile);
+    res.json(customer);
   } catch (error) {
     console.log(error.message);
-    res.json({ profile: null, error: error.message });
+    res.json({ customer: null, error: error.message });
   }
 });
 
@@ -110,13 +104,13 @@ router.post('/getProfile', async (req, res) => {
   try {
     const db: Db = res.locals.db;
     const { userName } = req.body;
-    const profile = await getCustomerProfileService(getCustomerProfile(db))(
+    const customer = await getCustomerProfileService(getCustomerProfile(db))(
       userName
     );
-    res.json(profile);
+    res.json(customer);
   } catch (error) {
     console.log(error.message);
-    res.json({ profile: null, error: error.message });
+    res.json({ customer: null, error: error.message });
   }
 });
 
