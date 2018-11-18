@@ -8,7 +8,9 @@ import {
     Review,
     Tour,
     Customer,
-    Trip
+    Trip,
+    ApprovedTrip,
+    RefundRequestedTrip
 } from './types';
 
 describe('CustomerTour', ()=> {
@@ -456,4 +458,41 @@ describe('CustomerTour', ()=> {
         expect(resultCustomer).toEqual(expectedCustomer);
     })
     
+    test('refundTrip', () => {
+        const trip: ApprovedTrip = {
+            _type: TripType.ApprovedTrip,
+            tripId: 'tripId',
+            tripDate: new Date("2018-11-11"),
+            bookInfo: {
+                bookDate: new Date('2018-11-05'),
+                customerId: 'customerId',
+                size: 5,
+                price: 5000
+            },
+            slipImages: [{url: 'www.adm.co.th'}],
+            paidDate: new Date('2018-11-05'),
+            approveDate : new Date('2018-11-06')
+        }
+        const resultTrip = CustomerTourDomain.refundTrip()(
+            trip, new Date('2018-11-07')
+        );
+        const expectedTrip: RefundRequestedTrip = {
+            _type: TripType.RefundRequestedTrip,
+            tripId: 'tripId',
+            tripDate: new Date("2018-11-11"),
+            bookInfo: {
+                bookDate: new Date('2018-11-05'),
+                customerId: 'customerId',
+                size: 5,
+                price: 5000
+            },
+            slipImages: [{ url: 'www.adm.co.th' }],
+            paidDate: new Date('2018-11-05'),
+            approveDate: new Date('2018-11-06'),
+            refundRequestDate: new Date('2018-11-07')
+            
+        };
+        expect(resultTrip).toEqual(expectedTrip);
+    })
+
 })

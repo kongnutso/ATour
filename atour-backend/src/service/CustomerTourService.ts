@@ -18,7 +18,7 @@ import {
     Trip, Review, TripType
 } from '../domain/types';
 
-import { bookTrip, updateTripToTour, updateCustomerTripHistory, uploadPayment, createReview, addReviewToTour, editReview, removeReviewFromTour, addTripToCustomer } from '../domain/CustomerTour'
+import { bookTrip, updateTripToTour, updateCustomerTripHistory, uploadPayment, createReview, addReviewToTour, editReview, removeReviewFromTour, addTripToCustomer, refundTrip } from '../domain/CustomerTour'
 import { IdGenerator, DateGenerator } from 'domain/Tour';
 
 export type BookTripService = (
@@ -60,6 +60,12 @@ export type RemoveReviewService = (
 export type SeeBookHistoryService = (
     customerId: string
 ) => Promise<Trip[]>
+
+export type RefundTripService = (
+    tourId: string,
+    tripId: string,
+    customerId: string
+) => Promise<Trip>
 
 export function bookTripService(
         getCustomerDb: GetCustomerDb,
@@ -206,7 +212,6 @@ export function editReviewSrevice(
         ) => {
             const tour = await getTourDb(tourId);
             const review = await getReviewDb(reviewId);
-            console.log(review.authorId, customerId);
             
             if (review.authorId.localeCompare(customerId) == 0){
                 const updatedReview = editReview()(
@@ -224,25 +229,7 @@ export function editReviewSrevice(
             }else{
                 throw new Error('This is not your review');
             }
-            // switch (review.authorId){
-            //     case customerId :{
-            //         const updatedReview = editReview()(
-            //             review,
-            //             comment,
-            //             dateGenerator()
-            //         );
-                    
-            //         const updatedTour = addReviewToTour()(
-            //             tour, review
-            //         );
-            //         await updateReviewDb(review);
-            //         await updateTourDb(updatedTour);
-            //         return updatedReview;
-            //     }
-            //     default: {
-            //         throw new Error('This is not your review');
-            //     }
-            // }
+           
         }
     }
 
@@ -283,5 +270,45 @@ export function seeBookHistoryService(
     return async (customerId) => {
         const customer = await getCustomerDb(customerId);
         return customer.tripHistory
+    }
+}
+
+export function refundTripService(
+    getCustomerDb: GetCustomerDb,
+    getTourDb: GetTourDb,
+    getTripDb: GetTripDb,
+    updateTourDb: UpdateTourDb,
+    updateTripDb: UpdateTripDb,
+    updateCustomerDb: UpdateCustomerDb,
+    dateGenerator: DateGenerator
+): RefundTripService {
+    return async (
+        tourId,
+        tripId,
+        customerId) => {
+        const tour = await getTourDb(tourId);
+        const customer = await getCustomerDb(customerId);
+        const trip = await getTripDb(tripId);
+        switch (trip._type) {
+            case TripType.ApprovedTrip: {
+                const refundRequestedTrip = refundTrip()(
+                    trip,
+                    dateGenerator()
+                );
+                const updatedTour = updateTripToTour()(
+                    tour, refundRequestedTrip
+                );
+                const updatedCustomer = addTripToCustomer()(
+                    customer, refundRequestedTrip
+                );
+                await updateCustomerDb(updatedCustomer);
+                await updateTourDb(updatedTour);
+                await updateTripDb(refundRequestedTrip);
+                return refundRequestedTrip;
+            }
+            default: {
+                throw new Error('Your Payment has not been approve')
+            }
+        }
     }
 }
