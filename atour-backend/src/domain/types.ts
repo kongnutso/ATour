@@ -189,7 +189,7 @@ export type BadGuide = {
   profile: UserProfile;
   bankAccountNumber: string;
   bankName: string;
-  approvalStatus: ApprovalStatus;
+  approvalStatus: ApprovalStatus.Approved;
   availableDate: Date[];
   dealtTrips: Trip[];
   publishedTours: Tour[];
