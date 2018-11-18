@@ -68,6 +68,10 @@ type UpdateCustomerTripHistory = (
     trip: Trip
 ) => Customer
 
+type AddTripToCustomer = (
+    customer: Customer,
+    trip: Trip
+) => Customer
 export function bookTrip() : BookTrip{
     return (
         tripId,
@@ -229,5 +233,15 @@ export function updateCustomerTripHistory(): UpdateCustomerTripHistory {
         }
 
         return customer
+    }
+}
+
+export function addTripToCustomer(): AddTripToCustomer {
+    return (customer,trip) => {
+        const addedTripHistory = [...customer.tripHistory, trip]
+        return {
+            ...customer,
+            tripHistory: addedTripHistory
+        };
     }
 }

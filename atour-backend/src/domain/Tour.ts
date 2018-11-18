@@ -1,6 +1,7 @@
 import { Tour, UnbookedTrip, PartialTour, TripType } from './types';
 
 export type IdGenerator = () => string;
+export type DateGenerator= () => Date;
 
 export type PublishTour = (
   tourName: string,

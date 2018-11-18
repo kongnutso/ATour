@@ -404,5 +404,56 @@ describe('CustomerTour', ()=> {
         }
         expect(resultCustomer).toEqual(expectedCustomer);
     })
+
+    test('addTripToCustomer', () => {
+
+        const trip: BookedTrip = {
+            _type: TripType.BookedTrip,
+            tripId: 'tripId',
+            tripDate: new Date("2018-11-11"),
+            bookInfo: {
+                bookDate: new Date('2018-11-05'),
+                customerId: 'customerId',
+                size: 5,
+                price: 5000
+            }
+        }
+
+        const customer: Customer = {
+            customerId: 'customerid',
+            userName: 'customerUser',
+            password: 'password',
+            email: 'customer@test.com',
+            personalId: '1234567890123',
+            profile: {
+                firstName: 'Customername',
+                lastName: 'Clastname',
+                birthDate: new Date('1997-05-07'),
+                phoneNumber: '0811111111',
+                gender: 'Female'
+            },
+            tripHistory: []
+        }
+
+        const resultCustomer = CustomerTourDomain.addTripToCustomer()(
+            customer, trip);
+
+        const expectedCustomer: Customer = {
+            customerId: 'customerid',
+            userName: 'customerUser',
+            password: 'password',
+            email: 'customer@test.com',
+            personalId: '1234567890123',
+            profile: {
+                firstName: 'Customername',
+                lastName: 'Clastname',
+                birthDate: new Date('1997-05-07'),
+                phoneNumber: '0811111111',
+                gender: 'Female'
+            },
+            tripHistory: [trip]
+        }
+        expect(resultCustomer).toEqual(expectedCustomer);
+    })
     
 })

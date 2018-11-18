@@ -181,9 +181,11 @@ router.post('/bookTrip', async (req,res) => {
         const trip = await bookTripService(
             getCustomer(db),
             getTour(db),
+            getTrip(db),
             updateTour(db),
             updateTrip(db),
-            updateCustomer(db)
+            updateCustomer(db),
+            () => new Date()
         )(
             tourId,
             tripId,
@@ -214,7 +216,8 @@ router.post('/uploadPayment', async (req, res) => {
       getTrip(db),
       updateTour(db),
       updateTrip(db),
-      updateCustomer(db)
+      updateCustomer(db),
+      () => new Date()
     )(
       tourId,
       tripId,
@@ -242,7 +245,8 @@ router.post('/addReview', async (req, res) => {
       getTrip(db),
       updateTour(db),
       saveReview(db),
-      () => uuid()
+      () => uuid(),
+      () => new Date()
       )(
       tourId,
       tripId,
@@ -270,6 +274,7 @@ router.post('/editReview', async (req, res) => {
       getReview(db),
       updateTour(db),
       updateReview(db),
+      () => new Date()
     )(
       tourId,
       customerId,

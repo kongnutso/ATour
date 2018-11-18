@@ -18,8 +18,8 @@ import {
     Trip, Review, TripType
 } from '../domain/types';
 
-import { bookTrip, updateTripToTour, updateCustomerTripHistory, uploadPayment, createReview, addReviewToTour, editReview, removeReviewFromTour } from '../domain/CustomerTour'
-import { IdGenerator } from 'domain/Tour';
+import { bookTrip, updateTripToTour, updateCustomerTripHistory, uploadPayment, createReview, addReviewToTour, editReview, removeReviewFromTour, addTripToCustomer } from '../domain/CustomerTour'
+import { IdGenerator, DateGenerator } from 'domain/Tour';
 
 export type BookTripService = (
     tourId: string,
@@ -64,9 +64,11 @@ export type SeeBookHistoryService = (
 export function bookTripService(
         getCustomerDb: GetCustomerDb,
         getTourDb: GetTourDb,
+        getTripDb: GetTripDb,
         updateTourDb: UpdateTourDb,
         updateTripDb: UpdateTripDb,
-        updateCustomerDb: UpdateCustomerDb
+        updateCustomerDb: UpdateCustomerDb,
+        dateGenerator: DateGenerator
 
     ) : BookTripService {
     return async (
@@ -79,24 +81,33 @@ export function bookTripService(
         ) => {
             const tour = await getTourDb(tourId);
             const customer = await getCustomerDb(customerId);
-            const trip = bookTrip()(
-                tripId,
-                tripDate,
-                customerId,
-                size,
-                price,
-                new Date()
-            );
-            const updatedTour = updateTripToTour()(
-                tour,trip
-            );
-            const updatedCustomer = updateCustomerTripHistory()(
-                customer,trip
-            );
-            await updateCustomerDb(updatedCustomer);
-            await updateTourDb(updatedTour);
-            await updateTripDb(trip);
-            return trip;
+            const trip = await getTripDb(tripId);
+            switch(trip._type){
+                case TripType.UnbookedTrip :{
+                    const bookedTrip = bookTrip()(
+                        tripId,
+                        tripDate,
+                        customerId,
+                        size,
+                        price,
+                        dateGenerator()
+                    );
+                    const updatedTour = updateTripToTour()(
+                        tour, bookedTrip
+                    );
+                    const updatedCustomer = addTripToCustomer()(
+                        customer, bookedTrip
+                    );
+                    await updateCustomerDb(updatedCustomer);
+                    await updateTourDb(updatedTour);
+                    await updateTripDb(bookedTrip);
+                    return bookedTrip;
+                } 
+                default : {
+                    throw new Error('Trip is already booked');
+                }
+            }
+            
         }
     }
 
@@ -106,7 +117,8 @@ export function uploadPaymentService(
     getTripDb: GetTripDb,
     updateTourDb: UpdateTourDb,
     updateTripDb: UpdateTripDb,
-    updateCustomerDb: UpdateCustomerDb
+    updateCustomerDb: UpdateCustomerDb,
+    dateGenerator: DateGenerator
     ): UploadPaymentService {
     return async (
         tourId,
@@ -121,7 +133,7 @@ export function uploadPaymentService(
             const paidTrip = uploadPayment()(
                 trip,
                 {url: slipUrl},
-                new Date()
+                dateGenerator()
             );
             
             const updatedTour = updateTripToTour()(
@@ -144,7 +156,8 @@ export function addReviewService(
     getTripDb: GetTripDb,
     updateTourDb: UpdateTourDb,
     saveReviewDb: SaveReviewDb,
-    idGenerator: IdGenerator
+    idGenerator: IdGenerator,
+    dateGenerator: DateGenerator
 ): AddReviewService {
     return async (
         tourId,
@@ -161,7 +174,7 @@ export function addReviewService(
                         trip,
                         customerId,
                         comment,
-                        new Date()
+                        dateGenerator()
                     );
                     
                     const updatedTour = addReviewToTour()(
@@ -183,6 +196,7 @@ export function editReviewSrevice(
     getReviewDb: GetReviewDb,
     updateTourDb: UpdateTourDb,
     updateReviewDb: UpdateReviewDb,
+    dateGenerator: DateGenerator
     ) : EditReviewService {
         return async (
             tourId,
@@ -192,26 +206,43 @@ export function editReviewSrevice(
         ) => {
             const tour = await getTourDb(tourId);
             const review = await getReviewDb(reviewId);
+            console.log(review.authorId, customerId);
+            
+            if (review.authorId.localeCompare(customerId) == 0){
+                const updatedReview = editReview()(
+                    review,
+                    comment,
+                    dateGenerator()
+                );
 
-            switch (review.authorId){
-                case customerId :{
-                    const updatedReview = editReview()(
-                        review,
-                        comment,
-                        new Date()
-                    );
-                    
-                    const updatedTour = addReviewToTour()(
-                        tour, review
-                    );
-                    await updateReviewDb(review);
-                    await updateTourDb(updatedTour);
-                    return updatedReview;
-                }
-                default: {
-                    throw new Error('This is not your review');
-                }
+                const updatedTour = addReviewToTour()(
+                    tour, review
+                );
+                await updateReviewDb(review);
+                await updateTourDb(updatedTour);
+                return updatedReview;
+            }else{
+                throw new Error('This is not your review');
             }
+            // switch (review.authorId){
+            //     case customerId :{
+            //         const updatedReview = editReview()(
+            //             review,
+            //             comment,
+            //             dateGenerator()
+            //         );
+                    
+            //         const updatedTour = addReviewToTour()(
+            //             tour, review
+            //         );
+            //         await updateReviewDb(review);
+            //         await updateTourDb(updatedTour);
+            //         return updatedReview;
+            //     }
+            //     default: {
+            //         throw new Error('This is not your review');
+            //     }
+            // }
         }
     }
 
