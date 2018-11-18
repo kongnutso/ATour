@@ -1,9 +1,9 @@
 import {
   Trip,
-  PaidTrip,
+  // PaidTrip,
   ApprovedTrip,
-  Tour,
-  Customer,
+  // Tour,
+  // Customer,
   TripType
 } from './types'
 

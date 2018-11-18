@@ -3,12 +3,12 @@ import {
   SaveGuideDb
 } from '../repository/Guide';
 import { approveGuide, markBadGuide } from '../domain/Guide';
-import { GetCustomerDb, UpdateCustomerDb, saveCustomer } from '../repository/Customer';
-import { Customer, Guide, Trip } from 'domain/types';
+import { GetCustomerDb, UpdateCustomerDb} from '../repository/Customer';
+import { Customer, Guide, Trip } from '../domain/types';
 import { GetTourDb, GetTripDb, UpdateTourDb, UpdateTripDb } from '../repository/Tour';
 import { DateGenerator } from '../domain/Tour';
-import { approveTrip } from 'domain/Admin';
-import { updateTripToTour, updateCustomerTripHistory } from 'domain/CustomerTour';
+import { approveTrip } from '../domain/Admin';
+import { updateTripToTour, updateCustomerTripHistory } from '../domain/CustomerTour';
 
 export type ApproveGuideService = (
   guideId: string

@@ -3,10 +3,10 @@ import {
   Guide,
   GuideType,
   ApprovalStatus,
-  Customer,
-  Tour,
-  PaidTrip,
-  TripType
+  // Customer,
+  // Tour,
+  // PaidTrip,
+  // TripType
 } from '../domain/types';
 import { GetGuideDb, SaveGuideDb } from '../repository/Guide';
 
@@ -166,5 +166,5 @@ describe('AdminService', () => {
 
 
 
-  })
+  // })
 })
