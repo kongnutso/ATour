@@ -8,7 +8,8 @@ import{
     PaidTrip,
     FinishedTrip,
     Trip,
-    TripType
+    TripType,
+    RefundRequestedTrip
     
 
     } from './types';
@@ -72,6 +73,12 @@ type AddTripToCustomer = (
     customer: Customer,
     trip: Trip
 ) => Customer
+
+type RefundTrip = (
+    trip: Trip,
+    date: Date
+) => RefundRequestedTrip
+
 export function bookTrip() : BookTrip{
     return (
         tripId,
@@ -243,5 +250,25 @@ export function addTripToCustomer(): AddTripToCustomer {
             ...customer,
             tripHistory: addedTripHistory
         };
+    }
+}
+
+export function refundTrip(): RefundTrip {
+    return (trip, date) => {
+        switch(trip._type){
+            case TripType.ApprovedTrip :{
+                const refundRequestedTrip: RefundRequestedTrip = {
+                    ...trip,
+                    _type: TripType.RefundRequestedTrip,
+                    refundRequestDate: date
+                }
+
+                return refundRequestedTrip;
+            }
+            default: {
+                throw new Error('Your payment has not been approved')
+            }
+        }
+        
     }
 }
