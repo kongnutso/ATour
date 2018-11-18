@@ -7,7 +7,9 @@ import {
   Tour,
   PaidTrip,
   TripType,
-  ApprovedTrip
+  ApprovedTrip,
+  RefundedTrip,
+  RefundRequestedTrip
 } from '../domain/types';
 import { GetGuideDb, SaveGuideDb } from '../repository/Guide';
 import { GetCustomerDb, UpdateCustomerDb } from '../repository/Customer';
@@ -205,6 +207,92 @@ describe('AdminService', () => {
       () => new Date('2018-11-11')
     )('tourId', 'tripId', 'customerId');
     expect(resultedTrip).toEqual(approvedTrip);
+
+  })
+
+  test('ApproveRefundService', async () => {
+    const customer: Customer = {
+      customerId: 'customerid',
+      userName: 'customerUser',
+      password: 'password',
+      email: 'customer@test.com',
+      personalId: '1234567890123',
+      profile: {
+          firstName: 'Customername',
+          lastName: 'Clastname',
+          birthDate: new Date('1997-05-07'),
+          phoneNumber: '0811111111',
+          gender: 'Female'
+      },
+      tripHistory: [],
+    };
+    const tour: Tour = {
+      tourId: 'tourId',
+      tourName: 'Changmai',
+      minimumSize: 1,
+      maximumSize: 5,
+      price: 3500,
+      detail: 'trip to Changmai',
+      reviews: [],
+      trips: [],
+      guideId: 'guideid'
+    };
+    const requestedTrip: RefundRequestedTrip = {
+      _type: TripType.RefundRequestedTrip,
+      tripId: 'tripId',
+      tripDate: new Date("2018-11-11"),
+      bookInfo: {
+          bookDate: new Date("2018-11-05"),
+          customerId: 'customerId',
+          size: 5,
+          price: 5000
+      },
+      paidDate: new Date('2018-11-05'),
+      slipImages: [{url: 'www.adm.co.th'}],
+      approveDate: new Date('2018-11-11'),
+      refundRequestDate: new Date('2018-12-01')
+    }
+    const refundedTrip: RefundedTrip = {
+      _type: TripType.RefundedTrip,
+      tripId: 'tripId',
+      tripDate: new Date("2018-11-11"),
+      bookInfo: {
+          bookDate: new Date("2018-11-05"),
+          customerId: 'customerId',
+          size: 5,
+          price: 5000
+      },
+      paidDate: new Date('2018-11-05'),
+      slipImages: [{url: 'www.adm.co.th'}],
+      approveDate: new Date('2018-11-11'),
+      refundRequestDate: new Date('2018-12-01'),
+      refundDate: new Date('2018-12-12')
+    } 
+
+    const fakeGetCustomer: GetCustomerDb = async customerId => {
+      return customer;
+    }
+    const fakeGetTour: GetTourDb = async tourId => {
+      return tour;
+    }
+    const fakeGetTrip: GetTripDb = async tripId => {
+      return requestedTrip;
+    }
+
+    const fakeUpdateTour: UpdateTourDb = async (tour) => console.log(tour);
+    const fakeUpdateTrip: UpdateTripDb = async (trip) => console.log(trip);
+    const fakeUpdateCustomer: UpdateCustomerDb = async customer => console.log(customer);
+
+    const resultedTrip = await AdminService.approveRefundService(
+      fakeGetCustomer,
+      fakeGetTour,
+      fakeGetTrip,
+      fakeUpdateTour, 
+      fakeUpdateTrip,
+      fakeUpdateCustomer,
+      () => new Date('2018-12-12')
+    )('tourId', 'tripId', 'customerId');
+    expect(resultedTrip).toEqual(refundedTrip);
 
   })
 })

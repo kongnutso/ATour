@@ -2,15 +2,38 @@ import {
   GetGuideDb, 
   SaveGuideDb
 } from '../repository/Guide';
-import { approveGuide, markBadGuide } from '../domain/Guide';
 import { GetCustomerDb, UpdateCustomerDb} from '../repository/Customer';
 import { Customer, Guide, Trip } from '../domain/types';
 import { GetTourDb, GetTripDb, UpdateTourDb, UpdateTripDb } from '../repository/Tour';
 import { DateGenerator } from '../domain/Tour';
-import { approveTrip, refundTrip } from '../domain/Admin';
+import { approveTrip, refundTrip, approveGuide, markBadGuide } from '../domain/Admin';
 import { updateTripToTour, updateCustomerTripHistory } from '../domain/CustomerTour';
 
 export type ApproveGuideService = (
+  guideId: string
+) => Promise<Guide>;
+
+export type ApproveRefundService = (
+  tourId: string,
+  tripId: string,
+  customerId: string
+) => Promise<Trip>;
+
+export type SearchCustomerService = (
+  customerId: string
+) => Promise<Customer>;
+
+export type SearchGuideService = (
+  guideId: string
+) => Promise<Guide[]>;
+
+export type ApprovePaymentService = (
+  tourId: string,
+  tripId: string,
+  customerId: string
+) => Promise<Trip>;
+
+export type MarkBadGuideService = (
   guideId: string
 ) => Promise<Guide>;
 
@@ -22,12 +45,6 @@ export function approveGuideService(getGuide: GetGuideDb, saveGuide: SaveGuideDb
     return approvedGuide;
   };
 }
-
-export type ApproveRefundService = (
-  tourId: string,
-  tripId: string,
-  customerId: string
-) => Promise<Trip>;
 
 export function approveRefundService(
   getCustomerDb: GetCustomerDb,
@@ -68,10 +85,6 @@ export function approveRefundService(
   }
 }
 
-export type SearchCustomerService = (
-  customerId: string
-) => Promise<Customer>;
-
 export function searchCustomerService(
   getCustomer: GetCustomerDb
 ): SearchCustomerService {
@@ -81,16 +94,6 @@ export function searchCustomerService(
     return await getCustomer(customerId);
   }
 }
-
-export type SearchGuideService = (
-  guideId: string
-) => Promise<Guide[]>;
-
-export type ApprovePaymentService = (
-  tourId: string,
-  tripId: string,
-  customerId: string
-) => Promise<Trip>;
 
 export function approvePaymentService(
   getCustomerDb: GetCustomerDb,
@@ -130,10 +133,6 @@ export function approvePaymentService(
     return approvedTrip;
   }
 }
-
-export type MarkBadGuideService = (
-  guideId: string
-) => Promise<Guide>;
 
 export function markBadGuideService(getGuide: GetGuideDb, saveGuide: SaveGuideDb): MarkBadGuideService {
   return async (guideId) => {
