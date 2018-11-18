@@ -1,5 +1,5 @@
 import * as TourDomain from './Tour';
-import { Tour } from './types';
+import { Tour, TripType } from './types';
 
 describe('Tour', () => {
   test('create Tour', () => {
@@ -82,6 +82,7 @@ describe('Tour', () => {
       detail: 'trip to Changmai',
       trips: [
         {
+          _type: TripType.UnbookedTrip,
           tripId: 'newidkrub',
           tripDate: new Date('2018-11-04')
         }
