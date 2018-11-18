@@ -102,7 +102,7 @@ export function editCustomerProfile(db: Db): EditCustomerProfileDb {
         const customer = await db.collection('customer').findOne({customerId});
         const newCustomerProfile: UserProfile = {...customer.profile, phoneNumber };
         const newCustomer: Customer = {...customer, email, profile: newCustomerProfile };
-        await db.collection('customer').update({customerId}, {$set: newCustomer})
+        await db.collection('customer').updateOne({customerId}, {$set: newCustomer})
         return newCustomer;
     }
 }
