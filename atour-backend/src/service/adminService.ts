@@ -38,17 +38,7 @@ export function searchCustomerService(
 
 export type SearchGuideService = (
   guideId: string
-) => Promise<Guide>;
-
-export function searchGuideService(
-  getGuide: GetGuideDb
-): SearchGuideService {
-  return async (
-    guideId: string
-  ) => {
-    return await getGuide(guideId);
-  }
-}
+) => Promise<Guide[]>;
 
 export type ApprovePaymentService = (
   tripId: string
