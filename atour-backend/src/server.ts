@@ -4,6 +4,7 @@ import { initMongo } from './db';
 import Tour from './routes/Tour';
 import Guide from './routes/Guide';
 import Customer from './routes/Customer';
+import Admin from './routes/Admin';
 
 const PORT = 3000;
 
@@ -20,6 +21,7 @@ async function main() {
   app.use('/tour', Tour);
   app.use('/guide', Guide);
   app.use('/customer', Customer);
+  app.use('/admin', Admin);
 
   app.listen(PORT, () => {
     console.log('Express server listening on port ' + PORT);
