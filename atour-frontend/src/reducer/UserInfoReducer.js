@@ -2,7 +2,8 @@ import { combineReducers } from 'redux';
 import {
   LOGOUT,
   LOGIN_SUCCESS,
-  LOGIN_FAILED
+  LOGIN_FAILED,
+  CLEAR_ERROR
 } from '../action/ApplicationAction';
 import {
   EDIT_USER_INFO,
@@ -45,8 +46,10 @@ function isLoginSuccess(state = initialState.isLoginSuccess, action) {
       return true;
     case LOGIN_FAILED:
       return false;
+    case CLEAR_ERROR:
+      return null;
     case LOGOUT:
-      return;
+      return null;
     default:
       return state;
   }

@@ -1,6 +1,7 @@
 import axios from 'axios';
 export const ON_CHANGE = 'ON_CHANGE';
-export const ON_SEARCH = 'ON_SEARCH';
+export const ON_SEARCH_TOUR = 'ON_SEARCH_TOUR';
+export const ON_SEARCH_GUIDE = 'ON_SEARCH_GUIDE';
 
 export function onChange(value) {
   return {
@@ -9,30 +10,31 @@ export function onChange(value) {
   };
 }
 
-export function onSearch(keyword) {
+export function onSearch(keyword, isTour) {
   return async dispatch => {
     try {
-      const res = await axios
-        .get('http://localhost:3000/customer/searchTours', keyword)
-        .then(res => {
-          return res.data;
+      if (isTour) {
+        const res = await axios
+          .post('http://localhost:3000/customer/searchTour', { keyword })
+          .then(res => {
+            return res.data;
+          });
+
+        return dispatch({
+          type: ON_SEARCH_TOUR,
+          payload: res
         });
-      let result = [];
-      if (keyword === 'Chiang Mai') {
-        result.push(res[0]);
-      } else if (keyword === 'Karen Way') {
-        result.push(res[2]);
-      } else if (keyword === 'Bangkok') {
-        result.push(res[3]);
-      } else if (keyword === 'Koh Kret') {
-        result.push(res[4]);
-      } else if (!keyword) {
-        result = res;
+      } else {
+        const res = await axios
+          .post('http://localhost:3000/customer/searchGuide', { keyword })
+          .then(res => {
+            return res.data;
+          });
+        return dispatch({
+          type: ON_SEARCH_GUIDE,
+          payload: res
+        });
       }
-      return dispatch({
-        type: ON_SEARCH,
-        payload: result
-      });
     } catch (e) {}
   };
 }

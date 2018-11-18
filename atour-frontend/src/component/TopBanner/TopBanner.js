@@ -214,10 +214,14 @@ class TopBanner extends React.Component {
     return (
       <div className="topbanner-right-container">
         <div className="topbanner-right topbanner-first">
-          <div className="topbanner-menu">Search for Tour</div>
+          <Link to="/searchForTour" className="topbanner-link">
+            <div className="topbanner-menu">Search for Tour</div>
+          </Link>
         </div>
         <div className="topbanner-right">
-          <div className="topbanner-menu">Search for Guide</div>
+          <Link to="/searchForGuide" className="topbanner-link">
+            <div className="topbanner-menu">Search for Guide</div>
+          </Link>
         </div>
         {renderSignIn}
       </div>

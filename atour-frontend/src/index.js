@@ -15,8 +15,9 @@ import BookedHistoryInfo from './component/BookedHistoryInfo/BookedHistoryInfo';
 import AdminApprovePage from './component/AdminApprovePage';
 import AdminSearchPage from './component/AdminSearchPage';
 import ViewDealtTripPage from './component/ViewDealtTripPage';
-import SearchForTour from './component/SearchForTourPage';
+import SearchFor from './component/SearchFor';
 import CustomerTourInfo from './component/CustomerTourInfo/CustomerTourInfo';
+import GuideInfo from './component/GuideInfo/GuideInfo';
 
 // const createStoreWithMiddleware = applyMiddleware(promise)(createStore);
 
@@ -32,7 +33,10 @@ ReactDOM.render(
   <Provider store={store}>
     <BrowserRouter>
       <div>
-        <Route path="/" render={props => <TopBanner transparent {...props} />} />
+        <Route
+          path="/"
+          render={props => <TopBanner transparent {...props} />}
+        />
         <Switch>
           <Route exact path="/" component={App} />
           <Route exact path="/bookedHistory" component={BookedHistory} />
@@ -43,10 +47,12 @@ ReactDOM.render(
             component={BookedHistoryInfo}
           />
           <Route exact path="/customerTourInfo" component={CustomerTourInfo} />
+          <Route exact path="/guideInfo" component={GuideInfo} />
           <Route exact path="/adminApprove" component={AdminApprovePage} />
           <Route exact path="/adminSearch" component={AdminSearchPage} />
           <Route exact path="/viewDealtTrips" component={ViewDealtTripPage} />
-          <Route exact path="/searchForTour" component={SearchForTour} />
+          <Route exact path="/searchForTour" component={SearchFor} />
+          <Route exact path="/searchForGuide" component={SearchFor} />
         </Switch>
       </div>
     </BrowserRouter>

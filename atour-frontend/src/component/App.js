@@ -10,7 +10,7 @@ import autobind from 'react-autobind';
 import * as validation from '../utils/validation';
 import classNames from 'classnames';
 import { Container, Segment, Grid } from 'semantic-ui-react';
-import Tours from './Tours/Tours';
+import Cards from './Cards/Cards';
 import SearchBar from './SearchBar';
 import { mockTour } from './mock';
 import homeImage from '../image/home-background.jpg';
@@ -74,7 +74,7 @@ class App extends React.Component {
               </Grid.Row>
               <Grid.Row>
                 <Grid.Column>
-                  <Tours tours={this.props.tours} />
+                  <Cards items={this.props.tours} />
                 </Grid.Column>
               </Grid.Row>
             </Grid>
@@ -88,7 +88,7 @@ const mapStateToProps = state => ({
   tours: state.tour.tourList
 });
 const mapDispatchToProps = dispatch => ({
-  getAllTour: () => dispatch(onSearch(''))
+  getAllTour: () => dispatch(onSearch('', true))
 });
 export default connect(
   mapStateToProps,

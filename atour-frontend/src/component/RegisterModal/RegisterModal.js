@@ -150,16 +150,34 @@ class RegisterModal extends React.Component {
       birthDate,
       phoneNumber: phone
     };
-    const res = await axios
-      .post('http://localhost:3000/customer/register', payload)
-      .then(res => {
-        return res.data;
-      });
-    if (res.error) {
-      const errorPopUp = res.error;
-      this.setState({ errorPopUp });
+    if (asCustomer) {
+      const res = await axios
+        .post('http://localhost:3000/customer/register', payload)
+        .then(res => {
+          return res.data;
+        });
+      if (res.error) {
+        const errorPopUp = res.error;
+        this.setState({ errorPopUp });
+      } else {
+        this.setState({ successful: true });
+      }
     } else {
-      this.setState({ successful: true });
+      payload.bankName = bankName;
+      payload.bankAccountName = bankAccountName;
+      payload.bankAccountNumber = bankAccountNumber;
+      const res = await axios
+        .post('http://localhost:3000/guide/register', payload)
+        .then(res => {
+          return res.data;
+        });
+      console.log(res);
+      if (res.error) {
+        const errorPopUp = res.error;
+        this.setState({ errorPopUp });
+      } else {
+        this.setState({ successful: true });
+      }
     }
   }
 
