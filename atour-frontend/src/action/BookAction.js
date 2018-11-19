@@ -21,15 +21,34 @@ export function selectBookedTrip(trip) {
 }
 
 export const SET_IMAGE_SLIP = 'SET_IMAGE_SLIP';
-export function setImageSlip(url, bookedId) {
+export function setImageSlip(url, bookedId, tourId, customerId) {
   const dates = new Date();
   const dd = dates.getDate();
   const mm = dates.getMonth() + 1;
   const yyyy = dates.getFullYear();
   const today = mm + '/' + dd + '/' + yyyy;
-  return {
-    type: SET_IMAGE_SLIP,
-    payload: { url, bookedId, today }
+  return async dispatch => {
+    try {
+      if (bookedId) {
+        const slip = await axios
+          .post('http://localhost:3000/customer/uploadPayment', {
+            tourId,
+            bookedId,
+            customerId,
+            url
+          })
+          .then(res => {
+            //sth
+            return res.data;
+          });
+        return dispatch({
+          type: SET_IMAGE_SLIP,
+          payload: { url, bookedId, today }
+        });
+      } else {
+        return dispatch({ type: 'INVALID' });
+      }
+    } catch (e) {}
   };
 }
 
