@@ -275,7 +275,8 @@ describe('CustomerTour', ()=> {
                 lastName: 'Clastname',
                 birthDate: new Date('1997-05-07'),
                 phoneNumber: '0811111111',
-                gender: 'Female'
+                gender: 'Female',
+                profileImageUrl: null
             },
             tripHistory: [bookedTrip, paidTrip]
         }
@@ -383,7 +384,8 @@ describe('CustomerTour', ()=> {
                 lastName: 'Clastname',
                 birthDate: new Date('1997-05-07'),
                 phoneNumber: '0811111111',
-                gender: 'Female'
+                gender: 'Female',
+                profileImageUrl: null
             },
             tripHistory: [beforeTrip]
         }
@@ -402,7 +404,8 @@ describe('CustomerTour', ()=> {
                 lastName: 'Clastname',
                 birthDate: new Date('1997-05-07'),
                 phoneNumber: '0811111111',
-                gender: 'Female'
+                gender: 'Female',
+                profileImageUrl: null
             },
             tripHistory: [updatingTrip]
         }
@@ -434,7 +437,8 @@ describe('CustomerTour', ()=> {
                 lastName: 'Clastname',
                 birthDate: new Date('1997-05-07'),
                 phoneNumber: '0811111111',
-                gender: 'Female'
+                gender: 'Female',
+                profileImageUrl: null
             },
             tripHistory: []
         }
@@ -453,7 +457,8 @@ describe('CustomerTour', ()=> {
                 lastName: 'Clastname',
                 birthDate: new Date('1997-05-07'),
                 phoneNumber: '0811111111',
-                gender: 'Female'
+                gender: 'Female',
+                profileImageUrl: null
             },
             tripHistory: [trip]
         }
