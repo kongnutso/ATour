@@ -105,7 +105,6 @@ export function editCustomerProfile(db: Db): EditCustomerProfileDb {
         await db.collection('customer').updateOne({customerId}, {$set: newCustomer})
         return newCustomer;
     }
-
 }
 
 export function updateCustomer(db: Db): UpdateCustomerDb {
