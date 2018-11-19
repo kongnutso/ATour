@@ -40,7 +40,8 @@ describe('CustomerService', () => {
             lastName: 'Clastname',
             birthDate: new Date('1997-05-07'),
             phoneNumber: '0811111111',
-            gender: 'Female'
+            gender: 'Female',
+            profileImageUrl: null
         },
         tripHistory: [],
     };
@@ -67,7 +68,8 @@ describe('CustomerService', () => {
             lastName: 'Clastname',
             birthDate: new Date('1997-05-07'),
             phoneNumber: '0811111111',
-            gender: 'Female'
+            gender: 'Female',
+            profileImageUrl:null
         },
         tripHistory: [],
     };
@@ -80,7 +82,8 @@ describe('CustomerService', () => {
     const result = await CustomerService.editCustomerProfileService(fakeEditCustomerProfile)(
         'customerId',
         'newEmail@test.com',
-        '0812345678'
+        '0812345678',
+        'imageUrl'
     );
 
     const expectedCustomer :Customer = {
@@ -94,7 +97,8 @@ describe('CustomerService', () => {
             lastName: 'Clastname',
             birthDate: new Date('1997-05-07'),
             phoneNumber: '0812345678',
-            gender: 'Female'
+            gender: 'Female',
+            profileImageUrl: 'imageUrl'
         },
         tripHistory: [],
     };

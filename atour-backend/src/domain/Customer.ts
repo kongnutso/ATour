@@ -16,13 +16,6 @@ type RegisterCustomer = (
     gender: "Male" | "Female"
 ) => Customer;
 
-type CustomerProfile = (
-    firstName: string,
-    lastName: string,
-    phoneNumber: string,
-    birthDate: Date,
-    gender: "Male" | "Female"
-) => UserProfile;
 
 export function registerCustomer(idGenerator :IdGenerator): RegisterCustomer{
     return (
@@ -47,29 +40,11 @@ export function registerCustomer(idGenerator :IdGenerator): RegisterCustomer{
                 lastName,
                 birthDate,
                 phoneNumber,
-                gender
+                gender,
+                profileImageUrl: null
             },
             tripHistory: [],
         }
         return customer;
-    }
-}
-
-export function customerProfile():CustomerProfile {
-    return (
-        firstName,
-        lastName,
-        phoneNumber,
-        birthDate,
-        gender
-    ) => {
-        const profile: UserProfile = {
-            firstName,
-            lastName,
-            phoneNumber,
-            birthDate,
-            gender
-        }
-    return profile;
     }
 }
