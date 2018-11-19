@@ -16,7 +16,8 @@ describe('CustomerService', () => {
                 lastName: 'Clastname',
                 birthDate: new Date('1997-05-07'),
                 phoneNumber: '0811111111',
-                gender: 'Female'
+                gender: 'Female',
+                profileImageUrl: null
             },
             tripHistory: [],
         };
@@ -91,7 +92,8 @@ describe('CustomerService', () => {
                 lastName: 'Clastname',
                 birthDate: new Date('1997-05-07'),
                 phoneNumber: '0811111111',
-                gender: 'Female'
+                gender: 'Female',
+                profileImageUrl: null
             },
             tripHistory: [],
         };
@@ -378,7 +380,8 @@ describe('CustomerService', () => {
                 lastName: 'Clastname',
                 birthDate: new Date('1997-05-07'),
                 phoneNumber: '0811111111',
-                gender: 'Female'
+                gender: 'Female',
+                profileImageUrl: null
             },
             tripHistory: [bookedTrip,paidTrip],
         };
@@ -425,7 +428,8 @@ describe('CustomerService', () => {
                 lastName: 'Clastname',
                 birthDate: new Date('1997-05-07'),
                 phoneNumber: '0811111111',
-                gender: 'Female'
+                gender: 'Female',
+                profileImageUrl: null
             },
             tripHistory: [trip],
         };
@@ -515,7 +519,8 @@ describe('CustomerService', () => {
                 lastName: 'Clastname',
                 birthDate: new Date('1997-05-07'),
                 phoneNumber: '0811111111',
-                gender: 'Female'
+                gender: 'Female',
+                profileImageUrl: null
             },
             tripHistory: [trip],
         };
