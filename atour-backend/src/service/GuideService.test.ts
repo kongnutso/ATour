@@ -30,7 +30,8 @@ describe('GuideService', () => {
           lastName: 'Smith',
           phoneNumber: '0812345678',
           birthDate: new Date('1996-05-07'),
-          gender: 'Male'
+          gender: 'Male',
+          profileImageUrl: null
         },
         bankAccountNumber: '102943940',
         bankName: 'SCB',
@@ -77,7 +78,8 @@ describe('GuideService', () => {
         lastName: 'last',
         birthDate: new Date(1234),
         phoneNumber: '0983746888',
-        gender: 'Male'
+        gender: 'Male',
+        profileImageUrl: null
       },
       approvalStatus: ApprovalStatus.NotApprove
     };
@@ -116,7 +118,8 @@ describe('GuideService', () => {
         lastName: 'last',
         birthDate: new Date(1234),
         phoneNumber: '0983746888',
-        gender: 'Male'
+        gender: 'Male',
+        profileImageUrl: null
       },
       approvalStatus: ApprovalStatus.NotApprove
     };
@@ -129,7 +132,8 @@ describe('GuideService', () => {
       lastName: 'newlast',
       gender: 'Female',
       birthDate: new Date('1996-05-08'),
-      phoneNumber: '0849386844'
+      phoneNumber: '0849386844',
+      profileImageUrl: 'www.imgur.com'
     };
     const fakeSaveGuide: SaveGuideDb = async savedGuide => {
       expect(savedGuide).toEqual({

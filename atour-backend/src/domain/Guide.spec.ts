@@ -36,7 +36,8 @@ describe('Guide', () => {
         lastName: 'Smith',
         phoneNumber: '0812345678',
         birthDate: new Date('1996-05-07'),
-        gender: 'Male'
+        gender: 'Male',
+        profileImageUrl: null
       },
       bankAccountNumber: '102943940',
       bankName: 'SCB',
@@ -58,7 +59,8 @@ describe('Guide', () => {
         lastName: 'Smith',
         birthDate: new Date('1996-05-07'),
         phoneNumber: '0871234567',
-        gender: 'Male'
+        gender: 'Male',
+        profileImageUrl: null
       },
       bankAccountNumber: '12345',
       bankName: 'SCB',
@@ -98,7 +100,8 @@ describe('Guide', () => {
         lastName: 'Smith',
         birthDate: new Date('1996-05-07'),
         phoneNumber: '0871234567',
-        gender: 'Male'
+        gender: 'Male',
+        profileImageUrl: null
       },
       bankAccountNumber: '12345',
       bankName: 'SCB',
@@ -159,7 +162,8 @@ describe('Guide', () => {
         lastName: 'Smith',
         phoneNumber: '0812345678',
         birthDate: new Date('1996-05-07'),
-        gender: 'Male'
+        gender: 'Male',
+        profileImageUrl: null
       },
       bankAccountNumber: '102943940',
       bankName: 'SCB',
@@ -170,7 +174,8 @@ describe('Guide', () => {
       lastName: 'newlast',
       gender: 'Female',
       birthDate: new Date('1996-05-08'),
-      phoneNumber: '0849386844'
+      phoneNumber: '0849386844',
+      profileImageUrl: 'www.imgur.com'
     };
     const editedGuide = GuideDomain.editGuide()(guide, newProfile);
     expect(editedGuide).toEqual({
