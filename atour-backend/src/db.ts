@@ -38,6 +38,10 @@ export async function initMongo() {
     },
     tripHistory: [],
   };
+  const customertoken = {
+    customerId:'customerid',
+    token: 'aksjdflkajasdjkfklaj'
+  }
 
   const trips: UnbookedTrip[] = [
     {
@@ -149,6 +153,8 @@ export async function initMongo() {
   await db.collection('trip').insertMany(trips);
   await db.collection('customer').deleteMany({});
   await db.collection('customer').insertOne(customer);
+  await db.collection('customerToken').deleteMany({});
+  await db.collection('customerToken').insertOne(customertoken);
   console.log('seed complete');
 
   return {
