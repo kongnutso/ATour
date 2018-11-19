@@ -63,43 +63,42 @@ describe('GuideService', () => {
     );
   });
   test('loginGuide', async () => {
+    const expectedGuide: Guide = {
+      _type: GuideType.UnApprovedGuide,
+      guideId: 'guideId',
+      userName: 'guideusername',
+      password: 'password',
+      bankAccountNumber: '2134592',
+      bankName: 'SCB',
+      email: 'email@gmail.com',
+      personalId: '1928483849283',
+      profile: {
+        firstName: 'first',
+        lastName: 'last',
+        birthDate: new Date(1234),
+        phoneNumber: '0983746888',
+        gender: 'Male'
+      },
+      approvalStatus: ApprovalStatus.NotApprove
+    };
     const fakeGetGuideForLogin: GetGuideForLogin = async (
       userName,
       password
     ) => {
       expect(userName).toEqual('guideusername');
       expect(password).toEqual('password');
-      return {
-        _type: GuideType.UnApprovedGuide,
-        guideId: 'guideId',
-        userName: 'guideusername',
-        password: 'password',
-        bankAccountNumber: '2134592',
-        bankName: 'SCB',
-        email: 'email@gmail.com',
-        personalId: '1928483849283',
-        profile: {
-          firstName: 'first',
-          lastName: 'last',
-          birthDate: new Date(1234),
-          phoneNumber: '0983746888',
-          gender: 'Male'
-        },
-        approvalStatus: ApprovalStatus.NotApprove,
-        availableDate: [],
-        publishedTours: [],
-        dealtTrips: []
-      };
+      return expectedGuide;
     };
     const fakeGetTokenForGuide: GetTokenForGuide = async guideId => {
       expect(guideId).toEqual('guideId');
       return 'token';
     };
-    const token = await GuideService.loginGuideService(
+    const { token, guide } = await GuideService.loginGuideService(
       fakeGetGuideForLogin,
       fakeGetTokenForGuide
     )('guideusername', 'password');
     expect(token).toEqual('token');
+    expect(guide).toEqual(expectedGuide);
   });
 
   test('editGuide profile', async () => {
