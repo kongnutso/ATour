@@ -1,18 +1,22 @@
-import { UnbookedTrip, BookedTrip } from './types';
+import { UnbookedTrip, BookedTrip, TripType } from './types';
 
 type BookTrip = (
   trip: UnbookedTrip,
   customerId: string,
-  bookDate: Date
+  bookDate: Date,
+  size: number,
+  price: number
 ) => BookedTrip;
 
 export function bookTrip(): BookTrip {
   return (
     trip: UnbookedTrip,
     customerId: string,
-    bookDate: Date
+    bookDate: Date,
+    size: number,
+    price: number
   ): BookedTrip => {
     const { tripId, tripDate } = trip;
-    return { tripId, tripDate, bookInfo: { bookDate, customerId } };
+    return { _type: TripType.BookedTrip, tripId, tripDate, bookInfo: { bookDate, customerId, size, price } };
   };
 }

@@ -9,10 +9,9 @@ import {
 
 } from '../repository/Customer';
 import { 
-    registerCustomer,
-    customerProfile
+    registerCustomer
 } from '../domain/Customer';
-import { Customer, UserProfile } from '../domain/types';
+import { Customer } from '../domain/types';
 import {IdGenerator} from '../domain/Tour';
 export type RegisterCustomerService = (
     userName: string,
@@ -32,22 +31,19 @@ export type LoginService = (
 ) => Promise<string>;
 
 export type EditCustomerProfileService = (
-    userName: string,
-    firstName: string,
-    lastName: string,
-    phoneNumber: string,
-    birthDate: Date,
-    gender: "Male"| "Female"
-) => Promise<UserProfile>;
+    customerId: string,
+    email: string,
+    phoneNumber: string
+) => Promise<Customer>;
 
 export type GetCustomerProfileService = (
     userName: string
-) => Promise<UserProfile>;
+) => Promise<Customer>;
 
 export function getCustomerProfileService(getCustomerProfile: GetCustomerProfileDb): GetCustomerProfileService {
     return async (userName)=>{
-        const profile = await getCustomerProfile(userName);
-        return profile;
+        const customer = await getCustomerProfile(userName);
+        return customer;
     }
 }
 
@@ -101,22 +97,12 @@ export function loginService(login: GetCustomerLogin, getToken: GetCustomerToken
 
 export function editCustomerProfileService(editCustomerProfileDb: EditCustomerProfileDb): EditCustomerProfileService{
     return async (
-        userName,
-        firstName,
-        lastName,
-        phoneNumber,
-        birthDate,
-        gender
+        customerId,
+        email,
+        phoneNumber
     ) => {
-        const profile = customerProfile()(
-            firstName,
-            lastName,
-            phoneNumber,
-            birthDate,
-            gender
-        );
-        await editCustomerProfileDb (userName, profile);
-        return profile;
+        const customer = await editCustomerProfileDb (customerId, email, phoneNumber);
+        return customer;
     }
 }
 

@@ -1,3 +1,4 @@
+import * as cors from 'cors';
 import app from './app';
 import { initMongo } from './db';
 import Tour from './routes/Tour';
@@ -8,6 +9,8 @@ const PORT = 3000;
 
 async function main() {
   const { db } = await initMongo();
+
+  app.use(cors());
 
   app.use((req, res, next) => {
     res.locals.db = db;
