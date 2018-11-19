@@ -1,5 +1,5 @@
 import {
-    Customer, UserProfile,
+    Customer,
     } from './types';
 
 import { IdGenerator } from "./Tour";

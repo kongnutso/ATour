@@ -73,9 +73,9 @@ describe('CustomerService', () => {
         },
         tripHistory: [],
     };
-    const fakeEditCustomerProfile: EditCustomerProfileDb = async (customerId, email, phoneNumber) =>{
+    const fakeEditCustomerProfile: EditCustomerProfileDb = async (customerId, email, phoneNumber, profileImageUrl) =>{
       console.log(customerId, email, phoneNumber);  
-      const profile = {...customer.profile, phoneNumber}
+      const profile = {...customer.profile, phoneNumber, profileImageUrl}
       const newCustomer = {...customer, email, profile }
       return newCustomer;
     } 
