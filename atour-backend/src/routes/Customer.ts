@@ -102,12 +102,14 @@ router.post('/editProfile', async (req, res) => {
     const {
           customerId,
           email,
-          phoneNumber
+          phoneNumber,
+          profileImageUrl
     } = req.body;
     const customer = await editCustomerProfileService(editCustomerProfile(db))(
         customerId,
         email,
-        phoneNumber
+        phoneNumber,
+        profileImageUrl
     );
     res.json(customer);
   } catch (error) {

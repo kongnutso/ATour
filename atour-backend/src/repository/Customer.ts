@@ -14,7 +14,8 @@ export type GetCustomerLogin = (
 export type EditCustomerProfileDb = (
     customerId: string,
     email: string,
-    phoneNumber: string
+    phoneNumber: string,
+    profileImageUrl: string
 ) => Promise<Customer>;
 
 export type SaveCustomerTokenDb = (
@@ -97,10 +98,11 @@ export function editCustomerProfile(db: Db): EditCustomerProfileDb {
     return async (
         customerId,
         email,
-        phoneNumber
+        phoneNumber,
+        profileImageUrl
     ) => {
         const customer = await db.collection('customer').findOne({customerId});
-        const newCustomerProfile: UserProfile = {...customer.profile, phoneNumber };
+        const newCustomerProfile: UserProfile = {...customer.profile, phoneNumber ,profileImageUrl};
         const newCustomer: Customer = {...customer, email, profile: newCustomerProfile };
         await db.collection('customer').updateOne({customerId}, {$set: newCustomer})
         return newCustomer;

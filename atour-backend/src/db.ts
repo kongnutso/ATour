@@ -5,7 +5,8 @@ import {
   ApprovedGuide,
   Tour,
   UnbookedTrip,
-  TripType
+  TripType,
+  Customer
 } from './domain/types';
 
 //TODO: create proper config file
@@ -21,6 +22,23 @@ export async function initMongo() {
   const client = new MongoClient(url);
   await client.connect();
   const db = client.db(dbName);
+  const customer:Customer = {
+    customerId: 'customerid',
+    userName: 'username',
+    password: 'password',
+    email: 'customer@test.com',
+    personalId: '1234567890123',
+    profile: {
+        firstName: 'Customername',
+        lastName: 'Clastname',
+        birthDate: new Date('1997-05-07'),
+        phoneNumber: '0811111111',
+        gender: 'Female',
+        profileImageUrl: null
+    },
+    tripHistory: [],
+  };
+
   const trips: UnbookedTrip[] = [
     {
       _type: TripType.UnbookedTrip,
@@ -128,7 +146,8 @@ export async function initMongo() {
   await db.collection('tour').insertMany(tours);
   await db.collection('trip').deleteMany({});
   await db.collection('trip').insertMany(trips);
-  
+  await db.collection('customer').deleteMany({});
+  await db.collection('customer').insertOne(customer);
   console.log('seed complete');
 
   return {
