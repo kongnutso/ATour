@@ -84,13 +84,21 @@ router.post('/:guideId', async (req, res) => {
   try {
     const db: Db = res.locals.db;
     const { guideId } = req.params;
-    const { firstName, lastName, birthDate, gender, phoneNumber } = req.body;
+    const {
+      firstName,
+      lastName,
+      birthDate,
+      gender,
+      phoneNumber,
+      profileImageUrl
+    } = req.body;
     const guide = await editGuideService(getGuide(db), saveGuide(db))(guideId, {
       firstName,
       lastName,
       birthDate,
       gender,
-      phoneNumber
+      phoneNumber,
+      profileImageUrl
     });
     res.json(guide);
   } catch (e) {
