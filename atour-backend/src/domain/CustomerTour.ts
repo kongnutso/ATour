@@ -9,7 +9,9 @@ import{
     FinishedTrip,
     Trip,
     TripType,
-    RefundRequestedTrip
+    RefundRequestedTrip,
+    CancelledTrip,
+    UnbookedTrip
     
 
     } from './types';
@@ -78,6 +80,15 @@ type RefundTrip = (
     trip: Trip,
     date: Date
 ) => RefundRequestedTrip
+
+type CancelTrip = (
+    trip: Trip,
+    date: Date
+) => CancelledTrip
+
+type FreeTrip = (
+    trip: Trip
+) => UnbookedTrip
 
 export function bookTrip() : BookTrip{
     return (
@@ -270,5 +281,35 @@ export function refundTrip(): RefundTrip {
             }
         }
         
+    }
+}
+
+export function cancelTrip(): CancelTrip {
+    return (trip, date)=> {
+        if(trip._type == TripType.BookedTrip || trip._type == TripType.PaidTrip){
+            return {
+                _type: TripType.CancelledTrip,
+                tripId: trip.tripId,
+                tripDate: trip.tripDate,
+                bookInfo: trip.bookInfo,
+                cancelDate: date
+            }
+        }else{
+            throw new Error('Trip is not allowed to cancel');
+        }
+    }
+}
+
+export function freeTrip(): FreeTrip {
+    return (trip) => {
+        if (trip._type == TripType.CancelledTrip) {
+            return {
+                _type: TripType.UnbookedTrip,
+                tripId: trip.tripId,
+                tripDate: trip.tripDate,
+            }
+        } else {
+            throw new Error('Trip is not cancelled yet');
+        }
     }
 }
