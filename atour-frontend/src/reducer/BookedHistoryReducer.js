@@ -1,5 +1,9 @@
 import { combineReducers } from 'redux';
-import { BOOK_TRIP, SET_IMAGE_SLIP } from '../action/BookAction';
+import {
+  BOOK_TRIP,
+  SET_IMAGE_SLIP,
+  SEE_BOOK_HISTORY
+} from '../action/BookAction';
 
 const initialState = {
   bookedList: [
@@ -41,6 +45,10 @@ const defaults = {
 
 function bookedList(state = initialState.bookedList, action) {
   switch (action.type) {
+    case SEE_BOOK_HISTORY: {
+      bookedList = action.payload;
+      return state;
+    }
     case BOOK_TRIP:
       const {
         tourInfo: { tourName, tourId },

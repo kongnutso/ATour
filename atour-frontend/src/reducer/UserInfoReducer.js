@@ -18,6 +18,7 @@ const initialState = {
   token: '',
   role: 'Guide',
   userInfo: {
+    customerId: '',
     gender: '',
     firstName: '',
     lastName: '',
@@ -88,12 +89,19 @@ function userName(state = initialState.userName, action) {
 function userInfo(state = initialState.userInfo, action) {
   switch (action.type) {
     case GET_USER_INFO:
-      const { socialID, email } = state;
-      const { firstName, lastName } = action.payload;
+      const { personalId, email, customerId } = action.payload;
+      const socialID = personalId;
+      const { firstName, lastName } = action.payload.profile;
       const fullName = firstName + ' ' + lastName;
-      return { ...action.payload, socialID, name: fullName, email };
+      return {
+        ...action.payload.profile,
+        socialID,
+        customerId,
+        name: fullName,
+        email
+      };
     case EDIT_USER_INFO:
-      const input = action.payload;
+      const input = action.payload.profile;
       state.phoneNumber = input.phoneNumber;
       state.email = input.email;
       return state;

@@ -153,7 +153,4 @@ const mapDispatchToProps = dispatch => ({
   getUserInfo: (userName, token) => dispatch(getUserInfo(userName, token))
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(LoginModal);
+export default connect(mapStateToProps, mapDispatchToProps)(LoginModal);

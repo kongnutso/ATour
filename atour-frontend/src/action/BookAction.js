@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 export const BOOK_TRIP = 'BOOK_TRIP';
 export function bookTrip(tourInfo, date, size, guideName) {
   console.log(guideName);
@@ -28,5 +30,27 @@ export function setImageSlip(url, bookedId) {
   return {
     type: SET_IMAGE_SLIP,
     payload: { url, bookedId, today }
+  };
+}
+
+export const SEE_BOOK_HISTORY = 'SEE_BOOK_HISTORY';
+export function seeBookHistory(customerId) {
+  return async dispatch => {
+    try {
+      if (customerId) {
+        const tour = await axios
+          .post('http://localhost:3000/customer/seeBookHistory', customerId)
+          .then(res => {
+            console.log(res);
+            return res.data.trips;
+          });
+        return dispatch({
+          type: SEE_BOOK_HISTORY,
+          payload: tour
+        });
+      } else {
+        return dispatch({ type: 'INVALID' });
+      }
+    } catch (e) {}
   };
 }

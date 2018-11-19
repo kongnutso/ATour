@@ -6,6 +6,7 @@ import RegisterModal from '../RegisterModal/RegisterModal';
 import { loginModal, registerModal } from '../../action/ModalAction';
 import { logout, resizeWindow } from '../../action/ApplicationAction';
 import { editProfile, getUserInfo } from '../../action/UserInfoAction';
+import { seeBookHistory } from '../../action/BookAction';
 import LoginModal from '../LoginModal/LoginModal';
 import logo from '../../image/Atour-logo.jpg';
 import autobind from 'react-autobind';
@@ -85,9 +86,9 @@ class TopBanner extends React.Component {
       if (documentBody <= 90) {
         this.setState({ topTransparent: true });
       }
-    }
-    // else if (sideMenuStatus === "isHidding") nextStatus = "isShowing";
-    else return;
+    } else
+      // else if (sideMenuStatus === "isHidding") nextStatus = "isShowing";
+      return;
     this.setState({ sideMenuStatus: nextStatus });
   }
 
@@ -121,7 +122,12 @@ class TopBanner extends React.Component {
             <Link className="topbanner-link" to="/bookedHistory">
               <div
                 className="dropdown-item"
-                onClick={() => this.setState({ isClickedDropdown: false })}
+                onClick={() => {
+                  this.props.seeBookHistory(
+                    this.props.userInfo.userInfo.customerId
+                  );
+                  this.setState({ isClickedDropdown: false });
+                }}
               >
                 <i className="fa fa-calendar topbanner-icon" />
                 Booked History
@@ -240,9 +246,9 @@ class TopBanner extends React.Component {
             path={path}
           />
           <div
-            className={`topbanner-banner${
-              topTransparent ? '--transparent' : ''
-            }`}
+            className={`topbanner-banner${topTransparent
+              ? '--transparent'
+              : ''}`}
           >
             <div className="topbanner-logo-container">
               <div className="topbanner-logo">
@@ -276,10 +282,8 @@ const mapDispatchToProps = dispatch => ({
   logout: () => dispatch(logout()),
   resizeWindow: width => dispatch(resizeWindow(width)),
   editProfile: () => dispatch(editProfile()),
-  getUserInfo: (userName, token) => dispatch(getUserInfo(userName, token))
+  getUserInfo: (userName, token) => dispatch(getUserInfo(userName, token)),
+  seeBookHistory: customerId => dispatch(seeBookHistory(customerId))
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(TopBanner);
+export default connect(mapStateToProps, mapDispatchToProps)(TopBanner);

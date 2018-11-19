@@ -18,6 +18,7 @@ function tourStatus(state = initialState.tourStatus, action) {
     case BOOK_TRIP:
       return 2;
     case SELECT_BOOKED_TRIP:
+      //return action.payload._TripType
       return action.payload.tourStatus;
     case SET_IMAGE_SLIP:
       if (state === 2) return 3;

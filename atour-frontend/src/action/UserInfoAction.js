@@ -35,6 +35,7 @@ export function getUserInfo(userName, token) {
       const userInfo = await axios
         .post('http://localhost:3000/customer/getProfile', { userName, token })
         .then(res => {
+          console.log('aaaa', res.data);
           return res.data;
         });
       return dispatch({
