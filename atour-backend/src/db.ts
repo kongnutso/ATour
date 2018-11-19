@@ -129,7 +129,8 @@ export async function initMongo() {
       lastName: 'Smith',
       phoneNumber: '0812345678',
       birthDate: new Date('1996-05-07'),
-      gender: 'Male'
+      gender: 'Male',
+      profileImageUrl: null
     },
     bankAccountNumber: '102943940',
     bankName: 'SCB',
