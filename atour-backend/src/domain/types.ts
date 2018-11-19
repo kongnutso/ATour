@@ -86,8 +86,7 @@ export type CancelledTrip = {
   _type: TripType.CancelledTrip;
   tripId: string;
   tripDate: Date;
-  bookInfo: BookInfo;
-  cancelDate: Date;
+  cancelDate: string;
 };
 
 export type Trip =

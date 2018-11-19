@@ -18,7 +18,7 @@ import {
     Trip, Review, TripType
 } from '../domain/types';
 
-import { bookTrip, updateTripToTour, updateCustomerTripHistory, uploadPayment, createReview, addReviewToTour, editReview, removeReviewFromTour, addTripToCustomer, refundTrip, cancelTrip, freeTrip } from '../domain/CustomerTour'
+import { bookTrip, updateTripToTour, updateCustomerTripHistory, uploadPayment, createReview, addReviewToTour, editReview, removeReviewFromTour, addTripToCustomer, refundTrip } from '../domain/CustomerTour'
 import { IdGenerator, DateGenerator } from 'domain/Tour';
 
 export type BookTripService = (
@@ -62,12 +62,6 @@ export type SeeBookHistoryService = (
 ) => Promise<Trip[]>
 
 export type RefundTripService = (
-    tourId: string,
-    tripId: string,
-    customerId: string
-) => Promise<Trip>
-
-export type CancelTripService = (
     tourId: string,
     tripId: string,
     customerId: string
@@ -311,49 +305,6 @@ export function refundTripService(
                 await updateTourDb(updatedTour);
                 await updateTripDb(refundRequestedTrip);
                 return refundRequestedTrip;
-            }
-            default: {
-                throw new Error('Your Payment has not been approve')
-            }
-        }
-    }
-}
-
-export function cancelTripService(
-    getCustomerDb: GetCustomerDb,
-    getTourDb: GetTourDb,
-    getTripDb: GetTripDb,
-    updateTourDb: UpdateTourDb,
-    updateTripDb: UpdateTripDb,
-    updateCustomerDb: UpdateCustomerDb,
-    dateGenerator: DateGenerator
-): CancelTripService {
-    return async (
-        tourId,
-        tripId,
-        customerId) => {
-        const tour = await getTourDb(tourId);
-        const customer = await getCustomerDb(customerId);
-        const trip = await getTripDb(tripId);
-        switch (trip._type) {
-            case TripType.PaidTrip || TripType.BookedTrip : {
-                const cancelledTrip = cancelTrip()(
-                    trip,
-                    dateGenerator()
-                );
-
-                const unbookedTrip = freeTrip()(cancelledTrip);
-
-                const updatedTour = updateTripToTour()(
-                    tour, unbookedTrip
-                );
-                const updatedCustomer = addTripToCustomer()(
-                    customer, cancelledTrip
-                );
-                await updateCustomerDb(updatedCustomer);
-                await updateTourDb(updatedTour);
-                await updateTripDb(unbookedTrip);
-                return cancelledTrip;
             }
             default: {
                 throw new Error('Your Payment has not been approve')

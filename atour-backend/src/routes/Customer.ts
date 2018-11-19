@@ -37,7 +37,7 @@ import {
 import { searchTour, searchGuide } from '../repository/CustomerSearch';
 
 import * as uuid from 'uuid/v4';
-import { bookTripService, uploadPaymentService, addReviewService, editReviewSrevice, removeReviewSrevice, seeBookHistoryService, refundTripService, cancelTripService } from '../service/CustomerTourService';
+import { bookTripService, uploadPaymentService, addReviewService, editReviewSrevice, removeReviewSrevice, seeBookHistoryService, refundTripService } from '../service/CustomerTourService';
 const router = express.Router();
 
 router.get('/', (req, res) => {
@@ -334,34 +334,6 @@ router.post('/refundTrip', async (req, res) => {
       customerId,
     } = req.body;
     const trip = await refundTripService(
-      getCustomer(db),
-      getTour(db),
-      getTrip(db),
-      updateTour(db),
-      updateTrip(db),
-      updateCustomer(db),
-      () => new Date()
-    )(
-      tourId,
-      tripId,
-      customerId,
-    );
-    res.json(trip);
-  } catch (error) {
-    console.log(error.message);
-    res.json({ trip: null, error: error.message })
-  }
-})
-
-router.post('/cancelTrip', async (req, res) => {
-  try {
-    const db: Db = res.locals.db;
-    const {
-      tourId,
-      tripId,
-      customerId,
-    } = req.body;
-    const trip = await cancelTripService(
       getCustomer(db),
       getTour(db),
       getTrip(db),
