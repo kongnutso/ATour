@@ -1,15 +1,37 @@
+import axios from 'axios';
+
 export const BOOK_TRIP = 'BOOK_TRIP';
-export function bookTrip(tourInfo, date, size, guideName) {
-  console.log(guideName);
-  const dates = new Date();
-  const dd = dates.getDate();
-  const mm = dates.getMonth() + 1;
-  const yyyy = dates.getFullYear();
-  const today = mm + '/' + dd + '/' + yyyy;
-  const bookedId = Math.floor(Math.random() * 10000);
-  return {
-    type: BOOK_TRIP,
-    payload: { tourInfo, date, size, today, guideName, bookedId }
+export function bookTrip(tourId, tripInfo, price, size, customerId) {
+  /*  tourId,
+            tripId,
+            tripDate,
+            customerId,
+            size,
+            price*/
+  console.log(tourId, tripInfo, price, size, customerId);
+  return async dispatch => {
+    try {
+      const payload = {
+        tourId: tourId,
+        tripId: tripInfo.tripId,
+        tripDate: tripInfo.tripDate,
+        customerId,
+        size,
+        price
+      };
+      const res = await axios
+        .post('http://localhost:3000/customer/bookTrip', payload)
+        .then(res => {
+          return res.data;
+        });
+      console.log(res);
+      return dispatch({
+        type: BOOK_TRIP,
+        res
+      });
+    } catch (e) {
+      console.log(e);
+    }
   };
 }
 

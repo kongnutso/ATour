@@ -15,17 +15,19 @@ import {
 
 const initialState = {
   isLoginSuccess: null,
+  customerId: '',
   userName: '',
   token: '',
   role: 'Guide',
-  userInfo: {
+  personalId: '',
+  email: '',
+  profile: {
+    fullName: '',
     gender: '',
     firstName: '',
     lastName: '',
-    socialID: '1100600370761',
     birthDate: '',
-    phoneNumber: '',
-    email: 'kongnut.s@hotmail.com'
+    phoneNumber: ''
   },
   guideInfo: {
     gender: 'Male',
@@ -39,6 +41,17 @@ const initialState = {
   },
   isView: false
 };
+
+function customerId(state = initialState.customerId, action) {
+  switch (action.type) {
+    case GET_USER_INFO:
+      return action.payload.customerId;
+    case LOGOUT:
+      return '';
+    default:
+      return state;
+  }
+}
 
 function isLoginSuccess(state = initialState.isLoginSuccess, action) {
   switch (action.type) {
@@ -88,13 +101,12 @@ function userName(state = initialState.userName, action) {
   }
 }
 
-function userInfo(state = initialState.userInfo, action) {
+function profile(state = initialState.profile, action) {
   switch (action.type) {
     case GET_USER_INFO:
-      const { socialID, email } = state;
-      const { firstName, lastName } = action.payload;
+      const { firstName, lastName } = action.payload.profile;
       const fullName = firstName + ' ' + lastName;
-      return { ...action.payload, socialID, name: fullName, email };
+      return { ...action.payload.profile, name: fullName };
     case EDIT_USER_INFO:
       const input = action.payload;
       state.phoneNumber = input.phoneNumber;
@@ -102,6 +114,28 @@ function userInfo(state = initialState.userInfo, action) {
       return state;
     case LOGOUT:
       return {};
+    default:
+      return state;
+  }
+}
+
+function email(state = initialState.email, action) {
+  switch (action.type) {
+    case GET_USER_INFO:
+      return action.payload.email;
+    case LOGOUT:
+      return '';
+    default:
+      return state;
+  }
+}
+
+function personalId(state = initialState.personalId, action) {
+  switch (action.type) {
+    case GET_USER_INFO:
+      return action.payload.personalId;
+    case LOGOUT:
+      return '';
     default:
       return state;
   }
@@ -139,12 +173,15 @@ function role(state = initialState.role, action) {
 
 const reducer = combineReducers({
   userName,
-  userInfo,
   role,
   isView,
-  guideInfo,
+  profile,
   token,
-  isLoginSuccess
+  isLoginSuccess,
+  guideInfo,
+  email,
+  personalId,
+  customerId
 });
 
 export default reducer;
