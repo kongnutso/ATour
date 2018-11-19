@@ -3,13 +3,15 @@ import {
   GuideType,
   ApprovalStatus,
   ApprovedGuide,
-  Tour
+  Tour,
+  UnbookedTrip,
+  TripType
 } from './domain/types';
 
 //TODO: create proper config file
 
 // Connection URL
-const url = 'mongodb://db:27017';
+const url = 'mongodb://localhost:27017';
 
 // Database Name
 const dbName = 'atour';
@@ -19,6 +21,18 @@ export async function initMongo() {
   const client = new MongoClient(url);
   await client.connect();
   const db = client.db(dbName);
+  const trips: UnbookedTrip[] = [
+    {
+      _type: TripType.UnbookedTrip,
+      tripId: 'tripId1',
+      tripDate: new Date('2018-11-05')
+    },
+    {
+      _type: TripType.UnbookedTrip,
+      tripId: 'tripId2',
+      tripDate: new Date('2018-11-10')
+    }
+  ];
   const tours: Tour[] = [
     {
       tourId: 'tourid',
@@ -30,7 +44,7 @@ export async function initMongo() {
       maximumSize: 5,
       price: 5000,
       reviews: [],
-      trips: []
+      trips: trips
     },
     {
       tourId: 'tourid2',
@@ -107,10 +121,13 @@ export async function initMongo() {
     publishedTours: tours
   };
 
+
   await db.collection('guide').deleteMany({});
   await db.collection('guide').insertOne(guide);
   await db.collection('tour').deleteMany({});
   await db.collection('tour').insertMany(tours);
+  await db.collection('trip').deleteMany({});
+  await db.collection('trip').insertMany(trips);
   
   console.log('seed complete');
 

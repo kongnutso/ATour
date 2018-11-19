@@ -56,7 +56,7 @@ describe('CustomerService', () => {
   })
 
   test('editCustomerProfile', async () => {
-    const fakeEditCustomerProfile: EditCustomerProfileDb = async (customerId, profile) => console.log(customerId, profile);
+    const fakeEditCustomerProfile: EditCustomerProfileDb = async (npm run ) => console.log(customerId, profile);
     const result = await CustomerService.editCustomerProfileService(fakeEditCustomerProfile)(
         'customerId',
         'Customername',
