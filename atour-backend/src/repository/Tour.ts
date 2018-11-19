@@ -73,7 +73,7 @@ export function updateReview(db: Db): UpdateReviewDb {
   return async (review) => {
     const reviewId = review.reviewId
     await db.collection('review')
-      .update({ reviewId }, { $set: { review } });
+      .updateOne({ reviewId }, { $set: { review } });
   };
 }
 
