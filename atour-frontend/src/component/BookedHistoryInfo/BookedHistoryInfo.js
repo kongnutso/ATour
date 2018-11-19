@@ -43,7 +43,12 @@ class BookedHistoryInfo extends React.Component {
   onClickSaveSlip(statusNumber) {
     if (statusNumber !== this.props.status) return;
     else {
-      this.props.setImageSlip(this.state.inputImg, this.props.bookedId);
+      this.props.setImageSlip(
+        this.state.inputImg,
+        this.props.bookedId,
+        this.props.tourId,
+        this.props.customerId
+      );
     }
   }
 
@@ -183,7 +188,6 @@ class BookedHistoryInfo extends React.Component {
                   >
                     Save
                   </div>
-
                   {/* <div
                     className={this.classNameColorButton(2)}
                     onClick={() => this.onClickChooseFile(2)}
@@ -248,15 +252,15 @@ const mapStateToProps = state => {
     bookedDate: state.bookedHistoryInfo.bookedDate,
     uploadedFileDate: state.bookedHistoryInfo.uploadedFileDate,
     bookedId: state.bookedHistoryInfo.bookedId,
-    slip: state.bookedHistoryInfo.slip
+    slip: state.bookedHistoryInfo.slip,
+    tourId: state.bookedHistoryInfo.tourId,
+    customerId: state.user.customerId
   };
 };
 
 const mapDispatchToProps = dispatch => ({
-  setImageSlip: (img, bookedId) => dispatch(setImageSlip(img, bookedId))
+  setImageSlip: (img, bookedId, tourId, customerId) =>
+    dispatch(setImageSlip(img, bookedId, tourId, customerId))
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(BookedHistoryInfo);
+export default connect(mapStateToProps, mapDispatchToProps)(BookedHistoryInfo);

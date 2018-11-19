@@ -157,7 +157,4 @@ const mapDispatchToProps = dispatch => ({
   clearError: () => dispatch(clearError())
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(LoginModal);
+export default connect(mapStateToProps, mapDispatchToProps)(LoginModal);

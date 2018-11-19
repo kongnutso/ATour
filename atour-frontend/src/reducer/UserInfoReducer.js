@@ -104,11 +104,18 @@ function userName(state = initialState.userName, action) {
 function profile(state = initialState.profile, action) {
   switch (action.type) {
     case GET_USER_INFO:
+      const { personalId, email } = action.payload;
+      const socialID = personalId;
       const { firstName, lastName } = action.payload.profile;
       const fullName = firstName + ' ' + lastName;
-      return { ...action.payload.profile, name: fullName };
+      return {
+        ...action.payload.profile,
+        socialID,
+        name: fullName,
+        email
+      };
     case EDIT_USER_INFO:
-      const input = action.payload;
+      const input = action.payload.profile;
       state.phoneNumber = input.phoneNumber;
       state.email = input.email;
       return state;

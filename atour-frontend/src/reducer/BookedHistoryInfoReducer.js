@@ -9,6 +9,7 @@ const initialState = {
   tourStatus: 2,
   bookedDate: '1/1/2018',
   uploadedFileDate: '31/12/2018',
+  tourId: '5678',
   bookedId: '1234',
   slip: 'a.jpg'
 };
@@ -18,6 +19,7 @@ function tourStatus(state = initialState.tourStatus, action) {
     case BOOK_TRIP:
       return 2;
     case SELECT_BOOKED_TRIP:
+      //return action.payload._TripType
       return action.payload.tourStatus;
     case SET_IMAGE_SLIP:
       if (state === 2) return 3;
@@ -29,9 +31,9 @@ function tourStatus(state = initialState.tourStatus, action) {
 function bookedDate(state = initialState.bookedDate, action) {
   switch (action.type) {
     case BOOK_TRIP:
-      return action.payload.today;
+      return action.res.bookInfo.bookDate;
     case SELECT_BOOKED_TRIP:
-      return action.payload.bookedDate;
+      return action.payload.bookedDate; //eeeeeeeeeee
     default:
       return state;
   }
@@ -50,12 +52,23 @@ function uploadedFileDate(state = initialState.uploadedFileDate, action) {
   }
 }
 
+function tourId(state = initialState.tourId, action) {
+  switch (action.type) {
+    case BOOK_TRIP:
+      return action.payload.tourId;
+    case SELECT_BOOKED_TRIP:
+      return action.payload.tourId;
+    default:
+      return state;
+  }
+}
+
 function bookedId(state = initialState.bookedId, action) {
   switch (action.type) {
     case BOOK_TRIP:
-      return action.payload.bookedId;
+      return action.payload.tripId;
     case SELECT_BOOKED_TRIP:
-      return action.payload.bookedId;
+      return action.payload.tripId; //eeeeeeeeeeee
     default:
       return state;
   }
@@ -81,7 +94,8 @@ const reducer = combineReducers({
   bookedDate,
   uploadedFileDate,
   bookedId,
-  slip
+  slip,
+  tourId
 });
 
 export default reducer;

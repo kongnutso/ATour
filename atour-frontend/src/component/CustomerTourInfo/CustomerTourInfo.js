@@ -33,11 +33,13 @@ class TourInfo extends React.Component {
   onConfirm() {
     this.setState({ openConfirm: false });
     this.props.bookTrip(
+      this.props.tourInfo.tourName,
       this.props.tourInfo.tourId,
       this.state.selectedTrip,
       this.props.tourInfo.price,
       this.state.groupSize,
-      this.props.user.customerId
+      this.props.user.customerId,
+      this.props.tourInfo.guideId
     );
     // this.setState({ redirect: true, to: '/bookedHistoryInfo' });
   }
@@ -135,8 +137,7 @@ class TourInfo extends React.Component {
                 selection
                 value={this.state.selectedTrip.tripDate}
                 onChange={(e, { value }) =>
-                  this.setState({ selectedTrip: value })
-                }
+                  this.setState({ selectedTrip: value })}
                 options={tripsInfo}
               />
               Group size
@@ -180,13 +181,12 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => ({
-  bookTrip: (tourInfo, tripInfo, price, size, customerId) =>
-    dispatch(bookTrip(tourInfo, tripInfo, price, size, customerId)),
+  bookTrip: (tourName, tourInfo, tripInfo, price, size, customerId, guideId) =>
+    dispatch(
+      bookTrip(tourName, tourInfo, tripInfo, price, size, customerId, guideId)
+    ),
   viewProfile: () => dispatch(viewProfile()),
   getGuideInfo: guideId => dispatch(getGuideInfo(guideId))
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(TourInfo);
+export default connect(mapStateToProps, mapDispatchToProps)(TourInfo);
