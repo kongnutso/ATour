@@ -142,24 +142,32 @@ export function uploadPaymentService(
             const customer = await getCustomerDb(customerId);
             const trip = await getTripDb(tripId);
 
-            const paidTrip = uploadPayment()(
-                trip,
-                {url: slipUrl},
-                dateGenerator()
-            );
+            switch(trip._type){
+                case TripType.BookedTrip || TripType.PaidTrip:{
+                    const paidTrip = uploadPayment()(
+                        trip,
+                        { url: slipUrl },
+                        dateGenerator()
+                    );
+
+                    const updatedTour = updateTripToTour()(
+                        tour, paidTrip
+                    );
+
+                    const updatedCustomer = updateCustomerTripHistory()(
+                        customer, paidTrip
+                    );
+
+                    await updateCustomerDb(updatedCustomer);
+                    await updateTourDb(updatedTour);
+                    await updateTripDb(paidTrip);
+                    return paidTrip;
+                }
+                default: {
+                    throw new Error('Trip is not booked or paid');
+                }
+            }
             
-            const updatedTour = updateTripToTour()(
-                tour, paidTrip
-            );
-
-            const updatedCustomer = updateCustomerTripHistory()(
-                customer, paidTrip
-            );
-
-            await updateCustomerDb(updatedCustomer);
-            await updateTourDb(updatedTour);
-            await updateTripDb(paidTrip);
-            return paidTrip;
         }
     }
 
