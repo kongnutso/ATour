@@ -15,7 +15,7 @@ class TourInfo extends React.Component {
     super();
 
     this.state = {
-      bookingDate: '',
+      selectedTrip: {},
       openConfirm: false,
       errorDialog: false,
       groupSize: 0,
@@ -33,18 +33,21 @@ class TourInfo extends React.Component {
   onConfirm() {
     this.setState({ openConfirm: false });
     this.props.bookTrip(
-      this.props.tourInfo,
-      this.state.bookingDate,
+      this.props.tourInfo.tourName,
+      this.props.tourInfo.tourId,
+      this.state.selectedTrip,
+      this.props.tourInfo.price,
       this.state.groupSize,
-      this.props.guide
+      this.props.user.customerId,
+      this.props.tourInfo.guideId
     );
-    this.setState({ redirect: true, to: '/bookedHistoryInfo' });
+    // this.setState({ redirect: true, to: '/bookedHistoryInfo' });
   }
 
   onSubmit() {
     const { maximumSize, minimumSize } = this.props.tourInfo;
-    const { groupSize, bookingDate } = this.state;
-    if (!bookingDate) {
+    const { groupSize, selectedTrip } = this.state;
+    if (!selectedTrip) {
       this.setState({
         errorDialog: true,
         errorMessage: 'Please select booking date'
@@ -68,13 +71,12 @@ class TourInfo extends React.Component {
       //   tourLocation,
       detail,
       maximumSize,
-      guideName
+      guideName,
+      trips
     } = this.props.tourInfo;
-    const availableDates = [
-      { key: 1, text: '01/01/2561', value: '01/01/2561' },
-      { key: 2, text: '02/01/2561', value: '02/01/2561' },
-      { key: 3, text: '03/01/2561', value: '03/01/2561' }
-    ];
+    const tripsInfo = trips.map(t => {
+      return { key: t.tripDate, text: t.tripDate, value: t };
+    });
     if (this.state.redirect) {
       return <Redirect to={this.state.to} />;
     }
@@ -133,11 +135,10 @@ class TourInfo extends React.Component {
                 }}
                 placeholder="Choose Date"
                 selection
-                value={this.state.bookingDate}
+                value={this.state.selectedTrip.tripDate}
                 onChange={(e, { value }) =>
-                  this.setState({ bookingDate: value })
-                }
-                options={availableDates}
+                  this.setState({ selectedTrip: value })}
+                options={tripsInfo}
               />
               Group size
               <br />
@@ -157,9 +158,9 @@ class TourInfo extends React.Component {
                 onClick={() => this.onSubmit()}
                 className={
                   'tourInfo-booking-submit' +
-                  (!this.props.user ? '-disabled' : '')
+                  (!this.props.user.userName ? '-disabled' : '')
                 }
-                disabled={!this.props.user}
+                disabled={!this.props.user.userName}
               >
                 Submit
               </button>
@@ -175,18 +176,17 @@ const mapStateToProps = state => {
   return {
     tourInfo: state.tour.selectedTour,
     guide: state.user.guideInfo.userName,
-    user: state.user.userName
+    user: state.user
   };
 };
 
 const mapDispatchToProps = dispatch => ({
-  bookTrip: (tourInfo, date, size, guideName) =>
-    dispatch(bookTrip(tourInfo, date, size, guideName)),
+  bookTrip: (tourName, tourInfo, tripInfo, price, size, customerId, guideId) =>
+    dispatch(
+      bookTrip(tourName, tourInfo, tripInfo, price, size, customerId, guideId)
+    ),
   viewProfile: () => dispatch(viewProfile()),
   getGuideInfo: guideId => dispatch(getGuideInfo(guideId))
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(TourInfo);
+export default connect(mapStateToProps, mapDispatchToProps)(TourInfo);

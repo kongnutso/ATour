@@ -124,7 +124,7 @@ class TopBanner extends React.Component {
                 className="dropdown-item"
                 onClick={() => {
                   this.props.seeBookHistory(
-                    this.props.userInfo.userInfo.customerId
+                    this.props.userInfo.profile.customerId
                   );
                   this.setState({ isClickedDropdown: false });
                 }}
@@ -220,10 +220,14 @@ class TopBanner extends React.Component {
     return (
       <div className="topbanner-right-container">
         <div className="topbanner-right topbanner-first">
-          <div className="topbanner-menu">Search for Tour</div>
+          <Link to="/searchForTour" className="topbanner-link">
+            <div className="topbanner-menu">Search for Tour</div>
+          </Link>
         </div>
         <div className="topbanner-right">
-          <div className="topbanner-menu">Search for Guide</div>
+          <Link to="/searchForGuide" className="topbanner-link">
+            <div className="topbanner-menu">Search for Guide</div>
+          </Link>
         </div>
         {renderSignIn}
       </div>

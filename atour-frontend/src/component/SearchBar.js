@@ -83,7 +83,7 @@ class SearchBar extends React.Component {
             </Box>
             <Box my={1} width={1 / 5}>
               <Link to="/searchForTour">
-                <SearchButton onClick={() => onSearch(term)}>
+                <SearchButton onClick={() => onSearch(term, true)}>
                   <Icon name="search" />
                   {!mobile && 'Search'}
                 </SearchButton>

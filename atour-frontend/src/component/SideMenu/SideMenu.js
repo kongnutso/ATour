@@ -136,7 +136,7 @@ class SideMenu extends React.Component {
     return (
       <div>
         <div className="side-menu" />
-        <Link className="side-menu-link" to="/">
+        <Link className="side-menu-link" to="/searchForTour">
           <div
             className={'dropdown-item side-menu-item'}
             onClick={() => this.onCloseSideMenu()}
@@ -144,7 +144,7 @@ class SideMenu extends React.Component {
             <i className="fa fa-search topbanner-icon" /> Search for Tour
           </div>
         </Link>
-        <Link className="side-menu-link" to="/">
+        <Link className="side-menu-link" to="/searchForGuide">
           <div
             className="dropdown-item side-menu-item"
             onClick={() => this.onCloseSideMenu()}

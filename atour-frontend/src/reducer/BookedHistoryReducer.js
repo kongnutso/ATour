@@ -51,22 +51,25 @@ function bookedList(state = initialState.bookedList, action) {
     }
     case BOOK_TRIP:
       const {
-        tourInfo: { tourName, tourId },
-        date,
+        tourName,
+        tourId,
         size,
-        today,
         guideName,
-        bookedId
+        tripId,
+        guideId
       } = action.payload;
+
+      const { bookDate } = action.res.bookInfo;
+      const { tripDate } = action.res;
 
       const news = {
         tourName: tourName,
-        tourDate: date,
+        tourDate: tripDate,
         size,
-        guide: guideName,
-        bookedDate: today,
+        guide: guideId,
+        bookedDate: bookDate,
         tourId,
-        bookedId,
+        tripId,
         ...defaults
       };
       return [...state, news];

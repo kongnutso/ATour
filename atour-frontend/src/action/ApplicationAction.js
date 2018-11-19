@@ -33,7 +33,8 @@ export function login(userName, password, role) {
           .then(res => {
             return res.data;
           });
-        if (res.error) {
+        console.log(res);
+        if (res === "Cannot read property 'guideId' of null") {
           return dispatch({
             type: LOGIN_FAILED
           });
@@ -61,4 +62,8 @@ export function resizeWindow(width) {
     type: RESIZE_WINDOW,
     payload: width
   };
+}
+export const CLEAR_ERROR = 'CLEAR_ERROR';
+export function clearError() {
+  return { type: 'CLEAR_ERROR' };
 }

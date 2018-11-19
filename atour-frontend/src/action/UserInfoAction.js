@@ -35,7 +35,7 @@ export function getUserInfo(userName, token) {
       const userInfo = await axios
         .post('http://localhost:3000/customer/getProfile', { userName, token })
         .then(res => {
-          console.log('aaaa', res.data);
+          console.log('aaaa', res);
           return res.data;
         });
       return dispatch({
@@ -51,6 +51,7 @@ export function getGuideInfo(guideId) {
   return async dispatch => {
     try {
       if (guideId) {
+        console.log(guideId);
         const userInfo = await axios
           .post('http://localhost:3000/guide/guideid', guideId)
           .then(res => {

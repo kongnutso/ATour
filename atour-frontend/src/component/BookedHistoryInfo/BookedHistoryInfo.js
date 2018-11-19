@@ -254,12 +254,13 @@ const mapStateToProps = state => {
     bookedId: state.bookedHistoryInfo.bookedId,
     slip: state.bookedHistoryInfo.slip,
     tourId: state.bookedHistoryInfo.tourId,
-    customerId: state.user.userInfo.customerId
+    customerId: state.user.customerId
   };
 };
 
 const mapDispatchToProps = dispatch => ({
-  setImageSlip: (img, bookedId) => dispatch(setImageSlip(img, bookedId))
+  setImageSlip: (img, bookedId, tourId, customerId) =>
+    dispatch(setImageSlip(img, bookedId, tourId, customerId))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(BookedHistoryInfo);

@@ -2,7 +2,8 @@ import { combineReducers } from 'redux';
 import {
   LOGOUT,
   LOGIN_SUCCESS,
-  LOGIN_FAILED
+  LOGIN_FAILED,
+  CLEAR_ERROR
 } from '../action/ApplicationAction';
 import {
   EDIT_USER_INFO,
@@ -14,18 +15,19 @@ import {
 
 const initialState = {
   isLoginSuccess: null,
+  customerId: '',
   userName: '',
   token: '',
   role: 'Guide',
-  userInfo: {
-    customerId: '',
+  personalId: '',
+  email: '',
+  profile: {
+    fullName: '',
     gender: '',
     firstName: '',
     lastName: '',
-    socialID: '1100600370761',
     birthDate: '',
-    phoneNumber: '',
-    email: 'kongnut.s@hotmail.com'
+    phoneNumber: ''
   },
   guideInfo: {
     gender: 'Male',
@@ -40,14 +42,27 @@ const initialState = {
   isView: false
 };
 
+function customerId(state = initialState.customerId, action) {
+  switch (action.type) {
+    case GET_USER_INFO:
+      return action.payload.customerId;
+    case LOGOUT:
+      return '';
+    default:
+      return state;
+  }
+}
+
 function isLoginSuccess(state = initialState.isLoginSuccess, action) {
   switch (action.type) {
     case LOGIN_SUCCESS:
       return true;
     case LOGIN_FAILED:
       return false;
+    case CLEAR_ERROR:
+      return null;
     case LOGOUT:
-      return;
+      return null;
     default:
       return state;
   }
@@ -86,17 +101,16 @@ function userName(state = initialState.userName, action) {
   }
 }
 
-function userInfo(state = initialState.userInfo, action) {
+function profile(state = initialState.profile, action) {
   switch (action.type) {
     case GET_USER_INFO:
-      const { personalId, email, customerId } = action.payload;
+      const { personalId, email } = action.payload;
       const socialID = personalId;
       const { firstName, lastName } = action.payload.profile;
       const fullName = firstName + ' ' + lastName;
       return {
         ...action.payload.profile,
         socialID,
-        customerId,
         name: fullName,
         email
       };
@@ -107,6 +121,28 @@ function userInfo(state = initialState.userInfo, action) {
       return state;
     case LOGOUT:
       return {};
+    default:
+      return state;
+  }
+}
+
+function email(state = initialState.email, action) {
+  switch (action.type) {
+    case GET_USER_INFO:
+      return action.payload.email;
+    case LOGOUT:
+      return '';
+    default:
+      return state;
+  }
+}
+
+function personalId(state = initialState.personalId, action) {
+  switch (action.type) {
+    case GET_USER_INFO:
+      return action.payload.personalId;
+    case LOGOUT:
+      return '';
     default:
       return state;
   }
@@ -144,12 +180,15 @@ function role(state = initialState.role, action) {
 
 const reducer = combineReducers({
   userName,
-  userInfo,
   role,
   isView,
-  guideInfo,
+  profile,
   token,
-  isLoginSuccess
+  isLoginSuccess,
+  guideInfo,
+  email,
+  personalId,
+  customerId
 });
 
 export default reducer;

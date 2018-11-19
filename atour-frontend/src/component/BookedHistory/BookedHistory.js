@@ -20,6 +20,7 @@ class BookedHistory extends React.Component {
   }
 
   renderTour(item) {
+    console.log(item);
     return (
       <div key={item.tourId} className="bookedhistory-list">
         <div
@@ -112,7 +113,4 @@ const mapDispatchToProps = dispatch => ({
   selectBookedTrip: tour => dispatch(selectBookedTrip(tour))
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(BookedHistory);
+export default connect(mapStateToProps, mapDispatchToProps)(BookedHistory);

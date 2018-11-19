@@ -31,9 +31,9 @@ function tourStatus(state = initialState.tourStatus, action) {
 function bookedDate(state = initialState.bookedDate, action) {
   switch (action.type) {
     case BOOK_TRIP:
-      return action.payload.today;
+      return action.res.bookInfo.bookDate;
     case SELECT_BOOKED_TRIP:
-      return action.payload.bookedDate;
+      return action.payload.bookedDate; //eeeeeeeeeee
     default:
       return state;
   }
@@ -66,9 +66,9 @@ function tourId(state = initialState.tourId, action) {
 function bookedId(state = initialState.bookedId, action) {
   switch (action.type) {
     case BOOK_TRIP:
-      return action.payload.bookedId;
+      return action.payload.tripId;
     case SELECT_BOOKED_TRIP:
-      return action.payload.bookedId;
+      return action.payload.tripId; //eeeeeeeeeeee
     default:
       return state;
   }
