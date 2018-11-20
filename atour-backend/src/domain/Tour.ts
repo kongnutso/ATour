@@ -51,7 +51,7 @@ export function editTour(): EditTour {
 
 export function addTrip(idGenerator: IdGenerator): AddTrip {
   return (tour: Tour, tripDate: Date): Tour => {
-    const addedTrip: UnbookedTrip = {_type: TripType.UnbookedTrip, tripId: idGenerator(), tripDate };
+    const addedTrip: UnbookedTrip = {_type: TripType.UnbookedTrip, tripId: idGenerator(), tripDate, tourId: tour.tourId };
     const newTrips = [...tour.trips, addedTrip];
     return {
       ...tour,
