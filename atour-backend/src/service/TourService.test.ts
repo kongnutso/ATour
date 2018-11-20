@@ -1,7 +1,8 @@
 import {
   publishTourService,
   addTripService,
-  deleteTripService
+  deleteTripService,
+  editTourService
 } from './TourService';
 import {
   ApprovalStatus,
@@ -9,7 +10,8 @@ import {
   Tour,
   Guide,
   TripType,
-  UnbookedTrip
+  UnbookedTrip,
+  ApprovedGuide
 } from '../domain/types';
 import { GetGuideDb } from '../repository/Guide';
 
@@ -71,6 +73,82 @@ test('createTour', () => {
     2,
     5000,
     'trip to Changmai'
+  );
+});
+
+test('editTour', () => {
+  const tour: Tour = {
+    tourId: 'tourId',
+    tourName: 'Changmai Trip',
+    minimumSize: 1,
+    maximumSize: 2,
+    price: 5000,
+    detail: 'trip to Changmai',
+    reviews: [],
+    trips: [],
+    guideId: 'guideid',
+    imageUrl: null
+  };
+  const expectedTour = {
+    tourId: 'tourId',
+    tourName: 'Changmai Trip',
+    minimumSize: 1,
+    maximumSize: 2,
+    price: 3000,
+    detail: 'trip to Changmai',
+    reviews: [],
+    trips: [],
+    guideId: 'guideid',
+    imageUrl: 'google.com'
+  };
+  const fakeGetTour = async tourId => {
+    expect(tourId).toEqual('tourId');
+    return tour;
+  };
+  const fakeSaveTour = async tour => {
+    expect(tour).toEqual(expectedTour);
+  };
+  const guide: ApprovedGuide = {
+    _type: GuideType.ApprovedGuide,
+    guideId: 'guideid',
+    approvalStatus: ApprovalStatus.Approved,
+    userName: 'john',
+    password: 'password',
+    email: 'guide@gmail.com',
+    personalId: '1234567890123',
+    profile: {
+      firstName: 'John',
+      lastName: 'Smith',
+      birthDate: new Date('1996-05-07'),
+      phoneNumber: '0871234567',
+      gender: 'Male',
+      profileImageUrl: null
+    },
+    bankAccountNumber: '12345',
+    bankName: 'SCB',
+    availableDate: [],
+    dealtTrips: [],
+    publishedTours: [tour]
+  };
+  const expectedGuide: ApprovedGuide = {
+    ...guide,
+    publishedTours: [expectedTour]
+  };
+  const fakeGetGuide = async guideId => {
+    expect(guideId).toEqual('guideid');
+    return guide;
+  };
+  const fakeSaveGuide = async guide => {
+    expect(guide).toEqual(expectedGuide);
+  };
+  editTourService(fakeGetTour, fakeGetGuide, fakeSaveTour, fakeSaveGuide)(
+    'tourId',
+    undefined,
+    undefined,
+    undefined,
+    3000,
+    undefined,
+    'google.com'
   );
 });
 

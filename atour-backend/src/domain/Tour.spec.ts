@@ -42,7 +42,8 @@ describe('Tour', () => {
       },
       {
         tourName: 'Changmai trip',
-        price: 5000
+        price: 5000,
+        imageUrl: 'www.google.com'
       }
     );
     const expectedTour: Tour = {
@@ -55,7 +56,7 @@ describe('Tour', () => {
       reviews: [],
       trips: [],
       guideId: 'guideid',
-      imageUrl: null
+      imageUrl: 'www.google.com'
     };
     expect(editedTour).toEqual(expectedTour);
   });
