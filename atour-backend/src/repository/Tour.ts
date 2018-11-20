@@ -45,7 +45,8 @@ export function updateTour(db: Db): UpdateTourDb {
   return async (tour) =>{
     const tourId = tour.tourId
     await db.collection('tour')
-    .updateOne({ tourId },{$set :tour});
+    // .updateOne({ tourId },{$set :tour});
+      .updateOne({ tourId },tour);
   };
 }
 
@@ -53,7 +54,8 @@ export function updateTrip(db: Db): UpdateTripDb {
   return async (trip) => {
     const tripId=trip.tripId
     await db.collection('trip')
-      .updateOne({tripId}, { $set:  trip  });
+      // .updateOne({tripId}, { $set:  trip  });
+      .updateOne({ tripId }, trip );
   };
 }
 
@@ -73,7 +75,8 @@ export function updateReview(db: Db): UpdateReviewDb {
   return async (review) => {
     const reviewId = review.reviewId
     await db.collection('review')
-      .updateOne({ reviewId }, { $set:  review  });
+      // .updateOne({ reviewId }, { $set:  review  });
+      .updateOne({reviewId}, review)
   };
 }
 
