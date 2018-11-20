@@ -8,7 +8,7 @@ export function bookTrip(
   price,
   size,
   customerId,
-  guideId
+  guideName
 ) {
   /*  tourId,
             tripId,
@@ -16,7 +16,7 @@ export function bookTrip(
             customerId,
             size,
             price*/
-  console.log(tourId, tripInfo, price, size, customerId);
+  console.log(tourId, tripInfo, price, size, customerId, guideName);
   return async dispatch => {
     try {
       const payload = {
@@ -27,7 +27,7 @@ export function bookTrip(
         customerId,
         size,
         price,
-        guideId
+        guideName
       };
       const res = await axios
         .post('http://localhost:3000/customer/bookTrip', payload)
@@ -38,7 +38,6 @@ export function bookTrip(
       console.log(payload);
       return dispatch({
         type: BOOK_TRIP,
-        payload,
         res
       });
     } catch (e) {
@@ -91,10 +90,10 @@ export function seeBookHistory(customerId) {
     try {
       if (customerId) {
         const tour = await axios
-          .post('http://localhost:3000/customer/seeBookHistory', customerId)
+          .post('http://localhost:3000/customer/seeBookHistory', { customerId })
           .then(res => {
-            console.log(res);
-            return res.data.trips;
+            console.log('aaa', res.data);
+            return res.data;
           });
         return dispatch({
           type: SEE_BOOK_HISTORY,

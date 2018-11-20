@@ -16,11 +16,10 @@ const initialState = {
 
 function tourStatus(state = initialState.tourStatus, action) {
   switch (action.type) {
-    case BOOK_TRIP:
-      return 2;
+    // case BOOK_TRIP:
+    //   return 2;//===================
     case SELECT_BOOKED_TRIP:
-      //return action.payload._TripType
-      return action.payload.tourStatus;
+      return action.payload._type;
     case SET_IMAGE_SLIP:
       if (state === 2) return 3;
     default:
@@ -30,10 +29,10 @@ function tourStatus(state = initialState.tourStatus, action) {
 
 function bookedDate(state = initialState.bookedDate, action) {
   switch (action.type) {
-    case BOOK_TRIP:
-      return action.res.bookInfo.bookDate;
+    // case BOOK_TRIP:
+    //   return action.res.bookInfo.bookDate;
     case SELECT_BOOKED_TRIP:
-      return action.payload.bookedDate; //eeeeeeeeeee
+      return action.payload.bookInfo.bookDate; //eeeeeeeeeee
     default:
       return state;
   }
@@ -41,10 +40,10 @@ function bookedDate(state = initialState.bookedDate, action) {
 
 function uploadedFileDate(state = initialState.uploadedFileDate, action) {
   switch (action.type) {
-    case BOOK_TRIP:
-      return '';
+    // case BOOK_TRIP:
+    //   return '';
     case SELECT_BOOKED_TRIP:
-      return action.payload.uploadedFileDate;
+      return action.payload.paidDate;
     case SET_IMAGE_SLIP:
       return action.payload.today;
     default:
@@ -54,8 +53,8 @@ function uploadedFileDate(state = initialState.uploadedFileDate, action) {
 
 function tourId(state = initialState.tourId, action) {
   switch (action.type) {
-    case BOOK_TRIP:
-      return action.payload.tourId;
+    // case BOOK_TRIP:
+    //   return action.res.tourName;
     case SELECT_BOOKED_TRIP:
       return action.payload.tourId;
     default:
@@ -65,8 +64,8 @@ function tourId(state = initialState.tourId, action) {
 
 function bookedId(state = initialState.bookedId, action) {
   switch (action.type) {
-    case BOOK_TRIP:
-      return action.payload.tripId;
+    // case BOOK_TRIP:
+    //   return action.payload.tripId;
     case SELECT_BOOKED_TRIP:
       return action.payload.tripId; //eeeeeeeeeeee
     default:
@@ -80,10 +79,10 @@ function slip(state = initialState.slip, action) {
       console.log(action.payload);
       return action.payload.url;
 
-    case BOOK_TRIP:
-      return '';
+    // case BOOK_TRIP:
+    //   return '';
     case SELECT_BOOKED_TRIP:
-      return action.payload.slip;
+      return action.payload.slipImages[0].url;
     default:
       return state;
   }

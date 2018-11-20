@@ -15,6 +15,7 @@ class BookedHistory extends React.Component {
   }
 
   onSelect(tour) {
+    console.log('ttt', tour);
     this.props.selectBookedTrip(tour);
     this.setState({ redirect: true });
   }
@@ -22,7 +23,7 @@ class BookedHistory extends React.Component {
   renderTour(item) {
     console.log(item);
     return (
-      <div key={item.tourId} className="bookedhistory-list">
+      <div key={item.tripId} className="bookedhistory-list">
         <div
           onClick={() => {
             this.onSelect(item);
@@ -48,18 +49,10 @@ class BookedHistory extends React.Component {
                 </Flex>
                 <Flex>
                   <Box p={2} width={[3 / 6, 3 / 10]}>
-                    Tour ID
-                  </Box>
-                  <Box p={2} width={[3 / 6, 3 / 10]}>
-                    {item.tourId}
-                  </Box>
-                </Flex>
-                <Flex>
-                  <Box p={2} width={[3 / 6, 3 / 10]}>
                     Date
                   </Box>
                   <Box p={2} width={[3 / 6, 3 / 10]}>
-                    {item.tourDate}
+                    {item.tripDate}
                   </Box>
                 </Flex>
                 <Flex>
@@ -67,7 +60,7 @@ class BookedHistory extends React.Component {
                     Guide
                   </Box>
                   <Box p={2} width={[3 / 6, 3 / 10]}>
-                    {item.guide}
+                    {item.guideName}
                   </Box>
                 </Flex>
                 <Flex>
@@ -75,7 +68,7 @@ class BookedHistory extends React.Component {
                     Status
                   </Box>
                   <Box p={2} width={[3 / 6, 3 / 10]}>
-                    {item.status}
+                    {item._type}
                   </Box>
                 </Flex>
               </Box>
