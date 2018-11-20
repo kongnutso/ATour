@@ -20,12 +20,13 @@ router.post('/login', async (req, res) => {
   try {
     const db: Db = res.locals.db;
     const { userName, password } = req.body;
-    const token = await loginGuideService(
+    const { token, guide } = await loginGuideService(
       getGuideForLogin(db),
       getTokenForGuide(db)
     )(userName, password);
     res.json({
-      token
+      token,
+      guide
     });
   } catch (e) {
     res.json(e.message);
