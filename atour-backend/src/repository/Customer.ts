@@ -61,7 +61,7 @@ export function saveCustomerToken(db:Db):SaveCustomerTokenDb {
 
 export function getCustomer(db: Db): GetCustomerDb {
     return async customerId => {
-        return db.collection('customer').findOne({ customerId });
+        return await db.collection('customer').findOne({ customerId });
     };
 }
 
