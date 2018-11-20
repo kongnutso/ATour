@@ -13,7 +13,7 @@ import {
 //TODO: create proper config file
 
 // Connection URL
-const url = 'mongodb://db:27017';
+const url = 'mongodb://localhost:27017';
 
 // Database Name
 const dbName = 'atour';
@@ -36,7 +36,9 @@ export async function initMongo() {
     paidDate: new Date('2018-11-05'),
     slipImages: [{ url: 'https://i0.wp.com/www.theparadigmng.com/wp-content/uploads/2014/08/ATM.jpg'}],
     approveDate: new Date('2018-11-06'),
-    tourId: 'tourid2'
+    tourId: 'tourid2',
+    tourName:'Explore the Bua Tong "Sticky" Waterfall with a Super Local Expert',
+    guideName: 'guideuser'
   };
   const customer:Customer = {
     customerId: 'customerid',
@@ -64,13 +66,17 @@ export async function initMongo() {
       _type: TripType.UnbookedTrip,
       tripId: 'tripId1',
       tripDate: new Date('2018-11-05'),
-      tourId: 'tourid'
+      tourId: 'tourid',
+      tourName: 'Live the Agricultural Life in the Mountains of Chiang Mai',
+      guideName: 'guideuser'
     },
     {
       _type: TripType.UnbookedTrip,
       tripId: 'tripId2',
       tripDate: new Date('2018-11-10'),
-      tourId: 'tourid'
+      tourId: 'tourid',
+      tourName: 'Live the Agricultural Life in the Mountains of Chiang Mai',
+      guideName: 'guideuser'
     }
   ];
 

@@ -16,7 +16,7 @@ export function bookTrip(): BookTrip {
     size: number,
     price: number,
   ): BookedTrip => {
-    const { tripId, tripDate, tourId } = trip;
-    return { _type: TripType.BookedTrip, tripId, tripDate, bookInfo: { bookDate, customerId, size, price } , tourId};
+    const { tripId, tripDate, tourId , tourName, guideName} = trip;
+    return { _type: TripType.BookedTrip, tripId, tripDate, bookInfo: { bookDate, customerId, size, price } , tourId, tourName, guideName};
   };
 }
