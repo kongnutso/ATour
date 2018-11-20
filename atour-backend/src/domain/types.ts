@@ -128,6 +128,7 @@ export type Tour = {
   trips: Trip[];
   reviews: Review[];
   guideId: string;
+  imageUrl: string | null;
 };
 
 export type PartialTour = {
@@ -136,6 +137,7 @@ export type PartialTour = {
   maximumSize?: number;
   price?: number;
   detail?: string;
+  imageUrl?: string;
 };
 
 export type Gender = 'Male' | 'Female';

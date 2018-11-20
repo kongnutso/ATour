@@ -20,7 +20,8 @@ describe('Tour', () => {
       detail: 'trip to Changmai',
       reviews: [],
       trips: [],
-      guideId: 'guideid'
+      guideId: 'guideid',
+      imageUrl: null
     };
     expect(tour).toEqual(expectedTour);
   });
@@ -36,7 +37,8 @@ describe('Tour', () => {
         detail: 'trip to Changmai',
         reviews: [],
         trips: [],
-        guideId: 'guideid'
+        guideId: 'guideid',
+        imageUrl: null
       },
       {
         tourName: 'Changmai trip',
@@ -52,7 +54,8 @@ describe('Tour', () => {
       detail: 'trip to Changmai',
       reviews: [],
       trips: [],
-      guideId: 'guideid'
+      guideId: 'guideid',
+      imageUrl: null
     };
     expect(editedTour).toEqual(expectedTour);
   });
@@ -67,7 +70,8 @@ describe('Tour', () => {
       detail: 'trip to Changmai',
       trips: [],
       reviews: [],
-      guideId: 'guideid'
+      guideId: 'guideid',
+      imageUrl: null
     };
     const tourWithTrip = TourDomain.addTrip(() => 'newidkrub')(
       tour,
@@ -89,7 +93,8 @@ describe('Tour', () => {
         }
       ],
       reviews: [],
-      guideId: 'guideid'
+      guideId: 'guideid',
+      imageUrl: null
     };
     expect(tourWithTrip).toEqual(expectedTour);
   });
@@ -110,7 +115,8 @@ describe('Tour', () => {
         }
       ],
       reviews: [],
-      guideId: 'guideid'
+      guideId: 'guideid',
+      imageUrl: null
     };
     const resultTour = TourDomain.deleteTrip()(tour, 'tripId');
     const expectedTour: Tour = {
@@ -122,7 +128,8 @@ describe('Tour', () => {
       detail: 'trip to Changmai',
       trips: [],
       reviews: [],
-      guideId: 'guideid'
+      guideId: 'guideid',
+      imageUrl: null
     };
     expect(resultTour).toEqual(expectedTour);
   });

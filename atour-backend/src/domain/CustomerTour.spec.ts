@@ -181,7 +181,8 @@ describe('CustomerTour', () => {
       detail: 'trip to Changmai',
       reviews: [firstReview],
       trips: [],
-      guideId: 'guideid'
+      guideId: 'guideid',
+      imageUrl: null
     };
 
     const review: Review = {
@@ -218,7 +219,8 @@ describe('CustomerTour', () => {
       detail: 'trip to Changmai',
       reviews: [review],
       trips: [],
-      guideId: 'guideid'
+      guideId: 'guideid',
+      imageUrl: null
     };
 
     const resultTour = CustomerTourDomain.removeReviewFromTour()(tour, review);
@@ -322,7 +324,8 @@ describe('CustomerTour', () => {
       detail: 'trip to Changmai',
       reviews: [],
       trips: [beforeTrip],
-      guideId: 'guideid'
+      guideId: 'guideid',
+      imageUrl: null
     };
 
     const resultTour = CustomerTourDomain.updateTripToTour()(
@@ -339,7 +342,8 @@ describe('CustomerTour', () => {
       detail: 'trip to Changmai',
       reviews: [],
       trips: [updatingTrip],
-      guideId: 'guideid'
+      guideId: 'guideid',
+      imageUrl: null
     };
 
     expect(resultTour).toEqual(expectedTour);

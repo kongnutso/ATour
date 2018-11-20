@@ -53,7 +53,8 @@ describe('CustomerService', () => {
       detail: 'trip to Changmai',
       reviews: [],
       trips: [],
-      guideId: 'guideid'
+      guideId: 'guideid',
+      imageUrl: null
     };
 
     const trip: UnbookedTrip = {
@@ -135,7 +136,8 @@ describe('CustomerService', () => {
       detail: 'trip to Changmai',
       reviews: [],
       trips: [],
-      guideId: 'guideid'
+      guideId: 'guideid',
+      imageUrl: null
     };
 
     const trip: BookedTrip = {
@@ -208,7 +210,8 @@ describe('CustomerService', () => {
       detail: 'trip to Changmai',
       reviews: [],
       trips: [],
-      guideId: 'guideid'
+      guideId: 'guideid',
+      imageUrl: null
     };
 
     const trip: FinishedTrip = {
@@ -269,7 +272,8 @@ describe('CustomerService', () => {
       detail: 'trip to Changmai',
       reviews: [],
       trips: [],
-      guideId: 'guideid'
+      guideId: 'guideid',
+      imageUrl: null
     };
 
     const review: Review = {
@@ -320,7 +324,8 @@ describe('CustomerService', () => {
       detail: 'trip to Changmai',
       reviews: [],
       trips: [],
-      guideId: 'guideid'
+      guideId: 'guideid',
+      imageUrl: null
     };
 
     const review: Review = {
@@ -462,7 +467,8 @@ describe('CustomerService', () => {
       detail: 'trip to Changmai',
       reviews: [],
       trips: [trip],
-      guideId: 'guideid'
+      guideId: 'guideid',
+      imageUrl: null
     };
 
     const fakeGetCustomer: GetCustomerDb = async customerId => {
@@ -556,7 +562,8 @@ describe('CustomerService', () => {
       detail: 'trip to Changmai',
       reviews: [],
       trips: [trip],
-      guideId: 'guideid'
+      guideId: 'guideid',
+      imageUrl: null
     };
 
     const fakeGetCustomer: GetCustomerDb = async customerId => {

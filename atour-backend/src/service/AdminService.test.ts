@@ -162,7 +162,8 @@ describe('AdminService', () => {
       detail: 'trip to Changmai',
       reviews: [],
       trips: [],
-      guideId: 'guideid'
+      guideId: 'guideid',
+      imageUrl: null
     };
     const paidTrip: PaidTrip = {
       _type: TripType.PaidTrip,
@@ -247,7 +248,8 @@ describe('AdminService', () => {
       detail: 'trip to Changmai',
       reviews: [],
       trips: [],
-      guideId: 'guideid'
+      guideId: 'guideid',
+      imageUrl: null
     };
     const requestedTrip: RefundRequestedTrip = {
       _type: TripType.RefundRequestedTrip,

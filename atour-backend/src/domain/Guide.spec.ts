@@ -77,7 +77,8 @@ describe('Guide', () => {
       price: 3000,
       reviews: [],
       trips: [],
-      guideId: 'guideid'
+      guideId: 'guideid',
+      imageUrl: null
     };
     const resultGuide = GuideDomain.addPublishedTour()(guide, tour);
     const expectedGuide: Guide = {
@@ -118,7 +119,8 @@ describe('Guide', () => {
       price: 3000,
       reviews: [],
       trips: [],
-      guideId: 'guideid'
+      guideId: 'guideid',
+      imageUrl: null
     };
     test('if no published Tour to update, do nothing', () => {
       const testGuide = guide;
