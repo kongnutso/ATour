@@ -15,7 +15,7 @@ import {
 } from '../repository/Tour'
 
 import {
-    Trip, Review, TripType
+    Trip, Review, TripType, Tour
 } from '../domain/types';
 
 import { bookTrip, updateTripToTour, updateCustomerTripHistory, uploadPayment, createReview, addReviewToTour, editReview, removeReviewFromTour, addTripToCustomer, refundTrip, cancelTrip, freeTrip } from '../domain/CustomerTour'
@@ -73,6 +73,19 @@ export type CancelTripService = (
     customerId: string
 ) => Promise<Trip>
 
+export type GetTourService = (
+    tourId: string
+) => Promise<Tour>;
+
+export function getTourService(
+    getTourDb: GetTourDb
+):GetTourService {
+    return async (tourId) =>{
+        return await getTourDb(tourId)
+    }
+}
+
+
 export function bookTripService(
         getCustomerDb: GetCustomerDb,
         getTourDb: GetTourDb,
@@ -102,7 +115,8 @@ export function bookTripService(
                         customerId,
                         size,
                         price,
-                        dateGenerator()
+                        dateGenerator(),
+                        tourId
                     );
                     const updatedTour = updateTripToTour()(
                         tour, bookedTrip

@@ -1,4 +1,4 @@
-import { Customer, UserProfile } from 'domain/types';
+import { Customer, UserProfile, Tour } from 'domain/types';
 import { Db } from 'mongodb';
 
 export type GetCustomerDb = (customerId: string)=> Promise<Customer>;
@@ -34,6 +34,16 @@ export type UpdateCustomerDb = (
 export type GetCustomerProfileDb = (
     userName: string
 ) => Promise<Customer>;
+
+export type GetTourDb = (
+    tourId: string
+) => Promise<Tour>;
+
+export function getTour(db:Db):GetTourDb {
+    return async (tourId) => {
+        return await db.collection('tour').findOne({tourId});
+    }
+}
 
 export function getCustomerProfile(db:Db):GetCustomerProfileDb {
     return async (userName) => {
