@@ -24,8 +24,8 @@ type BookTrip = (
     customerId: string,
     size: number,
     price: number,
-    BookDate: Date
-
+    BookDate: Date,
+    tourId
 )=> BookedTrip;
 
 type UploadPayment = (
@@ -97,7 +97,8 @@ export function bookTrip() : BookTrip{
         customerId,
         size,
         price,
-        bookDate
+        bookDate,
+        tourId
     ) => {
         const trip: BookedTrip = {
             _type: TripType.BookedTrip,
@@ -108,7 +109,8 @@ export function bookTrip() : BookTrip{
                 customerId,
                 size,
                 price
-            }
+            },
+            tourId
         };
         return trip;
     };
@@ -128,7 +130,8 @@ export function uploadPayment(): UploadPayment{
                     tripDate: trip.tripDate,
                     bookInfo: trip.bookInfo,
                     paidDate: paidDate,
-                    slipImages: [slipImage] 
+                    slipImages: [slipImage],
+                    tourId: trip.tourId
 
                 }
                 return paidTrip
@@ -292,7 +295,8 @@ export function cancelTrip(): CancelTrip {
                 tripId: trip.tripId,
                 tripDate: trip.tripDate,
                 bookInfo: trip.bookInfo,
-                cancelDate: date
+                cancelDate: date,
+                tourId: trip.tourId
             }
         }else{
             throw new Error('Trip is not allowed to cancel');
@@ -307,6 +311,7 @@ export function freeTrip(): FreeTrip {
                 _type: TripType.UnbookedTrip,
                 tripId: trip.tripId,
                 tripDate: trip.tripDate,
+                tourId:trip.tourId
             }
         } else {
             throw new Error('Trip is not cancelled yet');

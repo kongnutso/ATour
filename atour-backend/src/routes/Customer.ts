@@ -37,7 +37,7 @@ import {
 import { searchTour, searchGuide } from '../repository/CustomerSearch';
 
 import * as uuid from 'uuid/v4';
-import { bookTripService, uploadPaymentService, addReviewService, editReviewSrevice, removeReviewSrevice, seeBookHistoryService, refundTripService, cancelTripService } from '../service/CustomerTourService';
+import { bookTripService, uploadPaymentService, addReviewService, editReviewSrevice, removeReviewSrevice, seeBookHistoryService, refundTripService, cancelTripService, getTourService } from '../service/CustomerTourService';
 const router = express.Router();
 
 router.get('/', (req, res) => {
@@ -129,6 +129,17 @@ router.post('/getProfile', async (req, res) => {
   } catch (error) {
     console.log(error.message);
     res.json({ customer: null, error: error.message });
+  }
+});
+
+router.post('/getTour', async (req, res) => {
+  try{
+    const db: Db = res.locals.db;
+    const {tourId} = req.body;
+    const tour = await getTourService(getTour(db))(tourId) 
+    res.json(tour);
+  }catch(e){
+    res.json({tour: null, error: e.message})
   }
 });
 
