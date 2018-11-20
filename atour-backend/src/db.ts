@@ -13,7 +13,7 @@ import {
 //TODO: create proper config file
 
 // Connection URL
-const url = 'mongodb://localhost:27017';
+const url = 'mongodb://db:27017';
 
 // Database Name
 const dbName = 'atour';
@@ -43,7 +43,6 @@ export async function initMongo() {
     approveDate: new Date('2018-11-06'),
     tourId: 'tourid2',
     tourName:'Explore the Bua Tong "Sticky" Waterfall with a Super Local Expert',
-    guideName: 'guideuser'
   };
   const customer: Customer = {
     customerId: 'customerid',
@@ -73,7 +72,6 @@ export async function initMongo() {
       tripDate: new Date('2018-11-05'),
       tourId: 'tourid',
       tourName: 'Live the Agricultural Life in the Mountains of Chiang Mai',
-      guideName: 'guideuser'
     },
     {
       _type: TripType.UnbookedTrip,
@@ -81,7 +79,6 @@ export async function initMongo() {
       tripDate: new Date('2018-11-10'),
       tourId: 'tourid',
       tourName: 'Live the Agricultural Life in the Mountains of Chiang Mai',
-      guideName: 'guideuser'
     }
   ];
 

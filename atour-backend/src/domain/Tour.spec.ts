@@ -90,7 +90,8 @@ describe('Tour', () => {
           _type: TripType.UnbookedTrip,
           tripId: 'newidkrub',
           tripDate: new Date('2018-11-04'),
-          tourId: 'tourId'
+          tourId: 'tourId',
+          tourName: 'Changmai'
         }
       ],
       reviews: [],
@@ -112,7 +113,8 @@ describe('Tour', () => {
           _type: TripType.UnbookedTrip,
           tripId: 'tripId',
           tripDate: new Date('2018-11-04'),
-          tourId: 'tourId'
+          tourId: 'tourId',
+          tourName: 'tourName'
         }
       ],
       reviews: [],

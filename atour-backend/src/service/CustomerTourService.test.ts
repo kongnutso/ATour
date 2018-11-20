@@ -61,7 +61,8 @@ describe('CustomerService', () => {
       _type: TripType.UnbookedTrip,
       tripId: 'tripId',
       tripDate: new Date('2018-11-11'),
-      tourId: 'tourId'
+      tourId: 'tourId',
+      tourName: 'tourName'
     };
 
     const fakeGetCustomer: GetCustomerDb = async customerId => {
@@ -91,7 +92,7 @@ describe('CustomerService', () => {
       fakeUpdateTrip,
       fakeUpdateCustomer,
       () => new Date('2018-11-05')
-    )('tourId', 'tripId', new Date('2018-11-11'), 'customerId', 5, 5000);
+    )('tripId', new Date('2018-11-11'), 'customerId', 5, 5000);
 
     const expectedTrip: BookedTrip = {
       _type: TripType.BookedTrip,
@@ -103,7 +104,8 @@ describe('CustomerService', () => {
         size: 5,
         price: 5000
       },
-      tourId: 'tourId'
+      tourId: 'tourId',
+      tourName: 'tourName'
     };
 
     expect(resultTrip).toEqual(expectedTrip);
@@ -150,7 +152,8 @@ describe('CustomerService', () => {
         size: 5,
         price: 5000
       },
-      tourId: 'tourId'
+      tourId: 'tourId',
+      tourName: 'tourName'
     };
 
     const fakeGetCustomer: GetCustomerDb = async customerId => {
@@ -194,7 +197,8 @@ describe('CustomerService', () => {
       },
       paidDate: new Date('2018-11-05'),
       slipImages: [{ url: 'www.adm.co.th' }],
-      tourId: 'tourId'
+      tourId: 'tourId',
+      tourName: 'tourName'
     };
 
     expect(resultTrip).toEqual(expectedTrip);
@@ -228,7 +232,8 @@ describe('CustomerService', () => {
       slipImages: [{ url: 'www.adm.co.th' }],
       approveDate: new Date('2018-11-08'),
       finishDate: new Date('2018-11-11'),
-      tourId: 'tourId'
+      tourId: 'tourId',
+      tourName: 'tourName'
     };
 
     const fakeGetTour: GetTourDb = async tourId => {
@@ -376,7 +381,8 @@ describe('CustomerService', () => {
         size: 5,
         price: 5000
       },
-      tourId: 'tourId'
+      tourId: 'tourId',
+      tourName: 'tourName'
     };
 
     const paidTrip: PaidTrip = {
@@ -391,7 +397,8 @@ describe('CustomerService', () => {
       },
       paidDate: new Date('2018-11-07'),
       slipImages: [{ url: 'image1.url' }],
-      tourId: 'tourId'
+      tourId: 'tourId',
+      tourName: 'tourName'
     };
 
     const customer: Customer = {
@@ -438,7 +445,8 @@ describe('CustomerService', () => {
       slipImages: [{ url: 'www.adm.co.th' }],
       paidDate: new Date('2018-11-05'),
       approveDate: new Date('2018-11-06'),
-      tourId: 'tourId'
+      tourId: 'tourId',
+      tourName: 'tourName'
     };
 
     const customer: Customer = {
@@ -514,7 +522,8 @@ describe('CustomerService', () => {
       paidDate: new Date('2018-11-05'),
       approveDate: new Date('2018-11-06'),
       refundRequestDate: new Date('2018-11-07'),
-      tourId: 'tourId'
+      tourId: 'tourId',
+      tourName: 'tourName'
     };
 
     expect(resultTrip).toEqual(expectedTrip);
@@ -533,7 +542,8 @@ describe('CustomerService', () => {
       },
       slipImages: [{ url: 'www.adm.co.th' }],
       paidDate: new Date('2018-11-05'),
-      tourId: 'tourId'
+      tourId: 'tourId',
+      tourName: 'tourName'
     };
 
     const customer: Customer = {
@@ -606,7 +616,8 @@ describe('CustomerService', () => {
         price: 5000
       },
       cancelDate: new Date('2018-11-07'),
-      tourId: 'tourId'
+      tourId: 'tourId',
+      tourName: 'tourName'
     };
 
     expect(resultTrip).toEqual(expectedTrip);

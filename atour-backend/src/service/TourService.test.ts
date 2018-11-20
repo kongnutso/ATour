@@ -169,7 +169,8 @@ test('addTripService', async () => {
     _type: TripType.UnbookedTrip,
     tripId: 'tripId',
     tripDate: new Date('2018-11-05'),
-    tourId: 'tourId'
+    tourId: 'tourId',
+    tourName: 'Changmai Trip',
   };
   const expectedTour: Tour = {
     tourId: 'tourId',
@@ -207,7 +208,8 @@ test('deleteTripService', async () => {
     _type: TripType.UnbookedTrip,
     tripId: 'tripId',
     tripDate: new Date('2018-11-05'),
-    tourId: 'tourId'
+    tourId: 'tourId',
+    tourName: 'Changmai Trip',
   };
   const tour: Tour = {
     tourId: 'tourId',
@@ -251,5 +253,3 @@ test('deleteTripService', async () => {
   )('tourId', 'tripId');
   expect(resultTour).toEqual(expectedTour);
 });
-
-//TODO: implement tour picture
