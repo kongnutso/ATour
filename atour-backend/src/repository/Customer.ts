@@ -111,7 +111,8 @@ export function editCustomerProfile(db: Db): EditCustomerProfileDb {
 
 export function updateCustomer(db: Db): UpdateCustomerDb {
     return async (customer) => {
+        const customerId = customer.customerId
         await db.collection('customer')
-            .update({ customerId: customer.customerId }, { $set: { customer } });
+            .updateOne({ customerId}, { $set:  customer  });
     };
 }
