@@ -5,7 +5,7 @@ type BookTrip = (
   customerId: string,
   bookDate: Date,
   size: number,
-  price: number,
+  price: number
 ) => BookedTrip;
 
 export function bookTrip(): BookTrip {
@@ -14,9 +14,16 @@ export function bookTrip(): BookTrip {
     customerId: string,
     bookDate: Date,
     size: number,
-    price: number,
+    price: number
   ): BookedTrip => {
-    const { tripId, tripDate, tourId , tourName, guideName} = trip;
-    return { _type: TripType.BookedTrip, tripId, tripDate, bookInfo: { bookDate, customerId, size, price } , tourId, tourName, guideName};
+    const { tripId, tripDate, tourId, tourName } = trip;
+    return {
+      _type: TripType.BookedTrip,
+      tripId,
+      tripDate,
+      bookInfo: { bookDate, customerId, size, price },
+      tourId,
+      tourName,
+    };
   };
 }

@@ -162,7 +162,8 @@ describe('AdminService', () => {
       detail: 'trip to Changmai',
       reviews: [],
       trips: [],
-      guideId: 'guideid'
+      guideId: 'guideid',
+      imageUrl: null
     };
     const paidTrip: PaidTrip = {
       _type: TripType.PaidTrip,
@@ -176,7 +177,8 @@ describe('AdminService', () => {
       },
       paidDate: new Date('2018-11-05'),
       slipImages: [{ url: 'www.adm.co.th' }],
-      tourId: 'tourId'
+      tourId: 'tourId',
+      tourName: 'tourName'
     };
     const approvedTrip: ApprovedTrip = {
       _type: TripType.ApprovedTrip,
@@ -191,7 +193,8 @@ describe('AdminService', () => {
       paidDate: new Date('2018-11-05'),
       slipImages: [{ url: 'www.adm.co.th' }],
       approveDate: new Date('2018-11-11'),
-      tourId: 'tourId'
+      tourId: 'tourId',
+      tourName: 'tourName'
     };
 
     const fakeGetCustomer: GetCustomerDb = async customerId => {
@@ -247,7 +250,8 @@ describe('AdminService', () => {
       detail: 'trip to Changmai',
       reviews: [],
       trips: [],
-      guideId: 'guideid'
+      guideId: 'guideid',
+      imageUrl: null
     };
     const requestedTrip: RefundRequestedTrip = {
       _type: TripType.RefundRequestedTrip,
@@ -263,7 +267,8 @@ describe('AdminService', () => {
       slipImages: [{ url: 'www.adm.co.th' }],
       approveDate: new Date('2018-11-11'),
       refundRequestDate: new Date('2018-12-01'),
-      tourId: 'tourId'
+      tourId: 'tourId',
+      tourName: 'tourName'
     };
     const refundedTrip: RefundedTrip = {
       _type: TripType.RefundedTrip,
@@ -280,7 +285,8 @@ describe('AdminService', () => {
       approveDate: new Date('2018-11-11'),
       refundRequestDate: new Date('2018-12-01'),
       refundDate: new Date('2018-12-12'),
-      tourId: 'tourId'
+      tourId: 'tourId',
+      tourName: 'tourName'
     };
 
     const fakeGetCustomer: GetCustomerDb = async customerId => {

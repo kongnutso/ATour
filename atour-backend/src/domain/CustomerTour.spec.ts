@@ -17,14 +17,19 @@ import {
 
 describe('CustomerTour', () => {
   test('bookTrip', () => {
+    const unbookedTrip: UnbookedTrip = {
+      _type: TripType.UnbookedTrip,
+      tripId: 'tripId',
+      tripDate: new Date('2018-11-11'),
+      tourId: 'tourId',
+      tourName: 'tourName'
+    };
     const resultTrip = CustomerTourDomain.bookTrip()(
-      'tripId',
-      new Date('2018-11-11'),
+      unbookedTrip,
       'customerId',
       5,
       5000,
-      new Date('2018-11-05'),
-      'tourId'
+      new Date('2018-11-05')
     );
     const expectedTrip: BookedTrip = {
       _type: TripType.BookedTrip,
@@ -36,7 +41,8 @@ describe('CustomerTour', () => {
         size: 5,
         price: 5000
       },
-      tourId: 'tourId'
+      tourId: 'tourId',
+      tourName: 'tourName'
     };
     expect(resultTrip).toEqual(expectedTrip);
   });
@@ -52,7 +58,8 @@ describe('CustomerTour', () => {
         size: 5,
         price: 5000
       },
-      tourId: 'tourId'
+      tourId: 'tourId',
+      tourName: 'tourName'
     };
 
     const resultTrip = CustomerTourDomain.uploadPayment()(
@@ -72,7 +79,8 @@ describe('CustomerTour', () => {
       },
       paidDate: new Date('2018-11-06'),
       slipImages: [{ url: 'www.adm.co.th' }],
-      tourId: 'tourId'
+      tourId: 'tourId',
+      tourName: 'tourName'
     };
     expect(resultTrip).toEqual(expectedTrip);
   });
@@ -90,7 +98,8 @@ describe('CustomerTour', () => {
       },
       paidDate: new Date('2018-11-06'),
       slipImages: [{ url: 'www.adm.co.th' }],
-      tourId: 'tourId'
+      tourId: 'tourId',
+      tourName: 'tourName'
     };
 
     const { slipImages } = paidTrip;
@@ -123,7 +132,8 @@ describe('CustomerTour', () => {
       slipImages: [{ url: 'www.adm.co.th' }],
       approveDate: new Date('2018-11-08'),
       finishDate: new Date('2018-11-11'),
-      tourId: 'tourId'
+      tourId: 'tourId',
+      tourName: 'tourName'
     };
 
     const resultReview = CustomerTourDomain.createReview(() => 'reviewId')(
@@ -181,7 +191,8 @@ describe('CustomerTour', () => {
       detail: 'trip to Changmai',
       reviews: [firstReview],
       trips: [],
-      guideId: 'guideid'
+      guideId: 'guideid',
+      imageUrl: null
     };
 
     const review: Review = {
@@ -218,7 +229,8 @@ describe('CustomerTour', () => {
       detail: 'trip to Changmai',
       reviews: [review],
       trips: [],
-      guideId: 'guideid'
+      guideId: 'guideid',
+      imageUrl: null
     };
 
     const resultTour = CustomerTourDomain.removeReviewFromTour()(tour, review);
@@ -242,7 +254,8 @@ describe('CustomerTour', () => {
         size: 5,
         price: 5000
       },
-      tourId: 'tourId'
+      tourId: 'tourId',
+      tourName: 'tourName'
     };
 
     const paidTrip: PaidTrip = {
@@ -257,7 +270,8 @@ describe('CustomerTour', () => {
       },
       paidDate: new Date('2018-11-07'),
       slipImages: [{ url: 'image1.url' }],
-      tourId: 'tourId'
+      tourId: 'tourId',
+      tourName: 'tourName'
     };
 
     const customer: Customer = {
@@ -295,7 +309,8 @@ describe('CustomerTour', () => {
         size: 5,
         price: 5000
       },
-      tourId: 'tourId'
+      tourId: 'tourId',
+      tourName: 'tourName'
     };
 
     const updatingTrip: PaidTrip = {
@@ -310,7 +325,8 @@ describe('CustomerTour', () => {
       },
       paidDate: new Date('2018-11-06'),
       slipImages: [{ url: 'www.adm.co.th' }],
-      tourId: 'tourId'
+      tourId: 'tourId',
+      tourName: 'tourName'
     };
 
     const tour: Tour = {
@@ -322,7 +338,8 @@ describe('CustomerTour', () => {
       detail: 'trip to Changmai',
       reviews: [],
       trips: [beforeTrip],
-      guideId: 'guideid'
+      guideId: 'guideid',
+      imageUrl: null
     };
 
     const resultTour = CustomerTourDomain.updateTripToTour()(
@@ -339,7 +356,8 @@ describe('CustomerTour', () => {
       detail: 'trip to Changmai',
       reviews: [],
       trips: [updatingTrip],
-      guideId: 'guideid'
+      guideId: 'guideid',
+      imageUrl: null
     };
 
     expect(resultTour).toEqual(expectedTour);
@@ -356,7 +374,8 @@ describe('CustomerTour', () => {
         size: 5,
         price: 5000
       },
-      tourId: 'tourId'
+      tourId: 'tourId',
+      tourName: 'tourName'
     };
 
     const updatingTrip: PaidTrip = {
@@ -371,7 +390,8 @@ describe('CustomerTour', () => {
       },
       paidDate: new Date('2018-11-06'),
       slipImages: [{ url: 'www.adm.co.th' }],
-      tourId: 'tourId'
+      tourId: 'tourId',
+      tourName: 'tourName'
     };
 
     const customer: Customer = {
@@ -426,7 +446,8 @@ describe('CustomerTour', () => {
         size: 5,
         price: 5000
       },
-      tourId: 'tourId'
+      tourId: 'tourId',
+      tourName: 'tourName'
     };
 
     const customer: Customer = {
@@ -484,7 +505,8 @@ describe('CustomerTour', () => {
       slipImages: [{ url: 'www.adm.co.th' }],
       paidDate: new Date('2018-11-05'),
       approveDate: new Date('2018-11-06'),
-      tourId: 'tourId'
+      tourId: 'tourId',
+      tourName: 'tourName'
     };
     const resultTrip = CustomerTourDomain.refundTrip()(
       trip,
@@ -504,7 +526,8 @@ describe('CustomerTour', () => {
       paidDate: new Date('2018-11-05'),
       approveDate: new Date('2018-11-06'),
       refundRequestDate: new Date('2018-11-07'),
-      tourId: 'tourId'
+      tourId: 'tourId',
+      tourName: 'tourName'
     };
     expect(resultTrip).toEqual(expectedTrip);
   });
@@ -522,7 +545,8 @@ describe('CustomerTour', () => {
       },
       slipImages: [{ url: 'www.adm.co.th' }],
       paidDate: new Date('2018-11-05'),
-      tourId: 'tourId'
+      tourId: 'tourId',
+      tourName: 'tourName'
     };
     const resultTrip = CustomerTourDomain.cancelTrip()(
       trip,
@@ -539,7 +563,8 @@ describe('CustomerTour', () => {
         price: 5000
       },
       cancelDate: new Date('2018-11-07'),
-      tourId: 'tourId'
+      tourId: 'tourId',
+      tourName: 'tourName'
     };
     expect(resultTrip).toEqual(expectedTrip);
   });
@@ -556,14 +581,16 @@ describe('CustomerTour', () => {
         price: 5000
       },
       cancelDate: new Date('2018-11-05'),
-      tourId: 'tourId'
+      tourId: 'tourId',
+      tourName: 'tourName'
     };
     const resultTrip = CustomerTourDomain.freeTrip()(trip);
     const expectedTrip: UnbookedTrip = {
       _type: TripType.UnbookedTrip,
       tripId: 'tripId',
       tripDate: new Date('2018-11-11'),
-      tourId: 'tourId'
+      tourId: 'tourId',
+      tourName: 'tourName'
     };
     expect(resultTrip).toEqual(expectedTrip);
   });

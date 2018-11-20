@@ -15,7 +15,6 @@ export type UnbookedTrip = {
   tripDate: Date;
   tourId: string;
   tourName: string;
-  guideName: string;
 };
 
 export type BookInfo = {
@@ -32,7 +31,6 @@ export type BookedTrip = {
   bookInfo: BookInfo;
   tourId: string;
   tourName: string;
-  guideName: string;
 };
 
 export type PaidTrip = {
@@ -44,7 +42,6 @@ export type PaidTrip = {
   slipImages: SlipImage[];
   tourId: string;
   tourName: string;
-  guideName: string;
 };
 
 export type ApprovedTrip = {
@@ -57,7 +54,6 @@ export type ApprovedTrip = {
   approveDate: Date;
   tourId: string;
   tourName: string;
-  guideName: string;
 };
 
 export type RefundRequestedTrip = {
@@ -71,7 +67,6 @@ export type RefundRequestedTrip = {
   refundRequestDate: Date;
   tourId: string;
   tourName: string;
-  guideName: string;
 };
 
 export type RefundedTrip = {
@@ -86,7 +81,6 @@ export type RefundedTrip = {
   refundDate: Date;
   tourId: string;
   tourName: string;
-  guideName: string;
 };
 
 export type FinishedTrip = {
@@ -100,7 +94,6 @@ export type FinishedTrip = {
   finishDate: Date;
   tourId: string;
   tourName: string;
-  guideName: string;
 };
 
 export type CancelledTrip = {
@@ -111,7 +104,6 @@ export type CancelledTrip = {
   cancelDate: Date;
   tourId: string;
   tourName: string;
-  guideName: string;
 };
 
 export type Trip =
@@ -144,6 +136,7 @@ export type Tour = {
   trips: Trip[];
   reviews: Review[];
   guideId: string;
+  imageUrl: string | null;
 };
 
 export type PartialTour = {
@@ -152,6 +145,7 @@ export type PartialTour = {
   maximumSize?: number;
   price?: number;
   detail?: string;
+  imageUrl?: string;
 };
 
 export type Gender = 'Male' | 'Female';

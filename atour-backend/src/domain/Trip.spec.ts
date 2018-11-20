@@ -7,7 +7,8 @@ describe('Trip', () => {
       _type: TripType.UnbookedTrip,
       tripId: '1234',
       tripDate: new Date('2018-11-05'),
-      tourId: 'tourId'
+      tourId: 'tourId',
+      tourName: 'tourName'
     };
     const bookedTrip = Trip.bookTrip()(
       unbookedTrip,
@@ -26,6 +27,7 @@ describe('Trip', () => {
         size: 5,
         price: 5000
       },
+      tourName: 'tourName',
       tourId: 'tourId'
     };
     expect(bookedTrip).toEqual(expectedBookedTrip);

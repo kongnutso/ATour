@@ -1,3 +1,4 @@
+import * as _ from 'lodash';
 import {
   publishTour,
   editTour,
@@ -30,7 +31,8 @@ type EditTourService = (
   minimumSize: number | void,
   maximumSize: number | void,
   price: number | void,
-  detail: string | void
+  detail: string | void,
+  imageUrl: string | void
 ) => Promise<Tour>;
 
 type AddTripService = (tourId: string, date: string) => Promise<Tour>;
@@ -82,16 +84,21 @@ export function editTourService(
     minimumSize?: number,
     maximumSize?: number,
     price?: number,
-    detail?: string
+    detail?: string,
+    imageUrl?: string
   ) => {
     const tour = await getTourDb(tourId);
-    const editedTour = editTour()(tour, {
+    const obj = {
       tourName,
       minimumSize,
       maximumSize,
       price,
-      detail
-    });
+      detail,
+      imageUrl
+    };
+    const partialTour = _.fromPairs(_.toPairs(obj).filter(([k, v]) => v));
+
+    const editedTour = editTour()(tour, partialTour);
 
     const guide = await getGuideDb(tour.guideId);
     const editedGuide = await editPublishedTour()(guide, editedTour);

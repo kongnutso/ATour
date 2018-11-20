@@ -66,18 +66,13 @@ export function markBadGuide(): MarkBadGuide {
 type ApproveTrip = (t: Trip, d: Date) => ApprovedTrip;
 
 export function approveTrip(): ApproveTrip {
-  return (trip, paidDate) => {
+  return (trip, approveDate) => {
     switch (trip._type) {
       case TripType.PaidTrip: {
         const approvedTrip: ApprovedTrip = {
+          ...trip,
           _type: TripType.ApprovedTrip,
-          tripId: trip.tripId,
-          tripDate: trip.tripDate,
-          bookInfo: trip.bookInfo,
-          paidDate: trip.paidDate,
-          slipImages: trip.slipImages,
-          approveDate: paidDate,
-          tourId: trip.tourId
+          approveDate: approveDate
         };
         return approvedTrip;
       }
@@ -95,16 +90,9 @@ export function refundTrip(): RefundTrip {
     switch (trip._type) {
       case TripType.RefundRequestedTrip: {
         const refundedTrip: RefundedTrip = {
+          ...trip,
           _type: TripType.RefundedTrip,
-          tripId: trip.tripId,
-          tripDate: trip.tripDate,
-          bookInfo: trip.bookInfo,
-          paidDate: trip.paidDate,
-          slipImages: trip.slipImages,
-          approveDate: trip.approveDate,
-          refundRequestDate: trip.refundRequestDate,
-          refundDate: refundDate,
-          tourId: trip.tourId
+          refundDate: refundDate
         };
         return refundedTrip;
       }

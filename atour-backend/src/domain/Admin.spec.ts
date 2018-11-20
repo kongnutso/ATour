@@ -117,7 +117,8 @@ describe('Admin', () => {
       },
       paidDate: new Date('2018-11-05'),
       slipImages: [{ url: 'www.adm.co.th' }],
-      tourId: 'tourId'
+      tourId: 'tourId',
+      tourName: 'tourName'
     };
     const approvedTrip: ApprovedTrip = {
       _type: TripType.ApprovedTrip,
@@ -132,7 +133,8 @@ describe('Admin', () => {
       paidDate: new Date('2018-11-05'),
       slipImages: [{ url: 'www.adm.co.th' }],
       approveDate: new Date('2018-11-11'),
-      tourId: 'tourId'
+      tourId: 'tourId',
+      tourName: 'tourName'
     };
     const resultTrip = Admin.approveTrip()(paidTrip, new Date('2018-11-11'));
     expect(resultTrip).toEqual(approvedTrip);
@@ -152,7 +154,8 @@ describe('Admin', () => {
       slipImages: [{ url: 'www.adm.co.th' }],
       approveDate: new Date('2018-11-11'),
       refundRequestDate: new Date('2018-12-01'),
-      tourId: 'tourId'
+      tourId: 'tourId',
+      tourName: 'tourName'
     };
     const refundedTrip: RefundedTrip = {
       _type: TripType.RefundedTrip,
@@ -169,7 +172,8 @@ describe('Admin', () => {
       approveDate: new Date('2018-11-11'),
       refundRequestDate: new Date('2018-12-01'),
       refundDate: new Date('2018-12-12'),
-      tourId: 'tourId'
+      tourId: 'tourId',
+      tourName: 'tourName'
     };
     const resultTrip = Admin.refundTrip()(
       requestedTrip,

@@ -31,13 +31,20 @@ router.post('/:tourId', async (req, res) => {
   try {
     const db: Db = res.locals.db;
     const { tourId } = req.params;
-    const { tourName, minimumSize, maximumSize, price, detail } = req.body;
+    const {
+      tourName,
+      minimumSize,
+      maximumSize,
+      price,
+      detail,
+      imageUrl
+    } = req.body;
     const tour = await editTourService(
       getTour(db),
       getGuide(db),
       saveTour(db),
       saveGuide(db)
-    )(tourId, tourName, minimumSize, maximumSize, price, detail);
+    )(tourId, tourName, minimumSize, maximumSize, price, detail, imageUrl);
     res.json(tour);
   } catch (e) {
     res.json(e.message);

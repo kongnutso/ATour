@@ -1,28 +1,27 @@
 import * as express from 'express';
 import { Db } from 'mongodb';
 
-import { 
-    saveCustomer,
-    checkCustomerUsernameDuplicate,
-    editCustomerProfile,
-    login,
-    saveCustomerToken,
-    getCustomerToken,
-    getCustomer,
-    updateCustomer,
-    getCustomerProfile
-
+import {
+  saveCustomer,
+  checkCustomerUsernameDuplicate,
+  editCustomerProfile,
+  login,
+  saveCustomerToken,
+  getCustomerToken,
+  getCustomer,
+  updateCustomer,
+  getCustomerProfile
 } from '../repository/Customer';
 
 import {
-    getTour,
-    updateTour,
-    updateTrip,
-    getTrip,
-    saveReview,
-    getReview,
-    updateReview,
-    deleteReview
+  getTour,
+  updateTour,
+  updateTrip,
+  getTrip,
+  saveReview,
+  getReview,
+  updateReview,
+  deleteReview
 } from '../repository/Tour';
 import {
   registerCustomerService,
@@ -37,7 +36,17 @@ import {
 import { searchTour, searchGuide } from '../repository/CustomerSearch';
 
 import * as uuid from 'uuid/v4';
-import { bookTripService, uploadPaymentService, addReviewService, editReviewSrevice, removeReviewSrevice, seeBookHistoryService, refundTripService, cancelTripService, getTourService } from '../service/CustomerTourService';
+import {
+  bookTripService,
+  uploadPaymentService,
+  addReviewService,
+  editReviewSrevice,
+  removeReviewSrevice,
+  seeBookHistoryService,
+  refundTripService,
+  cancelTripService,
+  getTourService
+} from '../service/CustomerTourService';
 const router = express.Router();
 
 router.get('/', (req, res) => {
@@ -99,17 +108,12 @@ router.post('/login', async (req, res) => {
 router.post('/editProfile', async (req, res) => {
   try {
     const db: Db = res.locals.db;
-    const {
-          customerId,
-          email,
-          phoneNumber,
-          profileImageUrl
-    } = req.body;
+    const { customerId, email, phoneNumber, profileImageUrl } = req.body;
     const customer = await editCustomerProfileService(editCustomerProfile(db))(
-        customerId,
-        email,
-        phoneNumber,
-        profileImageUrl
+      customerId,
+      email,
+      phoneNumber,
+      profileImageUrl
     );
     res.json(customer);
   } catch (error) {
@@ -133,13 +137,13 @@ router.post('/getProfile', async (req, res) => {
 });
 
 router.post('/getTour', async (req, res) => {
-  try{
+  try {
     const db: Db = res.locals.db;
-    const {tourId} = req.body;
-    const tour = await getTourService(getTour(db))(tourId) 
+    const { tourId } = req.body;
+    const tour = await getTourService(getTour(db))(tourId);
     res.json(tour);
-  }catch(e){
-    res.json({tour: null, error: e.message})
+  } catch (e) {
+    res.json({ tour: null, error: e.message });
   }
 });
 
@@ -174,53 +178,30 @@ router.post('/searchGuide', async (req, res) => {
   }
 });
 
-router.post('/bookTrip', async (req,res) => {
-    try{
-        const db:Db = res.locals.db;
-        const {
-            tripId,
-            tripDate,
-            customerId,
-            size,
-            price,
-            tourId,    
-            tourName,
-            guideName        
-        } = req.body;
-        const trip = await bookTripService(
-            getCustomer(db),
-            getTour(db),
-            getTrip(db),
-            updateTour(db),
-            updateTrip(db),
-            updateCustomer(db),
-            () => new Date()
-        )(
-            tripId,
-            tripDate,
-            customerId,
-            size,
-            price,
-            tourId,
-            tourName,
-            guideName
-        );
-        res.json(trip);
-    }catch (error) {
-        console.log(error.message);
-        res.json({ trip: null, error: error.message })
-    }
-})
+router.post('/bookTrip', async (req, res) => {
+  try {
+    const db: Db = res.locals.db;
+    const { tripId, tripDate, customerId, size, price } = req.body;
+    const trip = await bookTripService(
+      getCustomer(db),
+      getTour(db),
+      getTrip(db),
+      updateTour(db),
+      updateTrip(db),
+      updateCustomer(db),
+      () => new Date()
+    )(tripId, tripDate, customerId, size, price);
+    res.json(trip);
+  } catch (error) {
+    console.log(error.message);
+    res.json({ trip: null, error: error.message });
+  }
+});
 
 router.post('/uploadPayment', async (req, res) => {
   try {
     const db: Db = res.locals.db;
-    const {
-      tourId,
-      tripId,
-      customerId,
-      slipUrl
-    } = req.body;
+    const { tourId, tripId, customerId, slipUrl } = req.body;
     const trip = await uploadPaymentService(
       getCustomer(db),
       getTour(db),
@@ -229,28 +210,18 @@ router.post('/uploadPayment', async (req, res) => {
       updateTrip(db),
       updateCustomer(db),
       () => new Date()
-    )(
-      tourId,
-      tripId,
-      customerId,
-      slipUrl
-    );
+    )(tourId, tripId, customerId, slipUrl);
     res.json(trip);
   } catch (error) {
     console.log(error.message);
-    res.json({ trip: null, error: error.message })
+    res.json({ trip: null, error: error.message });
   }
-})
+});
 
 router.post('/addReview', async (req, res) => {
   try {
     const db: Db = res.locals.db;
-    const {
-      tourId,
-      tripId,
-      customerId,
-      comment
-    } = req.body;
+    const { tourId, tripId, customerId, comment } = req.body;
     const review = await addReviewService(
       getTour(db),
       getTrip(db),
@@ -258,98 +229,65 @@ router.post('/addReview', async (req, res) => {
       saveReview(db),
       () => uuid(),
       () => new Date()
-      )(
-      tourId,
-      tripId,
-      customerId,
-      comment
-    );
+    )(tourId, tripId, customerId, comment);
     res.json(review);
   } catch (error) {
     console.log(error.message);
-    res.json({ review: null, error: error.message })
+    res.json({ review: null, error: error.message });
   }
-})
+});
 
 router.post('/editReview', async (req, res) => {
   try {
     const db: Db = res.locals.db;
-    const {
-      tourId,
-      customerId,
-      reviewId,
-      comment
-    } = req.body;
+    const { tourId, customerId, reviewId, comment } = req.body;
     const review = await editReviewSrevice(
       getTour(db),
       getReview(db),
       updateTour(db),
       updateReview(db),
       () => new Date()
-    )(
-      tourId,
-      customerId,
-      reviewId,
-      comment
-    );
+    )(tourId, customerId, reviewId, comment);
     res.json(review);
   } catch (error) {
     console.log(error.message);
-    res.json({ review: null, error: error.message })
+    res.json({ review: null, error: error.message });
   }
-})
+});
 
 router.post('/removeReview', async (req, res) => {
   try {
     const db: Db = res.locals.db;
-    const {
-      tourId,
-      customerId,
-      reviewId,
-    } = req.body;
+    const { tourId, customerId, reviewId } = req.body;
     const review = await removeReviewSrevice(
       getTour(db),
       getReview(db),
       updateTour(db),
-      deleteReview(db),
-    )(
-      tourId,
-      customerId,
-      reviewId,
-    );
+      deleteReview(db)
+    )(tourId, customerId, reviewId);
     res.json(review);
   } catch (error) {
     console.log(error.message);
-    res.json({ review: null, error: error.message })
+    res.json({ review: null, error: error.message });
   }
-})
+});
 
 router.post('/seeBookHistory', async (req, res) => {
   try {
     const db: Db = res.locals.db;
-    const {
-      customerId
-    } = req.body;
-    const trips = await seeBookHistoryService(
-      getCustomer(db)
-    )(
-      customerId
-    );
+    const { customerId } = req.body;
+    const trips = await seeBookHistoryService(getCustomer(db))(customerId);
     res.json(trips);
   } catch (error) {
     console.log(error.message);
-    res.json({ trips: null, error: error.message })
+    res.json({ trips: null, error: error.message });
   }
-})
+});
 
 router.post('/refundTrip', async (req, res) => {
   try {
     const db: Db = res.locals.db;
-    const {
-      tourId,
-      tripId,
-      customerId,
-    } = req.body;
+    const { tourId, tripId, customerId } = req.body;
     const trip = await refundTripService(
       getCustomer(db),
       getTour(db),
@@ -358,26 +296,18 @@ router.post('/refundTrip', async (req, res) => {
       updateTrip(db),
       updateCustomer(db),
       () => new Date()
-    )(
-      tourId,
-      tripId,
-      customerId,
-    );
+    )(tourId, tripId, customerId);
     res.json(trip);
   } catch (error) {
     console.log(error.message);
-    res.json({ trip: null, error: error.message })
+    res.json({ trip: null, error: error.message });
   }
-})
+});
 
 router.post('/cancelTrip', async (req, res) => {
   try {
     const db: Db = res.locals.db;
-    const {
-      tourId,
-      tripId,
-      customerId,
-    } = req.body;
+    const { tourId, tripId, customerId } = req.body;
     const trip = await cancelTripService(
       getCustomer(db),
       getTour(db),
@@ -386,16 +316,12 @@ router.post('/cancelTrip', async (req, res) => {
       updateTrip(db),
       updateCustomer(db),
       () => new Date()
-    )(
-      tourId,
-      tripId,
-      customerId,
-    );
+    )(tourId, tripId, customerId);
     res.json(trip);
   } catch (error) {
     console.log(error.message);
-    res.json({ trip: null, error: error.message })
+    res.json({ trip: null, error: error.message });
   }
-})
+});
 
 export default router;

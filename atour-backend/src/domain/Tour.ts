@@ -14,7 +14,7 @@ export type PublishTour = (
 
 export type EditTour = (t: Tour, updateInfo: PartialTour) => Tour;
 
-export type AddTrip = (t: Tour, d: Date, guideName: string) => Tour;
+export type AddTrip = (t: Tour, d: Date) => Tour;
 
 export type DeleteTrip = (t: Tour, tripId: string) => Tour;
 
@@ -36,7 +36,8 @@ export function publishTour(idGenerator: IdGenerator): PublishTour {
       detail,
       trips: [],
       reviews: [],
-      guideId
+      guideId,
+      imageUrl: null
     };
     return tour;
   };
@@ -52,16 +53,13 @@ export function editTour(): EditTour {
 }
 
 export function addTrip(idGenerator: IdGenerator): AddTrip {
-
   return (tour: Tour, tripDate: Date): Tour => {
-    console.log('hello tour', tour, guideName:string);
     const addedTrip: UnbookedTrip = {
       _type: TripType.UnbookedTrip,
       tripId: idGenerator(),
       tripDate,
       tourId: tour.tourId,
-      tourName: tour.tourName,
-      guideName
+      tourName: tour.tourName
     };
     const newTrips = [...tour.trips, addedTrip];
     return {
