@@ -15,21 +15,23 @@ import {
 import StarRatingComponent from "react-star-rating-component";
 
 const GuideTourInfo = props => {
+  const { tour } = props.location.state;
   const {
     tourName,
-    tourimage,
-    tourRating,
+    // tourimage,
+    tourId,
     price,
     tourLocation,
     tourDetail,
-    minGroupSize,
-    maxGroupSize,
-    availableDates
-  } = props.tour;
+    minimumSize,
+    maximumSize,
+    reviews,
+    trips
+  } = tour;
   return (
     <Container>
       <div className="topbanner-user-container">
-        <EditTourModal tour={props.tour} />
+        {/* <EditTourModal tour={props.tour} /> */}
       </div>
       <Segment style={{ padding: "8em 0em" }} vertical>
         <Grid columns={2} stackable>
@@ -47,11 +49,11 @@ const GuideTourInfo = props => {
           </Grid.Column>
           <Grid.Row>
             <Grid.Column with={16} textAlign="left">
-              <StarRatingComponent
+              {/* <StarRatingComponent
                 className="tour-info-stars"
                 starCount={5}
                 value={tourRating}
-              />
+              /> */}
             </Grid.Column>
           </Grid.Row>
         </Grid>
@@ -66,7 +68,7 @@ const GuideTourInfo = props => {
               <p>{price}</p>
               <h2>Group size</h2>
               <p>
-                from {minGroupSize} to {maxGroupSize}
+                from {minimumSize} to {maximumSize}
               </p>
             </Grid.Column>
             <Grid.Column width={6} textAlign="right">
@@ -75,7 +77,7 @@ const GuideTourInfo = props => {
                 onClickEditAvailableDate={props.onClickEditAvailableDate}
               /> */}
 
-              <EditAvailableDate availableDates={availableDates} />
+              {/* <EditAvailableDate trips={trips} /> */}
             </Grid.Column>
           </Grid>
         </div>

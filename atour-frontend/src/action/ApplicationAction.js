@@ -1,13 +1,25 @@
-import axios from 'axios';
+import axios from "axios";
+import { isNullOrUndefined } from "util";
 
-export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
-export const LOGIN_FAILED = 'LOGIN_FAILED';
+export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
+export const LOGIN_FAILED = "LOGIN_FAILED";
+
+function IsNullOrUndefined(x) {
+  if (x === undefined) {
+    return true;
+  }
+  if (x === null) {
+    return true;
+  }
+  return false;
+}
+
 export function login(userName, password, role) {
   return async dispatch => {
     try {
       if (role) {
         const res = await axios
-          .post('http://localhost:3000/customer/login', {
+          .post("http://localhost:3000/customer/login", {
             userName,
             password
           })
@@ -21,26 +33,31 @@ export function login(userName, password, role) {
         } else {
           return dispatch({
             type: LOGIN_SUCCESS,
-            payload: { userName, role: 'Customer', token: res }
+            payload: { userName, role: "Customer", token: res }
           });
         }
       } else {
         const res = await axios
-          .post('http://localhost:3000/guide/login', {
+          .post("http://localhost:3000/guide/login", {
             userName,
             password
           })
           .then(res => {
             return res.data;
           });
-        if (res.error) {
+        if (
+          res.error ||
+          res.data == "Cannot read property 'guideId' of null" ||
+          IsNullOrUndefined(res.data)
+        ) {
+          console.log("Login failed");
           return dispatch({
             type: LOGIN_FAILED
           });
         } else {
           return dispatch({
             type: LOGIN_SUCCESS,
-            payload: { userName, role: 'Guide', token: res }
+            payload: { userName, role: "Guide", token: res }
           });
         }
       }
@@ -48,14 +65,14 @@ export function login(userName, password, role) {
   };
 }
 
-export const LOGOUT = 'LOGOUT';
+export const LOGOUT = "LOGOUT";
 export function logout() {
   return {
     type: LOGOUT
   };
 }
 
-export const RESIZE_WINDOW = 'RESIZE_WIDNOW';
+export const RESIZE_WINDOW = "RESIZE_WIDNOW";
 export function resizeWindow(width) {
   return {
     type: RESIZE_WINDOW,

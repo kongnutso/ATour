@@ -1,26 +1,27 @@
-import React from 'react';
-import Modal from 'react-modal';
-import { connect } from 'react-redux';
-import { loginModal, registerModal } from '../../action/ModalAction';
-import { login } from '../../action/ApplicationAction';
-import { getUserInfo } from '../../action/UserInfoAction';
-import classNames from 'classnames';
-import autobind from 'react-autobind';
-import PopUpModal from '../../component/PopUpModal/PopUpModal';
-import './styles.css';
-import axios from 'axios';
+import React from "react";
+import Modal from "react-modal";
+import { connect } from "react-redux";
+import { Redirect } from "react-router-dom";
+import { loginModal, registerModal } from "../../action/ModalAction";
+import { login } from "../../action/ApplicationAction";
+import { getUserInfo } from "../../action/UserInfoAction";
+import classNames from "classnames";
+import autobind from "react-autobind";
+import PopUpModal from "../../component/PopUpModal/PopUpModal";
+import "./styles.css";
+import axios from "axios";
 
 class LoginModal extends React.Component {
   constructor() {
     super();
     this.state = {
       asCustomer: true,
-      userName: '',
-      password: '',
-      errorMessage: '',
+      userName: "",
+      password: "",
+      errorMessage: "",
       sendRequest: false
     };
-    autobind(this, 'switchToSignUp', 'login');
+    autobind(this, "switchToSignUp", "login");
   }
 
   componentWillReceiveProps(nextProps) {
@@ -28,7 +29,7 @@ class LoginModal extends React.Component {
       this.onCloseLoginModal();
     } else if (this.state.sendRequest && !nextProps.isLoginSuccess) {
       this.setState({
-        errorMessage: 'Invalid Username or Password',
+        errorMessage: "Invalid Username or Password",
         sendRequest: false
       });
     }
@@ -48,21 +49,25 @@ class LoginModal extends React.Component {
   onCloseLoginModal() {
     this.setState({
       asCustomer: true,
-      userName: '',
-      password: '',
+      userName: "",
+      password: "",
       sendRequest: false
     });
     this.props.onCloseModal();
   }
 
   render() {
+    console.log("STATUS: ", this.props.isLoginSuccess);
     const { asCustomer, userName, password, errorMessage } = this.state;
+    if (!this.state.asCustomer && this.props.isLoginSuccess) {
+      return <Redirect to="/guideHome" />;
+    }
     return (
       <Modal
         className="modal-container-loginModal"
         style={{
           overlay: {
-            overflow: 'auto'
+            overflow: "auto"
           }
         }}
         isOpen={this.props.isOpen}
@@ -71,8 +76,8 @@ class LoginModal extends React.Component {
       >
         <PopUpModal
           isOpen={errorMessage ? true : false}
-          onCloseModal={() => this.setState({ errorMessage: '' })}
-          headerText={'Login Fail'}
+          onCloseModal={() => this.setState({ errorMessage: "" })}
+          headerText={"Login Fail"}
           bodyText={errorMessage}
           // onConfirm
         />
@@ -87,8 +92,8 @@ class LoginModal extends React.Component {
           <button
             onClick={() => this.setState({ asCustomer: true })}
             className={classNames({
-              'btn loginModal-selectiveButton': true,
-              'loginModal-selected': asCustomer
+              "btn loginModal-selectiveButton": true,
+              "loginModal-selected": asCustomer
             })}
           >
             Customer
@@ -96,8 +101,8 @@ class LoginModal extends React.Component {
           <button
             onClick={() => this.setState({ asCustomer: false })}
             className={classNames({
-              'btn loginModal-selectiveButton': true,
-              'loginModal-selected': !asCustomer
+              "btn loginModal-selectiveButton": true,
+              "loginModal-selected": !asCustomer
             })}
           >
             Guide
@@ -140,7 +145,7 @@ class LoginModal extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    isOpen: state.modal.modalName === 'login',
+    isOpen: state.modal.modalName === "login",
     isLoginSuccess: state.user.isLoginSuccess
   };
 };
