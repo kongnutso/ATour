@@ -22,12 +22,14 @@ import { bookTrip, updateTripToTour, updateCustomerTripHistory, uploadPayment, c
 import { IdGenerator, DateGenerator } from 'domain/Tour';
 
 export type BookTripService = (
-    tourId: string,
     tripId: string,
     tripDate: Date,
     customerId: string,
     size: number,
-    price: number
+    price: number,
+    tourId: string, 
+    tourName: string,
+    guideName: string   
 ) => Promise<Trip>
 
 export type UploadPaymentService = (
@@ -97,12 +99,14 @@ export function bookTripService(
 
     ) : BookTripService {
     return async (
-        tourId,
         tripId,
         tripDate,
         customerId,
         size,
-        price
+        price,
+        tourId,
+        tourName,
+        guideName
         ) => {
             const tour = await getTourDb(tourId);
             const customer = await getCustomerDb(customerId);
@@ -116,7 +120,9 @@ export function bookTripService(
                         size,
                         price,
                         dateGenerator(),
-                        tourId
+                        tourId,
+                        tourName,
+                        guideName
                     );
                     const updatedTour = updateTripToTour()(
                         tour, bookedTrip

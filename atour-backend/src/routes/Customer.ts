@@ -178,12 +178,14 @@ router.post('/bookTrip', async (req,res) => {
     try{
         const db:Db = res.locals.db;
         const {
-            tourId,
             tripId,
             tripDate,
             customerId,
             size,
-            price
+            price,
+            tourId,    
+            tourName,
+            guideName        
         } = req.body;
         const trip = await bookTripService(
             getCustomer(db),
@@ -194,12 +196,14 @@ router.post('/bookTrip', async (req,res) => {
             updateCustomer(db),
             () => new Date()
         )(
-            tourId,
             tripId,
             tripDate,
             customerId,
             size,
-            price
+            price,
+            tourId,
+            tourName,
+            guideName
         );
         res.json(trip);
     }catch (error) {
