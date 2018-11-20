@@ -170,7 +170,7 @@ export async function initMongo() {
     publishedTours: tours
   };
   const guidetoken = {
-    customerId:'guideid',
+    guideId:'guideid',
     token: 'aksjdflkajasdjkfklaj'
   }
 

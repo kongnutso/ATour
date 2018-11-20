@@ -1,5 +1,16 @@
-import { publishTour, editTour, IdGenerator } from '../domain/Tour';
-import { SaveTourDb, GetTourDb } from '../repository/Tour';
+import {
+  publishTour,
+  editTour,
+  IdGenerator,
+  addTrip,
+  deleteTrip
+} from '../domain/Tour';
+import {
+  SaveTourDb,
+  GetTourDb,
+  SaveTripDb,
+  DeleteTripDb
+} from '../repository/Tour';
 import { addPublishedTour, editPublishedTour } from '../domain/Guide';
 import { GetGuideDb, SaveGuideDb } from '../repository/Guide';
 import { Tour } from 'domain/types';
@@ -21,6 +32,10 @@ type EditTourService = (
   price: number | void,
   detail: string | void
 ) => Promise<Tour>;
+
+type AddTripService = (tourId: string, date: string) => Promise<Tour>;
+
+type DeleteTripService = (tourId: string, tripId: string) => Promise<Tour>;
 
 export function publishTourService(
   idGenerator: IdGenerator,
@@ -83,5 +98,32 @@ export function editTourService(
     await saveTourDb(editedTour);
     await saveGuideDb(editedGuide);
     return editedTour;
+  };
+}
+
+export function addTripService(
+  getTourDb: GetTourDb,
+  saveTourDb: SaveTourDb,
+  saveTripDb: SaveTripDb,
+  idGenerator: IdGenerator
+): AddTripService {
+  return async (tourId: string, date: string) => {
+    const tour = await getTourDb(tourId);
+    const tripAddedTour = addTrip(idGenerator)(tour, new Date(date));
+    await saveTourDb(tripAddedTour);
+    return tripAddedTour;
+  };
+}
+
+export function deleteTripService(
+  getTourDb: GetTourDb,
+  saveTourDb: SaveTourDb,
+  deleteTripDb: DeleteTripDb
+): DeleteTripService {
+  return async (tourId, tripId) => {
+    const tour = await getTourDb(tourId);
+    const tripDeletedTour = deleteTrip()(tour, tripId);
+    await saveTourDb(tripDeletedTour);
+    return tripDeletedTour;
   };
 }
