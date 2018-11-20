@@ -15,10 +15,10 @@ import {
 } from '../repository/Tour'
 
 import {
-    Trip, Review, TripType
+    Trip, Review, TripType, Tour
 } from '../domain/types';
 
-import { bookTrip, updateTripToTour, updateCustomerTripHistory, uploadPayment, createReview, addReviewToTour, editReview, removeReviewFromTour, addTripToCustomer, refundTrip } from '../domain/CustomerTour'
+import { bookTrip, updateTripToTour, updateCustomerTripHistory, uploadPayment, createReview, addReviewToTour, editReview, removeReviewFromTour, addTripToCustomer, refundTrip, cancelTrip, freeTrip } from '../domain/CustomerTour'
 import { IdGenerator, DateGenerator } from 'domain/Tour';
 
 export type BookTripService = (
@@ -67,6 +67,25 @@ export type RefundTripService = (
     customerId: string
 ) => Promise<Trip>
 
+export type CancelTripService = (
+    tourId: string,
+    tripId: string,
+    customerId: string
+) => Promise<Trip>
+
+export type GetTourService = (
+    tourId: string
+) => Promise<Tour>;
+
+export function getTourService(
+    getTourDb: GetTourDb
+):GetTourService {
+    return async (tourId) =>{
+        return await getTourDb(tourId)
+    }
+}
+
+
 export function bookTripService(
         getCustomerDb: GetCustomerDb,
         getTourDb: GetTourDb,
@@ -96,7 +115,8 @@ export function bookTripService(
                         customerId,
                         size,
                         price,
-                        dateGenerator()
+                        dateGenerator(),
+                        tourId
                     );
                     const updatedTour = updateTripToTour()(
                         tour, bookedTrip
@@ -136,24 +156,32 @@ export function uploadPaymentService(
             const customer = await getCustomerDb(customerId);
             const trip = await getTripDb(tripId);
 
-            const paidTrip = uploadPayment()(
-                trip,
-                {url: slipUrl},
-                dateGenerator()
-            );
+            switch(trip._type){
+                case TripType.BookedTrip || TripType.PaidTrip:{
+                    const paidTrip = uploadPayment()(
+                        trip,
+                        { url: slipUrl },
+                        dateGenerator()
+                    );
+
+                    const updatedTour = updateTripToTour()(
+                        tour, paidTrip
+                    );
+
+                    const updatedCustomer = updateCustomerTripHistory()(
+                        customer, paidTrip
+                    );
+
+                    await updateCustomerDb(updatedCustomer);
+                    await updateTourDb(updatedTour);
+                    await updateTripDb(paidTrip);
+                    return paidTrip;
+                }
+                default: {
+                    throw new Error('Trip is not booked or paid');
+                }
+            }
             
-            const updatedTour = updateTripToTour()(
-                tour, paidTrip
-            );
-
-            const updatedCustomer = updateCustomerTripHistory()(
-                customer, paidTrip
-            );
-
-            await updateCustomerDb(updatedCustomer);
-            await updateTourDb(updatedTour);
-            await updateTripDb(paidTrip);
-            return paidTrip;
         }
     }
 
@@ -305,6 +333,49 @@ export function refundTripService(
                 await updateTourDb(updatedTour);
                 await updateTripDb(refundRequestedTrip);
                 return refundRequestedTrip;
+            }
+            default: {
+                throw new Error('Your Payment has not been approve')
+            }
+        }
+    }
+}
+
+export function cancelTripService(
+    getCustomerDb: GetCustomerDb,
+    getTourDb: GetTourDb,
+    getTripDb: GetTripDb,
+    updateTourDb: UpdateTourDb,
+    updateTripDb: UpdateTripDb,
+    updateCustomerDb: UpdateCustomerDb,
+    dateGenerator: DateGenerator
+): CancelTripService {
+    return async (
+        tourId,
+        tripId,
+        customerId) => {
+        const tour = await getTourDb(tourId);
+        const customer = await getCustomerDb(customerId);
+        const trip = await getTripDb(tripId);
+        switch (trip._type) {
+            case TripType.PaidTrip || TripType.BookedTrip : {
+                const cancelledTrip = cancelTrip()(
+                    trip,
+                    dateGenerator()
+                );
+
+                const unbookedTrip = freeTrip()(cancelledTrip);
+
+                const updatedTour = updateTripToTour()(
+                    tour, unbookedTrip
+                );
+                const updatedCustomer = addTripToCustomer()(
+                    customer, cancelledTrip
+                );
+                await updateCustomerDb(updatedCustomer);
+                await updateTourDb(updatedTour);
+                await updateTripDb(unbookedTrip);
+                return cancelledTrip;
             }
             default: {
                 throw new Error('Your Payment has not been approve')

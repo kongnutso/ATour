@@ -3,7 +3,11 @@ import {
   GuideType,
   ApprovalStatus,
   ApprovedGuide,
-  Tour
+  Tour,
+  UnbookedTrip,
+  TripType,
+  Customer,
+  ApprovedTrip
 } from './domain/types';
 
 //TODO: create proper config file
@@ -19,6 +23,58 @@ export async function initMongo() {
   const client = new MongoClient(url);
   await client.connect();
   const db = client.db(dbName);
+  const approvetrips: ApprovedTrip = {
+    _type: TripType.ApprovedTrip,
+    tripId: 'tripId3',
+    tripDate: new Date('2018-11-11'),
+    bookInfo: {
+      bookDate: new Date('2018-11-01'),
+      customerId: 'customerid',
+      size: 2,
+      price: 4000
+    },
+    paidDate: new Date('2018-11-05'),
+    slipImages: [{ url: 'https://i0.wp.com/www.theparadigmng.com/wp-content/uploads/2014/08/ATM.jpg'}],
+    approveDate: new Date('2018-11-06'),
+    tourId: 'tourid2'
+  };
+  const customer:Customer = {
+    customerId: 'customerid',
+    userName: 'username',
+    password: 'password',
+    email: 'customer@test.com',
+    personalId: '1234567890123',
+    profile: {
+        firstName: 'Customername',
+        lastName: 'Clastname',
+        birthDate: new Date('1997-05-07'),
+        phoneNumber: '0811111111',
+        gender: 'Female',
+        profileImageUrl: null
+    },
+    tripHistory: [approvetrips],
+  };
+  const customertoken = {
+    customerId:'customerid',
+    token: 'aksjdflkajasdjkfklaj'
+  }
+
+  const unbooktrips: UnbookedTrip[] = [
+    {
+      _type: TripType.UnbookedTrip,
+      tripId: 'tripId1',
+      tripDate: new Date('2018-11-05'),
+      tourId: 'tourid'
+    },
+    {
+      _type: TripType.UnbookedTrip,
+      tripId: 'tripId2',
+      tripDate: new Date('2018-11-10'),
+      tourId: 'tourid'
+    }
+  ];
+
+
   const tours: Tour[] = [
     {
       tourId: 'tourid',
@@ -30,7 +86,7 @@ export async function initMongo() {
       maximumSize: 5,
       price: 5000,
       reviews: [],
-      trips: []
+      trips: unbooktrips
     },
     {
       tourId: 'tourid2',
@@ -43,7 +99,7 @@ export async function initMongo() {
       maximumSize: 5,
       price: 5000,
       reviews: [],
-      trips: []
+      trips: [approvetrips]
     },
     {
       tourId: 'tourid3',
@@ -97,21 +153,34 @@ export async function initMongo() {
       lastName: 'Smith',
       phoneNumber: '0812345678',
       birthDate: new Date('1996-05-07'),
-      gender: 'Male'
+      gender: 'Male',
+      profileImageUrl: null
     },
     bankAccountNumber: '102943940',
     bankName: 'SCB',
     approvalStatus: ApprovalStatus.Approved,
     availableDate: [],
-    dealtTrips: [],
+    dealtTrips: [approvetrips],
     publishedTours: tours
   };
+  const guidetoken = {
+    customerId:'guideid',
+    token: 'aksjdflkajasdjkfklaj'
+  }
 
   await db.collection('guide').deleteMany({});
   await db.collection('guide').insertOne(guide);
   await db.collection('tour').deleteMany({});
   await db.collection('tour').insertMany(tours);
-  
+  await db.collection('trip').deleteMany({});
+  await db.collection('trip').insertMany(unbooktrips);
+  await db.collection('trip').insertOne(approvetrips);
+  await db.collection('customer').deleteMany({});
+  await db.collection('customer').insertOne(customer);
+  await db.collection('customerToken').deleteMany({});
+  await db.collection('customerToken').insertOne(customertoken);
+  await db.collection('guideToken').deleteMany({});
+  await db.collection('guideToken').insertOne(guidetoken);
   console.log('seed complete');
 
   return {

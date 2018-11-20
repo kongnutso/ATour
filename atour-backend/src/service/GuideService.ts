@@ -27,7 +27,7 @@ export type RegisterGuideService = (
 export type LoginGuideService = (
   userName: string,
   password: string
-) => Promise<string>;
+) => Promise<{ token: string; guide: Guide }>;
 
 export type EditGuideService = (
   guideId: string,
@@ -81,11 +81,15 @@ export function loginGuideService(
 ): LoginGuideService {
   return async (userName, password) => {
     const guide = await getGuideForLogin(userName, password);
-    return await getTokenForGuide(guide.guideId);
+    const token = await getTokenForGuide(guide.guideId);
+    return { guide, token };
   };
 }
 
-export function editGuideService(getGuide: GetGuideDb, saveGuide: SaveGuideDb): EditGuideService {
+export function editGuideService(
+  getGuide: GetGuideDb,
+  saveGuide: SaveGuideDb
+): EditGuideService {
   return async (guideId, guideProfile) => {
     const guide = await getGuide(guideId);
     const editedGuide = editGuide()(guide, guideProfile);

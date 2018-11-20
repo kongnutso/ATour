@@ -31,7 +31,7 @@ export function saveTour(db: Db): SaveTourDb {
 
 export function getTrip(db: Db): GetTripDb {
   return async (tripId) => {
-    return await db.collection('trip').findOne({ tripId});
+    return await db.collection('trip').findOne({tripId});
   }
 } 
 
@@ -43,15 +43,19 @@ export function saveTrip(db: Db): SaveTripDb {
 
 export function updateTour(db: Db): UpdateTourDb {
   return async (tour) =>{
+    const tourId = tour.tourId
     await db.collection('tour')
-    .update({tourId: tour.tourId},{$set :{tour}});
+    // .updateOne({ tourId },{$set :tour});
+      .update({ tourId },tour);
   };
 }
 
 export function updateTrip(db: Db): UpdateTripDb {
   return async (trip) => {
+    const tripId=trip.tripId
     await db.collection('trip')
-      .update({ tripId: trip.tripId }, { $set: { trip } });
+      // .updateOne({tripId}, { $set:  trip  });
+      .update({ tripId }, trip );
   };
 }
 
@@ -69,15 +73,18 @@ export function saveReview(db: Db): SaveReviewDb {
 
 export function updateReview(db: Db): UpdateReviewDb {
   return async (review) => {
+    const reviewId = review.reviewId
     await db.collection('review')
-      .update({ reviewId: review.reviewId }, { $set: { review } });
+      // .updateOne({ reviewId }, { $set:  review  });
+      .update({reviewId}, review)
   };
 }
 
 export function deleteReview(db: Db): DeleteReviewDb {
   return async (review) => {
+    const reviewId = review.reviewId
     await db.collection('review')
-      .deleteOne({ reviewId: review.reviewId });
+      .deleteOne({reviewId});
   };
 }
 

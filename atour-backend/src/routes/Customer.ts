@@ -37,7 +37,7 @@ import {
 import { searchTour, searchGuide } from '../repository/CustomerSearch';
 
 import * as uuid from 'uuid/v4';
-import { bookTripService, uploadPaymentService, addReviewService, editReviewSrevice, removeReviewSrevice, seeBookHistoryService, refundTripService } from '../service/CustomerTourService';
+import { bookTripService, uploadPaymentService, addReviewService, editReviewSrevice, removeReviewSrevice, seeBookHistoryService, refundTripService, cancelTripService, getTourService } from '../service/CustomerTourService';
 const router = express.Router();
 
 router.get('/', (req, res) => {
@@ -102,12 +102,14 @@ router.post('/editProfile', async (req, res) => {
     const {
           customerId,
           email,
-          phoneNumber
+          phoneNumber,
+          profileImageUrl
     } = req.body;
     const customer = await editCustomerProfileService(editCustomerProfile(db))(
         customerId,
         email,
-        phoneNumber
+        phoneNumber,
+        profileImageUrl
     );
     res.json(customer);
   } catch (error) {
@@ -127,6 +129,17 @@ router.post('/getProfile', async (req, res) => {
   } catch (error) {
     console.log(error.message);
     res.json({ customer: null, error: error.message });
+  }
+});
+
+router.post('/getTour', async (req, res) => {
+  try{
+    const db: Db = res.locals.db;
+    const {tourId} = req.body;
+    const tour = await getTourService(getTour(db))(tourId) 
+    res.json(tour);
+  }catch(e){
+    res.json({tour: null, error: e.message})
   }
 });
 
@@ -334,6 +347,34 @@ router.post('/refundTrip', async (req, res) => {
       customerId,
     } = req.body;
     const trip = await refundTripService(
+      getCustomer(db),
+      getTour(db),
+      getTrip(db),
+      updateTour(db),
+      updateTrip(db),
+      updateCustomer(db),
+      () => new Date()
+    )(
+      tourId,
+      tripId,
+      customerId,
+    );
+    res.json(trip);
+  } catch (error) {
+    console.log(error.message);
+    res.json({ trip: null, error: error.message })
+  }
+})
+
+router.post('/cancelTrip', async (req, res) => {
+  try {
+    const db: Db = res.locals.db;
+    const {
+      tourId,
+      tripId,
+      customerId,
+    } = req.body;
+    const trip = await cancelTripService(
       getCustomer(db),
       getTour(db),
       getTrip(db),

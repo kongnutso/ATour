@@ -10,7 +10,9 @@ import {
     Customer,
     Trip,
     ApprovedTrip,
-    RefundRequestedTrip
+    RefundRequestedTrip,
+    CancelledTrip,
+    UnbookedTrip
 } from './types';
 
 describe('CustomerTour', ()=> {
@@ -273,7 +275,8 @@ describe('CustomerTour', ()=> {
                 lastName: 'Clastname',
                 birthDate: new Date('1997-05-07'),
                 phoneNumber: '0811111111',
-                gender: 'Female'
+                gender: 'Female',
+                profileImageUrl: null
             },
             tripHistory: [bookedTrip, paidTrip]
         }
@@ -381,7 +384,8 @@ describe('CustomerTour', ()=> {
                 lastName: 'Clastname',
                 birthDate: new Date('1997-05-07'),
                 phoneNumber: '0811111111',
-                gender: 'Female'
+                gender: 'Female',
+                profileImageUrl: null
             },
             tripHistory: [beforeTrip]
         }
@@ -400,7 +404,8 @@ describe('CustomerTour', ()=> {
                 lastName: 'Clastname',
                 birthDate: new Date('1997-05-07'),
                 phoneNumber: '0811111111',
-                gender: 'Female'
+                gender: 'Female',
+                profileImageUrl: null
             },
             tripHistory: [updatingTrip]
         }
@@ -432,7 +437,8 @@ describe('CustomerTour', ()=> {
                 lastName: 'Clastname',
                 birthDate: new Date('1997-05-07'),
                 phoneNumber: '0811111111',
-                gender: 'Female'
+                gender: 'Female',
+                profileImageUrl: null
             },
             tripHistory: []
         }
@@ -451,7 +457,8 @@ describe('CustomerTour', ()=> {
                 lastName: 'Clastname',
                 birthDate: new Date('1997-05-07'),
                 phoneNumber: '0811111111',
-                gender: 'Female'
+                gender: 'Female',
+                profileImageUrl: null
             },
             tripHistory: [trip]
         }
@@ -495,4 +502,61 @@ describe('CustomerTour', ()=> {
         expect(resultTrip).toEqual(expectedTrip);
     })
 
+    test('cancelTrip', () => {
+        const trip: PaidTrip = {
+            _type: TripType.PaidTrip,
+            tripId: 'tripId',
+            tripDate: new Date("2018-11-11"),
+            bookInfo: {
+                bookDate: new Date('2018-11-05'),
+                customerId: 'customerId',
+                size: 5,
+                price: 5000
+            },
+            slipImages: [{ url: 'www.adm.co.th' }],
+            paidDate: new Date('2018-11-05')
+        }
+        const resultTrip = CustomerTourDomain.cancelTrip()(
+            trip, new Date('2018-11-07')
+        );
+        const expectedTrip: CancelledTrip = {
+            _type: TripType.CancelledTrip,
+            tripId: 'tripId',
+            tripDate: new Date("2018-11-11"),
+            bookInfo: {
+                bookDate: new Date('2018-11-05'),
+                customerId: 'customerId',
+                size: 5,
+                price: 5000
+            },
+            cancelDate: new Date("2018-11-07")
+
+        };
+        expect(resultTrip).toEqual(expectedTrip);
+    })
+
+    test('freeTrip', () => {
+        const trip: CancelledTrip = {
+            _type: TripType.CancelledTrip,
+            tripId: 'tripId',
+            tripDate: new Date("2018-11-11"),
+            bookInfo: {
+                bookDate: new Date('2018-11-05'),
+                customerId: 'customerId',
+                size: 5,
+                price: 5000
+            },
+            cancelDate: new Date('2018-11-05')
+        }
+        const resultTrip = CustomerTourDomain.freeTrip()(
+            trip
+        );
+        const expectedTrip: UnbookedTrip = {
+            _type: TripType.UnbookedTrip,
+            tripId: 'tripId',
+            tripDate: new Date("2018-11-11"),
+
+        };
+        expect(resultTrip).toEqual(expectedTrip);
+    })
 })

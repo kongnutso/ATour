@@ -9,7 +9,9 @@ import{
     FinishedTrip,
     Trip,
     TripType,
-    RefundRequestedTrip
+    RefundRequestedTrip,
+    CancelledTrip,
+    UnbookedTrip
     
 
     } from './types';
@@ -22,8 +24,8 @@ type BookTrip = (
     customerId: string,
     size: number,
     price: number,
-    BookDate: Date
-
+    BookDate: Date,
+    tourId
 )=> BookedTrip;
 
 type UploadPayment = (
@@ -79,6 +81,15 @@ type RefundTrip = (
     date: Date
 ) => RefundRequestedTrip
 
+type CancelTrip = (
+    trip: Trip,
+    date: Date
+) => CancelledTrip
+
+type FreeTrip = (
+    trip: Trip
+) => UnbookedTrip
+
 export function bookTrip() : BookTrip{
     return (
         tripId,
@@ -86,7 +97,8 @@ export function bookTrip() : BookTrip{
         customerId,
         size,
         price,
-        bookDate
+        bookDate,
+        tourId
     ) => {
         const trip: BookedTrip = {
             _type: TripType.BookedTrip,
@@ -97,7 +109,8 @@ export function bookTrip() : BookTrip{
                 customerId,
                 size,
                 price
-            }
+            },
+            tourId
         };
         return trip;
     };
@@ -117,7 +130,8 @@ export function uploadPayment(): UploadPayment{
                     tripDate: trip.tripDate,
                     bookInfo: trip.bookInfo,
                     paidDate: paidDate,
-                    slipImages: [slipImage] 
+                    slipImages: [slipImage],
+                    tourId: trip.tourId
 
                 }
                 return paidTrip
@@ -270,5 +284,37 @@ export function refundTrip(): RefundTrip {
             }
         }
         
+    }
+}
+
+export function cancelTrip(): CancelTrip {
+    return (trip, date)=> {
+        if(trip._type == TripType.BookedTrip || trip._type == TripType.PaidTrip){
+            return {
+                _type: TripType.CancelledTrip,
+                tripId: trip.tripId,
+                tripDate: trip.tripDate,
+                bookInfo: trip.bookInfo,
+                cancelDate: date,
+                tourId: trip.tourId
+            }
+        }else{
+            throw new Error('Trip is not allowed to cancel');
+        }
+    }
+}
+
+export function freeTrip(): FreeTrip {
+    return (trip) => {
+        if (trip._type == TripType.CancelledTrip) {
+            return {
+                _type: TripType.UnbookedTrip,
+                tripId: trip.tripId,
+                tripDate: trip.tripDate,
+                tourId:trip.tourId
+            }
+        } else {
+            throw new Error('Trip is not cancelled yet');
+        }
     }
 }

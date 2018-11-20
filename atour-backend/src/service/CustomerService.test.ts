@@ -7,7 +7,7 @@ import {
     GetCustomerTokenDb,
     EditCustomerProfileDb,
  } from '../repository/Customer';
-import {Customer, UserProfile} from '../domain/types';
+import {Customer} from '../domain/types';
 import { IdGenerator } from 'domain/Tour';
 describe('CustomerService', () => {
   test('registerCustomer', async () => {
@@ -40,7 +40,8 @@ describe('CustomerService', () => {
             lastName: 'Clastname',
             birthDate: new Date('1997-05-07'),
             phoneNumber: '0811111111',
-            gender: 'Female'
+            gender: 'Female',
+            profileImageUrl: null
         },
         tripHistory: [],
     };
@@ -56,25 +57,53 @@ describe('CustomerService', () => {
   })
 
   test('editCustomerProfile', async () => {
-    const fakeEditCustomerProfile: EditCustomerProfileDb = async (customerId, profile) => console.log(customerId, profile);
+    const customer :Customer = {
+        customerId: 'customerid',
+        userName: 'customerUser',
+        password: 'password',
+        email: 'customer@test.com',
+        personalId: '1234567890123',
+        profile: {
+            firstName: 'Customername',
+            lastName: 'Clastname',
+            birthDate: new Date('1997-05-07'),
+            phoneNumber: '0811111111',
+            gender: 'Female',
+            profileImageUrl:null
+        },
+        tripHistory: [],
+    };
+    const fakeEditCustomerProfile: EditCustomerProfileDb = async (customerId, email, phoneNumber, profileImageUrl) =>{
+      console.log(customerId, email, phoneNumber);  
+      const profile = {...customer.profile, phoneNumber, profileImageUrl}
+      const newCustomer = {...customer, email, profile }
+      return newCustomer;
+    } 
     const result = await CustomerService.editCustomerProfileService(fakeEditCustomerProfile)(
         'customerId',
-        'Customername',
-        'Clastname',
-        '0811111111',
-        new Date('1997-05-07'),
-        'Female'
+        'newEmail@test.com',
+        '0812345678',
+        'imageUrl'
     );
 
-    const expectedProfile: UserProfile = {
-        firstName: 'Customername',
-        lastName: 'Clastname',
-        phoneNumber: '0811111111',
-        birthDate: new Date('1997-05-07'),
-        gender: 'Female'
+    const expectedCustomer :Customer = {
+        customerId: 'customerid',
+        userName: 'customerUser',
+        password: 'password',
+        email: 'newEmail@test.com',
+        personalId: '1234567890123',
+        profile: {
+            firstName: 'Customername',
+            lastName: 'Clastname',
+            birthDate: new Date('1997-05-07'),
+            phoneNumber: '0812345678',
+            gender: 'Female',
+            profileImageUrl: 'imageUrl'
+        },
+        tripHistory: [],
     };
     
-    expect(result).toEqual(expectedProfile);
+    expect(result).toEqual(expectedCustomer);
   })
 
  

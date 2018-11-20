@@ -13,6 +13,7 @@ export type UnbookedTrip = {
   _type: TripType.UnbookedTrip;
   tripId: string;
   tripDate: Date;
+  tourId: string;
 };
 
 export type BookInfo = {
@@ -27,16 +28,17 @@ export type BookedTrip = {
   tripId: string;
   tripDate: Date;
   bookInfo: BookInfo;
-  
+  tourId: string;
 };
 
 export type PaidTrip = {
   _type: TripType.PaidTrip;
-  tripId: string; 
+  tripId: string;
   tripDate: Date;
   bookInfo: BookInfo;
   paidDate: Date;
   slipImages: SlipImage[];
+  tourId: string;
 };
 
 export type ApprovedTrip = {
@@ -47,6 +49,7 @@ export type ApprovedTrip = {
   paidDate: Date;
   slipImages: SlipImage[];
   approveDate: Date;
+  tourId: string;
 };
 
 export type RefundRequestedTrip = {
@@ -58,6 +61,7 @@ export type RefundRequestedTrip = {
   slipImages: SlipImage[];
   approveDate: Date;
   refundRequestDate: Date;
+  tourId: string;
 };
 
 export type RefundedTrip = {
@@ -70,8 +74,8 @@ export type RefundedTrip = {
   approveDate: Date;
   refundRequestDate: Date;
   refundDate: Date;
+  tourId: string;
 };
-
 
 export type FinishedTrip = {
   _type: TripType.FinishedTrip;
@@ -82,13 +86,16 @@ export type FinishedTrip = {
   slipImages: SlipImage[];
   approveDate: Date;
   finishDate: Date;
+  tourId: string;
 };
 
 export type CancelledTrip = {
   _type: TripType.CancelledTrip;
   tripId: string;
   tripDate: Date;
-  cancelDate: string;
+  bookInfo: BookInfo;
+  cancelDate: Date;
+  tourId: string;
 };
 
 export type Trip =
@@ -139,6 +146,7 @@ export type UserProfile = {
   phoneNumber: string;
   birthDate: Date;
   gender: Gender;
+  profileImageUrl: string | null;
 };
 
 export enum ApprovalStatus {
@@ -158,7 +166,7 @@ export type Customer = {
   tripHistory: Trip[];
 };
 
-export type Guide = UnApprovedGuide | ApprovedGuide |BadGuide;
+export type Guide = UnApprovedGuide | ApprovedGuide | BadGuide;
 export enum GuideType {
   UnApprovedGuide,
   ApprovedGuide,

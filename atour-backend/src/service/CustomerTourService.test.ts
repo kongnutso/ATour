@@ -1,6 +1,6 @@
 import * as CustomerTourService from './CustomerTourService';
 import { GetCustomerDb, UpdateCustomerDb } from '../repository/Customer';
-import { Customer, Tour, UnbookedTrip, TripType, BookedTrip, PaidTrip, FinishedTrip, Review, Trip, RefundRequestedTrip, ApprovedTrip } from '../domain/types';
+import { Customer, Tour, UnbookedTrip, TripType, BookedTrip, PaidTrip, FinishedTrip, Review, Trip, RefundRequestedTrip, ApprovedTrip, CancelledTrip } from '../domain/types';
 import { GetTourDb, UpdateTourDb, UpdateTripDb, GetTripDb, SaveReviewDb, UpdateReviewDb, GetReviewDb, DeleteReviewDb } from '../repository/Tour';
 
 describe('CustomerService', () => {
@@ -16,7 +16,8 @@ describe('CustomerService', () => {
                 lastName: 'Clastname',
                 birthDate: new Date('1997-05-07'),
                 phoneNumber: '0811111111',
-                gender: 'Female'
+                gender: 'Female',
+                profileImageUrl: null
             },
             tripHistory: [],
         };
@@ -91,7 +92,8 @@ describe('CustomerService', () => {
                 lastName: 'Clastname',
                 birthDate: new Date('1997-05-07'),
                 phoneNumber: '0811111111',
-                gender: 'Female'
+                gender: 'Female',
+                profileImageUrl: null
             },
             tripHistory: [],
         };
@@ -378,7 +380,8 @@ describe('CustomerService', () => {
                 lastName: 'Clastname',
                 birthDate: new Date('1997-05-07'),
                 phoneNumber: '0811111111',
-                gender: 'Female'
+                gender: 'Female',
+                profileImageUrl: null
             },
             tripHistory: [bookedTrip,paidTrip],
         };
@@ -425,7 +428,8 @@ describe('CustomerService', () => {
                 lastName: 'Clastname',
                 birthDate: new Date('1997-05-07'),
                 phoneNumber: '0811111111',
-                gender: 'Female'
+                gender: 'Female',
+                profileImageUrl: null
             },
             tripHistory: [trip],
         };
@@ -486,6 +490,94 @@ describe('CustomerService', () => {
             refundRequestDate: new Date('2018-11-07')
             }
         
+        expect(resultTrip).toEqual(expectedTrip);
+    })
+
+    test('cancelTrip', async () => {
+        const trip: PaidTrip = {
+            _type: TripType.PaidTrip,
+            tripId: 'tripId',
+            tripDate: new Date("2018-11-11"),
+            bookInfo: {
+                bookDate: new Date('2018-11-05'),
+                customerId: 'customerId',
+                size: 5,
+                price: 5000
+            },
+            slipImages: [{ url: 'www.adm.co.th' }],
+            paidDate: new Date('2018-11-05'),
+        }
+
+        const customer: Customer = {
+            customerId: 'customerid',
+            userName: 'customerUser',
+            password: 'password',
+            email: 'customer@test.com',
+            personalId: '1234567890123',
+            profile: {
+                firstName: 'Customername',
+                lastName: 'Clastname',
+                birthDate: new Date('1997-05-07'),
+                phoneNumber: '0811111111',
+                gender: 'Female',
+                profileImageUrl: null
+            },
+            tripHistory: [trip],
+        };
+
+        const tour: Tour = {
+            tourId: 'tourId',
+            tourName: 'Changmai',
+            minimumSize: 1,
+            maximumSize: 5,
+            price: 3500,
+            detail: 'trip to Changmai',
+            reviews: [],
+            trips: [trip],
+            guideId: 'guideid'
+        }
+
+
+
+        const fakeGetCustomer: GetCustomerDb = async customerId => {
+            return customer;
+        }
+
+        const fakeGetTour: GetTourDb = async tourId => {
+            return tour;
+        }
+
+        const fakeGetTrip: GetTripDb = async tripId => {
+            return trip;
+        }
+
+
+        const fakeUpdateTour: UpdateTourDb = async (tour) => console.log(tour);
+
+
+        const fakeUpdateTrip: UpdateTripDb = async (trip) => console.log(trip);
+
+        const fakeUpdateCustomer: UpdateCustomerDb = async customer => console.log(customer);
+
+        const resultTrip = await CustomerTourService.cancelTripService(
+            fakeGetCustomer, fakeGetTour, fakeGetTrip, fakeUpdateTour, fakeUpdateTrip, fakeUpdateCustomer, () => new Date('2018-11-07')
+        )(
+            'tourId', 'tripId', 'customerId'
+        );
+
+        const expectedTrip: CancelledTrip = {
+            _type: TripType.CancelledTrip,
+            tripId: 'tripId',
+            tripDate: new Date("2018-11-11"),
+            bookInfo: {
+                bookDate: new Date('2018-11-05'),
+                customerId: 'customerId',
+                size: 5,
+                price: 5000
+            },
+            cancelDate: new Date('2018-11-07')
+        }
+
         expect(resultTrip).toEqual(expectedTrip);
     })
 })

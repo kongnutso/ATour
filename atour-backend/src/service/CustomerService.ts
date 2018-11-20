@@ -5,7 +5,7 @@ import {
     GetCustomerTokenDb,
     SaveCustomerTokenDb,
     EditCustomerProfileDb,
-    GetCustomerProfileDb,
+    GetCustomerProfileDb
 
 } from '../repository/Customer';
 import { 
@@ -33,7 +33,8 @@ export type LoginService = (
 export type EditCustomerProfileService = (
     customerId: string,
     email: string,
-    phoneNumber: string
+    phoneNumber: string,
+    profileImageUrl: string
 ) => Promise<Customer>;
 
 export type GetCustomerProfileService = (
@@ -99,9 +100,10 @@ export function editCustomerProfileService(editCustomerProfileDb: EditCustomerPr
     return async (
         customerId,
         email,
-        phoneNumber
+        phoneNumber,
+        profileImageUrl
     ) => {
-        const customer = await editCustomerProfileDb (customerId, email, phoneNumber);
+        const customer = await editCustomerProfileDb (customerId, email, phoneNumber,profileImageUrl);
         return customer;
     }
 }

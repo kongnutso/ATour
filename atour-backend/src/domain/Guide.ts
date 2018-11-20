@@ -58,7 +58,8 @@ export function registerGuide(idGenerator: IdGenerator): RegisterGuide {
         lastName,
         birthDate,
         phoneNumber,
-        gender
+        gender,
+        profileImageUrl: null
       },
       approvalStatus: ApprovalStatus.NotApprove
     };
