@@ -12,18 +12,20 @@ const tableProps = num => {
   const dataArray = [];
   for (let i = 0; i <= num; i++) {
     dataArray.push({
-      date: `${i}/10/2018`,
+      requestDate: `${i}/10/2018`,
       username: `${String.fromCharCode(97 + i)}`,
       phoneNumber: `${i}${i}${i}${i}${i}${i}`,
       email: `${i}@hot.hr`,
+      tripDate: `${i}/10/2018`,
+      price: `${i}${i}${i}${i}`,
     });
   }
   return dataArray;
 };
 const adminApproveColumns = (handleConfirm, handleReject) => [
   {
-    Header: 'Date',
-    accessor: 'date',
+    Header: 'Request Date',
+    accessor: 'requestDate',
   },
   {
     Header: 'Username',
@@ -38,10 +40,18 @@ const adminApproveColumns = (handleConfirm, handleReject) => [
     accessor: 'email',
   },
   {
-    Header: 'Slip',
-    accessor: 'slip',
-    width: 100,
+    Header: 'Trip Date',
+    accessor: 'tripDate',
+  },
+  {
+    Header: 'Trip Id',
+    accessor: 'tripId',
     Cell: ({ original }) => <a href="imagURL">View</a>,
+  },
+  {
+    Header: 'Price',
+    accessor: 'price',
+    width: 120,
   },
   {
     Header: 'Status',
@@ -65,7 +75,7 @@ const adminApproveColumns = (handleConfirm, handleReject) => [
   },
 ];
 
-class AdminApprovePage extends Component {
+class AdminApproveRefundPage extends Component {
   state = { approveModal: false, rejectModal: false };
 
   handleConfirm = () => {
@@ -78,8 +88,8 @@ class AdminApprovePage extends Component {
     return (
       <Box>
         <Text fontSize={4} mb={4} mt={2}>
-          <i style={{ marginRight: '10px' }} className="fa fa-check-square-o" />
-          Payment Approval
+          <i style={{ marginRight: '10px' }} className="fa fa-retweet" />
+          Refund Approval
         </Text>
 
         <PopUpModal
@@ -120,4 +130,4 @@ class AdminApprovePage extends Component {
 export default connect(
   null,
   null
-)(AdminApprovePage);
+)(AdminApproveRefundPage);
