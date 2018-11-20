@@ -9,7 +9,7 @@ describe('Tour', () => {
       5,
       3500,
       'trip to Changmai',
-      'guideid',
+      'guideid'
     );
     const expectedTour: Tour = {
       tourId: 'tourId',
@@ -84,7 +84,8 @@ describe('Tour', () => {
         {
           _type: TripType.UnbookedTrip,
           tripId: 'newidkrub',
-          tripDate: new Date('2018-11-04')
+          tripDate: new Date('2018-11-04'),
+          tourId: 'tourId'
         }
       ],
       reviews: [],

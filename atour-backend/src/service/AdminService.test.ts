@@ -1,5 +1,5 @@
 import * as AdminService from './AdminService';
-import { 
+import {
   Guide,
   GuideType,
   ApprovalStatus,
@@ -13,8 +13,12 @@ import {
 } from '../domain/types';
 import { GetGuideDb, SaveGuideDb } from '../repository/Guide';
 import { GetCustomerDb, UpdateCustomerDb } from '../repository/Customer';
-import { GetTourDb, GetTripDb, UpdateTourDb, UpdateTripDb } from '../repository/Tour';
-
+import {
+  GetTourDb,
+  GetTripDb,
+  UpdateTourDb,
+  UpdateTripDb
+} from '../repository/Tour';
 
 describe('AdminService', () => {
   test('ApproveGuideService', async () => {
@@ -32,7 +36,8 @@ describe('AdminService', () => {
         lastName: 'last',
         birthDate: new Date(1234),
         phoneNumber: '0983746888',
-        gender: 'Male'
+        gender: 'Male',
+        profileImageUrl: null
       },
       approvalStatus: ApprovalStatus.NotApprove
     };
@@ -50,7 +55,8 @@ describe('AdminService', () => {
         lastName: 'last',
         birthDate: new Date(1234),
         phoneNumber: '0983746888',
-        gender: 'Male'
+        gender: 'Male',
+        profileImageUrl: null
       },
       approvalStatus: ApprovalStatus.Approved,
       availableDate: [],
@@ -86,7 +92,8 @@ describe('AdminService', () => {
         lastName: 'last',
         birthDate: new Date(1234),
         phoneNumber: '0983746888',
-        gender: 'Male'
+        gender: 'Male',
+        profileImageUrl: null
       },
       approvalStatus: ApprovalStatus.Approved,
       availableDate: [],
@@ -107,7 +114,8 @@ describe('AdminService', () => {
         lastName: 'last',
         birthDate: new Date(1234),
         phoneNumber: '0983746888',
-        gender: 'Male'
+        gender: 'Male',
+        profileImageUrl: null
       },
       approvalStatus: ApprovalStatus.Approved,
       availableDate: [],
@@ -126,7 +134,7 @@ describe('AdminService', () => {
       fakeSaveGuide
     )('guideId');
     expect(markResult).toEqual(markedGuide);
-  })
+  });
 
   test('ApprovePaymentService', async () => {
     const customer: Customer = {
@@ -136,13 +144,14 @@ describe('AdminService', () => {
       email: 'customer@test.com',
       personalId: '1234567890123',
       profile: {
-          firstName: 'Customername',
-          lastName: 'Clastname',
-          birthDate: new Date('1997-05-07'),
-          phoneNumber: '0811111111',
-          gender: 'Female'
+        firstName: 'Customername',
+        lastName: 'Clastname',
+        birthDate: new Date('1997-05-07'),
+        phoneNumber: '0811111111',
+        gender: 'Female',
+        profileImageUrl: null
       },
-      tripHistory: [],
+      tripHistory: []
     };
     const tour: Tour = {
       tourId: 'tourId',
@@ -158,57 +167,59 @@ describe('AdminService', () => {
     const paidTrip: PaidTrip = {
       _type: TripType.PaidTrip,
       tripId: 'tripId',
-      tripDate: new Date("2018-11-11"),
+      tripDate: new Date('2018-11-11'),
       bookInfo: {
-          bookDate: new Date("2018-11-05"),
-          customerId: 'customerId',
-          size: 5,
-          price: 5000
+        bookDate: new Date('2018-11-05'),
+        customerId: 'customerId',
+        size: 5,
+        price: 5000
       },
       paidDate: new Date('2018-11-05'),
-      slipImages: [{url: 'www.adm.co.th'}],
-    }
+      slipImages: [{ url: 'www.adm.co.th' }],
+      tourId: 'tourId'
+    };
     const approvedTrip: ApprovedTrip = {
       _type: TripType.ApprovedTrip,
       tripId: 'tripId',
-      tripDate: new Date("2018-11-11"),
+      tripDate: new Date('2018-11-11'),
       bookInfo: {
-          bookDate: new Date("2018-11-05"),
-          customerId: 'customerId',
-          size: 5,
-          price: 5000
+        bookDate: new Date('2018-11-05'),
+        customerId: 'customerId',
+        size: 5,
+        price: 5000
       },
       paidDate: new Date('2018-11-05'),
-      slipImages: [{url: 'www.adm.co.th'}],
-      approveDate: new Date('2018-11-11')
-    } 
+      slipImages: [{ url: 'www.adm.co.th' }],
+      approveDate: new Date('2018-11-11'),
+      tourId: 'tourId'
+    };
 
     const fakeGetCustomer: GetCustomerDb = async customerId => {
       return customer;
-    }
+    };
     const fakeGetTour: GetTourDb = async tourId => {
       return tour;
-    }
+    };
     const fakeGetTrip: GetTripDb = async tripId => {
       return paidTrip;
-    }
+    };
 
-    const fakeUpdateTour: UpdateTourDb = async (tour) => console.log(tour);
-    const fakeUpdateTrip: UpdateTripDb = async (trip) => console.log(trip);
-    const fakeUpdateCustomer: UpdateCustomerDb = async customer => console.log(customer);
+    const fakeUpdateTour: UpdateTourDb = async tour => console.log(tour);
+    const fakeUpdateTrip: UpdateTripDb = async trip => console.log(trip);
+    const fakeUpdateCustomer: UpdateCustomerDb = async customer =>
+      console.log(customer);
 
     const resultedTrip = await AdminService.approvePaymentService(
       fakeGetCustomer,
       fakeGetTour,
       fakeGetTrip,
-      fakeUpdateTour, 
+      fakeUpdateTour,
       fakeUpdateTrip,
       fakeUpdateCustomer,
       () => new Date('2018-11-11')
     )('tourId', 'tripId', 'customerId');
     expect(resultedTrip).toEqual(approvedTrip);
-
-  })
+  });
 
   test('ApproveRefundService', async () => {
     const customer: Customer = {
@@ -218,13 +229,14 @@ describe('AdminService', () => {
       email: 'customer@test.com',
       personalId: '1234567890123',
       profile: {
-          firstName: 'Customername',
-          lastName: 'Clastname',
-          birthDate: new Date('1997-05-07'),
-          phoneNumber: '0811111111',
-          gender: 'Female'
+        firstName: 'Customername',
+        lastName: 'Clastname',
+        birthDate: new Date('1997-05-07'),
+        phoneNumber: '0811111111',
+        gender: 'Female',
+        profileImageUrl: null
       },
-      tripHistory: [],
+      tripHistory: []
     };
     const tour: Tour = {
       tourId: 'tourId',
@@ -240,59 +252,61 @@ describe('AdminService', () => {
     const requestedTrip: RefundRequestedTrip = {
       _type: TripType.RefundRequestedTrip,
       tripId: 'tripId',
-      tripDate: new Date("2018-11-11"),
+      tripDate: new Date('2018-11-11'),
       bookInfo: {
-          bookDate: new Date("2018-11-05"),
-          customerId: 'customerId',
-          size: 5,
-          price: 5000
+        bookDate: new Date('2018-11-05'),
+        customerId: 'customerId',
+        size: 5,
+        price: 5000
       },
       paidDate: new Date('2018-11-05'),
-      slipImages: [{url: 'www.adm.co.th'}],
+      slipImages: [{ url: 'www.adm.co.th' }],
       approveDate: new Date('2018-11-11'),
-      refundRequestDate: new Date('2018-12-01')
-    }
+      refundRequestDate: new Date('2018-12-01'),
+      tourId: 'tourId'
+    };
     const refundedTrip: RefundedTrip = {
       _type: TripType.RefundedTrip,
       tripId: 'tripId',
-      tripDate: new Date("2018-11-11"),
+      tripDate: new Date('2018-11-11'),
       bookInfo: {
-          bookDate: new Date("2018-11-05"),
-          customerId: 'customerId',
-          size: 5,
-          price: 5000
+        bookDate: new Date('2018-11-05'),
+        customerId: 'customerId',
+        size: 5,
+        price: 5000
       },
       paidDate: new Date('2018-11-05'),
-      slipImages: [{url: 'www.adm.co.th'}],
+      slipImages: [{ url: 'www.adm.co.th' }],
       approveDate: new Date('2018-11-11'),
       refundRequestDate: new Date('2018-12-01'),
-      refundDate: new Date('2018-12-12')
-    } 
+      refundDate: new Date('2018-12-12'),
+      tourId: 'tourId'
+    };
 
     const fakeGetCustomer: GetCustomerDb = async customerId => {
       return customer;
-    }
+    };
     const fakeGetTour: GetTourDb = async tourId => {
       return tour;
-    }
+    };
     const fakeGetTrip: GetTripDb = async tripId => {
       return requestedTrip;
-    }
+    };
 
-    const fakeUpdateTour: UpdateTourDb = async (tour) => console.log(tour);
-    const fakeUpdateTrip: UpdateTripDb = async (trip) => console.log(trip);
-    const fakeUpdateCustomer: UpdateCustomerDb = async customer => console.log(customer);
+    const fakeUpdateTour: UpdateTourDb = async tour => console.log(tour);
+    const fakeUpdateTrip: UpdateTripDb = async trip => console.log(trip);
+    const fakeUpdateCustomer: UpdateCustomerDb = async customer =>
+      console.log(customer);
 
     const resultedTrip = await AdminService.approveRefundService(
       fakeGetCustomer,
       fakeGetTour,
       fakeGetTrip,
-      fakeUpdateTour, 
+      fakeUpdateTour,
       fakeUpdateTrip,
       fakeUpdateCustomer,
       () => new Date('2018-12-12')
     )('tourId', 'tripId', 'customerId');
     expect(resultedTrip).toEqual(refundedTrip);
-
-  })
-})
+  });
+});

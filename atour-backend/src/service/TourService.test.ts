@@ -16,7 +16,8 @@ test('createTour', () => {
       lastName: 'Smith',
       birthDate: new Date('1996-05-07'),
       phoneNumber: '0871234567',
-      gender: 'Male'
+      gender: 'Male',
+      profileImageUrl: null
     },
     bankAccountNumber: '12345',
     bankName: 'SCB',
