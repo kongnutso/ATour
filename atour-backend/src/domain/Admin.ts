@@ -8,9 +8,9 @@ import {
   GuideType,
   ApprovalStatus,
   BadGuide
-} from './types'
+} from './types';
 
-type ApproveGuide = (g: Guide) => ApprovedGuide
+type ApproveGuide = (g: Guide) => ApprovedGuide;
 
 export function approveGuide(): ApproveGuide {
   return (guide: Guide) => {
@@ -28,12 +28,12 @@ export function approveGuide(): ApproveGuide {
       availableDate: [],
       dealtTrips: [],
       publishedTours: []
-    }
+    };
     return approvedGuide;
-  }
+  };
 }
 
-type MarkBadGuide = (g: Guide) => BadGuide
+type MarkBadGuide = (g: Guide) => BadGuide;
 
 export function markBadGuide(): MarkBadGuide {
   return (guide: Guide) => {
@@ -53,23 +53,20 @@ export function markBadGuide(): MarkBadGuide {
           availableDate: guide.availableDate,
           dealtTrips: guide.dealtTrips,
           publishedTours: guide.publishedTours
-        }
+        };
         return badGuide;
       }
       default: {
         throw new Error('Guide must be approved to be marked bad');
       }
     }
-  }
+  };
 }
 
 type ApproveTrip = (t: Trip, d: Date) => ApprovedTrip;
 
 export function approveTrip(): ApproveTrip {
-  return (
-    trip,
-    paidDate
-  ) => {
+  return (trip, paidDate) => {
     switch (trip._type) {
       case TripType.PaidTrip: {
         const approvedTrip: ApprovedTrip = {
@@ -79,7 +76,8 @@ export function approveTrip(): ApproveTrip {
           bookInfo: trip.bookInfo,
           paidDate: trip.paidDate,
           slipImages: trip.slipImages,
-          approveDate: paidDate
+          approveDate: paidDate,
+          tourId: trip.tourId
         };
         return approvedTrip;
       }
@@ -87,16 +85,13 @@ export function approveTrip(): ApproveTrip {
         throw new Error('Trip is not paid');
       }
     }
-  }
+  };
 }
 
 type RefundTrip = (t: Trip, d: Date) => RefundedTrip;
 
 export function refundTrip(): RefundTrip {
-  return (
-    trip,
-    refundDate
-  ) => {
+  return (trip, refundDate) => {
     switch (trip._type) {
       case TripType.RefundRequestedTrip: {
         const refundedTrip: RefundedTrip = {
@@ -107,8 +102,9 @@ export function refundTrip(): RefundTrip {
           paidDate: trip.paidDate,
           slipImages: trip.slipImages,
           approveDate: trip.approveDate,
-          refundRequestDate:  trip.refundRequestDate,
-          refundDate: refundDate
+          refundRequestDate: trip.refundRequestDate,
+          refundDate: refundDate,
+          tourId: trip.tourId
         };
         return refundedTrip;
       }
@@ -116,5 +112,5 @@ export function refundTrip(): RefundTrip {
         throw new Error('Trip is refund requested');
       }
     }
-  }
+  };
 }
