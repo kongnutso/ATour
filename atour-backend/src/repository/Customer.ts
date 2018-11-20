@@ -114,6 +114,6 @@ export function updateCustomer(db: Db): UpdateCustomerDb {
         const customerId = customer.customerId
         await db.collection('customer')
             // .updateOne({ customerId}, { $set:  customer  });
-            .updateOne({customerId},customer)
+            .update({customerId},customer)
     };
 }
