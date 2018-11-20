@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
-import { SELECT_TOUR } from '../action/TourAction';
-import { ON_SEARCH } from '../action/SearchAction';
+import { SELECT_TOUR } from '../action/SelectAction';
+import { ON_SEARCH_TOUR } from '../action/SearchAction';
 const initialState = {
   tourList: [],
   selectedTour: {
@@ -19,7 +19,7 @@ const initialState = {
 
 function tourList(state = initialState.tourList, action) {
   switch (action.type) {
-    case ON_SEARCH:
+    case ON_SEARCH_TOUR:
       return action.payload;
     default:
       return state;

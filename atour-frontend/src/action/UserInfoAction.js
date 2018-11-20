@@ -35,6 +35,7 @@ export function getUserInfo(userName, token) {
       const userInfo = await axios
         .post("http://localhost:3000/customer/getProfile", { userName, token })
         .then(res => {
+          console.log("aaaa", res);
           return res.data;
         });
       return dispatch({
@@ -50,28 +51,29 @@ export function getGuideInfo(guideId) {
   return async dispatch => {
     try {
       if (guideId) {
-        const guideData = await axios
+        console.log(guideId);
+        const userInfo = await axios
           .post("http://localhost:3000/guide/guideid", guideId)
           .then(res => {
             return res.data;
           });
         const guideInfo = {
-          guideId: guideData.guideId,
-          userName: guideData.userName,
-          password: guideData.password,
-          personalId: guideData.personalId,
-          email: guideData.email,
-          firstName: guideData.profile.firstName,
-          lastName: guideData.profile.lastName,
-          birthDate: guideData.profile.birthDate,
-          gender: guideData.profile.gender,
-          phoneNumber: guideData.profile.phoneNumber,
-          bankAccountNumber: guideData.bankAccountNumber,
-          bankName: guideData.bankName,
-          approvalStatus: guideData.approvalStatus,
-          availableDate: guideData.availableDate,
-          dealtTrips: guideData.dealtTrips,
-          publishedTours: guideData.publishedTours
+          guideId: userInfo.guideId,
+          userName: userInfo.userName,
+          password: userInfo.password,
+          personalId: userInfo.personalId,
+          email: userInfo.email,
+          firstName: userInfo.profile.firstName,
+          lastName: userInfo.profile.lastName,
+          birthDate: userInfo.profile.birthDate,
+          gender: userInfo.profile.gender,
+          phoneNumber: userInfo.profile.phoneNumber,
+          bankAccountNumber: userInfo.bankAccountNumber,
+          bankName: userInfo.bankName,
+          approvalStatus: userInfo.approvalStatus,
+          availableDate: userInfo.availableDate,
+          dealtTrips: userInfo.dealtTrips,
+          publishedTours: userInfo.publishedTours
         };
         return dispatch({
           type: GET_GUIDE_INFO,

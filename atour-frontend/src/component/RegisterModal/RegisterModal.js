@@ -139,49 +139,45 @@ class RegisterModal extends React.Component {
     } = this.state;
     const firstName = name.split(" ")[0];
     const lastName = name.split(" ")[1];
-    let res;
+    let payload = {
+      userName,
+      email,
+      password,
+      firstName,
+      lastName,
+      personalId: sid,
+      gender,
+      birthDate,
+      phoneNumber: phone
+    };
     if (asCustomer) {
-      let payload = {
-        userName,
-        email,
-        password,
-        firstName,
-        lastName,
-        personalId: sid,
-        gender,
-        birthDate,
-        phoneNumber: phone
-      };
-      res = await axios
+      const res = await axios
         .post("http://localhost:3000/customer/register", payload)
         .then(res => {
           return res.data;
         });
+      if (res.error) {
+        const errorPopUp = res.error;
+        this.setState({ errorPopUp });
+      } else {
+        this.setState({ successful: true });
+      }
     } else {
-      let payload = {
-        userName,
-        password,
-        personalId: sid,
-        email,
-        firstName,
-        lastName,
-        phoneNumber: phone,
-        birthDate,
-        bankAccountNumber,
-        bankName,
-        gender
-      };
-      res = await axios
-        .post("http://localhost:3000/guide/", payload)
+      payload.bankName = bankName;
+      payload.bankAccountName = bankAccountName;
+      payload.bankAccountNumber = bankAccountNumber;
+      const res = await axios
+        .post("http://localhost:3000/guide/register", payload)
         .then(res => {
           return res.data;
         });
-    }
-    if (res.error) {
-      const errorPopUp = res.error;
-      this.setState({ errorPopUp });
-    } else {
-      this.setState({ successful: true });
+      console.log(res);
+      if (res.error) {
+        const errorPopUp = res.error;
+        this.setState({ errorPopUp });
+      } else {
+        this.setState({ successful: true });
+      }
     }
   }
 

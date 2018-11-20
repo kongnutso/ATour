@@ -3,6 +3,7 @@
   margin-right: 100px;
   margin-top: 30px;
 }
+
 .bookedhistoryinfo-header {
   text-align: left;
   font-size: 24px;
@@ -46,6 +47,20 @@
   color: #ffffff;
 }
 
+.bookedhistoryinfo-status-inprocess-danger {
+  display: table-cell;
+  border-style: solid;
+  display: table-cell;
+  border-color: #ec424b;
+  background-color: #ec424b;
+  height: 40px;
+  width: 40px;
+  text-align: center;
+  vertical-align: middle;
+  border-radius: 50%;
+  color: #ffffff;
+}
+
 .bookedhistoryinfo-status-finish {
   display: table-cell;
   border-style: solid;
@@ -71,6 +86,19 @@
   vertical-align: middle;
   border-radius: 50%;
   color: #26abdc;
+}
+
+.bookedhistoryinfo-status-coming-danger {
+  display: table-cell;
+  border-style: solid;
+  border-color: #ec424b;
+  background-color: #ffffff;
+  height: 40px;
+  width: 40px;
+  text-align: center;
+  vertical-align: middle;
+  border-radius: 50%;
+  color: #ec424b;
 }
 
 .bookedhistoryinfo-text-inprocess {

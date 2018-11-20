@@ -6,50 +6,26 @@ import Table from '../Table';
 import PopUpModal from '../PopUpModal/PopUpModal';
 import COLOR from '../../utils/color';
 import { Button, SearchButton, Input } from '../BaseComponent';
-import Tours from '../Tours/Tours';
+import Cards from '../Cards/Cards';
 import { onChange, onSearch } from '../../action/SearchAction';
 
-//Mock Data
-const tours = [
-  {
-    tourName: 'Tour Name',
-    tourImage: '../../image/Atour-logo.jpg',
-    tourRating: '3',
-    tourPrice: '3000 baht',
-    tourLocation: 'Bangkok'
-  },
-  {
-    tourName: 'Tour Name',
-    tourImage: '../../image/TourImage.png',
-    tourRating: '3',
-    tourPrice: '3000 baht',
-    tourLocation: 'Bangkok'
-  },
-  {
-    tourName: 'Tour Name',
-    tourImage: '../../image/TourImage.png',
-    tourRating: '3',
-    tourPrice: '3000 baht',
-    tourLocation: 'Bangkok'
-  },
-  {
-    tourName: 'Tour Name',
-    tourImage: '../../image/TourImage.png',
-    tourRating: '3',
-    tourPrice: '3000 baht',
-    tourLocation: 'Bangkok'
-  }
-];
-class SearchForTour extends Component {
+class SearchFor extends Component {
   render() {
-    const { term, onChange, onSearch } = this.props;
+    const { term, onChange, onSearch, tours, guides } = this.props;
+    const isTour = this.props.location.pathname === '/searchForTour';
+    const Header = 'Search For ' + (isTour ? 'Tour' : 'Guide');
+    const placeholder = isTour ? 'Tour Name' : 'Guide Name';
+    const items = isTour ? tours : guides;
     return (
-      <div style={{ marginTop: '30px', marginBottom: '30px' }}>
+      <div
+        className="my fucking flag"
+        style={{ marginTop: '30px', marginBottom: '30px' }}
+      >
         <Flex flexWrap="wrap" justifyContent="center">
           <Box width={4 / 5}>
             <Text fontSize={4} mb={4} mt={3}>
               <i style={{ marginRight: '10px' }} className="fa fa-search" />
-              Search For Tour
+              {Header}
             </Text>
 
             <Flex
@@ -60,14 +36,14 @@ class SearchForTour extends Component {
             >
               <Box my={1} width={4 / 5}>
                 <Input
-                  placeholder="Tour Name"
+                  placeholder={placeholder}
                   onChange={e => onChange(e.target.value)}
                   value={term}
-                  onEnterText={() => onSearch(term)}
+                  onEnterText={() => onSearch(term, isTour)}
                 />
               </Box>
               <Box my={1} width={1 / 5}>
-                <SearchButton onClick={() => onSearch(term)}>
+                <SearchButton onClick={() => onSearch(term, isTour)}>
                   <Icon name="search" />
                   Search
                 </SearchButton>
@@ -75,7 +51,7 @@ class SearchForTour extends Component {
             </Flex>
 
             <Flex>
-              <Tours tours={this.props.tours} />
+              <Cards items={items} isGuide={!isTour} />
             </Flex>
           </Box>
         </Flex>
@@ -85,6 +61,10 @@ class SearchForTour extends Component {
 }
 
 export default connect(
-  state => ({ term: state.search, tours: state.tour.tourList }),
+  state => ({
+    term: state.search,
+    tours: state.tour.tourList,
+    guides: state.guide.guideList
+  }),
   { onChange, onSearch }
-)(SearchForTour);
+)(SearchFor);

@@ -7,7 +7,7 @@ import classNames from "classnames";
 import { Card, Header, Image } from "semantic-ui-react";
 import styled from "styled-components";
 import StarRatingComponent from "react-star-rating-component";
-import { selectTour } from "../../action/TourAction";
+// import { selectTour } from "../../action/TourAction";
 import TripItem from "./TripItem/TripItem";
 
 class TourItem extends React.Component {
@@ -60,7 +60,7 @@ class TourItem extends React.Component {
     );
   }
   selectTour() {
-    this.props.selectTour(this.props.tour);
+    // this.props.selectTour(this.props.tour);
   }
   render() {
     console.log("role", this.props.role);
@@ -86,7 +86,7 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => ({
-  selectTour: tour => dispatch(selectTour(tour))
+  // selectTour: tour => dispatch(selectTour(tour))
 });
 
 export default connect(

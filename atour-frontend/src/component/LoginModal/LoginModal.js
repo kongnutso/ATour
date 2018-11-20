@@ -3,7 +3,7 @@ import Modal from "react-modal";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
 import { loginModal, registerModal } from "../../action/ModalAction";
-import { login } from "../../action/ApplicationAction";
+import { login, clearError } from "../../action/ApplicationAction";
 import { getUserInfo } from "../../action/UserInfoAction";
 import classNames from "classnames";
 import autobind from "react-autobind";
@@ -21,7 +21,7 @@ class LoginModal extends React.Component {
       errorMessage: "",
       sendRequest: false
     };
-    autobind(this, "switchToSignUp", "login");
+    autobind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -56,6 +56,11 @@ class LoginModal extends React.Component {
     this.props.onCloseModal();
   }
 
+  onCloseError() {
+    this.setState({ errorMessage: "" });
+    this.props.clearError();
+  }
+
   render() {
     console.log("STATUS: ", this.props.isLoginSuccess);
     const { asCustomer, userName, password, errorMessage } = this.state;
@@ -76,10 +81,9 @@ class LoginModal extends React.Component {
       >
         <PopUpModal
           isOpen={errorMessage ? true : false}
-          onCloseModal={() => this.setState({ errorMessage: "" })}
+          onCloseModal={() => this.onCloseError()}
           headerText={"Login Fail"}
           bodyText={errorMessage}
-          // onConfirm
         />
         <div
           onKeyPress={e => {
@@ -155,7 +159,8 @@ const mapDispatchToProps = dispatch => ({
   onOpenRegisterModal: () => dispatch(registerModal(true)),
   login: (userName, password, role) =>
     dispatch(login(userName, password, role)),
-  getUserInfo: (userName, token) => dispatch(getUserInfo(userName, token))
+  getUserInfo: (userName, token) => dispatch(getUserInfo(userName, token)),
+  clearError: () => dispatch(clearError())
 });
 
 export default connect(

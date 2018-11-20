@@ -15,8 +15,9 @@ import BookedHistoryInfo from "./component/BookedHistoryInfo/BookedHistoryInfo";
 import AdminApprovePage from "./component/AdminApprovePage";
 import AdminSearchPage from "./component/AdminSearchPage";
 import ViewDealtTripPage from "./component/ViewDealtTripPage";
-import SearchForTour from "./component/SearchForTourPage";
+import SearchFor from "./component/SearchFor";
 import CustomerTourInfo from "./component/CustomerTourInfo/CustomerTourInfo";
+import GuideInfo from "./component/GuideInfo/GuideInfo";
 import GuideHome from "./component/Guide/GuideHome";
 import GuideTourInfo from "./component/Guide/GuideTourInfo/GuideTourInfo";
 import GuideViewPublishedTour from "./component/Guide/GuideViewPublishedTour";
@@ -40,8 +41,8 @@ ReactDOM.render(
           render={props => <TopBanner transparent {...props} />}
         />
         <Switch>
-          {/* <Route exact path="/" component={App} /> */}
-          <Route exact path="/" component={GuideHome} />
+          <Route exact path="/" component={App} />
+          {/* <Route exact path="/" component={GuideHome} /> */}
           <Route exact path="/bookedHistory" component={BookedHistory} />
           <Route exact path="/editProfile" component={EditProfile} />
           <Route
@@ -50,15 +51,17 @@ ReactDOM.render(
             component={BookedHistoryInfo}
           />
           <Route exact path="/customerTourInfo" component={CustomerTourInfo} />
+          <Route exact path="/guideInfo" component={GuideInfo} />
           <Route exact path="/adminApprove" component={AdminApprovePage} />
           <Route exact path="/adminSearch" component={AdminSearchPage} />
           <Route exact path="/viewDealtTrips" component={ViewDealtTripPage} />
-          <Route exact path="/searchForTour" component={SearchForTour} />
+          <Route exact path="/searchForTour" component={SearchFor} />
+          <Route exact path="/searchForGuide" component={SearchFor} />
           <Route exact path="/guideHome" component={GuideHome} />
           <Route exact path="/guideTourInfo" component={GuideTourInfo} />
           <Route
             exact
-            path="/guideViewPublishedTour"
+            path="/publishedTour"
             component={GuideViewPublishedTour}
           />
         </Switch>
