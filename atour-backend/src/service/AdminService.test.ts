@@ -357,4 +357,44 @@ describe('AdminService', () => {
     const resultedTrips = await AdminService.getRefundRequests(fakeGetRefundTripDb)();
     expect(resultedTrips).toEqual(requestedTrips);
   })
+
+  test('GetRefundRequest', async () => {
+    const pendingPaymentTrips: PaidTrip[] = [
+      {
+        _type: TripType.PaidTrip,
+        tripId: 'tripId',
+        tripDate: new Date('2018-11-11'),
+        bookInfo: {
+          bookDate: new Date('2018-11-05'),
+          customerId: 'customerId',
+          size: 5,
+          price: 5000
+        },
+        paidDate: new Date('2018-11-05'),
+        slipImages: [{ url: 'www.adm.co.th' }],
+        tourId: 'tourId',
+        tourName: 'tourName'
+      },
+      {
+        _type: TripType.PaidTrip,
+        tripId: 'tripId2',
+        tripDate: new Date('2018-11-11'),
+        bookInfo: {
+          bookDate: new Date('2018-11-05'),
+          customerId: 'customerId',
+          size: 5,
+          price: 5000
+        },
+        paidDate: new Date('2018-11-05'),
+        slipImages: [{ url: 'www.adm.co.th' }],
+        tourId: 'tourId2',
+        tourName: 'tourName2'
+      }
+    ]
+    const fakeGetRefundTripDb: GetRefundTripDb = async () => {
+      return pendingPaymentTrips;
+    };
+    const resultedTrips = await AdminService.getPendingPayments(fakeGetRefundTripDb)();
+    expect(resultedTrips).toEqual(pendingPaymentTrips);
+  })
 });
