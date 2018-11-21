@@ -310,7 +310,7 @@ export function cancelTripService(
         return cancelledTrip;
       }
       default: {
-        throw new Error('Your Payment has not been approve');
+        throw new Error('Your step is not 1 or 2');
       }
     }
   };
