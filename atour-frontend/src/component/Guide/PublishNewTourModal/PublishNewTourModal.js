@@ -6,8 +6,9 @@ import { publishNewTour } from "../../../action/ModalAction";
 import autobind from "react-autobind";
 import * as validation from "../../../utils/validation";
 import classNames from "classnames";
+import { getGuideInfo } from "../../../action/UserInfoAction";
 import "./styles.css";
-import { Grid, Form } from "semantic-ui-react";
+import { Grid, Button } from "semantic-ui-react";
 import axios from "axios";
 
 function Field(props) {
@@ -65,8 +66,6 @@ class PublishNewTourModal extends React.Component {
         price: "",
         minimumSize: "",
         maximumSize: "",
-        meetingPlace: "",
-        schedule: "",
         detail: "",
         imageUrl: ""
       },
@@ -75,8 +74,6 @@ class PublishNewTourModal extends React.Component {
         price: true,
         minimumSize: true,
         maximumSize: true,
-        meetingPlace: true,
-        schedule: true,
         detail: true,
         imageUrl: true
       }
@@ -89,21 +86,46 @@ class PublishNewTourModal extends React.Component {
       "onCloseModal",
       "onFieldChange",
       "maximumSizeValidation",
-      "onSubmitNewTourInfo"
+      "onSubmitNewTourInfo",
+      "onSubmitted"
     );
   }
 
-  onSubmitNewTourInfo() {
+  async onSubmitNewTourInfo() {
+    console.log("SUBMITTING...");
+    console.log(this.state.error);
     const {
-      error: { username, password, email }
+      error: { tourName, price, minimumSize, maximumSize, detail, imageUrl }
     } = this.state;
-    if (!username && !password && !email) {
-      this.setState({ accountInfo: false });
+    if (!tourName && !price && !minimumSize && !maximumSize && !detail) {
+      const url = "http://localhost:3000/tour";
+      const value = this.state.value;
+      const res = await axios
+        .post(url, {
+          guideId: this.props.guideId,
+          tourName: value.tourName,
+          minSize: value.minimumSize,
+          maxSize: value.maximumSize,
+          price: value.price,
+          detail: value.detail,
+          imageUrl: value.imageUrl
+        })
+        .then(res => {
+          console.log("submitted: ", res.data);
+          this.onSubmitted();
+        });
     }
+  }
+
+  onSubmitted() {
+    // update reducers
+    this.props.getGuideInfo(this.props.guideId);
+    this.onCloseModal();
   }
 
   onCloseModal() {
     this.setState({});
+    this.props.updateGuideHome();
     this.props.onCloseModal();
   }
 
@@ -180,26 +202,19 @@ class PublishNewTourModal extends React.Component {
               this.onFieldChange(
                 "minimumSize",
                 e.target.value,
-                validation.validateminimumSize
+                validation.validateMinimumSize
               )
             }
             error={this.state.error.minimumSize}
           />
           <Dec
             label="to"
-            value={{
-              minimumSize: value.minimumSize,
-              maximumSize: value.maximumSize
-            }}
+            value={value.maximumSize}
             onChange={e =>
               this.onFieldChange(
                 "maximumSize",
-                {
-                  minimumSize: value.minimumSize,
-                  maximumSize: e.target.value
-                },
-                true,
-                e.target.value
+                e.target.value,
+                validation.validateMinimumSize
               )
             }
             error={this.state.error.minimumSize}
@@ -209,26 +224,41 @@ class PublishNewTourModal extends React.Component {
           label="Details"
           value={value.detail}
           onChange={e =>
-            this.onFieldChange("detail", e.target.value, this.detailValidation)
+            this.onFieldChange(
+              "detail",
+              e.target.value,
+              validation.validateDetail
+            )
           }
           error={this.state.error.detail}
         />
 
-        <button
-          onClick={() => this.onSubmitNewTourInfo()}
-          className="btn btn-primary"
-        >
-          Next
-        </button>
-        <button onClick={() => this.onCloseModal()} className="btn btn-danger">
-          Cancel
-        </button>
+        <Grid columns={2}>
+          <Grid.Column width={8}>
+            <Button
+              onClick={() => this.onSubmitNewTourInfo()}
+              // className="btn btn-primary"
+              primary
+              fluid
+            >
+              Submit
+            </Button>
+          </Grid.Column>
+          <Grid.Column width={8}>
+            <Button
+              onClick={() => this.onCloseModal()}
+              // className="btn btn-danger"
+              color="red"
+              fluid
+            >
+              Cancel
+            </Button>
+          </Grid.Column>
+        </Grid>
       </div>
     );
   }
   render() {
-    const { accountInfo } = this.state;
-
     return (
       <Modal
         className="publish-new-tour-modal-container"
@@ -248,11 +278,15 @@ class PublishNewTourModal extends React.Component {
 }
 
 const mapStateToProps = state => {
-  return { isOpen: state.modal.modalName };
+  return {
+    isOpen: state.modal.modalName,
+    guideId: state.user.guideInfo.guideId
+  };
 };
 
 const mapDispatchToProps = dispatch => ({
-  onCloseModal: () => dispatch(publishNewTour(false))
+  onCloseModal: () => dispatch(publishNewTour(false)),
+  getGuideInfo: guideId => dispatch(getGuideInfo(guideId))
 });
 
 export default connect(

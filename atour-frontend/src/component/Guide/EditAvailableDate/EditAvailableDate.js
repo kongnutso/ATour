@@ -14,18 +14,25 @@ import axios from "axios";
 
 class AvailableDateItem extends React.Component {
   render() {
+    let tripDate = new Date(this.props.trip.tripDate);
+    const month = tripDate.getMonth();
+    const date = tripDate.getDate();
+    const year = tripDate.getYear();
     return (
       <Grid Columns={2}>
         <Grid.Column width={8} textAlign="left">
-          <p>- {this.props.trip.tripDate}</p>
+          <p>
+            - {date}/{month}/{year}
+          </p>
         </Grid.Column>
         <Grid.Column width={8} textAlign="right">
           <Button
             icon
             onClick={this.props.deleteAvailableDate}
             value={this.props.trip.tripId}
+            color="red"
           >
-            {/* <Icon name="delete" /> */}
+            <Icon name="delete" />
           </Button>
         </Grid.Column>
       </Grid>

@@ -97,7 +97,7 @@ export function validateTourName(tourName) {
   return false;
 }
 
-export function validateminimumSize(minimumSize) {
+export function validateMinimumSize(minimumSize) {
   let regex = /^(\$|)([1-9]\d{0,2}(\,\d{3})*|([1-9]\d*))(\.\d{2})?$/;
   let passed = minimumSize.match(regex);
   if (passed == null || minimumSize.length > 50 || isNaN(minimumSize)) {
@@ -152,6 +152,7 @@ export function validatePrice(price) {
 }
 
 export function validateDetail(detail) {
+  console.log("detail: ", detail);
   if (!detail || detail.length < 5 || detail.length > 500) {
     return "Detail must ...";
   }

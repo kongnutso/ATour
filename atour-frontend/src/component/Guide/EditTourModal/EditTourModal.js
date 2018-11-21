@@ -6,6 +6,7 @@ import autobind from "react-autobind";
 import * as validation from "../../../utils/validation";
 import { editTour } from "../../../action/ModalAction";
 import { getGuideInfo } from "../../../action/UserInfoAction";
+import { Grid, Button } from "semantic-ui-react";
 import "./styles.css";
 import axios from "axios";
 
@@ -35,28 +36,29 @@ const Dec = ({ label, value, onChange }) => {
   return <Field label={label} onChange={onChange} value={extractedValue} />;
 };
 
-function maximumSizeValidation(sizes) {
-  let minimumSize = sizes.minimumSize ? sizes.minimumSize : 0;
-  let maximumSize = sizes.maximumSize;
-  let regex = /^(\$|)([1-9]\d{0,2}(\,\d{3})*|([1-9]\d*))(\.\d{2})?$/;
+// function maximumSizeValidation(sizes) {
+//   let minimumSize = sizes.minimumSize ? sizes.minimumSize : 0;
+//   let maximumSize = sizes.maximumSize;
+//   let regex = /^(\$|)([1-9]\d{0,2}(\,\d{3})*|([1-9]\d*))(\.\d{2})?$/;
 
-  console.log("min ", parseInt(minimumSize));
-  console.log("max ", parseInt(maximumSize));
-  let passed = maximumSize.match(regex);
-  if (
-    passed == null ||
-    maximumSize.length > 50 ||
-    !minimumSize ||
-    !maximumSize ||
-    parseInt(minimumSize) > parseInt(maximumSize)
-  ) {
-    return "maximum group size must ...";
-  }
-  return false;
-}
+//   console.log("min ", parseInt(minimumSize));
+//   console.log("max ", parseInt(maximumSize));
+//   let passed = maximumSize.match(regex);
+//   if (
+//     passed == null ||
+//     maximumSize.length > 50 ||
+//     !minimumSize ||
+//     !maximumSize ||
+//     parseInt(minimumSize) > parseInt(maximumSize)
+//   ) {
+//     return "maximum group size must ...";
+//   }
+//   return false;
+// }
 
 class EditTourModal extends React.Component {
   constructor(props) {
+    console.log("MARK: ", props);
     super(props);
     this.state = {
       value: {
@@ -83,7 +85,6 @@ class EditTourModal extends React.Component {
       "onSubmitNewTourInfo",
       "onCloseModal",
       "onFieldChange",
-      "maximumSizeValidation",
       "onSubmitNewTourInfo",
       "onSubmitted"
     );
@@ -92,6 +93,15 @@ class EditTourModal extends React.Component {
   async onSubmitNewTourInfo() {
     console.log("SUBMITTING...");
     console.log(this.state.error);
+    let handleToUpdate = this.props.updateStates;
+    let value = this.state.value;
+    handleToUpdate(
+      value.price,
+      value.detail,
+      value.minimumSize,
+      value.maximumSize,
+      value.imageUrl
+    );
     const {
       error: { tourName, price, minimumSize, maximumSize, detail, imageUrl }
     } = this.state;
@@ -105,6 +115,7 @@ class EditTourModal extends React.Component {
     ) {
       const url = "http://localhost:3000/tour/" + this.props.tour.tourId;
       console.log("SENDING: ", url);
+      console.log("value: ", this.state.value);
       const value = this.state.value;
       const res = await axios
         .post(url, {
@@ -121,7 +132,7 @@ class EditTourModal extends React.Component {
 
   onSubmitted() {
     // update reducers
-    this.props.getGuideInfo();
+    this.props.getGuideInfo(this.props.guideId);
   }
 
   onCloseModal() {
@@ -158,18 +169,6 @@ class EditTourModal extends React.Component {
         <h2>Edit Tour</h2>
         <hr color="black" size="50" />
         <Field
-          label="Tour name"
-          value={value.tourName}
-          onChange={e =>
-            this.onFieldChange(
-              "tourName",
-              e.target.value,
-              validation.validateTourName
-            )
-          }
-          error={this.state.error.tourName}
-        />
-        <Field
           label="Tour image"
           value={value.imageUrl}
           onChange={e =>
@@ -202,25 +201,22 @@ class EditTourModal extends React.Component {
               this.onFieldChange(
                 "minimumSize",
                 e.target.value,
-                validation.validateminimumSize
+                validation.validateMinimumSize
               )
             }
             error={this.state.error.minimumSize}
           />
-          <Dec
+          <Field
             label="to"
-            value={{
-              minimumSize: value.minimumSize,
-              maximumSize: value.maximumSize
-            }}
+            value={value.maximumSize}
             onChange={e =>
               this.onFieldChange(
                 "maximumSize",
                 e.target.value,
-                validation.validateminimumSize
+                validation.validateMinimumSize
               )
             }
-            error={this.state.error.minimumSize}
+            error={this.state.error.maximumSize}
           />
         </div>
         <Field
@@ -236,15 +232,28 @@ class EditTourModal extends React.Component {
           error={this.state.error.detail}
         />
 
-        <button
-          onClick={() => this.onSubmitNewTourInfo()}
-          className="btn btn-primary"
-        >
-          Submit
-        </button>
-        <button onClick={() => this.onCloseModal()} className="btn btn-danger">
-          Cancel
-        </button>
+        <Grid columns={2}>
+          <Grid.Column width={8}>
+            <Button
+              onClick={() => this.onSubmitNewTourInfo()}
+              // className="btn btn-primary"
+              primary
+              fluid
+            >
+              Submit
+            </Button>
+          </Grid.Column>
+          <Grid.Column width={8}>
+            <Button
+              onClick={() => this.onCloseModal()}
+              // className="btn btn-danger"
+              color="red"
+              fluid
+            >
+              Cancel
+            </Button>
+          </Grid.Column>
+        </Grid>
       </div>
     );
   }
