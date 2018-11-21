@@ -61,21 +61,21 @@ export function setImageSlip(url, bookedId, tourId, customerId) {
   return async dispatch => {
     try {
       if (bookedId) {
-        console.log(url, bookedId, tourId, customerId);
+        console.log(tourId, bookedId, customerId, url);
         const slip = await axios
           .post('http://localhost:3000/customer/uploadPayment', {
             tourId,
-            bookedId,
+            tripId: bookedId,
             customerId,
-            url
+            slipUrl: url
           })
           .then(res => {
-            console.log(res);
+            console.log(res.data);
             return res.data;
           });
         return dispatch({
           type: SET_IMAGE_SLIP,
-          payload: { url, bookedId, today }
+          payload: { url, bookedId, today, _type: 2 }
         });
       } else {
         return dispatch({ type: 'INVALID' });
@@ -98,6 +98,60 @@ export function seeBookHistory(customerId) {
         return dispatch({
           type: SEE_BOOK_HISTORY,
           payload: tour
+        });
+      } else {
+        return dispatch({ type: 'INVALID' });
+      }
+    } catch (e) {}
+  };
+}
+
+export const CANCEL_TRIP = 'CANCEL_TRIP';
+export function cancelTrip(tourId, tripId, customerId) {
+  return async dispatch => {
+    try {
+      if (customerId) {
+        console.log(tourId, tripId, customerId);
+        const cancel = await axios
+          .post('http://localhost:3000/customer/cancelTrip', {
+            tourId: tourId,
+            tripId: tripId,
+            customerId: customerId
+          })
+          .then(res => {
+            console.log('cancel', res.data);
+            return res.data;
+          });
+        return dispatch({
+          type: CANCEL_TRIP,
+          payload: cancel
+        });
+      } else {
+        return dispatch({ type: 'INVALID' });
+      }
+    } catch (e) {}
+  };
+}
+
+export const REFUND_TRIP = 'REFUND_TRIP';
+export function refundTrip(tourId, tripId, customerId) {
+  return async dispatch => {
+    try {
+      if (customerId) {
+        console.log(tourId, tripId, customerId);
+        const refund = await axios
+          .post('http://localhost:3000/customer/refundTrip', {
+            tourId: tourId,
+            tripId: tripId,
+            customerId: customerId
+          })
+          .then(res => {
+            console.log('refund', res.data);
+            return res.data;
+          });
+        return dispatch({
+          type: REFUND_TRIP,
+          payload: refund
         });
       } else {
         return dispatch({ type: 'INVALID' });

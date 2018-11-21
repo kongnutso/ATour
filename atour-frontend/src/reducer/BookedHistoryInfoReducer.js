@@ -2,7 +2,8 @@ import { combineReducers } from 'redux';
 import {
   BOOK_TRIP,
   SELECT_BOOKED_TRIP,
-  SET_IMAGE_SLIP
+  SET_IMAGE_SLIP,
+  CANCEL_TRIP
 } from '../action/BookAction';
 
 const initialState = {
@@ -21,7 +22,9 @@ function tourStatus(state = initialState.tourStatus, action) {
     case SELECT_BOOKED_TRIP:
       return action.payload._type;
     case SET_IMAGE_SLIP:
-      if (state === 2) return 3;
+      return action.payload._type;
+    case CANCEL_TRIP:
+      return action.payload._type;
     default:
       return state;
   }
@@ -40,10 +43,11 @@ function bookedDate(state = initialState.bookedDate, action) {
 
 function uploadedFileDate(state = initialState.uploadedFileDate, action) {
   switch (action.type) {
-    // case BOOK_TRIP:
-    //   return '';
+    case BOOK_TRIP:
+      return '';
     case SELECT_BOOKED_TRIP:
-      return action.payload.paidDate;
+      if (action.payload.paidDate) return action.payload.paidDate;
+      else return '';
     case SET_IMAGE_SLIP:
       return action.payload.today;
     default:
@@ -82,7 +86,8 @@ function slip(state = initialState.slip, action) {
     // case BOOK_TRIP:
     //   return '';
     case SELECT_BOOKED_TRIP:
-      return action.payload.slipImages[0].url;
+      if (action.payload.slipImages) return action.payload.slipImages[0].url;
+      else return '';
     default:
       return state;
   }
