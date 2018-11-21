@@ -296,22 +296,20 @@ export function cancelTripService(
     const tour = await getTourDb(tourId);
     const customer = await getCustomerDb(customerId);
     const trip = await getTripDb(tripId);
-    switch (trip._type) {
-      case TripType.PaidTrip || TripType.BookedTrip: {
-        const cancelledTrip = cancelTrip()(trip, dateGenerator());
+    if (trip._type === TripType.PaidTrip || trip._type === TripType.BookedTrip){
+      const cancelledTrip = cancelTrip()(trip, dateGenerator());
 
-        const unbookedTrip = freeTrip()(cancelledTrip);
+      const unbookedTrip = freeTrip()(cancelledTrip);
 
-        const updatedTour = updateTripToTour()(tour, unbookedTrip);
-        const updatedCustomer = addTripToCustomer()(customer, cancelledTrip);
-        await updateCustomerDb(updatedCustomer);
-        await updateTourDb(updatedTour);
-        await updateTripDb(unbookedTrip);
-        return cancelledTrip;
-      }
-      default: {
-        throw new Error('Your step is not 1 or 2');
-      }
+      const updatedTour = updateTripToTour()(tour, unbookedTrip);
+      const updatedCustomer = addTripToCustomer()(customer, cancelledTrip);
+      await updateCustomerDb(updatedCustomer);
+      await updateTourDb(updatedTour);
+      await updateTripDb(unbookedTrip);
+      return cancelledTrip;
+    }
+    else{
+      throw new Error('Your step is not 1 or 2');
     }
   };
 }
