@@ -51,7 +51,6 @@ export function getGuideInfo(guideId) {
   return async dispatch => {
     try {
       if (guideId) {
-        console.log(guideId);
         const userInfo = await axios
           .post("http://localhost:3000/guide/guideid", guideId)
           .then(res => {
@@ -75,6 +74,7 @@ export function getGuideInfo(guideId) {
           dealtTrips: userInfo.dealtTrips,
           publishedTours: userInfo.publishedTours
         };
+        console.log("RECEIVED: ", userInfo);
         return dispatch({
           type: GET_GUIDE_INFO,
           payload: guideInfo

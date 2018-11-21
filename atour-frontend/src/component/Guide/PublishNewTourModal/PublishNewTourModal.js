@@ -8,6 +8,7 @@ import * as validation from "../../../utils/validation";
 import classNames from "classnames";
 import "./styles.css";
 import { Grid, Form } from "semantic-ui-react";
+import axios from "axios";
 
 function Field(props) {
   const { inputType, error, label, onChange, value } = props;
@@ -31,24 +32,24 @@ function Field(props) {
 }
 
 const Dec = ({ label, value, onChange }) => {
-  let extractedValue = value.maxGroupSize;
+  let extractedValue = value.maximumSize;
   return <Field label={label} onChange={onChange} value={extractedValue} />;
 };
 
-function maxGroupSizeValidation(sizes) {
-  let minGroupSize = sizes.minGroupSize ? sizes.minGroupSize : 0;
-  let maxGroupSize = sizes.maxGroupSize;
+function maximumSizeValidation(sizes) {
+  let minimumSize = sizes.minimumSize ? sizes.minimumSize : 0;
+  let maximumSize = sizes.maximumSize;
   let regex = /^(\$|)([1-9]\d{0,2}(\,\d{3})*|([1-9]\d*))(\.\d{2})?$/;
 
-  console.log("min ", parseInt(minGroupSize));
-  console.log("max ", parseInt(maxGroupSize));
-  let passed = maxGroupSize.match(regex);
+  console.log("min ", parseInt(minimumSize));
+  console.log("max ", parseInt(maximumSize));
+  let passed = maximumSize.match(regex);
   if (
     passed == null ||
-    maxGroupSize.length > 50 ||
-    !minGroupSize ||
-    !maxGroupSize ||
-    parseInt(minGroupSize) > parseInt(maxGroupSize)
+    maximumSize.length > 50 ||
+    !minimumSize ||
+    !maximumSize ||
+    parseInt(minimumSize) > parseInt(maximumSize)
   ) {
     return "maximum group size must ...";
   }
@@ -62,20 +63,22 @@ class PublishNewTourModal extends React.Component {
       value: {
         tourName: "",
         price: "",
-        minGroupSize: "",
-        maxGroupSize: "",
+        minimumSize: "",
+        maximumSize: "",
         meetingPlace: "",
         schedule: "",
-        detail: ""
+        detail: "",
+        imageUrl: ""
       },
       error: {
         tourName: true,
         price: true,
-        minGroupSize: true,
-        maxGroupSize: true,
+        minimumSize: true,
+        maximumSize: true,
         meetingPlace: true,
         schedule: true,
-        detail: true
+        detail: true,
+        imageUrl: true
       }
     };
 
@@ -85,7 +88,7 @@ class PublishNewTourModal extends React.Component {
       "onSubmitNewTourInfo",
       "onCloseModal",
       "onFieldChange",
-      "maxGroupSizeValidation",
+      "maximumSizeValidation",
       "onSubmitNewTourInfo"
     );
   }
@@ -145,6 +148,18 @@ class PublishNewTourModal extends React.Component {
           error={this.state.error.tourName}
         />
         <Field
+          label="Tour image"
+          value={value.imageUrl}
+          onChange={e =>
+            this.onFieldChange(
+              "imageUrl",
+              e.target.value,
+              validation.validateDetail
+            )
+          }
+          error={this.state.error.tourName}
+        />
+        <Field
           label="price"
           value={value.price}
           onChange={e =>
@@ -160,34 +175,34 @@ class PublishNewTourModal extends React.Component {
           <label>Group size</label>
           <Field
             label="from"
-            value={value.minGroupSize}
+            value={value.minimumSize}
             onChange={e =>
               this.onFieldChange(
-                "minGroupSize",
+                "minimumSize",
                 e.target.value,
-                validation.validateMinGroupSize
+                validation.validateminimumSize
               )
             }
-            error={this.state.error.minGroupSize}
+            error={this.state.error.minimumSize}
           />
           <Dec
             label="to"
             value={{
-              minGroupSize: value.minGroupSize,
-              maxGroupSize: value.maxGroupSize
+              minimumSize: value.minimumSize,
+              maximumSize: value.maximumSize
             }}
             onChange={e =>
               this.onFieldChange(
-                "maxGroupSize",
+                "maximumSize",
                 {
-                  minGroupSize: value.minGroupSize,
-                  maxGroupSize: e.target.value
+                  minimumSize: value.minimumSize,
+                  maximumSize: e.target.value
                 },
                 true,
                 e.target.value
               )
             }
-            error={this.state.error.minGroupSize}
+            error={this.state.error.minimumSize}
           />
         </div>
         <Field

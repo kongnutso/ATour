@@ -14,20 +14,25 @@ class TourItem extends React.Component {
   filterTrips(trips) {
     let dates = [];
     let outputDate = [];
-    trips.map(trip => dates.push(trip.tripDate.getDate()));
-    dates.sort((a, b) => a - b);
-    let counter = 0;
-    for (var i = 0; i < dates.length; i++) {
-      if (counter > 4) {
-        break;
-      }
-      let today = new Date();
-      if (dates[i] - today > 0) {
-        outputDate.add(dates[i]);
-        counter += 1;
-      }
+    console.log("TRIPS", trips);
+    if (trips.length == 0) {
+      return outputDate;
+    } else {
+      // trips.map(trip => dates.push(trip.tripDate.getDate()));
+      // dates.sort((a, b) => a - b);
+      // let counter = 0;
+      // for (var i = 0; i < dates.length; i++) {
+      //   if (counter > 4) {
+      //     break;
+      //   }
+      //   let today = new Date();
+      //   if (dates[i] - today > 0) {
+      //     outputDate.add(dates[i]);
+      //     counter += 1;
+      //   }
+      // }
+      return outputDate;
     }
-    return outputDate;
   }
   renderContent() {
     return (
@@ -63,7 +68,7 @@ class TourItem extends React.Component {
     // this.props.selectTour(this.props.tour);
   }
   render() {
-    console.log("role", this.props.role);
+    console.log("recieved from tours: ", this.props.tour);
     if (this.props.role == "Guide") {
       console.log("to guide");
       return (

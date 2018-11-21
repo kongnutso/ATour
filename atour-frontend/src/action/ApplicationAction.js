@@ -2,6 +2,7 @@ import axios from "axios";
 import { isNullOrUndefined } from "util";
 
 export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
+export const GUIDE_LOGIN_SUCCESS = "GUIDE_LOGIN_SUCCESS";
 export const LOGIN_FAILED = "LOGIN_FAILED";
 
 function IsNullOrUndefined(x) {
@@ -31,6 +32,7 @@ export function login(userName, password, role) {
             type: LOGIN_FAILED
           });
         } else {
+          console.log("res: ", res);
           return dispatch({
             type: LOGIN_SUCCESS,
             payload: { userName, role: "Customer", token: res }
@@ -51,9 +53,15 @@ export function login(userName, password, role) {
             type: LOGIN_FAILED
           });
         } else {
+          console.log("res: ", res);
           return dispatch({
-            type: LOGIN_SUCCESS,
-            payload: { userName, role: "Guide", token: res }
+            type: GUIDE_LOGIN_SUCCESS,
+            payload: {
+              userName,
+              role: "Guide",
+              token: res.token,
+              guideInfo: res.guide
+            }
           });
         }
       }

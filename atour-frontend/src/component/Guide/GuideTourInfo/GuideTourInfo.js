@@ -22,16 +22,17 @@ const GuideTourInfo = props => {
     tourId,
     price,
     tourLocation,
-    tourDetail,
+    detail,
     minimumSize,
     maximumSize,
     reviews,
     trips
   } = tour;
+  console.log("received from tourItem:  ", props.location.state);
   return (
     <Container>
       <div className="topbanner-user-container">
-        {/* <EditTourModal tour={props.tour} /> */}
+        <EditTourModal tour={tour} />
       </div>
       <Segment style={{ padding: "8em 0em" }} vertical>
         <Grid columns={2} stackable>
@@ -63,7 +64,7 @@ const GuideTourInfo = props => {
           <Grid columns={2} stackable>
             <Grid.Column width={10} textAlign="left">
               <h2>Details</h2>
-              <p>{tourDetail}</p>
+              <p>{detail}</p>
               <h2>Price</h2>
               <p>{price}</p>
               <h2>Group size</h2>
@@ -73,11 +74,11 @@ const GuideTourInfo = props => {
             </Grid.Column>
             <Grid.Column width={6} textAlign="right">
               {/* <AvailableDates
-                availableDates={availableDates}
+                availableDates={trips}
                 onClickEditAvailableDate={props.onClickEditAvailableDate}
               /> */}
 
-              {/* <EditAvailableDate trips={trips} /> */}
+              <EditAvailableDate tour={tour} />
             </Grid.Column>
           </Grid>
         </div>

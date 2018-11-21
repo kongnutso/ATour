@@ -62,7 +62,6 @@ class LoginModal extends React.Component {
   }
 
   render() {
-    console.log("STATUS: ", this.props.isLoginSuccess);
     const { asCustomer, userName, password, errorMessage } = this.state;
     if (!this.state.asCustomer && this.props.isLoginSuccess) {
       return <Redirect to="/guideHome" />;
