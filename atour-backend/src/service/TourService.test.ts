@@ -36,7 +36,6 @@ test('createTour', () => {
     bankName: 'SCB',
     availableDate: [],
     dealtTrips: [],
-    publishedTours: []
   };
 
   const expectedTour: Tour = {
@@ -54,7 +53,6 @@ test('createTour', () => {
 
   const expectedGuide: Guide = {
     ...guide,
-    publishedTours: [expectedTour]
   };
 
   const fakeGetGuide: GetGuideDb = async guideId => guide;
@@ -128,11 +126,9 @@ test('editTour', () => {
     bankName: 'SCB',
     availableDate: [],
     dealtTrips: [],
-    publishedTours: [tour]
   };
   const expectedGuide: ApprovedGuide = {
     ...guide,
-    publishedTours: [expectedTour]
   };
   const fakeGetGuide = async guideId => {
     expect(guideId).toEqual('guideid');

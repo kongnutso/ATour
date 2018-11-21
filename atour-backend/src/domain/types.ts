@@ -209,7 +209,6 @@ export type ApprovedGuide = {
   approvalStatus: ApprovalStatus.Approved;
   availableDate: Date[];
   dealtTrips: Trip[];
-  publishedTours: Tour[];
 };
 
 export type BadGuide = {
@@ -225,5 +224,4 @@ export type BadGuide = {
   approvalStatus: ApprovalStatus.Approved;
   availableDate: Date[];
   dealtTrips: Trip[];
-  publishedTours: Tour[];
 };

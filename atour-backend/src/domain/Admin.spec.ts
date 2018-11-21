@@ -50,8 +50,7 @@ describe('Admin', () => {
       },
       approvalStatus: ApprovalStatus.Approved,
       availableDate: [],
-      dealtTrips: [],
-      publishedTours: []
+      dealtTrips: []
     };
     const resultGuide = Admin.approveGuide()(unapprovedGuide);
     expect(resultGuide).toEqual(approvedGuide);
@@ -76,8 +75,7 @@ describe('Admin', () => {
       },
       approvalStatus: ApprovalStatus.Approved,
       availableDate: [],
-      dealtTrips: [],
-      publishedTours: []
+      dealtTrips: []
     };
     const markedGuide: Guide = {
       _type: GuideType.BadGuide,
@@ -98,8 +96,7 @@ describe('Admin', () => {
       },
       approvalStatus: ApprovalStatus.Approved,
       availableDate: [],
-      dealtTrips: [],
-      publishedTours: []
+      dealtTrips: []
     };
     const resultGuide = Admin.markBadGuide()(shittyGuide);
     expect(resultGuide).toEqual(markedGuide);

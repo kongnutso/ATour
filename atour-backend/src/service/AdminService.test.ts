@@ -61,7 +61,6 @@ describe('AdminService', () => {
       approvalStatus: ApprovalStatus.Approved,
       availableDate: [],
       dealtTrips: [],
-      publishedTours: []
     };
     const fakeGetGuide: GetGuideDb = async guideId => {
       expect(guideId).toEqual('guideId');
@@ -98,7 +97,6 @@ describe('AdminService', () => {
       approvalStatus: ApprovalStatus.Approved,
       availableDate: [],
       dealtTrips: [],
-      publishedTours: []
     };
     const markedGuide: Guide = {
       _type: GuideType.BadGuide,
@@ -120,7 +118,6 @@ describe('AdminService', () => {
       approvalStatus: ApprovalStatus.Approved,
       availableDate: [],
       dealtTrips: [],
-      publishedTours: []
     };
     const fakeGetGuide: GetGuideDb = async guideId => {
       expect(guideId).toEqual('guideId');

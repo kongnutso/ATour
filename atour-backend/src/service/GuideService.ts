@@ -4,11 +4,13 @@ import {
   SaveGuideTokenDb,
   GetGuideForLogin,
   GetTokenForGuide,
-  GetGuideDb
+  GetGuideDb,
+  GetPublishedToursOfGuide
 } from '../repository/Guide';
 import { registerGuide, editGuide } from '../domain/Guide';
-import { Guide, Gender, UserProfile } from 'domain/types';
-import { IdGenerator } from 'domain/Tour';
+import { Guide, Gender, UserProfile, GuideType } from '../domain/types';
+import { IdGenerator } from '../domain/Tour';
+import { GuideDto } from './dtoTypes';
 
 export type RegisterGuideService = (
   userName: string,
@@ -33,6 +35,8 @@ export type EditGuideService = (
   guideId: string,
   guideProfile: UserProfile
 ) => Promise<Guide>;
+
+export type GetGuideService = (guideId: string) => Promise<GuideDto>;
 
 export function registerGuideService(
   idGenerator: IdGenerator,
@@ -95,5 +99,25 @@ export function editGuideService(
     const editedGuide = editGuide()(guide, guideProfile);
     await saveGuide(editedGuide);
     return editedGuide;
+  };
+}
+
+export function getGuideService(
+  getGuide: GetGuideDb,
+  getPublishedTourOfGuide: GetPublishedToursOfGuide
+): GetGuideService {
+  return async guideId => {
+    const guide = await getGuide(guideId);
+    switch (guide._type) {
+      case GuideType.UnApprovedGuide: {
+        const guideDto: GuideDto = guide;
+        return guideDto;
+      }
+      default: {
+        const publishedTours = await getPublishedTourOfGuide(guideId);
+        const guideDto: GuideDto = { ...guide, publishedTours };
+        return guideDto;
+      }
+    }
   };
 }
