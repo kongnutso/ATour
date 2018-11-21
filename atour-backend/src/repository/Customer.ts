@@ -1,4 +1,4 @@
-import { Customer, UserProfile, Tour } from 'domain/types';
+import { Customer, UserProfile, Tour } from '../domain/types';
 import { Db } from 'mongodb';
 
 export type GetCustomerDb = (customerId: string)=> Promise<Customer>;

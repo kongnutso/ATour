@@ -15,7 +15,7 @@ export function searchTour(db:Db):SearchTourDb {
             const results = await cursor.toArray();
             return results;
         }else {
-            const keywords: RegExp[] = keyword.split(' ').map((word) => new RegExp(word));
+            const keywords: RegExp[] = keyword.split(' ').map((word) => new RegExp(word, "i"));
             const cursor = await db.collection('tour').find({ tourName: {$in : keywords} });
             const results = await cursor.toArray();
             return results;            
@@ -31,7 +31,7 @@ export function searchGuide(db:Db):SearchGuideDb {
             const results = await cursor.toArray();
             return results;
         }else {
-            const keywords: RegExp[] = keyword.split(' ').map((word) => new RegExp(word));
+            const keywords: RegExp[] = keyword.split(' ').map((word) => new RegExp(word, "i"));
             const cursor = await db.collection('guide').find({ userName: {$in : keywords} });
             const results = await cursor.toArray();
             return results;

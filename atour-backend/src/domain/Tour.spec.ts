@@ -25,6 +25,30 @@ describe('Tour', () => {
     };
     expect(tour).toEqual(expectedTour);
   });
+  test('create Tour with image', () => {
+    const tour = TourDomain.publishTour(() => 'tourId')(
+      'Changmai',
+      1,
+      5,
+      3500,
+      'trip to Changmai',
+      'guideid',
+      'www.google.com'
+    );
+    const expectedTour: Tour = {
+      tourId: 'tourId',
+      tourName: 'Changmai',
+      minimumSize: 1,
+      maximumSize: 5,
+      price: 3500,
+      detail: 'trip to Changmai',
+      reviews: [],
+      trips: [],
+      guideId: 'guideid',
+      imageUrl: 'www.google.com'
+    };
+    expect(tour).toEqual(expectedTour);
+  });
 
   test('edit Tour', () => {
     const editedTour = TourDomain.editTour()(

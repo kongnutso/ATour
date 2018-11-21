@@ -77,6 +77,66 @@ test('createTour', () => {
   );
 });
 
+test('createTour with image', () => {
+  const guide: Guide = {
+    _type: GuideType.ApprovedGuide,
+    guideId: 'guideid',
+    approvalStatus: ApprovalStatus.Approved,
+    userName: 'john',
+    password: 'password',
+    email: 'guide@gmail.com',
+    personalId: '1234567890123',
+    profile: {
+      firstName: 'John',
+      lastName: 'Smith',
+      birthDate: new Date('1996-05-07'),
+      phoneNumber: '0871234567',
+      gender: 'Male',
+      profileImageUrl: null
+    },
+    bankAccountNumber: '12345',
+    bankName: 'SCB',
+    availableDate: [],
+    dealtTrips: []
+  };
+
+  const expectedTour: Tour = {
+    tourId: 'uuid',
+    tourName: 'Changmai Trip',
+    minimumSize: 1,
+    maximumSize: 2,
+    price: 5000,
+    detail: 'trip to Changmai',
+    reviews: [],
+    trips: [],
+    guideId: 'guideid',
+    imageUrl: 'www.imgur.com'
+  };
+
+  const expectedGuide: Guide = {
+    ...guide
+  };
+
+  const fakeGetGuide: GetGuideDb = async guideId => guide;
+  const fakeSaveTour = async tour => {
+    expect(tour).toEqual(expectedTour);
+    console.log(tour);
+  };
+  const fakeSaveGuide = async guide => {
+    expect(guide).toEqual(expectedGuide);
+    console.log(guide);
+  };
+  publishTourService(() => 'uuid', fakeGetGuide, fakeSaveTour, fakeSaveGuide)(
+    'guideid',
+    'Changmai Trip',
+    1,
+    2,
+    5000,
+    'trip to Changmai',
+    'www.imgur.com'
+  );
+});
+
 test('editTour', () => {
   const tour: Tour = {
     tourId: 'tourId',
