@@ -24,7 +24,8 @@ type PublishTourService = (
   minSize: number,
   maxSize: number,
   price: number,
-  detail: string
+  detail: string,
+  imageUrl?: string
 ) => Promise<Tour>;
 
 type EditTourService = (
@@ -55,7 +56,8 @@ export function publishTourService(
     minSize: number,
     maxSize: number,
     price: number,
-    detail: string
+    detail: string,
+    imageUrl?: string
   ) => {
     const guide = await getGuideDb(guideId);
     if (!guide) {
@@ -67,7 +69,8 @@ export function publishTourService(
       maxSize,
       price,
       detail,
-      guideId
+      guideId,
+      imageUrl
     );
     const addedGuide = addPublishedTour()(guide, tour);
     await saveTourDb(tour);

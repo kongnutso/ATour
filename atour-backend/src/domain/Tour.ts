@@ -9,7 +9,8 @@ export type PublishTour = (
   maxSize: number,
   price: number,
   detail: string,
-  guideId: string
+  guideId: string,
+  imageUrl?: string
 ) => Tour;
 
 export type EditTour = (t: Tour, updateInfo: PartialTour) => Tour;
@@ -25,7 +26,8 @@ export function publishTour(idGenerator: IdGenerator): PublishTour {
     maximumSize: number,
     price: number,
     detail: string,
-    guideId: string
+    guideId: string,
+    imageUrl?: string
   ): Tour => {
     const tour: Tour = {
       tourId: idGenerator(),
@@ -37,7 +39,7 @@ export function publishTour(idGenerator: IdGenerator): PublishTour {
       trips: [],
       reviews: [],
       guideId,
-      imageUrl: null
+      imageUrl: imageUrl || null
     };
     return tour;
   };
