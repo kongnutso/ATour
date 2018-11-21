@@ -1,23 +1,26 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
-import { createStore, applyMiddleware, compose } from 'redux';
-import thunk from 'redux-thunk';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import promise from 'redux-promise';
+import React from "react";
+import ReactDOM from "react-dom";
+import { Provider } from "react-redux";
+import { createStore, applyMiddleware, compose } from "redux";
+import thunk from "redux-thunk";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
+import promise from "redux-promise";
 
-import reducers from './reducer';
-import App from './component/App';
-import TopBanner from './component/TopBanner/TopBanner';
-import BookedHistory from './component/BookedHistory/BookedHistory';
-import EditProfile from './component/EditProfile/EditProfile';
-import BookedHistoryInfo from './component/BookedHistoryInfo/BookedHistoryInfo';
-import AdminApprovePage from './component/AdminApprovePage';
-import AdminSearchPage from './component/AdminSearchPage';
-import ViewDealtTripPage from './component/ViewDealtTripPage';
-import SearchFor from './component/SearchFor';
-import CustomerTourInfo from './component/CustomerTourInfo/CustomerTourInfo';
-import GuideInfo from './component/GuideInfo/GuideInfo';
+import reducers from "./reducer";
+import App from "./component/App";
+import TopBanner from "./component/TopBanner/TopBanner";
+import BookedHistory from "./component/BookedHistory/BookedHistory";
+import EditProfile from "./component/EditProfile/EditProfile";
+import BookedHistoryInfo from "./component/BookedHistoryInfo/BookedHistoryInfo";
+import AdminApprovePage from "./component/AdminApprovePage";
+import AdminSearchPage from "./component/AdminSearchPage";
+import ViewDealtTripPage from "./component/ViewDealtTripPage";
+import SearchFor from "./component/SearchFor";
+import CustomerTourInfo from "./component/CustomerTourInfo/CustomerTourInfo";
+import GuideInfo from "./component/GuideInfo/GuideInfo";
+import GuideHome from "./component/Guide/GuideHome";
+import GuideTourInfo from "./component/Guide/GuideTourInfo/GuideTourInfo";
+import GuideViewPublishedTour from "./component/Guide/GuideViewPublishedTour";
 
 // const createStoreWithMiddleware = applyMiddleware(promise)(createStore);
 
@@ -39,6 +42,7 @@ ReactDOM.render(
         />
         <Switch>
           <Route exact path="/" component={App} />
+          {/* <Route exact path="/" component={GuideHome} /> */}
           <Route exact path="/bookedHistory" component={BookedHistory} />
           <Route exact path="/editProfile" component={EditProfile} />
           <Route
@@ -53,9 +57,16 @@ ReactDOM.render(
           <Route exact path="/viewDealtTrips" component={ViewDealtTripPage} />
           <Route exact path="/searchForTour" component={SearchFor} />
           <Route exact path="/searchForGuide" component={SearchFor} />
+          <Route exact path="/guideHome" component={GuideHome} />
+          <Route exact path="/guideTourInfo" component={GuideTourInfo} />
+          <Route
+            exact
+            path="/publishedTour"
+            component={GuideViewPublishedTour}
+          />
         </Switch>
       </div>
     </BrowserRouter>
   </Provider>,
-  document.getElementById('root')
+  document.getElementById("root")
 );

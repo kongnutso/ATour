@@ -1,29 +1,29 @@
 export function validateUsername(userName) {
   if (!userName || (userName.length < 6 && userName.length <= 15)) {
-    return 'Username must between 6 and 15 characters';
-  } else if (userName.includes(' ')) {
-    return 'Username must not include space';
+    return "Username must between 6 and 15 characters";
+  } else if (userName.includes(" ")) {
+    return "Username must not include space";
   }
   return false;
 }
 
 export function validatePassword(password) {
   if (!password || password.length < 6) {
-    return 'Password length must more than 6';
+    return "Password length must more than 6";
   }
   return false;
 }
 
 export function validateEmail(email) {
   if (!email || !emailRegex.test(email)) {
-    return 'Please enter email in the correct format';
+    return "Please enter email in the correct format";
   }
   return false;
 }
 
 export function validateSID(sid) {
   if (!sid || !SID(sid)) {
-    return 'Invalid Personnal ID';
+    return "Invalid Personnal ID";
   }
   return false;
 }
@@ -41,7 +41,7 @@ export function validateBirthDate(birthDate) {
       birthDate.substring(8, 10)
     );
     if (currentDate - inputDate < 567993600000) {
-      return 'your age must higher than 18';
+      return "your age must higher than 18";
     }
   }
 
@@ -50,30 +50,30 @@ export function validateBirthDate(birthDate) {
 
 export function validatePhone(phone) {
   if (!phone || (phone.length !== 10 || isNaN(phone))) {
-    return 'Invalid Phone number';
+    return "Invalid Phone number";
   }
   return false;
 }
 
 export function validateAddress(address) {
   if (!address || address.length < 20) {
-    return 'Address length must more than 20';
+    return "Address length must more than 20";
   }
   return false;
 }
 
 export function validateName(name) {
   if (!name || name.length < 6) {
-    return 'Name must longer than 6';
+    return "Name must longer than 6";
   } else if (!nameRegex.test(name)) {
-    return 'Must include Lastname';
+    return "Must include Lastname";
   }
   return false;
 }
 
 export function validateBankAccountName(bankAccountName) {
   if (!bankAccountName || bankAccountName.length < 6) {
-    return 'Bank Account Name must longer than 6';
+    return "Bank Account Name must longer than 6";
   }
   return false;
 }
@@ -84,44 +84,44 @@ export function validateBankAccountNumber(bankAccountNumber) {
     bankAccountNumber.length !== 7 ||
     isNaN(bankAccountNumber)
   ) {
-    if (bankAccountNumber.length !== 7) return 'Bank Account Number is invalid';
-    return 'Bank Account Number must be number';
+    if (bankAccountNumber.length !== 7) return "Bank Account Number is invalid";
+    return "Bank Account Number must be number";
   }
   return false;
 }
 
 export function validateTourName(tourName) {
   if (!tourName || tourName.length > 50) {
-    return 'Tour name must ...';
+    return "Tour name must ...";
   }
   return false;
 }
 
-export function validateMinGroupSize(minGroupSize) {
+export function validateminimumSize(minimumSize) {
   let regex = /^(\$|)([1-9]\d{0,2}(\,\d{3})*|([1-9]\d*))(\.\d{2})?$/;
-  let passed = minGroupSize.match(regex);
-  if (passed == null || minGroupSize.length > 50 || isNaN(minGroupSize)) {
-    return 'minimum group size must ...';
+  let passed = minimumSize.match(regex);
+  if (passed == null || minimumSize.length > 50 || isNaN(minimumSize)) {
+    return "minimum group size must ...";
   }
   return false;
 }
 
-export function validateMaxGroupSize(minGroupSize, maxGroupSize) {
+export function validatemaximumSize(minimumSize, maximumSize) {
   let regex = /^(\$|)([1-9]\d{0,2}(\,\d{3})*|([1-9]\d*))(\.\d{2})?$/;
-  let passed = maxGroupSize.match(regex);
+  let passed = maximumSize.match(regex);
   if (
     passed == null ||
-    maxGroupSize.length > 50 ||
-    isNaN(minGroupSize) ||
-    isNaN(maxGroupSize) ||
-    parseInt(minGroupSize) > parseInt(maxGroupSize)
+    maximumSize.length > 50 ||
+    isNaN(minimumSize) ||
+    isNaN(maximumSize) ||
+    parseInt(minimumSize) > parseInt(maximumSize)
   ) {
-    return 'maximum group size must ...';
+    return "maximum group size must ...";
   }
   return false;
 }
 
-// export function validateMaxGroupSize(maxGroupSize) {
+// export function validatemaximumSize(maximumSize) {
 //   let regex = /^(\$|)([1-9]\d{0,2}(\,\d{3})*|([1-9]\d*))(\.\d{2})?$/;
 //   let passed = price.match(regex);
 //   if (!price || price.length > 50 || isNaN(price)) {
@@ -146,14 +146,14 @@ export function validatePrice(price) {
   let regex = /^(\$|)([1-9]\d{0,2}(\,\d{3})*|([1-9]\d*))(\.\d{2})?$/;
   let passed = price.match(regex);
   if (passed == null || price.length > 50 || isNaN(price)) {
-    return 'price must ...';
+    return "price must ...";
   }
   return false;
 }
 
 export function validateDetail(detail) {
   if (!detail || detail.length < 5 || detail.length > 500) {
-    return 'Detail must ...';
+    return "Detail must ...";
   }
   return false;
 }
