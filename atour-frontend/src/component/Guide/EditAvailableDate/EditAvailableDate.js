@@ -37,26 +37,19 @@ class EditAvailableDate extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      availableDates: props.availableDates,
+      trips: props.tour.trips,
+      // availableDates: props.availableDates,
       selectedDate: new Date()
     };
 
     autobind(
       this,
       "renderEditAvailableDate",
-      "onSubmitNewTourInfo",
+      "onSubmitNewTrip",
       "handleDateSelect",
       "deleteAvailableDate"
     );
   }
-
-  //   componentDidMount() {
-  //     let availableDates = this.props.availableDates.map(({ date }, index) => ({
-  //       dateId: index,
-  //       date
-  //     }));
-  //     this.setState({ availableDates });
-  //   }
 
   handleDateSelect(date) {
     this.setState({
@@ -65,13 +58,15 @@ class EditAvailableDate extends React.Component {
     console.log("current state: ", this.state);
   }
 
-  onSubmitNewTourInfo() {
-    // const {
-    //   error: { username, password, email }
-    // } = this.state;
-    // if (!username && !password && !email) {
-    //   this.setState({ accountInfo: false });
-    // }
+  async onSubmitNewTrip() {
+    const url =
+      "http://localhost:3000/tour/" + this.props.tour.tourId + "/trips";
+    const res = await axios
+      .post(url, { date: this.state.selectedDate })
+      .then(res => {
+        console.log(res.data);
+        this.setState({ trips: res.data.trips });
+      });
   }
 
   async deleteAvailableDate(e) {
@@ -90,13 +85,9 @@ class EditAvailableDate extends React.Component {
       String(clickedValue);
     console.log("request to send: ", url);
     const res = await axios.delete(url).then(res => {
-      return res.data;
+      console.log("after delete: ", res.data);
+      this.setState({ trips: res.data.trips });
     });
-    if (res.error) {
-      console.log("cannot delete trip");
-    } else {
-      console.log("delete successfuly");
-    }
   }
 
   renderEditAvailableDate() {
@@ -106,16 +97,23 @@ class EditAvailableDate extends React.Component {
           <div>
             <h2>Edit Available Dates</h2>
             <hr color="black" size="50" />
-            {this.props.tour.trips.map(trip => (
+            {this.state.trips.map(trip => (
               <AvailableDateItem
                 trip={trip}
                 deleteAvailableDate={this.deleteAvailableDate}
               />
             ))}
-            <DatePicker
-              onChange={this.handleDateSelect}
-              value={this.state.selectedDate}
-            />
+            <Grid columns={2}>
+              <Grid.Column width={5}>
+                <Button onClick={this.onSubmitNewTrip}>Submit</Button>
+              </Grid.Column>
+              <Grid.Column width={11}>
+                <DatePicker
+                  onChange={this.handleDateSelect}
+                  value={this.state.selectedDate}
+                />
+              </Grid.Column>
+            </Grid>
           </div>
         </Card.Content>
       </Card>

@@ -65,7 +65,7 @@ class EditTourModal extends React.Component {
         minimumSize: this.props.tour.minimumSize,
         maximumSize: this.props.tour.maximumSize,
         detail: this.props.tour.detail,
-        imageUrl: this.props.imageUrl
+        imageUrl: this.props.tour.imageUrl
       },
       error: {
         tourName: false,
@@ -216,12 +216,8 @@ class EditTourModal extends React.Component {
             onChange={e =>
               this.onFieldChange(
                 "maximumSize",
-                {
-                  minimumSize: value.minimumSize,
-                  maximumSize: e.target.value
-                },
-                true,
-                e.target.value
+                e.target.value,
+                validation.validateminimumSize
               )
             }
             error={this.state.error.minimumSize}

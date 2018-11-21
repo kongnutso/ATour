@@ -14,7 +14,7 @@ class TourItem extends React.Component {
   filterTrips(trips) {
     let dates = [];
     let outputDate = [];
-    console.log("TRIPS", trips);
+    // console.log("TRIPS", trips);
     if (trips.length == 0) {
       return outputDate;
     } else {
@@ -70,7 +70,7 @@ class TourItem extends React.Component {
   render() {
     console.log("recieved from tours: ", this.props.tour);
     if (this.props.role == "Guide") {
-      console.log("to guide");
+      // console.log("to guide");
       return (
         <Link
           to={{ pathname: "/guideTourInfo", state: { tour: this.props.tour } }}

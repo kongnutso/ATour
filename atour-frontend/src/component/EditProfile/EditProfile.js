@@ -47,7 +47,13 @@ class EditProfile extends React.Component {
   }
 
   render() {
-    const { name, personalId, gender, birthDate } = this.props.userInfo;
+    const {
+      firstName,
+      lastName,
+      personalId,
+      gender,
+      birthDate
+    } = this.props.userInfo;
     const { email, phoneNumber } = this.state;
     const { isView } = this.props;
     const headerText = isView ? 'Guide Profile' : 'Edit Profile';
@@ -82,7 +88,7 @@ class EditProfile extends React.Component {
                   </Box>
                   <Box p={3} width={[1, 1, 1 / 2]}>
                     <div className="editProfilePage-content-info-userinfo">
-                      {name}
+                      {firstName + ' ' + lastName}
                     </div>
                   </Box>
                 </Flex>
