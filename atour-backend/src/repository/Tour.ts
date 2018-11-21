@@ -1,4 +1,4 @@
-import { Tour, Trip, Review, TripType } from 'domain/types';
+import { Tour, Trip, Review, TripType } from '../domain/types';
 import { Db } from 'mongodb';
 
 export type GetTourDb = (tourId: string) => Promise<Tour>;
