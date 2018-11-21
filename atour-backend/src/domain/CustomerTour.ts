@@ -57,6 +57,7 @@ type CancelTrip = (trip: Trip, date: Date) => CancelledTrip;
 
 type FreeTrip = (trip: Trip) => UnbookedTrip;
 
+
 export function bookTrip(): BookTrip {
   return (unbookedTrip, customerId, size, price, bookDate) => {
     const bookedTrip: BookedTrip = {
