@@ -8,7 +8,7 @@ export function bookTrip(
   price,
   size,
   customerId,
-  guideId
+  guideName
 ) {
   /*  tourId,
             tripId,
@@ -16,7 +16,7 @@ export function bookTrip(
             customerId,
             size,
             price*/
-  console.log(tourId, tripInfo, price, size, customerId);
+  console.log(tourId, tripInfo, price, size, customerId, guideName);
   return async dispatch => {
     try {
       const payload = {
@@ -27,7 +27,7 @@ export function bookTrip(
         customerId,
         size,
         price,
-        guideId
+        guideName
       };
       const res = await axios
         .post('http://localhost:3000/customer/bookTrip', payload)
@@ -38,7 +38,6 @@ export function bookTrip(
       console.log(payload);
       return dispatch({
         type: BOOK_TRIP,
-        payload,
         res
       });
     } catch (e) {
@@ -62,21 +61,21 @@ export function setImageSlip(url, bookedId, tourId, customerId) {
   return async dispatch => {
     try {
       if (bookedId) {
-        console.log(url, bookedId, tourId, customerId);
+        console.log(tourId, bookedId, customerId, url);
         const slip = await axios
           .post('http://localhost:3000/customer/uploadPayment', {
             tourId,
-            bookedId,
+            tripId: bookedId,
             customerId,
-            url
+            slipUrl: url
           })
           .then(res => {
-            console.log(res);
+            console.log(res.data);
             return res.data;
           });
         return dispatch({
           type: SET_IMAGE_SLIP,
-          payload: { url, bookedId, today }
+          payload: { url, bookedId, today, _type: 2 }
         });
       } else {
         return dispatch({ type: 'INVALID' });
@@ -91,14 +90,68 @@ export function seeBookHistory(customerId) {
     try {
       if (customerId) {
         const tour = await axios
-          .post('http://localhost:3000/customer/seeBookHistory', customerId)
+          .post('http://localhost:3000/customer/seeBookHistory', { customerId })
           .then(res => {
-            console.log(res);
-            return res.data.trips;
+            console.log('aaa', res.data);
+            return res.data;
           });
         return dispatch({
           type: SEE_BOOK_HISTORY,
           payload: tour
+        });
+      } else {
+        return dispatch({ type: 'INVALID' });
+      }
+    } catch (e) {}
+  };
+}
+
+export const CANCEL_TRIP = 'CANCEL_TRIP';
+export function cancelTrip(tourId, tripId, customerId) {
+  return async dispatch => {
+    try {
+      if (customerId) {
+        console.log(tourId, tripId, customerId);
+        const cancel = await axios
+          .post('http://localhost:3000/customer/cancelTrip', {
+            tourId: tourId,
+            tripId: tripId,
+            customerId: customerId
+          })
+          .then(res => {
+            console.log('cancel', res.data);
+            return res.data;
+          });
+        return dispatch({
+          type: CANCEL_TRIP,
+          payload: cancel
+        });
+      } else {
+        return dispatch({ type: 'INVALID' });
+      }
+    } catch (e) {}
+  };
+}
+
+export const REFUND_TRIP = 'REFUND_TRIP';
+export function refundTrip(tourId, tripId, customerId) {
+  return async dispatch => {
+    try {
+      if (customerId) {
+        console.log(tourId, tripId, customerId);
+        const refund = await axios
+          .post('http://localhost:3000/customer/refundTrip', {
+            tourId: tourId,
+            tripId: tripId,
+            customerId: customerId
+          })
+          .then(res => {
+            console.log('refund', res.data);
+            return res.data;
+          });
+        return dispatch({
+          type: REFUND_TRIP,
+          payload: refund
         });
       } else {
         return dispatch({ type: 'INVALID' });

@@ -38,7 +38,7 @@ const initialState = {
 
 const defaults = {
   status: 'IN PROCESS',
-  tourStatus: 2,
+  _type: 2,
   uploadedFileDate: '',
   slip: ''
 };
@@ -46,21 +46,30 @@ const defaults = {
 function bookedList(state = initialState.bookedList, action) {
   switch (action.type) {
     case SEE_BOOK_HISTORY: {
-      bookedList = action.payload;
+      // const {
+      //   tourName,
+      //   tourId,
+      //   size,
+      //   guideName,
+      //   tripId,
+      //   guideId
+      // } = action.payload;
+      state = action.payload;
+      console.log(state);
       return state;
     }
-    case BOOK_TRIP:
+    /*case BOOK_TRIP:
       const {
-        tourName,
-        tourId,
-        size,
-        guideName,
+        _type,
         tripId,
-        guideId
+        tripDate,
+        bookInfo,
+        tourName,
+        guideName
       } = action.payload;
 
-      const { bookDate } = action.res.bookInfo;
-      const { tripDate } = action.res;
+      // const { bookDate } = action.res.bookInfo;
+      // const { tripDate } = action.res;
 
       const news = {
         tourName: tourName,
@@ -72,11 +81,11 @@ function bookedList(state = initialState.bookedList, action) {
         tripId,
         ...defaults
       };
-      return [...state, news];
+      return [...state, news];*/
     case SET_IMAGE_SLIP:
       const res = state.map(e => {
         if (e.bookedId === action.payload.bookedId) {
-          e.tourStatus = 3;
+          e._type = 3;
           e.slip = action.payload.url;
           e.bookedDate = action.payload.today;
         }

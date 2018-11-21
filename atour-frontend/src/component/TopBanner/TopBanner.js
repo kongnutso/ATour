@@ -123,9 +123,8 @@ class TopBanner extends React.Component {
               <div
                 className="dropdown-item"
                 onClick={() => {
-                  this.props.seeBookHistory(
-                    this.props.userInfo.profile.customerId
-                  );
+                  console.log('check');
+                  this.props.seeBookHistory(this.props.userInfo.customerId);
                   this.setState({ isClickedDropdown: false });
                 }}
               >
