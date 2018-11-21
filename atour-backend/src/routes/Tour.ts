@@ -14,13 +14,13 @@ const router = express.Router();
 router.post('/', async (req, res) => {
   try {
     const db: Db = res.locals.db;
-    const { guideId, tourName, minSize, maxSize, price, detail } = req.body;
+    const { guideId, tourName, minSize, maxSize, price, detail, imageUrl } = req.body;
     const tour = await publishTourService(
       () => uuid(),
       getGuide(db),
       saveTour(db),
       saveGuide(db)
-    )(guideId, tourName, minSize, maxSize, price, detail);
+    )(guideId, tourName, minSize, maxSize, price, detail, imageUrl);
     res.json(tour);
   } catch (e) {
     res.json(e.message);
