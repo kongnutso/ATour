@@ -4,11 +4,12 @@ import './styles.css';
 import { Dropdown } from 'semantic-ui-react';
 import StarRatingComponent from 'react-star-rating-component';
 import PopUpModal from '../PopUpModal/PopUpModal';
-import { bookTrip } from '../../action/BookAction';
+import { bookTrip, clearBookMessage } from '../../action/BookAction';
 import autobind from 'react-autobind';
 import { Redirect } from 'react-router-dom';
 import { viewProfile, getGuideInfo } from '../../action/UserInfoAction';
 import tourImage from '../../image/TourImage.png';
+import { dateToString } from '../../utils/utils';
 
 class TourInfo extends React.Component {
   constructor() {
@@ -25,13 +26,26 @@ class TourInfo extends React.Component {
     autobind(this);
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.bookMessage !== this.props.bookMessage) {
+      if (nextProps.bookMessage === 'done') {
+        this.props.clearBookMessage();
+        this.setState({ redirect: true, to: '/bookedHistoryInfo' });
+      } else if (nextProps.bookMessage) {
+        this.setState({
+          errorDialog: true,
+          errorMessage: nextProps.bookMessage
+        });
+      }
+    }
+  }
+
   componentDidMount() {
     this.setState({ groupSize: this.props.tourInfo.minGroupSize });
     this.props.getGuideInfo(this.props.tourInfo.guideId);
   }
 
   onConfirm() {
-    this.setState({ openConfirm: false });
     this.props.bookTrip(
       this.props.tourInfo.tourName,
       this.props.tourInfo.tourId,
@@ -41,13 +55,13 @@ class TourInfo extends React.Component {
       this.props.user.customerId,
       this.props.tourInfo.guideId
     );
-    // this.setState({ redirect: true, to: '/bookedHistoryInfo' });
+    this.setState({ openConfirm: false });
   }
 
   onSubmit() {
     const { maximumSize, minimumSize } = this.props.tourInfo;
     const { groupSize, selectedTrip } = this.state;
-    if (!selectedTrip) {
+    if (!selectedTrip || !selectedTrip.tripId) {
       this.setState({
         errorDialog: true,
         errorMessage: 'Please select booking date'
@@ -75,7 +89,13 @@ class TourInfo extends React.Component {
       trips
     } = this.props.tourInfo;
     const tripsInfo = trips.map(t => {
-      return { key: t.tripDate, text: t.tripDate, value: t };
+      const showDate = dateToString(t.tripDate);
+      return { key: t.tripDate, text: showDate, value: t };
+    });
+    tripsInfo.unshift({
+      key: 'starter',
+      text: 'Please choose date',
+      value: {}
     });
     if (this.state.redirect) {
       return <Redirect to={this.state.to} />;
@@ -92,7 +112,10 @@ class TourInfo extends React.Component {
         />
         <PopUpModal
           isOpen={this.state.errorDialog}
-          onCloseModal={() => this.setState({ errorDialog: false })}
+          onCloseModal={() => {
+            this.props.clearBookMessage();
+            this.setState({ errorDialog: false });
+          }}
           headerText={'Book Fail'}
           bodyText={this.state.errorMessage}
         />
@@ -117,7 +140,7 @@ class TourInfo extends React.Component {
                 }}
                 className="tourInfo-guideName"
               >
-                by {this.props.guide}
+                by {this.props.guide ? this.props.guide.userName : ''}
               </div>
             </div>
           </div>
@@ -135,9 +158,10 @@ class TourInfo extends React.Component {
                 }}
                 placeholder="Choose Date"
                 selection
-                value={this.state.selectedTrip.tripDate}
+                value={this.state.selectedTrip}
                 onChange={(e, { value }) =>
-                  this.setState({ selectedTrip: value })}
+                  this.setState({ selectedTrip: value })
+                }
                 options={tripsInfo}
               />
               Group size
@@ -175,7 +199,8 @@ class TourInfo extends React.Component {
 const mapStateToProps = state => {
   return {
     tourInfo: state.tour.selectedTour,
-    guide: state.user.guideInfo.userName,
+    bookMessage: state.tour.bookMessage,
+    guide: state.user.guideInfo,
     user: state.user
   };
 };
@@ -186,7 +211,11 @@ const mapDispatchToProps = dispatch => ({
       bookTrip(tourName, tourInfo, tripInfo, price, size, customerId, guideId)
     ),
   viewProfile: () => dispatch(viewProfile()),
-  getGuideInfo: guideId => dispatch(getGuideInfo(guideId))
+  getGuideInfo: guideId => dispatch(getGuideInfo(guideId)),
+  clearBookMessage: () => dispatch(clearBookMessage())
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(TourInfo);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(TourInfo);

@@ -1,6 +1,11 @@
 import { combineReducers } from 'redux';
 import { SELECT_TOUR } from '../action/SelectAction';
 import { ON_SEARCH_TOUR } from '../action/SearchAction';
+import {
+  BOOK_TRIP_ERROR,
+  BOOK_TRIP,
+  CLEAR_BOOK_MESSAGE
+} from '../action/BookAction';
 const initialState = {
   tourList: [],
   selectedTour: {
@@ -14,8 +19,22 @@ const initialState = {
     availableDates: '',
     guideName: '',
     location: ''
-  }
+  },
+  bookMessage: ''
 };
+
+function bookMessage(state = initialState.bookMessage, action) {
+  switch (action.type) {
+    case BOOK_TRIP:
+      return 'done';
+    case BOOK_TRIP_ERROR:
+      return action.payload.message;
+    case CLEAR_BOOK_MESSAGE:
+      return '';
+    default:
+      return state;
+  }
+}
 
 function tourList(state = initialState.tourList, action) {
   switch (action.type) {
@@ -35,5 +54,5 @@ function selectedTour(state = initialState.selectedTour, action) {
   }
 }
 
-const reducer = combineReducers({ tourList, selectedTour });
+const reducer = combineReducers({ tourList, selectedTour, bookMessage });
 export default reducer;

@@ -36,53 +36,11 @@ const initialState = {
   ]
 };
 
-const defaults = {
-  status: 'IN PROCESS',
-  tourStatus: 2,
-  uploadedFileDate: '',
-  slip: ''
-};
-
 function bookedList(state = initialState.bookedList, action) {
   switch (action.type) {
     case SEE_BOOK_HISTORY: {
-      bookedList = action.payload;
-      return state;
+      return action.payload;
     }
-    case BOOK_TRIP:
-      const {
-        tourName,
-        tourId,
-        size,
-        guideName,
-        tripId,
-        guideId
-      } = action.payload;
-
-      const { bookDate } = action.res.bookInfo;
-      const { tripDate } = action.res;
-
-      const news = {
-        tourName: tourName,
-        tourDate: tripDate,
-        size,
-        guide: guideId,
-        bookedDate: bookDate,
-        tourId,
-        tripId,
-        ...defaults
-      };
-      return [...state, news];
-    case SET_IMAGE_SLIP:
-      const res = state.map(e => {
-        if (e.bookedId === action.payload.bookedId) {
-          e.tourStatus = 3;
-          e.slip = action.payload.url;
-          e.bookedDate = action.payload.today;
-        }
-        return e;
-      });
-      return res;
     default:
       return state;
   }

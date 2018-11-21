@@ -19,7 +19,7 @@ export function onSearch(keyword, isTour) {
           .then(res => {
             return res.data;
           });
-
+        console.log(res);
         return dispatch({
           type: ON_SEARCH_TOUR,
           payload: res

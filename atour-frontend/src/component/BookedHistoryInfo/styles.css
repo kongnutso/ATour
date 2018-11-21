@@ -140,6 +140,42 @@
   margin-left: 5px;
 }
 
+.bookedHistoryInfo-info-container {
+  display: block;
+  margin-top: 25px;
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 30px;
+}
+
+.bookedHistoryInfo-info-topic {
+  width: 20%;
+}
+
+.bookedHistoryInfo-info {
+  margin-left: 5%;
+}
+
+.bookedHistoryInfo-info-each {
+  display: flex;
+  margin-top: 20px;
+  width: 100%;
+}
+
+.bookedHistoryInfo-info-each-1 {
+  display: flex;
+  width: 50%;
+}
+
+.bookedHistoryInfo-info-each-2 {
+  display: flex;
+  width: 50%;
+}
+
+.bookedHistoryInfo-info-each-value {
+  margin-left: 2%;
+}
+
 @media screen and (max-width: 800px) {
   .bookedhistoryinfo-status-inprocess,
   .bookedhistoryinfo-status-finish,

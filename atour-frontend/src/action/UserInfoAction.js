@@ -1,6 +1,6 @@
-import axios from "axios";
+import axios from 'axios';
 
-export const EDIT_USER_INFO = "EDIT_USER_INFO";
+export const EDIT_USER_INFO = 'EDIT_USER_INFO';
 export function editUserInfo(userInfo, token) {
   return async dispatch => {
     try {
@@ -10,7 +10,7 @@ export function editUserInfo(userInfo, token) {
         ...userInfo
       };
       const res = await axios
-        .post("http://localhost:3000/customer/editProfile", payload)
+        .post('http://localhost:3000/customer/editProfile', payload)
         .then(res => {
           return res.data;
         });
@@ -28,14 +28,14 @@ export function editUserInfo(userInfo, token) {
   };
 }
 
-export const GET_USER_INFO = "GET_USER_INFO";
+export const GET_USER_INFO = 'GET_USER_INFO';
 export function getUserInfo(userName, token) {
   return async dispatch => {
     try {
       const userInfo = await axios
-        .post("http://localhost:3000/customer/getProfile", { userName, token })
+        .post('http://localhost:3000/customer/getProfile', { userName, token })
         .then(res => {
-          console.log("aaaa", res);
+          console.log('getUserInfo', res.data);
           return res.data;
         });
       return dispatch({
@@ -46,13 +46,13 @@ export function getUserInfo(userName, token) {
   };
 }
 
-export const GET_GUIDE_INFO = "GET_GUIDE_INFO";
+export const GET_GUIDE_INFO = 'GET_GUIDE_INFO';
 export function getGuideInfo(guideId) {
   return async dispatch => {
     try {
       if (guideId) {
         const userInfo = await axios
-          .post("http://localhost:3000/guide/guideid", guideId)
+          .post('http://localhost:3000/guide/guideid', guideId)
           .then(res => {
             return res.data;
           });
@@ -74,23 +74,23 @@ export function getGuideInfo(guideId) {
           dealtTrips: userInfo.dealtTrips,
           publishedTours: userInfo.publishedTours
         };
-        console.log("RECEIVED: ", userInfo);
+        console.log('RECEIVED: ', userInfo);
         return dispatch({
           type: GET_GUIDE_INFO,
-          payload: guideInfo
+          payload: { guideInfo }
         });
-      } else return dispatch({ type: "INVALID" });
+      } else return dispatch({ type: 'INVALID' });
     } catch (e) {}
   };
 }
 
 // export const
 
-export const EDIT_PROFILE = "EDIT_PROFILE";
+export const EDIT_PROFILE = 'EDIT_PROFILE';
 export function editProfile() {
   return { type: EDIT_PROFILE };
 }
-export const VIEW_PROFILE = "VIEW_PROFILE";
+export const VIEW_PROFILE = 'VIEW_PROFILE';
 export function viewProfile() {
   return { type: VIEW_PROFILE };
 }
