@@ -7,7 +7,8 @@ import tour from '../../image/Tour.jpg';
 import { selectBookedTrip } from '../../action/BookAction';
 import { getUserInfo } from '../../action/UserInfoAction';
 import { seeBookHistory } from '../../action/BookAction';
-import { mapToStatus, dateToString } from '../../utils/utils';
+import { dateToString } from '../../utils/utils';
+import { toStatus } from '../../utils/TripType';
 import './styles.css';
 
 class BookedHistory extends React.Component {
@@ -84,7 +85,7 @@ class BookedHistory extends React.Component {
                     Status
                   </Box>
                   <Box p={2} className="bookedHistory-value" width={[1 / 1]}>
-                    {mapToStatus(item._type)}
+                    {toStatus(item._type)}
                   </Box>
                 </Flex>
               </Box>

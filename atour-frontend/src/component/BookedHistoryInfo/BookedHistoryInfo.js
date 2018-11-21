@@ -5,7 +5,17 @@ import { Flex, Box } from 'rebass';
 import autobind from 'react-autobind';
 import { Rating, Form, TextArea } from 'semantic-ui-react';
 import PopUpModal from '../PopUpModal/PopUpModal';
-import { setImageSlip } from '../../action/BookAction';
+import { setImageSlip, cancelTrip, refundTrip } from '../../action/BookAction';
+import {
+  UNBOOKEDTRIP,
+  BOOKEDTRIP,
+  PAIDTRIP,
+  APPROVETRIP,
+  REFUNDREQUESTEDTRIP,
+  REFUNDTRIP,
+  FINISHEDTRIP,
+  CANCELLEDTRIP
+} from '../../utils/TripType';
 import './styles.css';
 
 class BookedHistoryInfo extends React.Component {
@@ -16,7 +26,8 @@ class BookedHistoryInfo extends React.Component {
       confirmationModal: false,
       inputImg: '',
       confirmModal: false,
-      refund: false
+      refund: false,
+      cancel: false
     };
   }
 
@@ -50,7 +61,7 @@ class BookedHistoryInfo extends React.Component {
     const {
       bookInfo: { _type, tripId, tourId }
     } = this.props;
-    if (statusNumber !== 2) return;
+    if (statusNumber !== _type) return;
     else {
       this.props.setImageSlip(
         this.state.inputImg,
@@ -112,9 +123,9 @@ class BookedHistoryInfo extends React.Component {
       bookInfo: { _type }
     } = this.props;
     let text;
-    if (_type < 3) text = 'Cancel';
-    else if (_type === 3) text = 'Refund';
-    if (_type <= 3) {
+    if (_type < APPROVETRIP) text = 'Cancel';
+    else text = 'Refund';
+    if (_type <= APPROVETRIP) {
       return (
         <div
           className="bookedhistoryinfo-headbutton"
@@ -132,22 +143,27 @@ class BookedHistoryInfo extends React.Component {
 
   render() {
     const {
-      _type,
-      bookDate,
-      uploadedFileDate,
-      slip,
-      tripDate,
-      tourName,
-      guideId,
-      groupSize,
-      price,
-      tripId
-    } = this.props.bookInfo;
-    const { refund } = this.state;
+      bookInfo: {
+        _type,
+        bookDate,
+        uploadedFileDate,
+        slip,
+        tripDate,
+        tourName,
+        guideId,
+        groupSize,
+        price,
+        tripId,
+
+        tourId
+      },
+      customerId
+    } = this.props;
     let message;
-    if (_type <= 2) {
+    const { refund, cancel } = this.state;
+    if (_type < APPROVETRIP) {
       message = 'Cancel';
-    } else if (_type === 3 || _type === 4) {
+    } else if (_type === APPROVETRIP) {
       message = 'Refund';
     }
     return (
@@ -158,14 +174,23 @@ class BookedHistoryInfo extends React.Component {
           headerText={'Upload Confirmation'}
           bodyText="Do you want to upload this link? "
           type="Confirmation"
-          onConfirm={() => this.onClickSaveSlip(2)}
+          onConfirm={() => this.onClickSaveSlip(BOOKEDTRIP)} //change from 2
         />
         <PopUpModal
           isOpen={this.state.confirmationModal}
           onCloseModal={() => this.setState({ confirmationModal: false })}
           headerText={`${message} Confirmation`}
           bodyText={`Do you want to [${message}] ? `}
-          onConfirm={() => this.setState({ refund: true })}
+          onConfirm={() => {
+            if (message === 'Refund') {
+              console.log(message);
+              this.setState({ refund: true });
+              this.props.refundTrip(tourId, tripId, customerId);
+            } else if (message === 'Cancel') {
+              this.setState({ cancel: true });
+              this.props.cancelTrip(tourId, tripId, customerId);
+            }
+          }}
           isDanger
           type="Confirmation"
         />
@@ -221,20 +246,23 @@ class BookedHistoryInfo extends React.Component {
         <div>
           Status
           <div>
-            <div className={this.classNameText(1)}>
+            <div className={this.classNameText(UNBOOKEDTRIP)}>
               <Flex>
                 <Box p={2} width={[1 / 4, 1 / 8, 1 / 15]}>
-                  <div className={this.classNameStatus(1)}>1</div>
+                  <div className={this.classNameStatus(UNBOOKEDTRIP)}>1</div>
                 </Box>
                 <Box p={3} width={[3 / 4, 7 / 8, 14 / 15]}>
                   Booked Date: {bookDate}
                 </Box>
               </Flex>
             </div>
-            <div className={this.classNameText(2)}>
+            <div className={this.classNameText(BOOKEDTRIP)}>
+              {' '}
+              {/*change from 2*/}
               <Flex>
                 <Box p={2} width={[1 / 4, 1 / 8, 1 / 15]}>
-                  <div className={this.classNameStatus(2)}>2</div>
+                  <div className={this.classNameStatus(BOOKEDTRIP)}>2</div>
+                  {/*change from 2*/}
                 </Box>
                 <Box p={3} width={[3 / 4, 7 / 8, 14 / 15]}>
                   Uploaded File Date: {uploadedFileDate}
@@ -248,17 +276,13 @@ class BookedHistoryInfo extends React.Component {
                     onChange={this.inputChange}
                   />
                   <div
-                    className={this.classNameColorButton(2)}
+                    className={this.classNameColorButton(
+                      BOOKEDTRIP
+                    )} /*change from 2*/
                     onClick={() => this.setState({ confirmModal: true })}
                   >
                     Save
                   </div>
-                  {/* <div
-                    className={this.classNameColorButton(2)}
-                    onClick={() => this.onClickChooseFile(2)}
-                  >
-                    Choose file
-                  </div> */}
                 </Box>
               </Flex>
               <Flex>
@@ -272,18 +296,51 @@ class BookedHistoryInfo extends React.Component {
               <div style={{ color: '#ec424b' }}>
                 <Flex>
                   <Box p={2} width={[1 / 4, 1 / 8, 1 / 15]}>
-                    <div className={this.classNameStatus(3, refund)}>3</div>
+                    <div
+                      className={this.classNameStatus(
+                        REFUNDREQUESTEDTRIP,
+                        refund
+                      )}
+                    >
+                      3
+                    </div>
                   </Box>
                   <Box p={3} width={[3 / 4, 7 / 8, 14 / 15]}>
                     Request to Refund
                   </Box>
                 </Flex>
               </div>
-            ) : (
-              <div className={this.classNameText(3)}>
+            ) : cancel ? (
+              <div style={{ color: '#ec424b' }}>
                 <Flex>
                   <Box p={2} width={[1 / 4, 1 / 8, 1 / 15]}>
-                    <div className={this.classNameStatus(3)}>3</div>
+                    <div
+                      className={this.classNameStatus(CANCELLEDTRIP, cancel)}
+                    >
+                      3
+                    </div>
+                  </Box>
+                  <Box p={3} width={[3 / 4, 7 / 8, 14 / 15]}>
+                    Cancel
+                  </Box>
+                </Flex>
+              </div>
+            ) : this.props.status === PAIDTRIP ? (
+              <div className={this.classNameText(PAIDTRIP)}>
+                <Flex>
+                  <Box p={2} width={[1 / 4, 1 / 8, 1 / 15]}>
+                    <div className={this.classNameStatus(PAIDTRIP)}>3</div>
+                  </Box>
+                  <Box p={3} width={[3 / 4, 7 / 8, 14 / 15]}>
+                    WAIT FOR APPROVE
+                  </Box>
+                </Flex>
+              </div>
+            ) : (
+              <div className={this.classNameText(APPROVETRIP)}>
+                <Flex>
+                  <Box p={2} width={[1 / 4, 1 / 8, 1 / 15]}>
+                    <div className={this.classNameStatus(APPROVETRIP)}>3</div>
                   </Box>
                   <Box p={3} width={[3 / 4, 7 / 8, 14 / 15]}>
                     Approve
@@ -292,10 +349,12 @@ class BookedHistoryInfo extends React.Component {
               </div>
             )}
             {refund ? (
-              <div className={this.classNameText(4)}>
+              <div className={this.classNameText(REFUNDTRIP)}>
                 <Flex>
                   <Box p={2} width={[1 / 4, 1 / 8, 1 / 15]}>
-                    <div className={this.classNameStatus(4, refund)}>4</div>
+                    <div className={this.classNameStatus(REFUNDTRIP, refund)}>
+                      4
+                    </div>
                   </Box>
                   <Box p={3} width={[3 / 4, 7 / 8, 14 / 15]}>
                     Refunded
@@ -303,32 +362,40 @@ class BookedHistoryInfo extends React.Component {
                 </Flex>
               </div>
             ) : (
-              <div className={this.classNameText(4)}>
-                <Flex>
-                  <Box p={2} width={[1 / 4, 1 / 8, 1 / 15]}>
-                    <div className={this.classNameStatus(4)}>4</div>
-                  </Box>
-                  <Box p={3} width={[3 / 4, 7 / 8, 14 / 15]}>
-                    Take a Trip!
-                  </Box>
-                </Flex>
-              </div>
+              cancel == false && (
+                <div className={this.classNameText(APPROVETRIP)}>
+                  {' '}
+                  {/*change from 4*/}
+                  <Flex>
+                    <Box p={2} width={[1 / 4, 1 / 8, 1 / 15]}>
+                      <div className={this.classNameStatus(APPROVETRIP)}>4</div>{' '}
+                      {/*change from 4*/}
+                    </Box>
+                    <Box p={3} width={[3 / 4, 7 / 8, 14 / 15]}>
+                      Take a Trip!
+                    </Box>
+                  </Flex>
+                </div>
+              )
             )}
 
-            {refund == false && (
-              <div className={this.classNameText(5)}>
+            {(refund || cancel) == false && (
+              <div className={this.classNameText(FINISHEDTRIP)}>
+                {' '}
+                {/*change from 5*/}
                 <Flex>
                   <Box p={2} width={[1 / 4, 1 / 8, 1 / 15]}>
-                    <div className={this.classNameStatus(5)}>5</div>
+                    <div className={this.classNameStatus(FINISHEDTRIP)}>5</div>{' '}
+                    {/*change from 5*/}
                   </Box>
                   <Box p={3} width={[1 / 4, 2 / 8, 2 / 15]}>
                     Review
                   </Box>
                   <Box p={3} width={[2 / 4, 5 / 8, 12 / 15]}>
-                    {this.renderRate(5)}
+                    {this.renderRate(FINISHEDTRIP)} {/*change from 5*/}
                   </Box>
                 </Flex>
-                {this.renderReview(5)}
+                {this.renderReview(FINISHEDTRIP)} {/*change from 5*/}
               </div>
             )}
           </div>
@@ -348,7 +415,11 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => ({
   setImageSlip: (img, bookedId, tourId, customerId) =>
-    dispatch(setImageSlip(img, bookedId, tourId, customerId))
+    dispatch(setImageSlip(img, bookedId, tourId, customerId)),
+  cancelTrip: (tourId, tripId, customerId) =>
+    dispatch(cancelTrip(tourId, tripId, customerId)),
+  refundTrip: (tourId, tripId, customerId) =>
+    dispatch(refundTrip(tourId, tripId, customerId))
 });
 
 export default connect(

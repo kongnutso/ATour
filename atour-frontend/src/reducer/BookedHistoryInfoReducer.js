@@ -117,7 +117,7 @@ function uploadedFileDate(state = initialState.uploadedFileDate, action) {
       return '-';
     case SELECT_BOOKED_TRIP:
     case SET_IMAGE_SLIP:
-      if (action.payload._type < 2) return state;
+      if (action.payload._type < 2) return '';
       return action.payload.uploadedFileDate;
     default:
       return state;
@@ -130,7 +130,7 @@ function slip(state = initialState.slip, action) {
       return '';
     case SELECT_BOOKED_TRIP:
     case SET_IMAGE_SLIP:
-      if (action.payload._type < 2) return state;
+      if (action.payload._type < 2) return '';
       if (action.payload.slip) {
         console.log(action.payload.slip);
         return action.payload.slip[action.payload.slip.length - 1].url;

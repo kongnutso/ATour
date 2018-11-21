@@ -53,7 +53,7 @@ class TourInfo extends React.Component {
       this.props.tourInfo.price,
       this.state.groupSize,
       this.props.user.customerId,
-      this.props.tourInfo.guideId
+      this.props.guide
     );
     this.setState({ openConfirm: false });
   }
@@ -206,9 +206,17 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => ({
-  bookTrip: (tourName, tourInfo, tripInfo, price, size, customerId, guideId) =>
+  bookTrip: (
+    tourName,
+    tourInfo,
+    tripInfo,
+    price,
+    size,
+    customerId,
+    guideName
+  ) =>
     dispatch(
-      bookTrip(tourName, tourInfo, tripInfo, price, size, customerId, guideId)
+      bookTrip(tourName, tourInfo, tripInfo, price, size, customerId, guideName)
     ),
   viewProfile: () => dispatch(viewProfile()),
   getGuideInfo: guideId => dispatch(getGuideInfo(guideId)),
