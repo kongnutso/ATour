@@ -4,7 +4,7 @@ import {
 } from '../repository/Guide';
 import { GetCustomerDb, UpdateCustomerDb} from '../repository/Customer';
 import { Customer, Guide, Trip } from '../domain/types';
-import { GetTourDb, GetTripDb, UpdateTourDb, UpdateTripDb } from '../repository/Tour';
+import { GetTourDb, GetTripDb, UpdateTourDb, UpdateTripDb, GetRefundTripDb } from '../repository/Tour';
 import { DateGenerator } from '../domain/Tour';
 import { approveTrip, refundTrip, approveGuide, markBadGuide } from '../domain/Admin';
 import { updateTripToTour, updateCustomerTripHistory } from '../domain/CustomerTour';
@@ -12,6 +12,8 @@ import { updateTripToTour, updateCustomerTripHistory } from '../domain/CustomerT
 export type ApproveGuideService = (
   guideId: string
 ) => Promise<Guide>;
+
+export type GetRefundRequests = () => Promise<Trip[]>
 
 export type ApproveRefundService = (
   tourId: string,
@@ -44,6 +46,13 @@ export function approveGuideService(getGuide: GetGuideDb, saveGuide: SaveGuideDb
     await saveGuide(approvedGuide);
     return approvedGuide;
   };
+}
+
+export function getRefundRequests(getRefundTripDb: GetRefundTripDb): GetRefundRequests {
+  return async () => {
+    const results = await getRefundTripDb();
+    return results
+  }
 }
 
 export function approveRefundService(

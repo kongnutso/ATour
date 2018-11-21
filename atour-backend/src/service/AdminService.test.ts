@@ -17,7 +17,8 @@ import {
   GetTourDb,
   GetTripDb,
   UpdateTourDb,
-  UpdateTripDb
+  UpdateTripDb,
+  GetRefundTripDb
 } from '../repository/Tour';
 
 describe('AdminService', () => {
@@ -312,4 +313,48 @@ describe('AdminService', () => {
     )('tourId', 'tripId', 'customerId');
     expect(resultedTrip).toEqual(refundedTrip);
   });
+
+  test('GetRefundRequest', async () => {
+    const requestedTrips: RefundRequestedTrip[] = [
+      {
+        _type: TripType.RefundRequestedTrip,
+        tripId: 'tripId',
+        tripDate: new Date('2018-11-11'),
+        bookInfo: {
+          bookDate: new Date('2018-11-05'),
+          customerId: 'customerId',
+          size: 5,
+          price: 5000
+        },
+        paidDate: new Date('2018-11-05'),
+        slipImages: [{ url: 'www.adm.co.th' }],
+        approveDate: new Date('2018-11-11'),
+        refundRequestDate: new Date('2018-12-01'),
+        tourId: 'tourId',
+        tourName: 'tourName'
+      },
+      {
+        _type: TripType.RefundRequestedTrip,
+        tripId: 'tripId2',
+        tripDate: new Date('2018-11-11'),
+        bookInfo: {
+          bookDate: new Date('2018-11-05'),
+          customerId: 'customerId',
+          size: 5,
+          price: 5000
+        },
+        paidDate: new Date('2018-11-05'),
+        slipImages: [{ url: 'www.adm.co.th' }],
+        approveDate: new Date('2018-11-11'),
+        refundRequestDate: new Date('2018-12-01'),
+        tourId: 'tourId',
+        tourName: 'tourName'
+      }
+    ]
+    const fakeGetRefundTripDb: GetRefundTripDb = async () => {
+      return requestedTrips;
+    };
+    const resultedTrips = await AdminService.getRefundRequests(fakeGetRefundTripDb)();
+    expect(resultedTrips).toEqual(requestedTrips);
+  })
 });
