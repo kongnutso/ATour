@@ -1,4 +1,12 @@
-import { UnApprovedGuide, GuideType, UserProfile, ApprovalStatus, Trip, Tour } from '../domain/types';
+import {
+  UnApprovedGuide,
+  GuideType,
+  UserProfile,
+  ApprovalStatus,
+  Trip,
+  Tour,
+  Guide
+} from '../domain/types';
 
 export type GuideDto = UnApprovedGuideDto | ApprovedGuideDto | BadGuideDto;
 export type UnApprovedGuideDto = UnApprovedGuide;
@@ -33,3 +41,5 @@ export type BadGuideDto = {
   dealtTrips: Trip[];
   publishedTours: Tour[];
 };
+
+export type TripDto = Trip & { tour: Tour; guide: Guide };
