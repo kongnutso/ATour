@@ -78,7 +78,7 @@ router.post('/approvePayment', async (req, res) => {
   }
 });
 
-router.get('/bookTrip', async (req, res) => {
+router.get('/refundRequest', async (req, res) => {
   try {
     const db: Db = res.locals.db;
     const trip = await getRefundRequests(getRefundTripDb(db))();
