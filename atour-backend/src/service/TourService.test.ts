@@ -2,7 +2,8 @@ import {
   publishTourService,
   addTripService,
   deleteTripService,
-  editTourService
+  editTourService,
+  getTripService
 } from './TourService';
 import {
   ApprovalStatus,
@@ -11,9 +12,11 @@ import {
   Guide,
   TripType,
   UnbookedTrip,
-  ApprovedGuide
+  ApprovedGuide,
+  UnApprovedGuide
 } from '../domain/types';
 import { GetGuideDb } from '../repository/Guide';
+import { TripDto } from './dtoTypes';
 
 test('createTour', () => {
   const guide: Guide = {
@@ -35,7 +38,7 @@ test('createTour', () => {
     bankAccountNumber: '12345',
     bankName: 'SCB',
     availableDate: [],
-    dealtTrips: [],
+    dealtTrips: []
   };
 
   const expectedTour: Tour = {
@@ -52,7 +55,7 @@ test('createTour', () => {
   };
 
   const expectedGuide: Guide = {
-    ...guide,
+    ...guide
   };
 
   const fakeGetGuide: GetGuideDb = async guideId => guide;
@@ -125,10 +128,10 @@ test('editTour', () => {
     bankAccountNumber: '12345',
     bankName: 'SCB',
     availableDate: [],
-    dealtTrips: [],
+    dealtTrips: []
   };
   const expectedGuide: ApprovedGuide = {
-    ...guide,
+    ...guide
   };
   const fakeGetGuide = async guideId => {
     expect(guideId).toEqual('guideid');
@@ -166,7 +169,7 @@ test('addTripService', async () => {
     tripId: 'tripId',
     tripDate: new Date('2018-11-05'),
     tourId: 'tourId',
-    tourName: 'Changmai Trip',
+    tourName: 'Changmai Trip'
   };
   const expectedTour: Tour = {
     tourId: 'tourId',
@@ -205,7 +208,7 @@ test('deleteTripService', async () => {
     tripId: 'tripId',
     tripDate: new Date('2018-11-05'),
     tourId: 'tourId',
-    tourName: 'Changmai Trip',
+    tourName: 'Changmai Trip'
   };
   const tour: Tour = {
     tourId: 'tourId',
@@ -248,4 +251,67 @@ test('deleteTripService', async () => {
     fakeDeleteTrip
   )('tourId', 'tripId');
   expect(resultTour).toEqual(expectedTour);
+});
+
+test('getTripService', async () => {
+  const trip: UnbookedTrip = {
+    _type: TripType.UnbookedTrip,
+    tripId: 'tripId',
+    tripDate: new Date('2018-11-05'),
+    tourId: 'tourId',
+    tourName: 'Changmai Trip'
+  };
+  const tour: Tour = {
+    tourId: 'tourId',
+    tourName: 'Changmai Trip',
+    minimumSize: 1,
+    maximumSize: 2,
+    price: 5000,
+    detail: 'trip to Changmai',
+    reviews: [],
+    trips: [trip],
+    guideId: 'guideId',
+    imageUrl: null
+  };
+  const guide: UnApprovedGuide = {
+    _type: GuideType.UnApprovedGuide,
+    userName: 'guideuser',
+    password: 'password',
+    personalId: '1234567890123',
+    email: 'guide@gmail.com',
+    profile: {
+      firstName: 'John',
+      lastName: 'Smith',
+      phoneNumber: '0812345678',
+      birthDate: new Date('1996-05-07'),
+      gender: 'Male',
+      profileImageUrl: null
+    },
+    bankAccountNumber: '102943940',
+    bankName: 'SCB',
+    approvalStatus: ApprovalStatus.NotApprove,
+    guideId: 'guideid'
+  };
+  const fakeGetTrip = async tripId => {
+    expect(tripId).toEqual('tripId');
+    return trip;
+  };
+  const fakeGetTour = async tourId => {
+    expect(tourId).toEqual('tourId');
+    return tour;
+  };
+  const fakeGetGuide = async guideId => {
+    expect(guideId).toEqual('guideId');
+    return guide;
+  };
+  const tripDto: TripDto = await getTripService(
+    fakeGetTrip,
+    fakeGetTour,
+    fakeGetGuide
+  )('tripId');
+  expect(tripDto).toEqual({
+    ...trip,
+    tour,
+    guide
+  });
 });

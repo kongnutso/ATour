@@ -10,11 +10,13 @@ import {
   SaveTourDb,
   GetTourDb,
   SaveTripDb,
-  DeleteTripDb
+  DeleteTripDb,
+  GetTripDb
 } from '../repository/Tour';
 import { addPublishedTour, editPublishedTour } from '../domain/Guide';
 import { GetGuideDb, SaveGuideDb } from '../repository/Guide';
 import { Tour } from 'domain/types';
+import { TripDto } from './dtoTypes';
 
 type PublishTourService = (
   guideId: string,
@@ -38,6 +40,8 @@ type EditTourService = (
 type AddTripService = (tourId: string, date: string) => Promise<Tour>;
 
 type DeleteTripService = (tourId: string, tripId: string) => Promise<Tour>;
+
+type GetTripService = (tripId: string) => Promise<TripDto>;
 
 export function publishTourService(
   idGenerator: IdGenerator,
@@ -132,5 +136,22 @@ export function deleteTripService(
     const tripDeletedTour = deleteTrip()(tour, tripId);
     await saveTourDb(tripDeletedTour);
     return tripDeletedTour;
+  };
+}
+
+export function getTripService(
+  getTrip: GetTripDb,
+  getTour: GetTourDb,
+  getGuide: GetGuideDb
+): GetTripService {
+  return async (tripId: string) => {
+    const trip = await getTrip(tripId);
+    const tour = await getTour(trip.tourId);
+    const guide = await getGuide(tour.guideId);
+    return {
+      ...trip,
+      tour,
+      guide
+    };
   };
 }
