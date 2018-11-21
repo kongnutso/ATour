@@ -1,10 +1,11 @@
-import { Tour, Trip, Review } from 'domain/types';
+import { Tour, Trip, Review, TripType } from '../domain/types';
 import { Db } from 'mongodb';
 
 export type GetTourDb = (tourId: string) => Promise<Tour>;
 export type SaveTourDb = (t: Tour) => Promise<void>;
 export type UpdateTourDb = (tour: Tour) => Promise<void>;
 export type GetTripDb = (tripId: string) => Promise<Trip>;
+export type GetRefundTripDb = () => Promise<Trip[]>;
 export type SaveTripDb = (t: Trip) => Promise<void>;
 export type DeleteTripDb = (tripId: string) => Promise<void>;
 export type UpdateTripDb = (trip: Trip) => Promise<void>;
@@ -30,6 +31,14 @@ export function getTrip(db: Db): GetTripDb {
   return async tripId => {
     return await db.collection('trip').findOne({ tripId });
   };
+}
+
+export function getRefundTripDb(db: Db): GetRefundTripDb {
+  return async () => {
+    const cursor = await db.collection('trip').find({_type: TripType.RefundRequestedTrip});
+    const results = await cursor.toArray();
+    return results;
+  }
 }
 
 export function saveTrip(db: Db): SaveTripDb {

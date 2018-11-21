@@ -15,7 +15,7 @@ import {
 } from '../repository/Tour';
 import { addPublishedTour, editPublishedTour } from '../domain/Guide';
 import { GetGuideDb, SaveGuideDb } from '../repository/Guide';
-import { Tour } from 'domain/types';
+import { Tour } from '../domain/types';
 import { TripDto } from './dtoTypes';
 
 type PublishTourService = (
