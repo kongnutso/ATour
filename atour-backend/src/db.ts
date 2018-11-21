@@ -42,7 +42,8 @@ export async function initMongo() {
     ],
     approveDate: new Date('2018-11-06'),
     tourId: 'tourid2',
-    tourName:'Explore the Bua Tong "Sticky" Waterfall with a Super Local Expert',
+    tourName:
+      'Explore the Bua Tong "Sticky" Waterfall with a Super Local Expert'
   };
   const customer: Customer = {
     customerId: 'customerid',
@@ -71,14 +72,14 @@ export async function initMongo() {
       tripId: 'tripId1',
       tripDate: new Date('2018-11-05'),
       tourId: 'tourid',
-      tourName: 'Live the Agricultural Life in the Mountains of Chiang Mai',
+      tourName: 'Live the Agricultural Life in the Mountains of Chiang Mai'
     },
     {
       _type: TripType.UnbookedTrip,
       tripId: 'tripId2',
       tripDate: new Date('2018-11-10'),
       tourId: 'tourid',
-      tourName: 'Live the Agricultural Life in the Mountains of Chiang Mai',
+      tourName: 'Live the Agricultural Life in the Mountains of Chiang Mai'
     }
   ];
 
@@ -172,8 +173,7 @@ export async function initMongo() {
     bankName: 'SCB',
     approvalStatus: ApprovalStatus.Approved,
     availableDate: [],
-    dealtTrips: [approvetrip],
-    publishedTours: tours
+    dealtTrips: [approvetrip]
   };
   const guidetoken = {
     guideId: 'guideid',

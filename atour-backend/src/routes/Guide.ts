@@ -7,12 +7,14 @@ import {
   saveGuideToken,
   getGuideForLogin,
   getTokenForGuide,
-  getGuide
+  getGuide,
+  getPublishedToursOfGuide
 } from '../repository/Guide';
 import {
   registerGuideService,
   loginGuideService,
-  editGuideService
+  editGuideService,
+  getGuideService
 } from '../service/GuideService';
 const router = express.Router();
 
@@ -34,11 +36,17 @@ router.post('/login', async (req, res) => {
 });
 
 router.get('/:guideId', async (req, res) => {
-  const db: Db = res.locals.db;
-  const { guideId } = req.params;
-
-  const guide = await db.collection('guide').findOne({ guideId });
-  res.json(guide);
+  try {
+    const db: Db = res.locals.db;
+    const { guideId } = req.params;
+    const guideDto = await getGuideService(
+      getGuide(db),
+      getPublishedToursOfGuide(db)
+    )(guideId);
+    res.json(guideDto);
+  } catch (e) {
+    res.json(e.message);
+  }
 });
 
 router.post('/', async (req, res) => {

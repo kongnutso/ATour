@@ -66,7 +66,6 @@ describe('Guide', () => {
       bankName: 'SCB',
       availableDate: [],
       dealtTrips: [],
-      publishedTours: []
     };
     const tour: Tour = {
       tourId: 'tourid',
@@ -83,7 +82,6 @@ describe('Guide', () => {
     const resultGuide = GuideDomain.addPublishedTour()(guide, tour);
     const expectedGuide: Guide = {
       ...guide,
-      publishedTours: [tour]
     };
     expect(resultGuide).toEqual(expectedGuide);
   });
@@ -108,7 +106,6 @@ describe('Guide', () => {
       bankName: 'SCB',
       availableDate: [],
       dealtTrips: [],
-      publishedTours: []
     };
     const tour: Tour = {
       tourId: 'tourid',
@@ -131,7 +128,6 @@ describe('Guide', () => {
     test('if have published Tour to update, update it', () => {
       const testGuide: ApprovedGuide = {
         ...guide,
-        publishedTours: [tour]
       };
       const updatedTour: Tour = {
         ...tour,
@@ -146,7 +142,6 @@ describe('Guide', () => {
       );
       const expectedGuide: ApprovedGuide = {
         ...testGuide,
-        publishedTours: [updatedTour]
       };
       expect(resultGuide).toEqual(expectedGuide);
     });

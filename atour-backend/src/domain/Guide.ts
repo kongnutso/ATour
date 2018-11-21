@@ -1,4 +1,3 @@
-import { List } from 'immutable';
 import {
   Tour,
   Guide,
@@ -71,11 +70,8 @@ export function addPublishedTour(): AddPublishedTour {
   return (guide: Guide, tour: Tour) => {
     switch (guide._type) {
       case GuideType.ApprovedGuide: {
-        const { publishedTours } = guide;
-        const addedPublishedTours = [...publishedTours, tour];
         return {
-          ...guide,
-          publishedTours: addedPublishedTours
+          ...guide
         };
       }
       default: {
@@ -89,18 +85,6 @@ export function editPublishedTour(): EditPublishedTour {
   return (guide, toBeTour) => {
     switch (guide._type) {
       case GuideType.ApprovedGuide: {
-        const { publishedTours } = guide;
-        const publishedTourList = List(publishedTours);
-        const updateIdx = publishedTourList.findIndex(
-          t => t.tourId === toBeTour.tourId
-        );
-        if (updateIdx != -1) {
-          const updatedList = publishedTourList.set(updateIdx, toBeTour);
-          return {
-            ...guide,
-            publishedTours: updatedList.toArray()
-          };
-        }
         return guide;
       }
       default: {

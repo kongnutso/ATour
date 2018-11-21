@@ -27,7 +27,6 @@ export function approveGuide(): ApproveGuide {
       approvalStatus: ApprovalStatus.Approved,
       availableDate: [],
       dealtTrips: [],
-      publishedTours: []
     };
     return approvedGuide;
   };
@@ -52,7 +51,6 @@ export function markBadGuide(): MarkBadGuide {
           approvalStatus: guide.approvalStatus,
           availableDate: guide.availableDate,
           dealtTrips: guide.dealtTrips,
-          publishedTours: guide.publishedTours
         };
         return badGuide;
       }
