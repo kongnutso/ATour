@@ -1,4 +1,4 @@
-import { Guide } from 'domain/types';
+import { Guide, Tour } from 'domain/types';
 import { Db } from 'mongodb';
 
 export type GetGuideDb = (guideId: string) => Promise<Guide>;
@@ -19,6 +19,8 @@ export type SaveGuideTokenDb = (
   guideId: string,
   token: string
 ) => Promise<void>;
+
+export type GetPublishedToursOfGuide = (guideId: string) => Promise<Tour[]>;
 
 export function getGuide(db: Db): GetGuideDb {
   return async guideId => {
@@ -65,5 +67,12 @@ export function saveGuideToken(db: Db): SaveGuideTokenDb {
     await db
       .collection('guideToken')
       .update({ guideId }, { guideId, token }, { upsert: true });
+  };
+}
+
+export function getPublishedToursOfGuide(db: Db): GetPublishedToursOfGuide {
+  return async guideId => {
+    const tours = await db.collection('tour').find({ guideId }).toArray();
+    return tours;
   };
 }

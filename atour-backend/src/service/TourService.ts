@@ -1,8 +1,22 @@
-import { publishTour, editTour, IdGenerator } from '../domain/Tour';
-import { SaveTourDb, GetTourDb } from '../repository/Tour';
+import * as _ from 'lodash';
+import {
+  publishTour,
+  editTour,
+  IdGenerator,
+  addTrip,
+  deleteTrip
+} from '../domain/Tour';
+import {
+  SaveTourDb,
+  GetTourDb,
+  SaveTripDb,
+  DeleteTripDb,
+  GetTripDb
+} from '../repository/Tour';
 import { addPublishedTour, editPublishedTour } from '../domain/Guide';
 import { GetGuideDb, SaveGuideDb } from '../repository/Guide';
 import { Tour } from 'domain/types';
+import { TripDto } from './dtoTypes';
 
 type PublishTourService = (
   guideId: string,
@@ -19,8 +33,15 @@ type EditTourService = (
   minimumSize: number | void,
   maximumSize: number | void,
   price: number | void,
-  detail: string | void
+  detail: string | void,
+  imageUrl: string | void
 ) => Promise<Tour>;
+
+type AddTripService = (tourId: string, date: string) => Promise<Tour>;
+
+type DeleteTripService = (tourId: string, tripId: string) => Promise<Tour>;
+
+type GetTripService = (tripId: string) => Promise<TripDto>;
 
 export function publishTourService(
   idGenerator: IdGenerator,
@@ -67,21 +88,70 @@ export function editTourService(
     minimumSize?: number,
     maximumSize?: number,
     price?: number,
-    detail?: string
+    detail?: string,
+    imageUrl?: string
   ) => {
     const tour = await getTourDb(tourId);
-    const editedTour = editTour()(tour, {
+    const obj = {
       tourName,
       minimumSize,
       maximumSize,
       price,
-      detail
-    });
+      detail,
+      imageUrl
+    };
+    const partialTour = _.fromPairs(_.toPairs(obj).filter(([k, v]) => v));
+
+    const editedTour = editTour()(tour, partialTour);
 
     const guide = await getGuideDb(tour.guideId);
     const editedGuide = await editPublishedTour()(guide, editedTour);
     await saveTourDb(editedTour);
     await saveGuideDb(editedGuide);
     return editedTour;
+  };
+}
+
+export function addTripService(
+  getTourDb: GetTourDb,
+  saveTourDb: SaveTourDb,
+  saveTripDb: SaveTripDb,
+  idGenerator: IdGenerator
+): AddTripService {
+  return async (tourId: string, date: string) => {
+    const tour = await getTourDb(tourId);
+    const tripAddedTour = addTrip(idGenerator)(tour, new Date(date));
+    await saveTourDb(tripAddedTour);
+    return tripAddedTour;
+  };
+}
+
+export function deleteTripService(
+  getTourDb: GetTourDb,
+  saveTourDb: SaveTourDb,
+  deleteTripDb: DeleteTripDb
+): DeleteTripService {
+  return async (tourId, tripId) => {
+    const tour = await getTourDb(tourId);
+    const tripDeletedTour = deleteTrip()(tour, tripId);
+    await saveTourDb(tripDeletedTour);
+    return tripDeletedTour;
+  };
+}
+
+export function getTripService(
+  getTrip: GetTripDb,
+  getTour: GetTourDb,
+  getGuide: GetGuideDb
+): GetTripService {
+  return async (tripId: string) => {
+    const trip = await getTrip(tripId);
+    const tour = await getTour(trip.tourId);
+    const guide = await getGuide(tour.guideId);
+    return {
+      ...trip,
+      tour,
+      guide
+    };
   };
 }
