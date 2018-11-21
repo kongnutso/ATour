@@ -10,83 +10,104 @@ import {
   Segment,
   Icon,
   Button,
-  Card
+  Card,
+  Image
 } from "semantic-ui-react";
 import StarRatingComponent from "react-star-rating-component";
+import autobind from "react-autobind";
 
-const GuideTourInfo = props => {
-  const { tour } = props.location.state;
-  const {
-    tourName,
-    // tourimage,
-    tourId,
-    price,
-    tourLocation,
-    detail,
-    minimumSize,
-    maximumSize,
-    reviews,
-    trips,
-    imageUrl
-  } = tour;
+class GuideTourInfo extends React.Component {
+  constructor(props) {
+    super(props);
+    const { tour } = props.location.state;
+    this.state = {
+      tour: tour,
+      tourName: tour.tourName,
+      price: tour.price,
+      tourLocation: tour.tourLocation,
+      detail: tour.detail,
+      minimumSize: tour.minimumSize,
+      maximumSize: tour.maximumSize,
+      reviews: tour.reviews,
+      trips: tour.trips,
+      imageUrl: tour.imageUrl
+    };
+    autobind(this, "updateStates");
+  }
+  updateStates(price, detail, minimumSize, maximumSize, imageUrl) {
+    this.setState({
+      price: price,
+      detail: detail,
+      minimumSize: minimumSize,
+      maximumSize: maximumSize,
+      imageUrl: imageUrl
+    });
+  }
+
   // console.log("received from tourItem:  ", props.location.state);
-  return (
-    <Container>
-      <div className="topbanner-user-container">
-        <EditTourModal tour={tour} />
-      </div>
-      <Segment style={{ padding: "8em 0em" }} vertical>
-        <Grid columns={2} stackable>
-          <Grid.Column width={8} textAlign="left">
-            <div class="tour-info-header">
-              <p>{tourName}</p>
-              <p className="tour-location">{tourLocation}</p>
-            </div>
-          </Grid.Column>
-          <Grid.Column width={8} textAlign="right">
-            <Button icon onClick={props.onClickEditTour}>
-              Edit Tour
-              <Icon name="edit" />
-            </Button>
-          </Grid.Column>
-          <Grid.Row>
-            <Grid.Column with={16} textAlign="left">
-              {/* <StarRatingComponent
-                className="tour-info-stars"
-                starCount={5}
-                value={tourRating}
-              /> */}
-            </Grid.Column>
-          </Grid.Row>
-        </Grid>
-
-        <hr color="black" size="50" width="1000" />
-        <div>
+  render() {
+    // console.log("state: ", this.state);
+    return (
+      <Container>
+        <div className="topbanner-user-container">
+          <EditTourModal
+            tour={this.state.tour}
+            updateStates={this.updateStates}
+          />
+        </div>
+        <Segment style={{ padding: "8em 0em" }} vertical>
           <Grid columns={2} stackable>
-            <Grid.Column width={10} textAlign="left">
-              <h2>Details</h2>
-              <p>{detail}</p>
-              <h2>Price</h2>
-              <p>{price}</p>
-              <h2>Group size</h2>
-              <p>
-                from {minimumSize} to {maximumSize}
-              </p>
+            <Grid.Column width={8} textAlign="left">
+              <div class="tour-info-header">
+                <p>{this.state.tourName}</p>
+                <p className="tour-location">{this.state.tourLocation}</p>
+              </div>
             </Grid.Column>
-            <Grid.Column width={6} textAlign="right">
-              {/* <AvailableDates
+            <Grid.Column width={8} textAlign="right">
+              <Button icon onClick={this.props.onClickEditTour}>
+                Edit Tour
+                <Icon name="edit" />
+              </Button>
+            </Grid.Column>
+          </Grid>
+
+          <hr color="black" size="50" width="1000" />
+          <div>
+            <Grid columns={2} stackable>
+              <Grid.Column />
+              <Grid.Column width={10} textAlign="left">
+                {this.state.imageUrl == null ? (
+                  <Image
+                    src={require("../../../image/TourImage.png")}
+                    size="medium"
+                  />
+                ) : (
+                  <Image src={this.state.imageUrl} size="medium" />
+                )}
+                <h2>Details</h2>
+                <p>{this.state.detail}</p>
+                <h2>Price</h2>
+                <p>{this.state.price}</p>
+                <h2>Group size</h2>
+                <p>
+                  from {this.state.minimumSize} to {this.state.maximumSize}
+                </p>
+              </Grid.Column>
+              <Grid.Column width={6} textAlign="right">
+                {/* <AvailableDates
                 availableDates={trips}
                 onClickEditAvailableDate={props.onClickEditAvailableDate}
               /> */}
 
-              <EditAvailableDate tour={tour} />
-            </Grid.Column>
-          </Grid>
-        </div>
-      </Segment>
-    </Container>
-  );
-};
+                <EditAvailableDate tour={this.state.tour} />
+              </Grid.Column>
+            </Grid>
+          </div>
+        </Segment>
+      </Container>
+    );
+  }
+}
 
 const mapStateToProps = state => {
   return { isOpen: state.modal.modalName };
