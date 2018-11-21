@@ -48,7 +48,7 @@ const initialState = {
   //   availableDate: "",
   //   dealtTrips: "",
   //   publishedTours: ""
-
+  // },
   //   //   guideId: "guidid",
   //   //   userName: "guideUser",
   //   //   password: "password",
@@ -280,8 +280,10 @@ function personalId(state = initialState.personalId, action) {
 function guideInfo(state = initialState.guideInfo, action) {
   switch (action.type) {
     case GET_GUIDE_INFO:
-      return action.payload.guideInfo;
+      console.log("osdifjpaofjaisodfj: ", action.payload);
+      return action.payload;
     case GUIDE_LOGIN_SUCCESS:
+      console.log("SDFISOIDFUSPODFUSDFUSDF");
       return action.payload.guideInfo;
     case LOGOUT:
       return {};

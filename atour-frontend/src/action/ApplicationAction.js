@@ -53,7 +53,7 @@ export function login(userName, password, role) {
             type: LOGIN_FAILED
           });
         } else {
-          console.log("res: ", res);
+          console.log("res: ", res.guide);
           return dispatch({
             type: GUIDE_LOGIN_SUCCESS,
             payload: {

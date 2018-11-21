@@ -26,9 +26,10 @@ const GuideTourInfo = props => {
     minimumSize,
     maximumSize,
     reviews,
-    trips
+    trips,
+    imageUrl
   } = tour;
-  console.log("received from tourItem:  ", props.location.state);
+  // console.log("received from tourItem:  ", props.location.state);
   return (
     <Container>
       <div className="topbanner-user-container">
