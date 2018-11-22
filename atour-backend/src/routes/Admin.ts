@@ -4,11 +4,13 @@ import {
   approveGuideService,
   approvePaymentService,
   approveRefundService,
-  markBadGuideService
+  markBadGuideService,
+  getRefundRequests,
+  getPendingPayments
 } from '../service/AdminService';
 import { getGuide, saveGuide } from '../repository/Guide';
 import { getCustomer, updateCustomer } from '../repository/Customer';
-import { getTour, getTrip, updateTour, updateTrip } from '../repository/Tour';
+import { getTour, getTrip, updateTour, updateTrip, getRefundTripDb, getPendingPaymentTripDb } from '../repository/Tour';
 const router = express.Router();
 
 router.post('/approveGuide', async (req, res) => {
@@ -49,6 +51,17 @@ router.post('/markBadGuide', async (req, res) => {
   }
 });
 
+router.get('/pendingPayments', async (req, res) => {
+  try {
+    const db: Db = res.locals.db;
+    const trip = await getPendingPayments(getPendingPaymentTripDb(db))();
+    res.json(trip);
+  } catch (error) {
+    console.log(error.message);
+    res.json({ trip: null, error: error.message });
+  }
+});
+
 router.post('/approvePayment', async (req, res) => {
   try {
     const db: Db = res.locals.db;
@@ -74,6 +87,17 @@ router.post('/approvePayment', async (req, res) => {
   } catch (error) {
     console.log(error.message);
     res.json({ profile: null, error: error.message });
+  }
+});
+
+router.get('/refundRequest', async (req, res) => {
+  try {
+    const db: Db = res.locals.db;
+    const trip = await getRefundRequests(getRefundTripDb(db))();
+    res.json(trip);
+  } catch (error) {
+    console.log(error.message);
+    res.json({ trip: null, error: error.message });
   }
 });
 
