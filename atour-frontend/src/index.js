@@ -22,6 +22,9 @@ import GuideHome from "./component/Guide/GuideHome";
 import GuideTourInfo from "./component/Guide/GuideTourInfo/GuideTourInfo";
 import GuideViewPublishedTour from "./component/Guide/GuideViewPublishedTour";
 
+import ViewDealtTripPage from './component/ViewDealtTripPage';
+import AdminHome from './component/AdminHome';
+
 // const createStoreWithMiddleware = applyMiddleware(promise)(createStore);
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
@@ -54,6 +57,7 @@ ReactDOM.render(
           <Route exact path="/guideInfo" component={GuideInfo} />
           <Route exact path="/adminApprove" component={AdminApprovePage} />
           <Route exact path="/adminSearch" component={AdminSearchPage} />
+          <Route path="/admin" component={AdminHome} />
           <Route exact path="/viewDealtTrips" component={ViewDealtTripPage} />
           <Route exact path="/searchForTour" component={SearchFor} />
           <Route exact path="/searchForGuide" component={SearchFor} />

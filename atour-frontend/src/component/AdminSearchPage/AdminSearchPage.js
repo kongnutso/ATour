@@ -6,6 +6,7 @@ import Table from '../Table';
 import PopUpModal from '../PopUpModal/PopUpModal';
 import COLOR from '../../utils/color';
 import { Button, SearchButton, Input } from '../BaseComponent';
+import AdminMenuBar from '../AdminMenuBar';
 
 //Mock Data
 const tableProps = num => {
@@ -88,65 +89,59 @@ class AdminSearchPage extends Component {
   };
   render() {
     return (
-      <div style={{ marginTop: '30px', marginBottom: '30px' }}>
-        <Flex flexWrap="wrap" justifyContent="center">
-          <Box width={4 / 5}>
-            <Text fontSize={4} mb={4} mt={2}>
-              <i style={{ marginRight: '10px' }} className="fa fa-search" />
-              Search Guide
-            </Text>
+      <Box>
+        <Text fontSize={4} mb={4} mt={2}>
+          <i style={{ marginRight: '10px' }} className="fa fa-search" />
+          Search Guide
+        </Text>
 
-            <Flex alignItems="flex-start" justifyContent="flex-start" mb={[3, 4]} width={1}>
-              <Box my={1} width={4 / 5}>
-                <Input
-                  placeholder="Username"
-                  onChange={e => this.setState({ username: e.target.value })}
-                  onEnterText={this.onSearch}
-                />
-              </Box>
-              <Box my={1} width={1 / 5}>
-                <SearchButton onClick={() => this.onSearch()}>
-                  <Icon name="search" />
-                  Search
-                </SearchButton>
-              </Box>
-            </Flex>
-
-            <PopUpModal
-              isOpen={this.state.approveModal}
-              onCloseModal={() => this.setState({ approveModal: false })}
-              modalName="Unmark"
-              headerText={`Unmark Guide`}
-              bodyText={`Do you want to Unmark ? `}
-              // onConfirm
-              type="Confirmation"
-            />
-
-            <PopUpModal
-              isOpen={this.state.rejectModal}
-              onCloseModal={() => this.setState({ rejectModal: false })}
-              modalName="MarkBad"
-              headerText={`Mark Bad Guide`}
-              bodyText={`Do you want to Mark Bad? `}
-              // onConfirm
-              isDanger
-              type="Confirmation"
+        <Flex alignItems="flex-start" justifyContent="flex-start" mb={[3, 4]} width={1}>
+          <Box my={1} width={4 / 5}>
+            <Input
+              placeholder="Username"
+              onChange={e => this.setState({ username: e.target.value })}
+              onEnterText={this.onSearch}
             />
           </Box>
-          <Box width={4 / 5}>
-            <Table
-              data={tableProps(4)}
-              columns={adminSearchColumns(this.handleConfirm, this.handleReject)}
-              defaultPageSize={10}
-              style={{
-                textAlign: 'center',
-                display: 'flex',
-                alignItem: 'center',
-              }}
-            />
+          <Box my={1} width={1 / 5}>
+            <SearchButton onClick={() => this.onSearch()}>
+              <Icon name="search" />
+              Search
+            </SearchButton>
           </Box>
         </Flex>
-      </div>
+
+        <PopUpModal
+          isOpen={this.state.approveModal}
+          onCloseModal={() => this.setState({ approveModal: false })}
+          modalName="Unmark"
+          headerText={`Unmark Guide`}
+          bodyText={`Do you want to Unmark ? `}
+          // onConfirm
+          type="Confirmation"
+        />
+
+        <PopUpModal
+          isOpen={this.state.rejectModal}
+          onCloseModal={() => this.setState({ rejectModal: false })}
+          modalName="MarkBad"
+          headerText={`Mark Bad Guide`}
+          bodyText={`Do you want to Mark Bad? `}
+          // onConfirm
+          isDanger
+          type="Confirmation"
+        />
+        <Table
+          data={tableProps(4)}
+          columns={adminSearchColumns(this.handleConfirm, this.handleReject)}
+          defaultPageSize={10}
+          style={{
+            textAlign: 'center',
+            display: 'flex',
+            alignItem: 'center',
+          }}
+        />
+      </Box>
     );
   }
 }
