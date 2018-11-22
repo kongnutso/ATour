@@ -3,8 +3,8 @@ import {
   SaveGuideDb
 } from '../repository/Guide';
 import { GetCustomerDb, UpdateCustomerDb} from '../repository/Customer';
-import { Customer, Guide, Trip } from '../domain/types';
-import { GetTourDb, GetTripDb, UpdateTourDb, UpdateTripDb } from '../repository/Tour';
+import { Guide, Trip } from '../domain/types';
+import { GetTourDb, GetTripDb, UpdateTourDb, UpdateTripDb, GetRefundTripDb, GetPendingPaymentTripDb } from '../repository/Tour';
 import { DateGenerator } from '../domain/Tour';
 import { approveTrip, refundTrip, approveGuide, markBadGuide } from '../domain/Admin';
 import { updateTripToTour, updateCustomerTripHistory } from '../domain/CustomerTour';
@@ -13,19 +13,19 @@ export type ApproveGuideService = (
   guideId: string
 ) => Promise<Guide>;
 
+export type GetRefundRequests = () => Promise<Trip[]>
+
 export type ApproveRefundService = (
   tourId: string,
   tripId: string,
   customerId: string
 ) => Promise<Trip>;
 
-export type SearchCustomerService = (
-  customerId: string
-) => Promise<Customer>;
-
 export type SearchGuideService = (
   guideId: string
 ) => Promise<Guide[]>;
+
+export type GetPendingPayments = () => Promise<Trip[]>
 
 export type ApprovePaymentService = (
   tourId: string,
@@ -44,6 +44,13 @@ export function approveGuideService(getGuide: GetGuideDb, saveGuide: SaveGuideDb
     await saveGuide(approvedGuide);
     return approvedGuide;
   };
+}
+
+export function getRefundRequests(getRefundTripDb: GetRefundTripDb): GetRefundRequests {
+  return async () => {
+    const results = await getRefundTripDb();
+    return results
+  }
 }
 
 export function approveRefundService(
@@ -85,13 +92,10 @@ export function approveRefundService(
   }
 }
 
-export function searchCustomerService(
-  getCustomer: GetCustomerDb
-): SearchCustomerService {
-  return async (
-    customerId: string
-  ) => {
-    return await getCustomer(customerId);
+export function getPendingPayments(getPendingPaymentTripDb: GetPendingPaymentTripDb): GetPendingPayments {
+  return async () => {
+    const results = await getPendingPaymentTripDb();
+    return results
   }
 }
 

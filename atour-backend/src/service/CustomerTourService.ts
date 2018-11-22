@@ -267,7 +267,7 @@ export function refundTripService(
       case TripType.ApprovedTrip: {
         const refundRequestedTrip = refundTrip()(trip, dateGenerator());
         const updatedTour = updateTripToTour()(tour, refundRequestedTrip);
-        const updatedCustomer = addTripToCustomer()(
+        const updatedCustomer = updateCustomerTripHistory()(
           customer,
           refundRequestedTrip
         );
@@ -302,7 +302,7 @@ export function cancelTripService(
       const unbookedTrip = freeTrip()(cancelledTrip);
 
       const updatedTour = updateTripToTour()(tour, unbookedTrip);
-      const updatedCustomer = addTripToCustomer()(customer, cancelledTrip);
+      const updatedCustomer = updateCustomerTripHistory()(customer, cancelledTrip);
       await updateCustomerDb(updatedCustomer);
       await updateTourDb(updatedTour);
       await updateTripDb(unbookedTrip);
