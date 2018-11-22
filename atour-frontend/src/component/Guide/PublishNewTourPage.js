@@ -1,15 +1,19 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import Modal from "react-modal";
-import { publishNewTour } from "../../../action/ModalAction";
-import autobind from "react-autobind";
-import * as validation from "../../../utils/validation";
+// import "./styles.css";
+// import { registerModal } from "../../action/modalAction";
+// import autobind from "react-autobind";
 import classNames from "classnames";
-import { getGuideInfo } from "../../../action/UserInfoAction";
-import "./styles.css";
-import { Grid, Button } from "semantic-ui-react";
+import { Container, Segment, Grid, Button, Icon } from "semantic-ui-react";
+import Tours from "../Tours/Tours";
+import SearchBar from "../SearchBar";
+import { getGuideInfo } from "../../action/UserInfoAction";
+import { publishNewTour } from "../../action/ModalAction";
+import PublishNewTourModal from "./PublishNewTourModal/PublishNewTourModal";
 import axios from "axios";
+import { Flex } from "rebass";
+import Cards from "../Cards/Cards";
 
 function Field(props) {
   const { inputType, error, label, onChange, value } = props;
@@ -277,6 +281,33 @@ class PublishNewTourModal extends React.Component {
   }
 }
 
+const PublishNewTourPage = props => (
+  <Container>
+    {/* <PublishNewTourModal updateGuideHome={this.updateGuideHome} /> */}
+    <PublishNewTourModal />
+    <Segment style={{ padding: "8em 0em" }} vertical>
+      <Grid stackable>
+        <Grid.Row textAlign="center" columns={2}>
+          <Grid.Column textAlign="left" width={14}>
+            <h2>Published Tours</h2>
+          </Grid.Column>
+          <Grid.Column textAlign="center" width={2}>
+            <Link>
+              <Button animated onClick={this.props.onClickPublishNewTour}>
+                <Button.Content hidden>Add</Button.Content>
+                <Button.Content visible>
+                  <Icon name="plus" />
+                </Button.Content>
+              </Button>
+            </Link>
+          </Grid.Column>
+        </Grid.Row>
+        <hr color="black" size="50" width="1100" />
+      </Grid>
+    </Segment>
+  </Container>
+);
+
 const mapStateToProps = state => {
   return {
     isOpen: state.modal.modalName,
@@ -289,7 +320,7 @@ const mapDispatchToProps = dispatch => ({
   getGuideInfo: guideId => dispatch(getGuideInfo(guideId))
 });
 
-export default connect(
+connect(
   mapStateToProps,
   mapDispatchToProps
 )(PublishNewTourModal);

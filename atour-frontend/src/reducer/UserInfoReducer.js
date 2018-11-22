@@ -180,6 +180,7 @@ function customerId(state = initialState.customerId, action) {
 
 function isLoginSuccess(state = initialState.isLoginSuccess, action) {
   switch (action.type) {
+    case GUIDE_LOGIN_SUCCESS:
     case LOGIN_SUCCESS:
       return true;
     case LOGIN_FAILED:
