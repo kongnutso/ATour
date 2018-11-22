@@ -15,7 +15,7 @@ import {
   REFUNDTRIP,
   FINISHEDTRIP,
   CANCELLEDTRIP
-} from './TripType';
+} from '../../utils/TripType';
 import './styles.css';
 
 class BookedHistoryInfo extends React.Component {
@@ -33,9 +33,9 @@ class BookedHistoryInfo extends React.Component {
 
   classNameStatus(statusNumber, isDanger = false) {
     let tempText = '';
-    if (statusNumber === this.props.status)
+    if (statusNumber === this.props.bookInfo._type)
       tempText = `bookedhistoryinfo-status-inprocess`;
-    else if (statusNumber < this.props.status)
+    else if (statusNumber < this.props.bookInfo._type)
       return `bookedhistoryinfo-status-finish`;
     else tempText = `bookedhistoryinfo-status-coming`;
 
@@ -44,25 +44,29 @@ class BookedHistoryInfo extends React.Component {
   }
 
   classNameText(statusNumber) {
-    if (statusNumber === this.props.status)
+    if (statusNumber === this.props.bookInfo._type)
       return 'bookedhistoryinfo-text-inprocess';
-    else if (statusNumber < this.props.status)
+    else if (statusNumber < this.props.bookInfo._type)
       return 'bookedhistoryinfo-text-finish';
     else return 'bookedhistoryinfo-text-coming';
   }
 
   classNameColorButton(statusNumber) {
-    if (statusNumber < this.props.status) return 'bookedhistoryinfo-graybutton';
+    if (statusNumber < this.props.bookInfo._type)
+      return 'bookedhistoryinfo-graybutton';
     else return 'bookedhistoryinfo-bluebutton';
   }
 
   onClickSaveSlip(statusNumber) {
-    if (statusNumber !== this.props.status) return;
+    const {
+      bookInfo: { _type, tripId, tourId }
+    } = this.props;
+    if (statusNumber !== _type) return;
     else {
       this.props.setImageSlip(
         this.state.inputImg,
-        this.props.bookedId,
-        this.props.tourId,
+        tripId,
+        tourId,
         this.props.customerId
       );
     }
@@ -73,7 +77,7 @@ class BookedHistoryInfo extends React.Component {
   }
 
   renderRate(statusNumber) {
-    if (statusNumber > this.props.status) return <div />;
+    if (statusNumber > this.props.bookInfo._type) return <div />;
     else
       return (
         <div>
@@ -87,7 +91,7 @@ class BookedHistoryInfo extends React.Component {
   }
 
   renderReview(statusNumber) {
-    if (statusNumber > this.props.status) return <div />;
+    if (statusNumber > this.props.bookInfo._type) return <div />;
     else
       return (
         <div>
@@ -115,11 +119,13 @@ class BookedHistoryInfo extends React.Component {
   }
 
   renderRedButton() {
-    const { status } = this.props;
+    const {
+      bookInfo: { _type }
+    } = this.props;
     let text;
-    if (status < PAIDTRIP) text = 'Cancel';
+    if (_type < APPROVETRIP) text = 'Cancel';
     else text = 'Refund';
-    if (this.props.status <= APPROVETRIP) {
+    if (_type <= APPROVETRIP && _type > UNBOOKEDTRIP) {
       return (
         <div
           className="bookedhistoryinfo-headbutton"
@@ -136,21 +142,34 @@ class BookedHistoryInfo extends React.Component {
   }
 
   render() {
-    const { status } = this.props;
-    const { refund, cancel } = this.state;
+    const {
+      bookInfo: {
+        _type,
+        bookDate,
+        uploadedFileDate,
+        slip,
+        tripDate,
+        tourName,
+        guideId,
+        groupSize,
+        price,
+        tripId,
+
+        tourId
+      },
+      customerId
+    } = this.props;
     let message;
-    if (status < PAIDTRIP) {
+    // const { refund, cancel } = this.state;
+    const cancel = _type === CANCELLEDTRIP || _type === UNBOOKEDTRIP;
+    const refund = _type === REFUNDREQUESTEDTRIP || _type === REFUNDTRIP;
+    if (_type < APPROVETRIP) {
       message = 'Cancel';
-    } else if (status === PAIDTRIP) {
+    } else if (_type === APPROVETRIP) {
       message = 'Refund';
     }
     return (
       <div className="bookedhistoryinfo-page">
-        <div className="bookedhistoryinfo-header">
-          <i className="fa fa-calendar topbanner-icon" />
-          <Link to="/bookedHistory">Booked History</Link> / Book ID :{this.props.bookedId}
-          {this.renderRedButton()}
-        </div>
         <PopUpModal
           isOpen={this.state.confirmModal}
           onCloseModal={() => this.setState({ confirmModal: false })}
@@ -166,25 +185,66 @@ class BookedHistoryInfo extends React.Component {
           bodyText={`Do you want to [${message}] ? `}
           onConfirm={() => {
             if (message === 'Refund') {
+              console.log(message);
               this.setState({ refund: true });
-              this.props.refundTrip(
-                this.props.tourId,
-                this.props.tripId,
-                this.props.customerId
-              );
+              this.props.refundTrip(tourId, tripId, customerId);
             } else if (message === 'Cancel') {
               this.setState({ cancel: true });
-              this.props.cancelTrip(
-                this.props.tourId,
-                this.props.tripId,
-                this.props.customerId
-              );
+              this.props.cancelTrip(tourId, tripId, customerId);
             }
           }}
           isDanger
           type="Confirmation"
         />
+        <div className="bookedhistoryinfo-header">
+          <i className="fa fa-calendar topbanner-icon" />
+          <Link to="/bookedHistory">Booked History</Link> / Trip ID :{tripId}
+          {this.renderRedButton()}
+        </div>
         <hr className="bookedhistoryinfo-line" />
+        <div className="bookedHistoryInfo-info-container">
+          Book Detail
+          <div className="bookedHistoryInfo-info">
+            <div className="bookedHistoryInfo-info-each">
+              <div className="bookedHistoryInfo-info-each-1">
+                <div className="bookedHistoryInfo-info-topic">Tour name :</div>
+                <div className="bookedHistoryInfo-info-each-value">
+                  {tourName || 'test'}
+                </div>
+              </div>
+            </div>
+            <div className="bookedHistoryInfo-info-each">
+              <div className="bookedHistoryInfo-info-each-1">
+                <div className="bookedHistoryInfo-info-topic">Trip date :</div>
+                <div className="bookedHistoryInfo-info-each-value">
+                  {tripDate || 'test'}
+                </div>
+              </div>
+              <div className="bookedHistoryInfo-info-each-2">
+                <div className="bookedHistoryInfo-info-topic">Guide :</div>
+                <div className="bookedHistoryInfo-info-each-value">
+                  {guideId || 'test'}
+                </div>
+              </div>
+            </div>
+            <div className="bookedHistoryInfo-info-each">
+              <div className="bookedHistoryInfo-info-each-1">
+                <div className="bookedHistoryInfo-info-topic">Group size :</div>
+                <div className="bookedHistoryInfo-info-each-value">
+                  {groupSize || 'test'}
+                </div>
+              </div>
+              <div className="bookedHistoryInfo-info-each-2">
+                <div className="bookedHistoryInfo-info-topic">Price :</div>
+                <div className="bookedHistoryInfo-info-each-value">
+                  {price || 'test'}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <hr className="bookedhistoryinfo-line" />
+
         <div>
           Status
           <div>
@@ -194,7 +254,7 @@ class BookedHistoryInfo extends React.Component {
                   <div className={this.classNameStatus(UNBOOKEDTRIP)}>1</div>
                 </Box>
                 <Box p={3} width={[3 / 4, 7 / 8, 14 / 15]}>
-                  Booked Date: {this.props.bookedDate}
+                  Booked Date: {bookDate}
                 </Box>
               </Flex>
             </div>
@@ -207,7 +267,7 @@ class BookedHistoryInfo extends React.Component {
                   {/*change from 2*/}
                 </Box>
                 <Box p={3} width={[3 / 4, 7 / 8, 14 / 15]}>
-                  Uploaded File Date: {this.props.uploadedFileDate}
+                  Uploaded File Date: {uploadedFileDate}
                 </Box>
               </Flex>
               <Flex>
@@ -230,9 +290,7 @@ class BookedHistoryInfo extends React.Component {
               <Flex>
                 <Box width={1 / 15} />
                 <Box p={3} width={1} style={{ display: 'flex' }}>
-                  <div className="bookedhistoryinfo-upliadfile">
-                    {this.props.slip}
-                  </div>
+                  <div className="bookedhistoryinfo-upliadfile">{slip}</div>
                 </Box>
               </Flex>
             </div>
@@ -312,9 +370,7 @@ class BookedHistoryInfo extends React.Component {
                   {/*change from 4*/}
                   <Flex>
                     <Box p={2} width={[1 / 4, 1 / 8, 1 / 15]}>
-                      <div className={this.classNameStatus(APPROVETRIP)}>
-                        4
-                      </div>{' '}
+                      <div className={this.classNameStatus(APPROVETRIP)}>4</div>{' '}
                       {/*change from 4*/}
                     </Box>
                     <Box p={3} width={[3 / 4, 7 / 8, 14 / 15]}>
@@ -331,9 +387,7 @@ class BookedHistoryInfo extends React.Component {
                 {/*change from 5*/}
                 <Flex>
                   <Box p={2} width={[1 / 4, 1 / 8, 1 / 15]}>
-                    <div className={this.classNameStatus(FINISHEDTRIP)}>
-                      5
-                    </div>{' '}
+                    <div className={this.classNameStatus(FINISHEDTRIP)}>5</div>{' '}
                     {/*change from 5*/}
                   </Box>
                   <Box p={3} width={[1 / 4, 2 / 8, 2 / 15]}>
@@ -354,14 +408,9 @@ class BookedHistoryInfo extends React.Component {
 }
 
 const mapStateToProps = state => {
+  console.log(state.bookedHistoryInfo);
   return {
-    status: state.bookedHistoryInfo.tourStatus,
-    bookedDate: state.bookedHistoryInfo.bookedDate,
-    uploadedFileDate: state.bookedHistoryInfo.uploadedFileDate,
-    bookedId: state.bookedHistoryInfo.bookedId,
-    slip: state.bookedHistoryInfo.slip,
-    tourId: state.bookedHistoryInfo.tourId,
-    tripId: state.bookedHistoryInfo.bookedId,
+    bookInfo: state.bookedHistoryInfo,
     customerId: state.user.customerId
   };
 };
@@ -375,4 +424,7 @@ const mapDispatchToProps = dispatch => ({
     dispatch(refundTrip(tourId, tripId, customerId))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(BookedHistoryInfo);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(BookedHistoryInfo);

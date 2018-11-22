@@ -12,7 +12,9 @@ import {
   GuideType,
   ApprovalStatus,
   Guide,
-  UserProfile
+  UserProfile,
+  Tour,
+  ApprovedGuide
 } from '../domain/types';
 describe('GuideService', () => {
   test('registerGuide', async () => {
@@ -30,7 +32,8 @@ describe('GuideService', () => {
           lastName: 'Smith',
           phoneNumber: '0812345678',
           birthDate: new Date('1996-05-07'),
-          gender: 'Male'
+          gender: 'Male',
+          profileImageUrl: null
         },
         bankAccountNumber: '102943940',
         bankName: 'SCB',
@@ -63,43 +66,43 @@ describe('GuideService', () => {
     );
   });
   test('loginGuide', async () => {
+    const expectedGuide: Guide = {
+      _type: GuideType.UnApprovedGuide,
+      guideId: 'guideId',
+      userName: 'guideusername',
+      password: 'password',
+      bankAccountNumber: '2134592',
+      bankName: 'SCB',
+      email: 'email@gmail.com',
+      personalId: '1928483849283',
+      profile: {
+        firstName: 'first',
+        lastName: 'last',
+        birthDate: new Date(1234),
+        phoneNumber: '0983746888',
+        gender: 'Male',
+        profileImageUrl: null
+      },
+      approvalStatus: ApprovalStatus.NotApprove
+    };
     const fakeGetGuideForLogin: GetGuideForLogin = async (
       userName,
       password
     ) => {
       expect(userName).toEqual('guideusername');
       expect(password).toEqual('password');
-      return {
-        _type: GuideType.UnApprovedGuide,
-        guideId: 'guideId',
-        userName: 'guideusername',
-        password: 'password',
-        bankAccountNumber: '2134592',
-        bankName: 'SCB',
-        email: 'email@gmail.com',
-        personalId: '1928483849283',
-        profile: {
-          firstName: 'first',
-          lastName: 'last',
-          birthDate: new Date(1234),
-          phoneNumber: '0983746888',
-          gender: 'Male'
-        },
-        approvalStatus: ApprovalStatus.NotApprove,
-        availableDate: [],
-        publishedTours: [],
-        dealtTrips: []
-      };
+      return expectedGuide;
     };
     const fakeGetTokenForGuide: GetTokenForGuide = async guideId => {
       expect(guideId).toEqual('guideId');
       return 'token';
     };
-    const token = await GuideService.loginGuideService(
+    const { token, guide } = await GuideService.loginGuideService(
       fakeGetGuideForLogin,
       fakeGetTokenForGuide
     )('guideusername', 'password');
     expect(token).toEqual('token');
+    expect(guide).toEqual(expectedGuide);
   });
 
   test('editGuide profile', async () => {
@@ -117,7 +120,8 @@ describe('GuideService', () => {
         lastName: 'last',
         birthDate: new Date(1234),
         phoneNumber: '0983746888',
-        gender: 'Male'
+        gender: 'Male',
+        profileImageUrl: null
       },
       approvalStatus: ApprovalStatus.NotApprove
     };
@@ -130,7 +134,8 @@ describe('GuideService', () => {
       lastName: 'newlast',
       gender: 'Female',
       birthDate: new Date('1996-05-08'),
-      phoneNumber: '0849386844'
+      phoneNumber: '0849386844',
+      profileImageUrl: 'www.imgur.com'
     };
     const fakeSaveGuide: SaveGuideDb = async savedGuide => {
       expect(savedGuide).toEqual({
@@ -145,6 +150,90 @@ describe('GuideService', () => {
     expect(editedGuide).toEqual({
       ...guide,
       profile: newProfile
+    });
+  });
+
+  test('getUnApprovedGuide', () => {
+    const guide: Guide = {
+      _type: GuideType.UnApprovedGuide,
+      guideId: 'guideId',
+      userName: 'guideusername',
+      password: 'password',
+      bankAccountNumber: '2134592',
+      bankName: 'SCB',
+      email: 'email@gmail.com',
+      personalId: '1928483849283',
+      profile: {
+        firstName: 'first',
+        lastName: 'last',
+        birthDate: new Date(1234),
+        phoneNumber: '0983746888',
+        gender: 'Male',
+        profileImageUrl: null
+      },
+      approvalStatus: ApprovalStatus.NotApprove
+    };
+    const fakeGetGuide: GetGuideDb = async guideId => {
+      expect(guideId).toEqual('guideId');
+      return guide;
+    };
+    const fakeGetPublishedTourOfGuide = () => {
+      throw new Error('This should not be called');
+    };
+    GuideService.getGuideService(fakeGetGuide, fakeGetPublishedTourOfGuide)(
+      'guideId'
+    );
+  });
+
+  test('getApprovedGuide', async () => {
+    const guide: ApprovedGuide = {
+      _type: GuideType.ApprovedGuide,
+      guideId: 'guideId',
+      userName: 'guideusername',
+      password: 'password',
+      bankAccountNumber: '2134592',
+      bankName: 'SCB',
+      email: 'email@gmail.com',
+      personalId: '1928483849283',
+      profile: {
+        firstName: 'first',
+        lastName: 'last',
+        birthDate: new Date(1234),
+        phoneNumber: '0983746888',
+        gender: 'Male',
+        profileImageUrl: null
+      },
+      approvalStatus: ApprovalStatus.Approved,
+      availableDate: [],
+      dealtTrips: []
+    };
+    const expectedTour: Tour = {
+      tourId: 'uuid',
+      tourName: 'Changmai Trip',
+      minimumSize: 1,
+      maximumSize: 2,
+      price: 5000,
+      detail: 'trip to Changmai',
+      reviews: [],
+      trips: [],
+      guideId: 'guideid',
+      imageUrl: null
+    };
+    const fakeGetGuide: GetGuideDb = async guideId => {
+      expect(guideId).toEqual('guideId');
+      return guide;
+    };
+    const fakeGetPublishedTourOfGuide = async guideId => {
+      expect(guideId).toEqual('guideId');
+      return [expectedTour];
+    };
+    const guideDto = await GuideService.getGuideService(
+      fakeGetGuide,
+      fakeGetPublishedTourOfGuide
+    )('guideId');
+    expect(guideDto).toEqual({
+      ...guide,
+      publishedTours: [expectedTour]
     });
   });
 });

@@ -1,34 +1,35 @@
-import { combineReducers } from "redux";
+import { combineReducers } from 'redux';
 import {
   LOGOUT,
   LOGIN_SUCCESS,
   GUIDE_LOGIN_SUCCESS,
   LOGIN_FAILED,
   CLEAR_ERROR
-} from "../action/ApplicationAction";
+} from '../action/ApplicationAction';
 import {
   EDIT_USER_INFO,
   VIEW_PROFILE,
   EDIT_PROFILE,
   GET_USER_INFO,
-  GET_GUIDE_INFO
-} from "../action/UserInfoAction";
+  GET_GUIDE_INFO,
+  EDIT_GUIDE_USER_INFO
+} from '../action/UserInfoAction';
 
 const initialState = {
   isLoginSuccess: null,
-  customerId: "",
-  userName: "",
-  token: "",
-  role: "",
-  personalId: "",
-  email: "",
+  customerId: '',
+  userName: '',
+  token: '',
+  role: '',
+  personalId: '',
+  email: '',
   profile: {
-    fullName: "",
-    gender: "",
-    firstName: "",
-    lastName: "",
-    birthDate: "",
-    phoneNumber: ""
+    fullName: '',
+    gender: '',
+    firstName: '',
+    lastName: '',
+    birthDate: '',
+    phoneNumber: ''
   },
   guideInfo: null,
   // guideInfo: {
@@ -172,7 +173,7 @@ function customerId(state = initialState.customerId, action) {
     case GET_USER_INFO:
       return action.payload.customerId;
     case LOGOUT:
-      return "";
+      return '';
     default:
       return state;
   }
@@ -208,7 +209,7 @@ function isView(state = initialState.isView, action) {
 function token(state = initialState.token, action) {
   switch (action.type) {
     case LOGOUT:
-      return "";
+      return '';
     case LOGIN_SUCCESS:
       return action.payload.token;
     case GUIDE_LOGIN_SUCCESS:
@@ -221,12 +222,11 @@ function token(state = initialState.token, action) {
 function userName(state = initialState.userName, action) {
   switch (action.type) {
     case LOGIN_SUCCESS:
-      console.log("SUCCESS AT USERNAME");
       return action.payload.userName;
     case GUIDE_LOGIN_SUCCESS:
       return action.payload.userName;
     case LOGOUT:
-      return "";
+      return '';
     default:
       return state;
   }
@@ -238,7 +238,7 @@ function profile(state = initialState.profile, action) {
       const { personalId, email } = action.payload;
       const socialID = personalId;
       const { firstName, lastName } = action.payload.profile;
-      const fullName = firstName + " " + lastName;
+      const fullName = firstName + ' ' + lastName;
       return {
         ...action.payload.profile,
         socialID,
@@ -246,9 +246,8 @@ function profile(state = initialState.profile, action) {
         email
       };
     case EDIT_USER_INFO:
-      const input = action.payload.profile;
-      state.phoneNumber = input.phoneNumber;
-      state.email = input.email;
+      state.phoneNumber = action.payload.phoneNumber;
+      state.email = action.payload.email;
       return state;
     case LOGOUT:
       return {};
@@ -262,7 +261,7 @@ function email(state = initialState.email, action) {
     case GET_USER_INFO:
       return action.payload.email;
     case LOGOUT:
-      return "";
+      return '';
     default:
       return state;
   }
@@ -273,18 +272,16 @@ function personalId(state = initialState.personalId, action) {
     case GET_USER_INFO:
       return action.payload.personalId;
     case LOGOUT:
-      return "";
+      return '';
     default:
       return state;
   }
 }
 function guideInfo(state = initialState.guideInfo, action) {
   switch (action.type) {
-    case GET_GUIDE_INFO:
-      console.log("osdifjpaofjaisodfj: ", action.payload);
-      return action.payload;
     case GUIDE_LOGIN_SUCCESS:
-      console.log("SDFISOIDFUSPODFUSDFUSDF");
+    case EDIT_GUIDE_USER_INFO:
+    case GET_GUIDE_INFO:
       return action.payload.guideInfo;
     case LOGOUT:
       return {};
@@ -296,12 +293,12 @@ function guideInfo(state = initialState.guideInfo, action) {
 function role(state = initialState.role, action) {
   switch (action.type) {
     case LOGIN_SUCCESS:
-      console.log("SUCCESS AT ROLE");
+      console.log('SUCCESS AT ROLE');
       return action.payload.role;
     case GUIDE_LOGIN_SUCCESS:
       return action.payload.role;
     case LOGOUT:
-      return "";
+      return '';
     default:
       return state;
   }

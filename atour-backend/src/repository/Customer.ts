@@ -1,4 +1,4 @@
-import { Customer, UserProfile } from 'domain/types';
+import { Customer, UserProfile, Tour } from '../domain/types';
 import { Db } from 'mongodb';
 
 export type GetCustomerDb = (customerId: string)=> Promise<Customer>;
@@ -14,7 +14,8 @@ export type GetCustomerLogin = (
 export type EditCustomerProfileDb = (
     customerId: string,
     email: string,
-    phoneNumber: string
+    phoneNumber: string,
+    profileImageUrl: string
 ) => Promise<Customer>;
 
 export type SaveCustomerTokenDb = (
@@ -33,6 +34,16 @@ export type UpdateCustomerDb = (
 export type GetCustomerProfileDb = (
     userName: string
 ) => Promise<Customer>;
+
+export type GetTourDb = (
+    tourId: string
+) => Promise<Tour>;
+
+export function getTour(db:Db):GetTourDb {
+    return async (tourId) => {
+        return await db.collection('tour').findOne({tourId});
+    }
+}
 
 export function getCustomerProfile(db:Db):GetCustomerProfileDb {
     return async (userName) => {
@@ -60,7 +71,7 @@ export function saveCustomerToken(db:Db):SaveCustomerTokenDb {
 
 export function getCustomer(db: Db): GetCustomerDb {
     return async customerId => {
-        return db.collection('customer').findOne({ customerId });
+        return await db.collection('customer').findOne({ customerId });
     };
 }
 
@@ -97,10 +108,11 @@ export function editCustomerProfile(db: Db): EditCustomerProfileDb {
     return async (
         customerId,
         email,
-        phoneNumber
+        phoneNumber,
+        profileImageUrl
     ) => {
         const customer = await db.collection('customer').findOne({customerId});
-        const newCustomerProfile: UserProfile = {...customer.profile, phoneNumber };
+        const newCustomerProfile: UserProfile = {...customer.profile, phoneNumber ,profileImageUrl};
         const newCustomer: Customer = {...customer, email, profile: newCustomerProfile };
         await db.collection('customer').updateOne({customerId}, {$set: newCustomer})
         return newCustomer;
@@ -109,7 +121,9 @@ export function editCustomerProfile(db: Db): EditCustomerProfileDb {
 
 export function updateCustomer(db: Db): UpdateCustomerDb {
     return async (customer) => {
+        const customerId = customer.customerId
         await db.collection('customer')
-            .update({ customerId: customer.customerId }, { $set: { customer } });
+            // .updateOne({ customerId}, { $set:  customer  });
+            .update({customerId},customer)
     };
 }

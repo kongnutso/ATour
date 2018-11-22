@@ -36,7 +36,8 @@ describe('Guide', () => {
         lastName: 'Smith',
         phoneNumber: '0812345678',
         birthDate: new Date('1996-05-07'),
-        gender: 'Male'
+        gender: 'Male',
+        profileImageUrl: null
       },
       bankAccountNumber: '102943940',
       bankName: 'SCB',
@@ -58,13 +59,13 @@ describe('Guide', () => {
         lastName: 'Smith',
         birthDate: new Date('1996-05-07'),
         phoneNumber: '0871234567',
-        gender: 'Male'
+        gender: 'Male',
+        profileImageUrl: null
       },
       bankAccountNumber: '12345',
       bankName: 'SCB',
       availableDate: [],
       dealtTrips: [],
-      publishedTours: []
     };
     const tour: Tour = {
       tourId: 'tourid',
@@ -75,12 +76,12 @@ describe('Guide', () => {
       price: 3000,
       reviews: [],
       trips: [],
-      guideId: 'guideid'
+      guideId: 'guideid',
+      imageUrl: null
     };
     const resultGuide = GuideDomain.addPublishedTour()(guide, tour);
     const expectedGuide: Guide = {
       ...guide,
-      publishedTours: [tour]
     };
     expect(resultGuide).toEqual(expectedGuide);
   });
@@ -98,13 +99,13 @@ describe('Guide', () => {
         lastName: 'Smith',
         birthDate: new Date('1996-05-07'),
         phoneNumber: '0871234567',
-        gender: 'Male'
+        gender: 'Male',
+        profileImageUrl: null
       },
       bankAccountNumber: '12345',
       bankName: 'SCB',
       availableDate: [],
       dealtTrips: [],
-      publishedTours: []
     };
     const tour: Tour = {
       tourId: 'tourid',
@@ -115,7 +116,8 @@ describe('Guide', () => {
       price: 3000,
       reviews: [],
       trips: [],
-      guideId: 'guideid'
+      guideId: 'guideid',
+      imageUrl: null
     };
     test('if no published Tour to update, do nothing', () => {
       const testGuide = guide;
@@ -126,7 +128,6 @@ describe('Guide', () => {
     test('if have published Tour to update, update it', () => {
       const testGuide: ApprovedGuide = {
         ...guide,
-        publishedTours: [tour]
       };
       const updatedTour: Tour = {
         ...tour,
@@ -141,7 +142,6 @@ describe('Guide', () => {
       );
       const expectedGuide: ApprovedGuide = {
         ...testGuide,
-        publishedTours: [updatedTour]
       };
       expect(resultGuide).toEqual(expectedGuide);
     });
@@ -159,7 +159,8 @@ describe('Guide', () => {
         lastName: 'Smith',
         phoneNumber: '0812345678',
         birthDate: new Date('1996-05-07'),
-        gender: 'Male'
+        gender: 'Male',
+        profileImageUrl: null
       },
       bankAccountNumber: '102943940',
       bankName: 'SCB',
@@ -170,7 +171,8 @@ describe('Guide', () => {
       lastName: 'newlast',
       gender: 'Female',
       birthDate: new Date('1996-05-08'),
-      phoneNumber: '0849386844'
+      phoneNumber: '0849386844',
+      profileImageUrl: 'www.imgur.com'
     };
     const editedGuide = GuideDomain.editGuide()(guide, newProfile);
     expect(editedGuide).toEqual({

@@ -1,7 +1,7 @@
 import { Tour, UnbookedTrip, PartialTour, TripType } from './types';
 
 export type IdGenerator = () => string;
-export type DateGenerator= () => Date;
+export type DateGenerator = () => Date;
 
 export type PublishTour = (
   tourName: string,
@@ -9,12 +9,15 @@ export type PublishTour = (
   maxSize: number,
   price: number,
   detail: string,
-  guideId: string
+  guideId: string,
+  imageUrl?: string
 ) => Tour;
 
 export type EditTour = (t: Tour, updateInfo: PartialTour) => Tour;
 
 export type AddTrip = (t: Tour, d: Date) => Tour;
+
+export type DeleteTrip = (t: Tour, tripId: string) => Tour;
 
 export function publishTour(idGenerator: IdGenerator): PublishTour {
   return (
@@ -23,7 +26,8 @@ export function publishTour(idGenerator: IdGenerator): PublishTour {
     maximumSize: number,
     price: number,
     detail: string,
-    guideId: string
+    guideId: string,
+    imageUrl?: string
   ): Tour => {
     const tour: Tour = {
       tourId: idGenerator(),
@@ -34,7 +38,8 @@ export function publishTour(idGenerator: IdGenerator): PublishTour {
       detail,
       trips: [],
       reviews: [],
-      guideId
+      guideId,
+      imageUrl: imageUrl || null
     };
     return tour;
   };
@@ -51,8 +56,25 @@ export function editTour(): EditTour {
 
 export function addTrip(idGenerator: IdGenerator): AddTrip {
   return (tour: Tour, tripDate: Date): Tour => {
-    const addedTrip: UnbookedTrip = {_type: TripType.UnbookedTrip, tripId: idGenerator(), tripDate };
+    const addedTrip: UnbookedTrip = {
+      _type: TripType.UnbookedTrip,
+      tripId: idGenerator(),
+      tripDate,
+      tourId: tour.tourId,
+      tourName: tour.tourName
+    };
     const newTrips = [...tour.trips, addedTrip];
+    return {
+      ...tour,
+      trips: newTrips
+    };
+  };
+}
+
+export function deleteTrip(): DeleteTrip {
+  return (tour, tripId) => {
+    const { trips } = tour;
+    const newTrips = trips.filter(t => t.tripId !== tripId);
     return {
       ...tour,
       trips: newTrips
