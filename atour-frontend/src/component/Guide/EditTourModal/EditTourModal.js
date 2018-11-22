@@ -5,7 +5,10 @@ import Modal from "react-modal";
 import autobind from "react-autobind";
 import * as validation from "../../../utils/validation";
 import { editTour } from "../../../action/ModalAction";
+import { getGuideInfo } from "../../../action/UserInfoAction";
+import { Grid, Button } from "semantic-ui-react";
 import "./styles.css";
+import axios from "axios";
 
 function Field(props) {
   const { inputType, error, label, onChange, value } = props;
@@ -29,48 +32,50 @@ function Field(props) {
 }
 
 const Dec = ({ label, value, onChange }) => {
-  let extractedValue = value.maxGroupSize;
+  let extractedValue = value.maximumSize;
   return <Field label={label} onChange={onChange} value={extractedValue} />;
 };
 
-function maxGroupSizeValidation(sizes) {
-  let minGroupSize = sizes.minGroupSize ? sizes.minGroupSize : 0;
-  let maxGroupSize = sizes.maxGroupSize;
-  let regex = /^(\$|)([1-9]\d{0,2}(\,\d{3})*|([1-9]\d*))(\.\d{2})?$/;
+// function maximumSizeValidation(sizes) {
+//   let minimumSize = sizes.minimumSize ? sizes.minimumSize : 0;
+//   let maximumSize = sizes.maximumSize;
+//   let regex = /^(\$|)([1-9]\d{0,2}(\,\d{3})*|([1-9]\d*))(\.\d{2})?$/;
 
-  console.log("min ", parseInt(minGroupSize));
-  console.log("max ", parseInt(maxGroupSize));
-  let passed = maxGroupSize.match(regex);
-  if (
-    passed == null ||
-    maxGroupSize.length > 50 ||
-    !minGroupSize ||
-    !maxGroupSize ||
-    parseInt(minGroupSize) > parseInt(maxGroupSize)
-  ) {
-    return "maximum group size must ...";
-  }
-  return false;
-}
+//   console.log("min ", parseInt(minimumSize));
+//   console.log("max ", parseInt(maximumSize));
+//   let passed = maximumSize.match(regex);
+//   if (
+//     passed == null ||
+//     maximumSize.length > 50 ||
+//     !minimumSize ||
+//     !maximumSize ||
+//     parseInt(minimumSize) > parseInt(maximumSize)
+//   ) {
+//     return "maximum group size must ...";
+//   }
+//   return false;
+// }
 
 class EditTourModal extends React.Component {
   constructor(props) {
+    console.log("MARK: ", props);
     super(props);
-    console.log("props", this.props);
     this.state = {
       value: {
         tourName: this.props.tour.tourName,
         price: this.props.tour.price,
-        minGroupSize: this.props.tour.minGroupSize,
-        maxGroupSize: this.props.tour.maxGroupSize,
-        detail: this.props.tour.detail
+        minimumSize: this.props.tour.minimumSize,
+        maximumSize: this.props.tour.maximumSize,
+        detail: this.props.tour.detail,
+        imageUrl: this.props.tour.imageUrl
       },
       error: {
         tourName: false,
         price: false,
-        minGroupSize: false,
-        maxGroupSize: false,
-        detail: false
+        minimumSize: false,
+        maximumSize: false,
+        detail: false,
+        imageUrl: false
       }
     };
 
@@ -80,18 +85,54 @@ class EditTourModal extends React.Component {
       "onSubmitNewTourInfo",
       "onCloseModal",
       "onFieldChange",
-      "maxGroupSizeValidation",
-      "onSubmitNewTourInfo"
+      "onSubmitNewTourInfo",
+      "onSubmitted"
     );
   }
 
-  onSubmitNewTourInfo() {
+  async onSubmitNewTourInfo() {
+    console.log("SUBMITTING...");
+    console.log(this.state.error);
+    let handleToUpdate = this.props.updateStates;
+    let value = this.state.value;
+    handleToUpdate(
+      value.price,
+      value.detail,
+      value.minimumSize,
+      value.maximumSize,
+      value.imageUrl
+    );
     const {
-      error: { username, password, email }
+      error: { tourName, price, minimumSize, maximumSize, detail, imageUrl }
     } = this.state;
-    if (!username && !password && !email) {
-      this.setState({ accountInfo: false });
+    if (
+      !tourName &&
+      !price &&
+      !minimumSize &&
+      !maximumSize &&
+      !detail &&
+      !imageUrl
+    ) {
+      const url = "http://localhost:3000/tour/" + this.props.tour.tourId;
+      console.log("SENDING: ", url);
+      console.log("value: ", this.state.value);
+      const value = this.state.value;
+      const res = await axios
+        .post(url, {
+          tourName: value.tourName,
+          minimumSize: value.minimumSize,
+          maximumSize: value.maximumSize,
+          price: value.price,
+          detail: value.detail,
+          imageUrl: value.imageUrl
+        })
+        .then(this.onSubmitted());
     }
+  }
+
+  onSubmitted() {
+    // update reducers
+    this.props.getGuideInfo(this.props.guideId);
   }
 
   onCloseModal() {
@@ -128,13 +169,13 @@ class EditTourModal extends React.Component {
         <h2>Edit Tour</h2>
         <hr color="black" size="50" />
         <Field
-          label="Tour name"
-          value={value.tourName}
+          label="Tour image"
+          value={value.imageUrl}
           onChange={e =>
             this.onFieldChange(
-              "tourName",
+              "imageUrl",
               e.target.value,
-              validation.validateTourName
+              validation.validateDetail
             )
           }
           error={this.state.error.tourName}
@@ -155,54 +196,64 @@ class EditTourModal extends React.Component {
           <label>Group size</label>
           <Field
             label="from"
-            value={value.minGroupSize}
+            value={value.minimumSize}
             onChange={e =>
               this.onFieldChange(
-                "minGroupSize",
+                "minimumSize",
                 e.target.value,
-                validation.validateMinGroupSize
+                validation.validateMinimumSize
               )
             }
-            error={this.state.error.minGroupSize}
+            error={this.state.error.minimumSize}
           />
-          <Dec
+          <Field
             label="to"
-            value={{
-              minGroupSize: value.minGroupSize,
-              maxGroupSize: value.maxGroupSize
-            }}
+            value={value.maximumSize}
             onChange={e =>
               this.onFieldChange(
-                "maxGroupSize",
-                {
-                  minGroupSize: value.minGroupSize,
-                  maxGroupSize: e.target.value
-                },
-                true,
-                e.target.value
+                "maximumSize",
+                e.target.value,
+                validation.validateMinimumSize
               )
             }
-            error={this.state.error.minGroupSize}
+            error={this.state.error.maximumSize}
           />
         </div>
         <Field
           label="Details"
           value={value.detail}
           onChange={e =>
-            this.onFieldChange("detail", e.target.value, this.detailValidation)
+            this.onFieldChange(
+              "detail",
+              e.target.value,
+              validation.validateDetail
+            )
           }
           error={this.state.error.detail}
         />
 
-        <button
-          onClick={() => this.onSubmitNewTourInfo()}
-          className="btn btn-primary"
-        >
-          Next
-        </button>
-        <button onClick={() => this.onCloseModal()} className="btn btn-danger">
-          Cancel
-        </button>
+        <Grid columns={2}>
+          <Grid.Column width={8}>
+            <Button
+              onClick={() => this.onSubmitNewTourInfo()}
+              // className="btn btn-primary"
+              primary
+              fluid
+            >
+              Submit
+            </Button>
+          </Grid.Column>
+          <Grid.Column width={8}>
+            <Button
+              onClick={() => this.onCloseModal()}
+              // className="btn btn-danger"
+              color="red"
+              fluid
+            >
+              Cancel
+            </Button>
+          </Grid.Column>
+        </Grid>
       </div>
     );
   }
@@ -227,11 +278,15 @@ class EditTourModal extends React.Component {
 }
 
 const mapStateToProps = state => {
-  return { isOpen: state.modal.modalName };
+  return {
+    isOpen: state.modal.modalName,
+    guideId: state.user.guideInfo.guideId
+  };
 };
 
 const mapDispatchToProps = dispatch => ({
-  onCloseModal: () => dispatch(editTour(false))
+  onCloseModal: () => dispatch(editTour(false)),
+  getGuideInfo: guideId => getGuideInfo(guideId)
 });
 
 export default connect(

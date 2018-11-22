@@ -4,8 +4,9 @@ import modalReducer from './ModalReducer';
 import applicationReducer from './ApplicationReducer';
 import BookedHistoryReducer from './BookedHistoryReducer';
 import BookedHistoryInfoReducer from './BookedHistoryInfoReducer';
-import tourInfoReducer from './TourInfoReducer';
 import searchReducer from './searchReducer';
+import tourReducer from './TourReducer';
+import guideReducer from './GuideReducer';
 
 const rootReducer = combineReducers({
   user: userInfoReducer,
@@ -14,7 +15,8 @@ const rootReducer = combineReducers({
   app: applicationReducer,
   bookedHistory: BookedHistoryReducer,
   bookedHistoryInfo: BookedHistoryInfoReducer,
-  tourInfo: tourInfoReducer,
+  tour: tourReducer,
+  guide: guideReducer
 });
 
 export default rootReducer;

@@ -13,12 +13,15 @@
 .tourInfo-headerText {
   font-size: 26px;
   font-weight: 600;
+  line-height: 26pt;
+  max-width: 500px;
 }
 
 .tourInfo-guide-container {
-  justify-content: flex-end;
   margin-left: auto;
+  margin-top: auto;
 }
+
 .tourInfo-guideName {
   margin-top: 10px;
   color: #26abdc;
@@ -80,6 +83,16 @@
   margin-top: 10px;
   border: solid 1px #26abdc;
   background-color: #26abdc;
+  color: white;
+  border-radius: 0.28571429rem;
+  height: 35px;
+}
+
+.tourInfo-booking-submit-disabled {
+  width: 100%;
+  margin-top: 10px;
+  border: solid 1px #cccccc;
+  background-color: #cccccc;
   color: white;
   border-radius: 0.28571429rem;
   height: 35px;

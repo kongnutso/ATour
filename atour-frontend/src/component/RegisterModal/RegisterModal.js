@@ -9,6 +9,7 @@ import * as validation from '../../utils/validation';
 import classNames from 'classnames';
 import FormProgress from '../FormProgress/FormProgress';
 import PopUpModal from '../PopUpModal/PopUpModal';
+import axios from 'axios';
 
 function Field(props) {
   const { inputType, error, label, onChange, value } = props;
@@ -56,11 +57,10 @@ function DropDown(props) {
 const defaultValue = () => ({
   asCustomer: true,
   accountInfo: true,
-  errorPopUp: {
-    username: ''
-  },
+  successful: false,
+  errorPopUp: '',
   value: {
-    username: '',
+    userName: '',
     password: '',
     email: '',
     name: '',
@@ -74,7 +74,7 @@ const defaultValue = () => ({
     bankAccountNumber: ''
   },
   error: {
-    username: true,
+    userName: true,
     password: true,
     email: true,
     name: true,
@@ -96,46 +96,94 @@ class RegisterModal extends React.Component {
       accountInfo,
       value,
       error,
-      errorPopUp
+      errorPopUp,
+      successful
     } = defaultValue();
     this.state = {
       asCustomer,
       accountInfo,
       value,
       error,
-      errorPopUp
+      errorPopUp,
+      successful
     };
 
-    autobind(
-      this,
-      'renderAccount',
-      'onSubmitAccountInfo',
-      'onSubmitUserInfo',
-      'renderUserInfo',
-      'onCloseModal',
-      'onFieldChange',
-      'switchToLogin'
-    );
+    autobind(this);
   }
 
   onSubmitAccountInfo() {
     const {
-      error: { username, password, email }
+      error: { userName, password, email }
     } = this.state;
-    if (!username && !password && !email) {
+    if (!userName && !password && !email) {
       this.setState({ accountInfo: false });
     }
   }
 
-  onSubmitUserInfo() {
-    const { errorPopUp } = this.state;
-    if (this.state.value.username === 'kongnut') {
-      errorPopUp.username = 'this username was already used';
-      this.setState({ errorPopUp });
+  async onSubmitUserInfo() {
+    const {
+      asCustomer,
+      value: {
+        userName,
+        email,
+        password,
+        name,
+        sid,
+        gender,
+        birthDate,
+        phone,
+        bankName,
+        bankAccountName,
+        bankAccountNumber
+      }
+    } = this.state;
+    const firstName = name.split(' ')[0];
+    const lastName = name.split(' ')[1];
+    let payload = {
+      userName,
+      email,
+      password,
+      firstName,
+      lastName,
+      personalId: sid,
+      gender,
+      birthDate,
+      phoneNumber: phone
+    };
+    if (asCustomer) {
+      const res = await axios
+        .post('http://localhost:3000/customer/register', payload)
+        .then(res => {
+          return res.data;
+        });
+      if (res.error) {
+        const errorPopUp = res.error;
+        this.setState({ errorPopUp });
+      } else {
+        this.setState({ successful: true });
+      }
     } else {
-      this.onCloseModal();
+      payload.bankName = bankName;
+      payload.bankAccountName = bankAccountName;
+      payload.bankAccountNumber = bankAccountNumber;
+      const res = await axios
+        .post('http://localhost:3000/guide/', payload)
+        .then(res => {
+          return res.data;
+        });
+      console.log(res);
+      if (res.error) {
+        const errorPopUp = res.error;
+        this.setState({ errorPopUp });
+      } else {
+        this.setState({ successful: true });
+      }
     }
-    console.log('from submit');
+  }
+
+  closeSuccessful() {
+    this.setState({ successful: false });
+    this.onCloseModal();
   }
 
   onCloseModal() {
@@ -198,15 +246,15 @@ class RegisterModal extends React.Component {
         </button>
         <Field
           label="Username: "
-          value={value.username}
+          value={value.userName}
           onChange={e =>
             this.onFieldChange(
-              'username',
+              'userName',
               e.target.value,
               validation.validateUsername
             )
           }
-          error={this.state.error.username}
+          error={this.state.error.userName}
         />
         <Field
           label="Password: "
@@ -239,9 +287,6 @@ class RegisterModal extends React.Component {
         >
           Next
         </button>
-        {/* <button onClick={() => this.onCloseModal()} className="btn btn-danger">
-          Cancel
-        </button> */}
         <div className="to-login-container">
           <div className="to-login-text">Already have an account ?</div>
           <div onClick={() => this.switchToLogin()} className="to-login-link">
@@ -387,32 +432,11 @@ class RegisterModal extends React.Component {
     );
   }
 
-  clearPopUpError() {
-    const errorPopUp = this.state.errorPopUp;
-    errorPopUp.username = '';
-    errorPopUp.sid = '';
-    errorPopUp.email = '';
-    this.setState({ errorPopUp });
-  }
-
   render() {
-    const {
-      accountInfo,
-      errorPopUp: { username, email, sid }
-    } = this.state;
+    const { accountInfo, successful, errorPopUp } = this.state;
     const renderObject = accountInfo
       ? this.renderAccount()
       : this.renderUserInfo();
-    let errorPopUpText = '';
-    if (username) {
-      errorPopUpText += `Username: ${username}\n`;
-    }
-    if (email) {
-      errorPopUpText += `Email: ${email}\n`;
-    }
-    if (sid) {
-      errorPopUpText += `Social ID: ${sid}\n`;
-    }
     return (
       <Modal
         className="modal-container-registerModal"
@@ -426,10 +450,16 @@ class RegisterModal extends React.Component {
         ariaHideApp={false}
       >
         <PopUpModal
-          isOpen={errorPopUpText}
-          onCloseModal={() => this.clearPopUpError()}
+          isOpen={successful}
+          onCloseModal={() => this.closeSuccessful()}
+          headerText={'Register Sucess'}
+          bodyText={''}
+        />
+        <PopUpModal
+          isOpen={errorPopUp ? true : false}
+          onCloseModal={() => this.setState({ errorPopUp: '' })}
           headerText={'Register Fail'}
-          bodyText={errorPopUpText}
+          bodyText={errorPopUp}
           // onConfirm
         />
         <div className="registerModal-signUp-text">Sign Up</div>

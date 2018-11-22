@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Box, Flex, Text } from 'rebass';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import Modal from 'react-modal';
 import autobind from 'react-autobind';
 import classNames from 'classnames';
@@ -47,13 +47,16 @@ class SearchBar extends React.Component {
     searchType: 'tourName',
     tours: ['Japan', 'England', 'Thailand', 'Taiwan', 'Tongchai'],
     mobile: true,
+    redirect: false
   };
 
   onEnter = () => {
-    console.log('Enter leaw', this.props.term);
-    onSearch(this.props.term);
+    // console.log(this.props.term);
+    this.props.onSearch(this.props.term);
+    this.setState({ redirect: true });
   };
   render() {
+    if (this.state.redirect) return <Redirect to="searchForTour" />;
     const { term, onChange, onSearch } = this.props;
     const { mobile } = this.state;
     return (
@@ -64,7 +67,12 @@ class SearchBar extends React.Component {
             Where to ?
           </Text>
 
-          <Flex alignItems="flex-start" justifyContent="flex-start" mb={[3]} width={1}>
+          <Flex
+            alignItems="flex-start"
+            justifyContent="flex-start"
+            mb={[3]}
+            width={1}
+          >
             <Box my={1} width={4 / 5} pr={2}>
               <Input
                 placeholder=" Tour Name"
@@ -75,7 +83,7 @@ class SearchBar extends React.Component {
             </Box>
             <Box my={1} width={1 / 5}>
               <Link to="/searchForTour">
-                <SearchButton onClick={() => onSearch(term)}>
+                <SearchButton onClick={() => onSearch(term, true)}>
                   <Icon name="search" />
                   {!mobile && 'Search'}
                 </SearchButton>
