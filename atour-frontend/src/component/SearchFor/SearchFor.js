@@ -1,30 +1,30 @@
-import React, { Component, Fragment } from 'react';
-import { Flex, Box, Text } from 'rebass';
-import { Icon } from 'semantic-ui-react';
-import { connect } from 'react-redux';
-import Table from '../Table';
-import PopUpModal from '../PopUpModal/PopUpModal';
-import COLOR from '../../utils/color';
-import { Button, SearchButton, Input } from '../BaseComponent';
-import Cards from '../Cards/Cards';
-import { onChange, onSearch } from '../../action/SearchAction';
+import React, { Component, Fragment } from "react";
+import { Flex, Box, Text } from "rebass";
+import { Icon } from "semantic-ui-react";
+import { connect } from "react-redux";
+import Table from "../Table";
+import PopUpModal from "../PopUpModal/PopUpModal";
+import COLOR from "../../utils/color";
+import { Button, SearchButton, Input } from "../BaseComponent";
+import Cards from "../Cards/Cards";
+import { onChange, onSearch } from "../../action/SearchAction";
 
 class SearchFor extends Component {
   render() {
     const { term, onChange, onSearch, tours, guides } = this.props;
-    const isTour = this.props.location.pathname === '/searchForTour';
-    const Header = 'Search For ' + (isTour ? 'Tour' : 'Guide');
-    const placeholder = isTour ? 'Tour Name' : 'Guide Name';
+    const isTour = this.props.location.pathname === "/searchForTour";
+    const Header = "Search For " + (isTour ? "Tour" : "Guide");
+    const placeholder = isTour ? "Tour Name" : "Guide Name";
     const items = isTour ? tours : guides;
     return (
       <div
         className="my fucking flag"
-        style={{ marginTop: '30px', marginBottom: '30px' }}
+        style={{ marginTop: "30px", marginBottom: "30px" }}
       >
         <Flex flexWrap="wrap" justifyContent="center">
           <Box width={4 / 5}>
             <Text fontSize={4} mb={4} mt={3}>
-              <i style={{ marginRight: '10px' }} className="fa fa-search" />
+              <i style={{ marginRight: "10px" }} className="fa fa-search" />
               {Header}
             </Text>
 
@@ -51,7 +51,7 @@ class SearchFor extends Component {
             </Flex>
 
             <Flex>
-              <Cards items={items} isGuide={!isTour} />
+              <Cards items={items} isGuide={!isTour} role="customer" />
             </Flex>
           </Box>
         </Flex>

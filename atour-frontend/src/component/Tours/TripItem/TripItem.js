@@ -18,7 +18,7 @@ const mapMonth = date => {
   month[9] = "OCT";
   month[10] = "NOV";
   month[11] = "DEC";
-  return month[date.getMonth()];
+  return month[new Date(date).getMonth()];
 };
 
 const TripItem = props => (
@@ -29,7 +29,7 @@ const TripItem = props => (
           <p className="calendar-icon-month">{mapMonth(props.date.getMonth)}</p>
         </Grid.Column>
         <Grid.Column>
-          <p className="calendar-icon-date">{props.date.getDate()}</p>
+          <p className="calendar-icon-date">{new Date(props.date).getDate()}</p>
         </Grid.Column>
       </Grid>
     </Card.Content>

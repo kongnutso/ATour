@@ -59,11 +59,7 @@ ReactDOM.render(
           <Route exact path="/searchForGuide" component={SearchFor} />
           <Route exact path="/guideHome" component={GuideHome} />
           <Route exact path="/guideTourInfo" component={GuideTourInfo} />
-          <Route
-            exact
-            path="/publishedTour"
-            component={GuideViewPublishedTour}
-          />
+          <Route exact path="/publishedTour" component={GuideHome} />
         </Switch>
       </div>
     </BrowserRouter>
