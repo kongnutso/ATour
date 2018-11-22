@@ -6,7 +6,6 @@ import Table from '../Table';
 import PopUpModal from '../PopUpModal/PopUpModal';
 import COLOR from '../../utils/color';
 import { Button, SearchButton, Input } from '../BaseComponent';
-import AdminMenuBar from '../AdminMenuBar';
 
 //Mock Data
 const tableProps = num => {
@@ -59,10 +58,7 @@ const adminSearchColumns = (handleConfirm, handleReject) => [
       return (
         <Fragment>
           {status ? (
-            <Button color={COLOR.primary} onClick={() => handleConfirm()}>
-              <i className="fa fa-check-circle-o" style={{ marginRight: '5px' }} />
-              Unmark
-            </Button>
+            <Text color={COLOR.disable_text}>-- No Action --</Text>
           ) : (
             <Button color={COLOR.danger} onClick={() => handleReject()}>
               <i className="fa fa-ban" style={{ marginRight: '5px' }} />
