@@ -24,6 +24,7 @@ import GuideViewPublishedTour from "./component/Guide/GuideViewPublishedTour";
 
 import ViewDealtTripPage from './component/ViewDealtTripPage';
 import AdminHome from './component/AdminHome';
+import AdminLogin from './component/AdminLogin';
 
 // const createStoreWithMiddleware = applyMiddleware(promise)(createStore);
 
@@ -55,9 +56,9 @@ ReactDOM.render(
           />
           <Route exact path="/customerTourInfo" component={CustomerTourInfo} />
           <Route exact path="/guideInfo" component={GuideInfo} />
-          <Route exact path="/adminApprove" component={AdminApprovePage} />
-          <Route exact path="/adminSearch" component={AdminSearchPage} />
-          <Route path="/admin" component={AdminHome} />
+           <Route exact path="/admin" component={AdminLogin} />
+          <Route path="/admin/:type" component={AdminHome} />
+
           <Route exact path="/viewDealtTrips" component={ViewDealtTripPage} />
           <Route exact path="/searchForTour" component={SearchFor} />
           <Route exact path="/searchForGuide" component={SearchFor} />
