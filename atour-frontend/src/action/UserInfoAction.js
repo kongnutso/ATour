@@ -17,6 +17,7 @@ export function editUserInfo(userInfo, token, role) {
           .then(res => {
             return res.data;
           });
+        console.log(res.email);
         return dispatch({
           type: EDIT_USER_INFO,
           payload: {

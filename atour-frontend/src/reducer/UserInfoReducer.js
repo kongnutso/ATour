@@ -247,7 +247,6 @@ function profile(state = initialState.profile, action) {
       };
     case EDIT_USER_INFO:
       state.phoneNumber = action.payload.phoneNumber;
-      state.email = action.payload.email;
       return state;
     case LOGOUT:
       return {};
@@ -258,6 +257,7 @@ function profile(state = initialState.profile, action) {
 
 function email(state = initialState.email, action) {
   switch (action.type) {
+    case EDIT_USER_INFO:
     case GET_USER_INFO:
       return action.payload.email;
     case LOGOUT:
