@@ -5,7 +5,8 @@ import {
     CheckCustomerUsernameDuplicate,
     GetCustomerLogin,
     GetCustomerTokenDb,
-    EditCustomerProfileDb,
+    GetCustomerDb,
+    UpdateCustomerDb,
  } from '../repository/Customer';
 import {Customer} from '../domain/types';
 import { IdGenerator } from 'domain/Tour';
@@ -45,11 +46,11 @@ describe('CustomerService', () => {
         },
         tripHistory: [],
     };
-    const fakelogin: GetCustomerLogin  = async (customerUsername) => {
+    const fakeGetCustomer: GetCustomerLogin  = async (customerUsername) => {
         return customer
     };
     const fakeGetToken:GetCustomerTokenDb = async (customerId) => "fakeToken"
-    const result = await CustomerService.loginService(fakelogin, fakeGetToken)(
+    const result = await CustomerService.loginService(fakeGetCustomer, fakeGetToken)(
         'customerUser',
         'password'
     );
@@ -73,13 +74,11 @@ describe('CustomerService', () => {
         },
         tripHistory: [],
     };
-    const fakeEditCustomerProfile: EditCustomerProfileDb = async (customerId, email, phoneNumber, profileImageUrl) =>{
-      console.log(customerId, email, phoneNumber);  
-      const profile = {...customer.profile, phoneNumber, profileImageUrl}
-      const newCustomer = {...customer, email, profile }
-      return newCustomer;
+    const fakeGetCustomer :GetCustomerDb = async (customerId) =>{ return customer}
+    const fakeUpdateCustomer: UpdateCustomerDb = async (customer) =>{
+      console.log(customer);  
     } 
-    const result = await CustomerService.editCustomerProfileService(fakeEditCustomerProfile)(
+    const result = await CustomerService.editCustomerProfileService(fakeUpdateCustomer,fakeGetCustomer)(
         'customerId',
         'newEmail@test.com',
         '0812345678',
@@ -105,7 +104,5 @@ describe('CustomerService', () => {
     
     expect(result).toEqual(expectedCustomer);
   })
-
- 
 
 })

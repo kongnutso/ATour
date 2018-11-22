@@ -4,8 +4,9 @@ import {
     GetCustomerLogin,
     GetCustomerTokenDb,
     SaveCustomerTokenDb,
-    EditCustomerProfileDb,
-    GetCustomerProfileDb
+    GetCustomerProfileDb,
+    UpdateCustomerDb,
+    GetCustomerDb
 
 } from '../repository/Customer';
 import { 
@@ -96,15 +97,18 @@ export function loginService(login: GetCustomerLogin, getToken: GetCustomerToken
     }
 }
 
-export function editCustomerProfileService(editCustomerProfileDb: EditCustomerProfileDb): EditCustomerProfileService{
+export function editCustomerProfileService(updateCustomer: UpdateCustomerDb, getCustomer: GetCustomerDb): EditCustomerProfileService{
     return async (
         customerId,
         email,
         phoneNumber,
         profileImageUrl
     ) => {
-        const customer = await editCustomerProfileDb (customerId, email, phoneNumber,profileImageUrl);
-        return customer;
+        const customer = await getCustomer (customerId);
+        const profile = {...customer.profile, phoneNumber, profileImageUrl}
+        const newcustomer = {...customer, profile, email}
+        await updateCustomer(newcustomer);
+        return newcustomer;
     }
 }
 
