@@ -1,19 +1,19 @@
-import axios from 'axios';
+import axios from "axios";
 
-export const EDIT_USER_INFO = 'EDIT_USER_INFO';
-export const EDIT_GUIDE_USER_INFO = 'EDIT_GUIDE_USER_INFO';
+export const EDIT_USER_INFO = "EDIT_USER_INFO";
+export const EDIT_GUIDE_USER_INFO = "EDIT_GUIDE_USER_INFO";
 export function editUserInfo(userInfo, token, role) {
   return async dispatch => {
     try {
       console.log(userInfo);
-      if (role === 'Customer') {
+      if (role === "Customer") {
         const payload = {
           customerId: userInfo.customerId,
           token,
           ...userInfo
         };
         const res = await axios
-          .post('http://localhost:3000/customer/editProfile', payload)
+          .post("http://localhost:3000/customer/editProfile", payload)
           .then(res => {
             return res.data;
           });
@@ -24,7 +24,7 @@ export function editUserInfo(userInfo, token, role) {
             phoneNumber: res.profile.phoneNumber
           }
         });
-      } else if (role === 'Guide') {
+      } else if (role === "Guide") {
         const payload = {
           firstName: userInfo.firstName,
           lastName: userInfo.lastName,
@@ -38,10 +38,10 @@ export function editUserInfo(userInfo, token, role) {
           .then(res => {
             return res.data;
           });
-        console.log('in guide');
+        console.log("in guide");
         console.log(res);
         if (res.error) {
-          return dispatch({ type: 'INVALID' });
+          return dispatch({ type: "INVALID" });
         }
         return dispatch({
           type: EDIT_GUIDE_USER_INFO,
@@ -56,12 +56,12 @@ export function editUserInfo(userInfo, token, role) {
   };
 }
 
-export const GET_USER_INFO = 'GET_USER_INFO';
+export const GET_USER_INFO = "GET_USER_INFO";
 export function getUserInfo(userName, token) {
   return async dispatch => {
     try {
       const userInfo = await axios
-        .post('http://localhost:3000/customer/getProfile', { userName, token })
+        .post("http://localhost:3000/customer/getProfile", { userName, token })
         .then(res => {
           return res.data;
         });
@@ -72,13 +72,13 @@ export function getUserInfo(userName, token) {
     } catch (e) {}
   };
 }
-export const GET_GUIDE_INFO = 'GET_GUIDE_INFO';
+export const GET_GUIDE_INFO = "GET_GUIDE_INFO";
 export function getGuideInfo(guideId) {
   return async dispatch => {
     try {
       if (guideId) {
         const userInfo = await axios
-          .get('http://localhost:3000/guide/' + guideId)
+          .get("http://localhost:3000/guide/" + guideId)
           .then(res => {
             return res.data;
           });
@@ -105,7 +105,7 @@ export function getGuideInfo(guideId) {
           type: GET_GUIDE_INFO,
           payload: { guideInfo }
         });
-      } else return dispatch({ type: 'INVALID' });
+      } else return dispatch({ type: "INVALID" });
     } catch (e) {
       console.log(e);
     }
@@ -114,11 +114,11 @@ export function getGuideInfo(guideId) {
 
 // export const
 
-export const EDIT_PROFILE = 'EDIT_PROFILE';
+export const EDIT_PROFILE = "EDIT_PROFILE";
 export function editProfile() {
   return { type: EDIT_PROFILE };
 }
-export const VIEW_PROFILE = 'VIEW_PROFILE';
+export const VIEW_PROFILE = "VIEW_PROFILE";
 export function viewProfile() {
   return { type: VIEW_PROFILE };
 }

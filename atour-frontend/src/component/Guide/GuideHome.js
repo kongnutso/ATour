@@ -75,9 +75,11 @@ class GuideHome extends React.Component {
               </Grid.Column> */}
             {/* </Grid.Row> */}
             <Flex>
-              {this.state.isLoaded && this.state.data && (
-                <Cards items={this.state.data} isGuide={false} role="Guide" />
-              )}
+              <Cards
+                items={this.props.guideInfo.publishedTours}
+                isGuide={false}
+                role="Guide"
+              />
             </Flex>
           </Grid>
         </Segment>
