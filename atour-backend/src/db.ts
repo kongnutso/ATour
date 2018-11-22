@@ -7,7 +7,9 @@ import {
   UnbookedTrip,
   TripType,
   Customer,
-  ApprovedTrip
+  ApprovedTrip,
+  UnApprovedGuide,
+  BadGuide
 } from './domain/types';
 
 //TODO: create proper config file
@@ -175,6 +177,49 @@ export async function initMongo() {
     availableDate: [],
     dealtTrips: [approvetrip]
   };
+
+  const unApproveGuide: UnApprovedGuide = {
+    _type: GuideType.UnApprovedGuide,
+    guideId: 'guideid2',
+    userName: 'guideuser2',
+    password: 'password',
+    personalId: '1234567890123',
+    email: 'guide2@gmail.com',
+    profile: {
+      firstName: 'John2',
+      lastName: 'Smith',
+      phoneNumber: '0812345678',
+      birthDate: new Date('1996-05-07'),
+      gender: 'Female',
+      profileImageUrl: null
+    },
+    bankAccountNumber: '102943940',
+    bankName: 'SCB',
+    approvalStatus: ApprovalStatus.NotApprove
+  };
+
+  const badguide: BadGuide = {
+    _type: GuideType.BadGuide,
+    guideId: 'guideid3',
+    userName: 'guideuser3',
+    password: 'password',
+    personalId: '1234567890123',
+    email: 'guide3@gmail.com',
+    profile: {
+      firstName: 'John3',
+      lastName: 'Smith',
+      phoneNumber: '0812345678',
+      birthDate: new Date('1996-05-07'),
+      gender: 'Male',
+      profileImageUrl: null
+    },
+    bankAccountNumber: '102943940',
+    bankName: 'SCB',
+    approvalStatus: ApprovalStatus.Approved,
+    availableDate: [],
+    dealtTrips: []
+  };
+
   const guidetoken = {
     guideId: 'guideid',
     token: 'aksjdflkajasdjkfklaj'
@@ -182,6 +227,8 @@ export async function initMongo() {
 
   await db.collection('guide').deleteMany({});
   await db.collection('guide').insertOne(guide);
+  await db.collection('guide').insertOne(unApproveGuide);
+  await db.collection('guide').insertOne(badguide);
   await db.collection('tour').deleteMany({});
   await db.collection('tour').insertMany(tours);
   await db.collection('trip').deleteMany({});
