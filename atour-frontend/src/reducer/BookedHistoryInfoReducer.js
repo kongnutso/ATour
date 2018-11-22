@@ -2,34 +2,117 @@ import { combineReducers } from 'redux';
 import {
   BOOK_TRIP,
   SELECT_BOOKED_TRIP,
-  SET_IMAGE_SLIP
+  SET_IMAGE_SLIP,
+  REFUND_TRIP,
+  CANCEL_TRIP
 } from '../action/BookAction';
 
 const initialState = {
-  tourStatus: 2,
-  bookedDate: '1/1/2018',
-  uploadedFileDate: '31/12/2018',
-  bookedId: '1234',
-  slip: 'a.jpg'
+  _type: 1,
+  bookDate: '',
+  tripDate: '',
+  uploadedFileDate: '',
+  bookedId: '',
+  slip: '',
+  guideId: '',
+  tourName: '',
+  price: '',
+  groupSize: '',
+  tripId: '',
+  tourId: ''
 };
 
-function tourStatus(state = initialState.tourStatus, action) {
+function tourId(state = initialState.tourId, action) {
   switch (action.type) {
     case BOOK_TRIP:
-      return 1;
     case SELECT_BOOKED_TRIP:
-      return action.payload.tourStatus;
+      return action.payload.tourId;
+    default:
+      return state;
+  }
+}
+function tripId(state = initialState.tripId, action) {
+  switch (action.type) {
+    case BOOK_TRIP:
+    case SELECT_BOOKED_TRIP:
+      return action.payload.tripId;
     default:
       return state;
   }
 }
 
-function bookedDate(state = initialState.bookedDate, action) {
+function price(state = initialState.price, action) {
   switch (action.type) {
     case BOOK_TRIP:
-      return action.payload.today;
     case SELECT_BOOKED_TRIP:
-      return action.payload.bookedDate;
+      if (action.payload._type === 0) return 'Unbooked';
+
+      return action.payload.price;
+    default:
+      return state;
+  }
+}
+
+function groupSize(state = initialState.groupSize, action) {
+  switch (action.type) {
+    case BOOK_TRIP:
+    case SELECT_BOOKED_TRIP:
+      if (action.payload._type === 0) return 'Unbooked';
+      return action.payload.size;
+    default:
+      return state;
+  }
+}
+
+function guideId(state = initialState.guideId, action) {
+  switch (action.type) {
+    case BOOK_TRIP:
+    case SELECT_BOOKED_TRIP:
+      return action.payload.guideId;
+    default:
+      return state;
+  }
+}
+
+function tourName(state = initialState.tourName, action) {
+  switch (action.type) {
+    case BOOK_TRIP:
+    case SELECT_BOOKED_TRIP:
+      return action.payload.tourName;
+    default:
+      return state;
+  }
+}
+
+function _type(state = initialState._type, action) {
+  switch (action.type) {
+    case BOOK_TRIP:
+    case REFUND_TRIP:
+    case CANCEL_TRIP:
+    case SELECT_BOOKED_TRIP:
+    case SET_IMAGE_SLIP:
+      return action.payload._type;
+    default:
+      return state;
+  }
+}
+
+function bookDate(state = initialState.bookDate, action) {
+  switch (action.type) {
+    case BOOK_TRIP:
+    case SELECT_BOOKED_TRIP:
+      if (action.payload._type === 0) return 'unbooked';
+      return action.payload.bookDate;
+    default:
+      return state;
+  }
+}
+
+function tripDate(state = initialState.tripDate, action) {
+  switch (action.type) {
+    case BOOK_TRIP:
+    case SELECT_BOOKED_TRIP:
+      return action.payload.tripDate;
     default:
       return state;
   }
@@ -38,20 +121,11 @@ function bookedDate(state = initialState.bookedDate, action) {
 function uploadedFileDate(state = initialState.uploadedFileDate, action) {
   switch (action.type) {
     case BOOK_TRIP:
-      return '';
+      return '-';
     case SELECT_BOOKED_TRIP:
+    case SET_IMAGE_SLIP:
+      if (action.payload._type < 2) return '';
       return action.payload.uploadedFileDate;
-    default:
-      return state;
-  }
-}
-
-function bookedId(state = initialState.bookedId, action) {
-  switch (action.type) {
-    case BOOK_TRIP:
-      return '1';
-    case SELECT_BOOKED_TRIP:
-      return action.payload.bookedId;
     default:
       return state;
   }
@@ -59,25 +133,32 @@ function bookedId(state = initialState.bookedId, action) {
 
 function slip(state = initialState.slip, action) {
   switch (action.type) {
-    case SET_IMAGE_SLIP: {
-      state = action.payload;
-      return state;
-    }
     case BOOK_TRIP:
       return '';
     case SELECT_BOOKED_TRIP:
-      return action.payload.slip;
+    case SET_IMAGE_SLIP:
+      if (action.payload._type < 2) return '';
+      if (action.payload.slip) {
+        console.log(action.payload.slip);
+        return action.payload.slip[action.payload.slip.length - 1].url;
+      }
     default:
       return state;
   }
 }
 
 const reducer = combineReducers({
-  tourStatus,
-  bookedDate,
+  _type,
+  bookDate,
   uploadedFileDate,
-  bookedId,
-  slip
+  slip,
+  tripDate,
+  tourName,
+  guideId,
+  groupSize,
+  price,
+  tripId,
+  tourId
 });
 
 export default reducer;

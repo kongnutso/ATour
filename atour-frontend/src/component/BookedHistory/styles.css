@@ -34,7 +34,34 @@
   width: 200px;
 }
 
-@media screen and (max-width: 415px) {
+.bookedHistory-value {
+  margin-left: 8%;
+}
+
+@media screen and (max-width: 1200px) {
+  .bookedHistory-content {
+    margin-left: 50px;
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  .bookedhistory-list {
+    margin-left: 50px;
+    margin-right: 0px;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .bookedhistory-list {
+    margin-left: 0px;
+    margin-right: 0px;
+  }
+  .bookedHistory-content {
+    margin-left: 50px;
+  }
+}
+
+@media screen and (max-width: 650px) {
   .bookedhistiry-list {
     margin-left: 10px;
     margin-right: 10px;
@@ -50,9 +77,22 @@
   .bookedhistory-table {
     font-size: 14px;
   }
+
+  .bookedHistory-value {
+    margin-left: 8;
+  }
+
+  .bookedHistory-content {
+    margin-left: 0px;
+  }
+
+  .bookedhistory-image-container {
+    width: 125;
+    height: 125px;
+  }
 }
 
-@media screen and (max-width: 376px) {
+@media screen and (max-width: 600px) {
   .bookedhistory-header {
     font-size: 20px;
   }
@@ -60,8 +100,8 @@
     height: 100px;
     width: 100px;
   }
-  .bookedhistiry-list {
-    margin-left: 10px;
-    margin-right: 10px;
+  .bookedhistory-image-container {
+    width: 100px;
+    height: 100px;
   }
 }

@@ -43,6 +43,7 @@
 .topbanner-link:focus,
 .topbanner-link {
   text-decoration: none;
+  color: black;
 }
 
 .topbanner-icon {

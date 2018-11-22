@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux';
-import { ON_CHANGE, ON_SEARCH } from '../action/SearchAction';
+import { ON_CHANGE, ON_SEARCH_TOUR } from '../action/SearchAction';
 
 const initialState = {
-  term: '',
+  term: ''
 };
 
 function searchName(state = initialState.term, action) {
@@ -10,7 +10,7 @@ function searchName(state = initialState.term, action) {
     case ON_CHANGE:
       console.log('on change', action.payload);
       return action.payload;
-    case ON_SEARCH:
+    case ON_SEARCH_TOUR:
       console.log('on Search', state);
       return state;
     default:

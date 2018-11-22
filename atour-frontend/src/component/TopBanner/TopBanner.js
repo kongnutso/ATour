@@ -5,7 +5,8 @@ import { Link } from 'react-router-dom';
 import RegisterModal from '../RegisterModal/RegisterModal';
 import { loginModal, registerModal } from '../../action/ModalAction';
 import { logout, resizeWindow } from '../../action/ApplicationAction';
-import { editProfile } from '../../action/UserInfoAction';
+import { editProfile, getUserInfo } from '../../action/UserInfoAction';
+import { seeBookHistory } from '../../action/BookAction';
 import LoginModal from '../LoginModal/LoginModal';
 import logo from '../../image/Atour-logo.jpg';
 import autobind from 'react-autobind';
@@ -18,7 +19,7 @@ class TopBanner extends React.Component {
     this.state = {
       isClickedDropdown: false,
       sideMenuStatus: 'hidden',
-      topTransparent: props.transparent,
+      topTransparent: props.transparent
     };
     autobind(this);
   }
@@ -32,7 +33,7 @@ class TopBanner extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.userInfo.username !== this.props.userInfo.username) {
+    if (nextProps.userInfo.userName !== this.props.userInfo.userName) {
       this.setState({ isClickedDropdown: false });
     }
     if (nextProps.width > 710) {
@@ -40,6 +41,15 @@ class TopBanner extends React.Component {
     }
     if (nextProps.transparent !== this.props.transparent) {
       this.setState({ topTransparent: nextProps.transparent });
+    }
+    if (
+      this.props.isLoginSuccess !== nextProps.isLoginSuccess &&
+      nextProps.isLoginSuccess
+    ) {
+      this.props.getUserInfo(
+        nextProps.userInfo.userName,
+        nextProps.userInfo.token
+      );
     }
   }
 
@@ -50,7 +60,8 @@ class TopBanner extends React.Component {
   onScroll() {
     // This also can change to dispatch transparent action
     // May need to have variable to know which page need transparent
-    const documentBody = document.body.scrollTop || document.documentElement.scrollTop;
+    const documentBody =
+      document.body.scrollTop || document.documentElement.scrollTop;
     if (documentBody > 90 || !this.props.transparent) {
       this.setState({ topTransparent: false });
     } else {
@@ -63,7 +74,8 @@ class TopBanner extends React.Component {
   }
 
   onClickOpenMenu() {
-    const documentBody = document.body.scrollTop || document.documentElement.scrollTop;
+    const documentBody =
+      document.body.scrollTop || document.documentElement.scrollTop;
     const { sideMenuStatus } = this.state;
     let nextStatus;
     if (sideMenuStatus === 'hidden') {
@@ -74,9 +86,9 @@ class TopBanner extends React.Component {
       if (documentBody <= 90) {
         this.setState({ topTransparent: true });
       }
-    }
-    // else if (sideMenuStatus === "isHidding") nextStatus = "isShowing";
-    else return;
+    } else
+      // else if (sideMenuStatus === "isHidding") nextStatus = "isShowing";
+      return;
     this.setState({ sideMenuStatus: nextStatus });
   }
 
@@ -84,7 +96,10 @@ class TopBanner extends React.Component {
     return (
       <div className="topbanner-user-container">
         <div className="topbanner-right">
-          <div onClick={this.props.openRegisterModal} className="topbanner-menu">
+          <div
+            onClick={this.props.openRegisterModal}
+            className="topbanner-menu"
+          >
             Sign up
           </div>
         </div>
@@ -99,13 +114,19 @@ class TopBanner extends React.Component {
 
   renderSignIn() {
     const dropDown = this.state.isClickedDropdown ? (
-      <ClickOutSide onClickOutside={() => this.setState({ isClickedDropdown: false })}>
+      <ClickOutSide
+        onClickOutside={() => this.setState({ isClickedDropdown: false })}
+      >
         <div className="topbanner-login-dropdown">
           {this.props.userInfo.role === 'Customer' ? (
             <Link className="topbanner-link" to="/bookedHistory">
               <div
                 className="dropdown-item"
-                onClick={() => this.setState({ isClickedDropdown: false })}
+                onClick={() => {
+                  console.log('check');
+                  this.props.seeBookHistory(this.props.userInfo.customerId);
+                  this.setState({ isClickedDropdown: false });
+                }}
               >
                 <i className="fa fa-calendar topbanner-icon" />
                 Booked History
@@ -167,7 +188,7 @@ class TopBanner extends React.Component {
         >
           <div className="topbanner-role">{this.props.userInfo.role}</div>
           <div className="topbanner-as-username">
-            {this.props.userInfo.username.substring(0, 8)}
+            {this.props.userInfo.userName.substring(0, 8)}
           </div>
           <i className="fa fa-arrow-circle-down topbanner-dropdown-arrow" />
         </div>
@@ -192,16 +213,20 @@ class TopBanner extends React.Component {
   }
 
   renderMenu() {
-    const renderSignIn = this.props.userInfo.username
+    const renderSignIn = this.props.userInfo.userName
       ? this.renderSignIn()
       : this.renderNotSignIn();
     return (
       <div className="topbanner-right-container">
         <div className="topbanner-right topbanner-first">
-          <div className="topbanner-menu">Search for Tour</div>
+          <Link to="/searchForTour" className="topbanner-link">
+            <div className="topbanner-menu">Search for Tour</div>
+          </Link>
         </div>
         <div className="topbanner-right">
-          <div className="topbanner-menu">Search for Guide</div>
+          <Link to="/searchForGuide" className="topbanner-link">
+            <div className="topbanner-menu">Search for Guide</div>
+          </Link>
         </div>
         {renderSignIn}
       </div>
@@ -211,7 +236,8 @@ class TopBanner extends React.Component {
   render() {
     const { sideMenuStatus, topTransparent } = this.state;
     const path = this.props.location.pathname;
-    const renderMenu = this.props.width <= 710 ? this.renderSideMenuButton() : this.renderMenu();
+    const renderMenu =
+      this.props.width <= 710 ? this.renderSideMenuButton() : this.renderMenu();
     return (
       <div>
         <LoginModal />
@@ -222,11 +248,19 @@ class TopBanner extends React.Component {
             setSideMenuStatus={this.setSideMenuStatus}
             path={path}
           />
-          <div className={`topbanner-banner${topTransparent ? '--transparent' : ''}`}>
+          <div
+            className={`topbanner-banner${topTransparent
+              ? '--transparent'
+              : ''}`}
+          >
             <div className="topbanner-logo-container">
               <div className="topbanner-logo">
                 <Link to="/">
-                  <img className="topbanner-logo-img" src={logo} alt="topbanner-logo" />
+                  <img
+                    className="topbanner-logo-img"
+                    src={logo}
+                    alt="topbanner-logo"
+                  />
                 </Link>
               </div>
             </div>
@@ -242,6 +276,7 @@ class TopBanner extends React.Component {
 const mapStateToProps = state => ({
   userInfo: state.user,
   width: state.app.width,
+  isLoginSuccess: state.user.isLoginSuccess
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -250,9 +285,8 @@ const mapDispatchToProps = dispatch => ({
   logout: () => dispatch(logout()),
   resizeWindow: width => dispatch(resizeWindow(width)),
   editProfile: () => dispatch(editProfile()),
+  getUserInfo: (userName, token) => dispatch(getUserInfo(userName, token)),
+  seeBookHistory: customerId => dispatch(seeBookHistory(customerId))
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(TopBanner);
+export default connect(mapStateToProps, mapDispatchToProps)(TopBanner);
