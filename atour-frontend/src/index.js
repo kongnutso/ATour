@@ -16,6 +16,7 @@ import BookedHistoryInfo from './component/BookedHistoryInfo/BookedHistoryInfo';
 import ViewDealtTripPage from './component/ViewDealtTripPage';
 import SearchForTour from './component/SearchForTourPage';
 import AdminHome from './component/AdminHome';
+import AdminLogin from './component/AdminLogin';
 
 // const createStoreWithMiddleware = applyMiddleware(promise)(createStore);
 
@@ -35,7 +36,8 @@ ReactDOM.render(
           <Route exact path="/bookedHistory" component={BookedHistory} />
           <Route exact path="/editProfile" component={EditProfile} />
           <Route exact path="/bookedHistoryInfo" component={BookedHistoryInfo} />
-          <Route path="/admin" component={AdminHome} />
+          <Route exact path="/admin" component={AdminLogin} />
+          <Route path="/admin/:type" component={AdminHome} />
           <Route exact path="/viewDealtTrips" component={ViewDealtTripPage} />
           <Route exact path="/searchForTour" component={SearchForTour} />
         </Switch>

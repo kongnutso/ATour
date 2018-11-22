@@ -1,11 +1,22 @@
 import React, { Component } from 'react';
 import { Box } from 'rebass';
 import { Menu } from 'semantic-ui-react';
-
 import { Link } from 'react-router-dom';
 
+const mapPathName = {
+  approvePayment: 'paymentApproval',
+  approveRefund: 'refundApproval',
+  approveGuide: 'guideApproval',
+  search: 'searchGuide',
+};
+
 export default class MenuExampleSecondaryPointing extends Component {
-  state = { activeItem: 'approvePayment' };
+  componentDidMount() {
+    const { activeItem } = this.props;
+    this.setState({ activeItem: mapPathName[activeItem] });
+  }
+
+  state = { activeItem: 'paymentApproval' };
 
   handleItemClick = (e, { name }) => this.setState({ activeItem: name });
 
@@ -27,6 +38,13 @@ export default class MenuExampleSecondaryPointing extends Component {
             to="/admin/approveRefund"
             name="refundApproval"
             active={activeItem === 'refundApproval'}
+            onClick={this.handleItemClick}
+          />
+          <Menu.Item
+            as={Link}
+            to="/admin/approveGuide"
+            name="guideApproval"
+            active={activeItem === 'guideApproval'}
             onClick={this.handleItemClick}
           />
           <Menu.Item

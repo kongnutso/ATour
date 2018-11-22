@@ -5,7 +5,6 @@ import Table from '../Table';
 import PopUpModal from '../PopUpModal/PopUpModal';
 import COLOR from '../../utils/color';
 import { Button } from '../BaseComponent';
-import AdminMenuBar from '../AdminMenuBar';
 
 // Mock data
 const tableProps = num => {
@@ -22,10 +21,6 @@ const tableProps = num => {
 };
 const adminApproveColumns = (handleConfirm, handleReject) => [
   {
-    Header: 'Date',
-    accessor: 'date',
-  },
-  {
     Header: 'Username',
     accessor: 'username',
   },
@@ -36,12 +31,6 @@ const adminApproveColumns = (handleConfirm, handleReject) => [
   {
     Header: 'Email',
     accessor: 'email',
-  },
-  {
-    Header: 'Slip',
-    accessor: 'slip',
-    width: 100,
-    Cell: ({ original }) => <a href="imagURL">View</a>,
   },
   {
     Header: 'Status',
@@ -65,7 +54,7 @@ const adminApproveColumns = (handleConfirm, handleReject) => [
   },
 ];
 
-class AdminApprovePage extends Component {
+class AdminApproveGuidePage extends Component {
   state = { approveModal: false, rejectModal: false };
 
   handleConfirm = () => {
@@ -78,8 +67,8 @@ class AdminApprovePage extends Component {
     return (
       <Box>
         <Text fontSize={4} mb={4} mt={2}>
-          <i style={{ marginRight: '10px' }} className="fa fa-check-square-o" />
-          Payment Approval
+          <i style={{ marginRight: '10px' }} className="fa fa-users" />
+          Guide Approval
         </Text>
 
         <PopUpModal
@@ -120,4 +109,4 @@ class AdminApprovePage extends Component {
 export default connect(
   null,
   null
-)(AdminApprovePage);
+)(AdminApproveGuidePage);
