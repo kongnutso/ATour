@@ -84,6 +84,7 @@ export function selectBookedTrip(tripId) {
   return async dispatch => {
     try {
       const payload = await getTrip(tripId);
+      console.log(payload);
       return dispatch({
         type: SELECT_BOOKED_TRIP,
         payload
@@ -107,7 +108,6 @@ export function setImageSlip(slipUrl, tripId, tourId, customerId) {
             slipUrl
           })
           .then(res => {
-            console.log(res.data);
             return res.data;
           });
         return dispatch({
@@ -133,7 +133,6 @@ export function seeBookHistory(customerId) {
         const tour = await axios
           .post('http://localhost:3000/customer/seeBookHistory', { customerId })
           .then(res => {
-            console.log(res.data);
             return res.data;
           });
         return dispatch({
@@ -152,7 +151,6 @@ export function cancelTrip(tourId, tripId, customerId) {
   return async dispatch => {
     try {
       if (customerId) {
-        console.log(tourId, tripId, customerId);
         const cancel = await axios
           .post('http://localhost:3000/customer/cancelTrip', {
             tourId: tourId,
@@ -160,7 +158,6 @@ export function cancelTrip(tourId, tripId, customerId) {
             customerId: customerId
           })
           .then(res => {
-            console.log('cancel', res.data);
             return res.data;
           });
         return dispatch({
@@ -170,9 +167,7 @@ export function cancelTrip(tourId, tripId, customerId) {
       } else {
         return dispatch({ type: 'INVALID' });
       }
-    } catch (e) {
-      console.log(e);
-    }
+    } catch (e) {}
   };
 }
 
@@ -181,7 +176,6 @@ export function refundTrip(tourId, tripId, customerId) {
   return async dispatch => {
     try {
       if (customerId) {
-        console.log(tourId, tripId, customerId);
         const refund = await axios
           .post('http://localhost:3000/customer/refundTrip', {
             tourId: tourId,
@@ -189,7 +183,6 @@ export function refundTrip(tourId, tripId, customerId) {
             customerId: customerId
           })
           .then(res => {
-            console.log('refund', res.data);
             return res.data;
           });
         return dispatch({

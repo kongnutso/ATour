@@ -1,20 +1,20 @@
-import React, { Fragment } from "react";
-import { connect } from "react-redux";
-import { Link } from "react-router-dom";
-import Modal from "react-modal";
-import "./styles.css";
-import { registerModal, loginModal } from "../../action/ModalAction";
-import autobind from "react-autobind";
-import * as validation from "../../utils/validation";
-import classNames from "classnames";
-import FormProgress from "../FormProgress/FormProgress";
-import PopUpModal from "../PopUpModal/PopUpModal";
-import axios from "axios";
+import React, { Fragment } from 'react';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import Modal from 'react-modal';
+import './styles.css';
+import { registerModal, loginModal } from '../../action/ModalAction';
+import autobind from 'react-autobind';
+import * as validation from '../../utils/validation';
+import classNames from 'classnames';
+import FormProgress from '../FormProgress/FormProgress';
+import PopUpModal from '../PopUpModal/PopUpModal';
+import axios from 'axios';
 
 function Field(props) {
   const { inputType, error, label, onChange, value } = props;
   const className =
-    "form-group " + (error ? (error !== true ? "has-danger" : "") : "");
+    'form-group ' + (error ? (error !== true ? 'has-danger' : '') : '');
   return (
     <div className={className}>
       <label>{label}</label>
@@ -22,10 +22,10 @@ function Field(props) {
         <input
           onChange={onChange}
           className="form-control"
-          type={inputType || "text"}
+          type={inputType || 'text'}
           value={value}
         />
-        <div className="error-text">{error && error !== true ? error : ""}</div>
+        <div className="error-text">{error && error !== true ? error : ''}</div>
       </div>
     </div>
   );
@@ -58,20 +58,20 @@ const defaultValue = () => ({
   asCustomer: true,
   accountInfo: true,
   successful: false,
-  errorPopUp: "",
+  errorPopUp: '',
   value: {
-    userName: "",
-    password: "",
-    email: "",
-    name: "",
-    sid: "",
-    gender: "Male",
-    birthDate: "",
-    phone: "",
-    address: "",
-    bankName: "SCB",
-    bankAccountName: "",
-    bankAccountNumber: ""
+    userName: '',
+    password: '',
+    email: '',
+    name: '',
+    sid: '',
+    gender: 'Male',
+    birthDate: '',
+    phone: '',
+    address: '',
+    bankName: 'SCB',
+    bankAccountName: '',
+    bankAccountNumber: ''
   },
   error: {
     userName: true,
@@ -137,8 +137,8 @@ class RegisterModal extends React.Component {
         bankAccountNumber
       }
     } = this.state;
-    const firstName = name.split(" ")[0];
-    const lastName = name.split(" ")[1];
+    const firstName = name.split(' ')[0];
+    const lastName = name.split(' ')[1];
     let payload = {
       userName,
       email,
@@ -152,7 +152,7 @@ class RegisterModal extends React.Component {
     };
     if (asCustomer) {
       const res = await axios
-        .post("http://localhost:3000/customer/register", payload)
+        .post('http://localhost:3000/customer/register', payload)
         .then(res => {
           return res.data;
         });
@@ -167,7 +167,7 @@ class RegisterModal extends React.Component {
       payload.bankAccountName = bankAccountName;
       payload.bankAccountNumber = bankAccountNumber;
       const res = await axios
-        .post("http://localhost:3000/guide/register", payload)
+        .post('http://localhost:3000/guide/', payload)
         .then(res => {
           return res.data;
         });
@@ -227,7 +227,7 @@ class RegisterModal extends React.Component {
         <button
           onClick={() => this.setState({ asCustomer: true })}
           className={classNames({
-            "btn selectiveButton-registerModal": true,
+            'btn selectiveButton-registerModal': true,
             selected: asCustomer,
             chooseRoleButton: true
           })}
@@ -238,7 +238,7 @@ class RegisterModal extends React.Component {
           onClick={() => this.setState({ asCustomer: false })}
           className={classNames({
             chooseRoleButton: true,
-            "btn selectiveButton-registerModal": true,
+            'btn selectiveButton-registerModal': true,
             selected: !asCustomer
           })}
         >
@@ -249,7 +249,7 @@ class RegisterModal extends React.Component {
           value={value.userName}
           onChange={e =>
             this.onFieldChange(
-              "userName",
+              'userName',
               e.target.value,
               validation.validateUsername
             )
@@ -262,7 +262,7 @@ class RegisterModal extends React.Component {
           value={value.password}
           onChange={e =>
             this.onFieldChange(
-              "password",
+              'password',
               e.target.value,
               validation.validatePassword
             )
@@ -274,7 +274,7 @@ class RegisterModal extends React.Component {
           value={value.email}
           onChange={e =>
             this.onFieldChange(
-              "email",
+              'email',
               e.target.value,
               validation.validateEmail
             )
@@ -306,16 +306,16 @@ class RegisterModal extends React.Component {
       <div>
         <DropDown
           label="Bank: "
-          onChange={e => this.onFieldChange("bankName", e.target.value)}
+          onChange={e => this.onFieldChange('bankName', e.target.value)}
           value={value.bank}
-          choice={["SCB", "KBANK", "XXX"]}
+          choice={['SCB', 'KBANK', 'XXX']}
         />
         <Field
           label="Bank Account Name: "
           value={value.bankAccountName}
           onChange={e =>
             this.onFieldChange(
-              "bankAccountName",
+              'bankAccountName',
               e.target.value,
               validation.validateBankAccountName
             )
@@ -327,7 +327,7 @@ class RegisterModal extends React.Component {
           value={value.bankAccountNumber}
           onChange={e =>
             this.onFieldChange(
-              "bankAccountNumber",
+              'bankAccountNumber',
               e.target.value,
               validation.validateBankAccountNumber
             )
@@ -348,7 +348,7 @@ class RegisterModal extends React.Component {
           label="Full Name: "
           value={value.name}
           onChange={e =>
-            this.onFieldChange("name", e.target.value, validation.validateName)
+            this.onFieldChange('name', e.target.value, validation.validateName)
           }
           error={this.state.error.name}
         />
@@ -356,24 +356,24 @@ class RegisterModal extends React.Component {
           label="Social ID: "
           value={value.sid}
           onChange={e =>
-            this.onFieldChange("sid", e.target.value, validation.validateSID)
+            this.onFieldChange('sid', e.target.value, validation.validateSID)
           }
           error={this.state.error.sid}
         />
         <button
-          onClick={() => this.onFieldChange("gender", "Male")}
+          onClick={() => this.onFieldChange('gender', 'Male')}
           className={classNames({
-            "btn selectiveButton-registerModal": true,
-            selected: gender === "Male"
+            'btn selectiveButton-registerModal': true,
+            selected: gender === 'Male'
           })}
         >
           Male
         </button>
         <button
-          onClick={() => this.onFieldChange("gender", "Female")}
+          onClick={() => this.onFieldChange('gender', 'Female')}
           className={classNames({
-            "btn selectiveButton-registerModal": true,
-            selected: gender === "Female"
+            'btn selectiveButton-registerModal': true,
+            selected: gender === 'Female'
           })}
         >
           Female
@@ -383,7 +383,7 @@ class RegisterModal extends React.Component {
           value={value.birthDate}
           onChange={e =>
             this.onFieldChange(
-              "birthDate",
+              'birthDate',
               e.target.value,
               validation.validateBirthDate
             )
@@ -396,7 +396,7 @@ class RegisterModal extends React.Component {
           value={value.phone}
           onChange={e =>
             this.onFieldChange(
-              "phone",
+              'phone',
               e.target.value,
               validation.validatePhone
             )
@@ -408,7 +408,7 @@ class RegisterModal extends React.Component {
           value={value.address}
           onChange={e =>
             this.onFieldChange(
-              "address",
+              'address',
               e.target.value,
               validation.validateAddress
             )
@@ -442,7 +442,7 @@ class RegisterModal extends React.Component {
         className="modal-container-registerModal"
         style={{
           overlay: {
-            overflow: "auto"
+            overflow: 'auto'
           }
         }}
         isOpen={this.props.isOpen}
@@ -452,13 +452,13 @@ class RegisterModal extends React.Component {
         <PopUpModal
           isOpen={successful}
           onCloseModal={() => this.closeSuccessful()}
-          headerText={"Register Sucess"}
-          bodyText={""}
+          headerText={'Register Sucess'}
+          bodyText={''}
         />
         <PopUpModal
           isOpen={errorPopUp ? true : false}
-          onCloseModal={() => this.setState({ errorPopUp: "" })}
-          headerText={"Register Fail"}
+          onCloseModal={() => this.setState({ errorPopUp: '' })}
+          headerText={'Register Fail'}
           bodyText={errorPopUp}
           // onConfirm
         />
@@ -475,7 +475,7 @@ class RegisterModal extends React.Component {
 }
 
 const mapStateToProps = state => {
-  return { isOpen: state.modal.modalName === "register" };
+  return { isOpen: state.modal.modalName === 'register' };
 };
 
 const mapDispatchToProps = dispatch => ({

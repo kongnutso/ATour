@@ -43,7 +43,8 @@ function price(state = initialState.price, action) {
   switch (action.type) {
     case BOOK_TRIP:
     case SELECT_BOOKED_TRIP:
-      if (action.type === BOOK_TRIP) console.log(action.payload);
+      if (action.payload._type === 0) return 'Unbooked';
+
       return action.payload.price;
     default:
       return state;
@@ -54,6 +55,7 @@ function groupSize(state = initialState.groupSize, action) {
   switch (action.type) {
     case BOOK_TRIP:
     case SELECT_BOOKED_TRIP:
+      if (action.payload._type === 0) return 'Unbooked';
       return action.payload.size;
     default:
       return state;
@@ -95,6 +97,7 @@ function bookDate(state = initialState.bookDate, action) {
   switch (action.type) {
     case BOOK_TRIP:
     case SELECT_BOOKED_TRIP:
+      if (action.payload._type === 0) return 'unbooked';
       return action.payload.bookDate;
     default:
       return state;

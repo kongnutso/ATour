@@ -11,7 +11,8 @@ import {
   VIEW_PROFILE,
   EDIT_PROFILE,
   GET_USER_INFO,
-  GET_GUIDE_INFO
+  GET_GUIDE_INFO,
+  EDIT_GUIDE_USER_INFO
 } from '../action/UserInfoAction';
 
 const initialState = {
@@ -180,6 +181,7 @@ function customerId(state = initialState.customerId, action) {
 
 function isLoginSuccess(state = initialState.isLoginSuccess, action) {
   switch (action.type) {
+    case GUIDE_LOGIN_SUCCESS:
     case LOGIN_SUCCESS:
       return true;
     case LOGIN_FAILED:
@@ -220,7 +222,6 @@ function token(state = initialState.token, action) {
 function userName(state = initialState.userName, action) {
   switch (action.type) {
     case LOGIN_SUCCESS:
-      console.log('SUCCESS AT USERNAME');
       return action.payload.userName;
     case GUIDE_LOGIN_SUCCESS:
       return action.payload.userName;
@@ -245,9 +246,8 @@ function profile(state = initialState.profile, action) {
         email
       };
     case EDIT_USER_INFO:
-      const input = action.payload.profile;
-      state.phoneNumber = input.phoneNumber;
-      state.email = input.email;
+      state.phoneNumber = action.payload.phoneNumber;
+      state.email = action.payload.email;
       return state;
     case LOGOUT:
       return {};
@@ -279,11 +279,9 @@ function personalId(state = initialState.personalId, action) {
 }
 function guideInfo(state = initialState.guideInfo, action) {
   switch (action.type) {
-    case GET_GUIDE_INFO:
-      console.log('osdifjpaofjaisodfj: ', action.payload);
-      return action.payload.guideInfo;
     case GUIDE_LOGIN_SUCCESS:
-      console.log('SDFISOIDFUSPODFUSDFUSDF');
+    case EDIT_GUIDE_USER_INFO:
+    case GET_GUIDE_INFO:
       return action.payload.guideInfo;
     case LOGOUT:
       return {};

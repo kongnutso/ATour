@@ -22,7 +22,7 @@ class EditProfile extends React.Component {
 
   editUserInfo() {
     const { email, phoneNumber } = this.state;
-    const { userInfo, token } = this.props;
+    const { userInfo, token, role } = this.props;
     if (
       email !== this.props.userInfo.email ||
       phoneNumber !== this.props.userInfo.phoneNumber
@@ -41,7 +41,7 @@ class EditProfile extends React.Component {
         const res = userInfo;
         res.email = email;
         res.phoneNumber = phoneNumber;
-        this.props.editUserInfo(res, token);
+        this.props.editUserInfo(res, token, role);
       }
     }
   }
@@ -180,16 +180,31 @@ class EditProfile extends React.Component {
 }
 
 const mapStateToProps = state => {
-  const { isView, profile, guideInfo, token, email, personalId } = state.user;
-  return {
-    userInfo: isView ? guideInfo : { ...profile, email, personalId },
+  const {
     isView,
+    profile,
+    guideInfo,
+    token,
+    email,
+    personalId,
+    role,
+    customerId
+  } = state.user;
+  return {
+    userInfo: isView
+      ? guideInfo
+      : role === 'Customer'
+      ? { ...profile, email, personalId, customerId }
+      : guideInfo,
+    isView,
+    role,
     token
   };
 };
 
 const mapDispatchToProps = dispatch => ({
-  editUserInfo: (userInfo, token) => dispatch(editUserInfo(userInfo, token))
+  editUserInfo: (userInfo, token, role) =>
+    dispatch(editUserInfo(userInfo, token, role))
 });
 
 export default connect(

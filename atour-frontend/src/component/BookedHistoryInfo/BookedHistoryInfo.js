@@ -125,7 +125,7 @@ class BookedHistoryInfo extends React.Component {
     let text;
     if (_type < APPROVETRIP) text = 'Cancel';
     else text = 'Refund';
-    if (_type <= APPROVETRIP) {
+    if (_type <= APPROVETRIP && _type > UNBOOKEDTRIP) {
       return (
         <div
           className="bookedhistoryinfo-headbutton"
@@ -160,7 +160,9 @@ class BookedHistoryInfo extends React.Component {
       customerId
     } = this.props;
     let message;
-    const { refund, cancel } = this.state;
+    // const { refund, cancel } = this.state;
+    const cancel = _type === CANCELLEDTRIP || _type === UNBOOKEDTRIP;
+    const refund = _type === REFUNDREQUESTEDTRIP || _type === REFUNDTRIP;
     if (_type < APPROVETRIP) {
       message = 'Cancel';
     } else if (_type === APPROVETRIP) {
