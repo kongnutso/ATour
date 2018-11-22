@@ -12,7 +12,8 @@ import { getGuideInfo } from "../../action/UserInfoAction";
 import { publishNewTour } from "../../action/ModalAction";
 import PublishNewTourModal from "./PublishNewTourModal/PublishNewTourModal";
 import axios from "axios";
-import { resolve } from "path";
+import { Flex } from "rebass";
+import Cards from "../Cards/Cards";
 
 class GuideHome extends React.Component {
   state = {
@@ -66,13 +67,18 @@ class GuideHome extends React.Component {
               </Grid.Column>
             </Grid.Row>
             <hr color="black" size="50" width="1100" />
-            <Grid.Row>
+            {/* <Grid.Row>
               <Grid.Column>
                 {this.state.isLoaded && this.state.data && (
                   <Tours tours={this.state.data} />
                 )}
-              </Grid.Column>
-            </Grid.Row>
+              </Grid.Column> */}
+            {/* </Grid.Row> */}
+            <Flex>
+              {this.state.isLoaded && this.state.data && (
+                <Cards items={this.state.data} isGuide={false} role="Guide" />
+              )}
+            </Flex>
           </Grid>
         </Segment>
       </Container>
