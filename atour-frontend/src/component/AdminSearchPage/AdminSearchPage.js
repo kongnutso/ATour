@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { Flex, Box, Text } from 'rebass';
 import { Icon } from 'semantic-ui-react';
 import { connect } from 'react-redux';
+import axios from 'axios';
 import Table from '../Table';
 import PopUpModal from '../PopUpModal/PopUpModal';
 import COLOR from '../../utils/color';
@@ -27,7 +28,7 @@ const tableProps = num => {
   return dataArray;
 };
 
-const adminSearchColumns = (handleConfirm, handleReject) => [
+const adminSearchColumns = handleReject => [
   {
     Header: 'Username',
     accessor: 'username',
@@ -54,13 +55,13 @@ const adminSearchColumns = (handleConfirm, handleReject) => [
     accessor: 'action',
     width: 150,
     Cell: ({ original }) => {
-      const { status } = original;
+      const { status, guideId } = original;
       return (
         <Fragment>
           {status ? (
             <Text color={COLOR.disable_text}>-- No Action --</Text>
           ) : (
-            <Button color={COLOR.danger} onClick={() => handleReject()}>
+            <Button color={COLOR.danger} onClick={() => handleReject(guideId)}>
               <i className="fa fa-ban" style={{ marginRight: '5px' }} />
               Mark Bad
             </Button>
@@ -72,18 +73,44 @@ const adminSearchColumns = (handleConfirm, handleReject) => [
 ];
 
 class AdminSearchPage extends Component {
-  state = { username: '', approveModal: false, rejectModal: false };
+  state = { username: '', rejectModal: false, data: [] };
 
-  handleConfirm = () => {
-    this.setState({ approveModal: true });
-  };
-  handleReject = () => {
+  componentDidMount() {
+    this.onSearch('');
+  }
+
+  handleReject = guideId => {
     this.setState({ rejectModal: true });
+    this.onReject(guideId);
   };
-  onSearch = () => {
-    console.log(`Search user : ${this.state.username}`);
+
+  onReject = guideId => {
+    axios.post('http://localhost:3000/admin/markBadGuide', { guideId }).then(res => {});
+    this.onSearch('');
+  };
+
+  onSearch = keyword => {
+    axios.post('http://localhost:3000/customer/searchGuide', { keyword }).then(res => {
+      this.setState({ data: this.mapInput(res.data) });
+    });
+  };
+  mapInput = arr => {
+    return arr.map(e => {
+      let guideStatus = false;
+      if (e._type === 2) {
+        guideStatus = true;
+      }
+      return {
+        guideId: e.guideId,
+        username: e.userName,
+        phoneNumber: e.profile.phoneNumber,
+        email: e.email,
+        status: guideStatus,
+      };
+    });
   };
   render() {
+    const { data, username } = this.state;
     return (
       <Box>
         <Text fontSize={4} mb={4} mt={2}>
@@ -96,11 +123,11 @@ class AdminSearchPage extends Component {
             <Input
               placeholder="Username"
               onChange={e => this.setState({ username: e.target.value })}
-              onEnterText={this.onSearch}
+              onEnterText={() => this.onSearch(username)}
             />
           </Box>
           <Box my={1} width={1 / 5}>
-            <SearchButton onClick={() => this.onSearch()}>
+            <SearchButton onClick={() => this.onSearch(username)}>
               <Icon name="search" />
               Search
             </SearchButton>
@@ -108,28 +135,19 @@ class AdminSearchPage extends Component {
         </Flex>
 
         <PopUpModal
-          isOpen={this.state.approveModal}
-          onCloseModal={() => this.setState({ approveModal: false })}
-          modalName="Unmark"
-          headerText={`Unmark Guide`}
-          bodyText={`Do you want to Unmark ? `}
-          // onConfirm
-          type="Confirmation"
-        />
-
-        <PopUpModal
           isOpen={this.state.rejectModal}
           onCloseModal={() => this.setState({ rejectModal: false })}
           modalName="MarkBad"
           headerText={`Mark Bad Guide`}
           bodyText={`Do you want to Mark Bad? `}
-          // onConfirm
+          onConfirm={() => this.onReject()}
           isDanger
           type="Confirmation"
         />
+
         <Table
-          data={tableProps(4)}
-          columns={adminSearchColumns(this.handleConfirm, this.handleReject)}
+          data={data}
+          columns={adminSearchColumns(this.handleReject)}
           defaultPageSize={10}
           style={{
             textAlign: 'center',
