@@ -2,7 +2,9 @@ import { combineReducers } from 'redux';
 import {
   BOOK_TRIP,
   SELECT_BOOKED_TRIP,
-  SET_IMAGE_SLIP
+  SET_IMAGE_SLIP,
+  REFUND_TRIP,
+  CANCEL_TRIP
 } from '../action/BookAction';
 
 const initialState = {
@@ -85,6 +87,8 @@ function tourName(state = initialState.tourName, action) {
 function _type(state = initialState._type, action) {
   switch (action.type) {
     case BOOK_TRIP:
+    case REFUND_TRIP:
+    case CANCEL_TRIP:
     case SELECT_BOOKED_TRIP:
     case SET_IMAGE_SLIP:
       return action.payload._type;
