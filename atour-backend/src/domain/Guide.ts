@@ -27,7 +27,7 @@ type AddPublishedTour = (c: Guide, t: Tour) => Guide;
 
 type EditPublishedTour = (c: Guide, editedTour: Tour) => Guide;
 
-type EditGuide = (g: Guide, p: UserProfile) => Guide;
+type EditGuide = (g: Guide, p: UserProfile, email: string) => Guide;
 
 export function registerGuide(idGenerator: IdGenerator): RegisterGuide {
   return (
@@ -95,10 +95,11 @@ export function editPublishedTour(): EditPublishedTour {
 }
 
 export function editGuide(): EditGuide {
-  return (guide, profile) => {
+  return (guide, profile, email) => {
     return {
       ...guide,
-      profile
+      profile,
+      email
     };
   };
 }
