@@ -5,24 +5,13 @@ import {
   ApprovalStatus,
   Trip,
   Tour,
-  Guide
+  Guide,
+  ApprovedGuide
 } from '../domain/types';
 
 export type GuideDto = UnApprovedGuideDto | ApprovedGuideDto | BadGuideDto;
 export type UnApprovedGuideDto = UnApprovedGuide;
-export type ApprovedGuideDto = {
-  _type: GuideType.ApprovedGuide;
-  guideId: string;
-  userName: string;
-  password: string;
-  personalId: string;
-  email: string;
-  profile: UserProfile;
-  bankAccountNumber: string;
-  bankName: string;
-  approvalStatus: ApprovalStatus.Approved;
-  availableDate: Date[];
-  dealtTrips: Trip[];
+export type ApprovedGuideDto = ApprovedGuide & {
   publishedTours: Tour[];
 };
 

@@ -65,7 +65,7 @@ describe('Guide', () => {
       bankAccountNumber: '12345',
       bankName: 'SCB',
       availableDate: [],
-      dealtTrips: [],
+      dealtTrips: []
     };
     const tour: Tour = {
       tourId: 'tourid',
@@ -81,7 +81,7 @@ describe('Guide', () => {
     };
     const resultGuide = GuideDomain.addPublishedTour()(guide, tour);
     const expectedGuide: Guide = {
-      ...guide,
+      ...guide
     };
     expect(resultGuide).toEqual(expectedGuide);
   });
@@ -105,7 +105,7 @@ describe('Guide', () => {
       bankAccountNumber: '12345',
       bankName: 'SCB',
       availableDate: [],
-      dealtTrips: [],
+      dealtTrips: []
     };
     const tour: Tour = {
       tourId: 'tourid',
@@ -127,7 +127,7 @@ describe('Guide', () => {
     });
     test('if have published Tour to update, update it', () => {
       const testGuide: ApprovedGuide = {
-        ...guide,
+        ...guide
       };
       const updatedTour: Tour = {
         ...tour,
@@ -141,7 +141,7 @@ describe('Guide', () => {
         updatedTour
       );
       const expectedGuide: ApprovedGuide = {
-        ...testGuide,
+        ...testGuide
       };
       expect(resultGuide).toEqual(expectedGuide);
     });
@@ -174,10 +174,15 @@ describe('Guide', () => {
       phoneNumber: '0849386844',
       profileImageUrl: 'www.imgur.com'
     };
-    const editedGuide = GuideDomain.editGuide()(guide, newProfile);
+    const editedGuide = GuideDomain.editGuide()(
+      guide,
+      newProfile,
+      'newemail@gmail.com'
+    );
     expect(editedGuide).toEqual({
       ...guide,
-      profile: newProfile
+      profile: newProfile,
+      email: 'newemail@gmail.com'
     });
   });
 });
