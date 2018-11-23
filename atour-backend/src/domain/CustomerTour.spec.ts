@@ -131,7 +131,6 @@ describe('CustomerTour', () => {
       },
       paidDate: new Date('2018-11-06'),
       slipImages: [{ url: 'www.adm.co.th' }],
-      rejectDate: new Date('2018-11-07'),
       tourId: 'tourId',
       tourName: 'tourName'
     };

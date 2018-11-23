@@ -44,6 +44,17 @@ export type PaidTrip = {
   tourName: string;
 };
 
+export type RejectedPaidTrip = {
+  _type: TripType.RejectedPaidTrip;
+  tripId: string;
+  tripDate: Date;
+  bookInfo: BookInfo;
+  paidDate: Date;
+  slipImages: SlipImage[];
+  tourId: string;
+  tourName: string;
+};
+
 export type ApprovedTrip = {
   _type: TripType.ApprovedTrip;
   tripId: string;
@@ -106,22 +117,12 @@ export type CancelledTrip = {
   tourName: string;
 };
 
-export type RejectedPaidTrip = {
-  _type: TripType.RejectedPaidTrip;
-  tripId: string;
-  tripDate: Date;
-  bookInfo: BookInfo;
-  paidDate: Date;
-  slipImages: SlipImage[];
-  rejectDate: Date;
-  tourId: string;
-  tourName: string;
-};
 
 export type Trip =
   | UnbookedTrip
   | BookedTrip
   | PaidTrip
+  | RejectedPaidTrip
   | ApprovedTrip
   | RefundRequestedTrip
   | RefundedTrip
@@ -132,12 +133,13 @@ export enum TripType {
   UnbookedTrip,
   BookedTrip,
   PaidTrip,
+  RejectedPaidTrip,
   ApprovedTrip,
   RefundRequestedTrip,
   RefundedTrip,
   FinishedTrip,
   CancelledTrip,
-  RejectedPaidTrip
+
 }
 
 export type Tour = {
@@ -190,11 +192,12 @@ export type Customer = {
   tripHistory: Trip[];
 };
 
-export type Guide = UnApprovedGuide | ApprovedGuide | BadGuide;
+export type Guide = UnApprovedGuide | ApprovedGuide | BadGuide | RejectedGuide;
 export enum GuideType {
   UnApprovedGuide,
   ApprovedGuide,
-  BadGuide
+  BadGuide,
+  RejectedGuide
 }
 
 export type UnApprovedGuide = {
@@ -238,4 +241,17 @@ export type BadGuide = {
   approvalStatus: ApprovalStatus.Approved;
   availableDate: Date[];
   dealtTrips: Trip[];
+};
+
+export type RejectedGuide = {
+  _type: GuideType.RejectedGuide;
+  guideId: string;
+  userName: string;
+  password: string;
+  personalId: string;
+  email: string;
+  profile: UserProfile;
+  bankAccountNumber: string;
+  bankName: string;
+  approvalStatus: ApprovalStatus.NotApprove;
 };

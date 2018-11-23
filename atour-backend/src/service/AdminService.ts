@@ -6,16 +6,26 @@ import { GetCustomerDb, UpdateCustomerDb} from '../repository/Customer';
 import { Guide, Trip } from '../domain/types';
 import { GetTourDb, GetTripDb, UpdateTourDb, UpdateTripDb, GetRefundTripDb, GetPendingPaymentTripDb } from '../repository/Tour';
 import { DateGenerator } from '../domain/Tour';
-import { approveTrip, refundTrip, approveGuide, markBadGuide } from '../domain/Admin';
+import { approveTrip, refundTrip, approveGuide, markBadGuide, rejectTrip, rejectRefundRequest, rejectGuide } from '../domain/Admin';
 import { updateTripToTour, updateCustomerTripHistory } from '../domain/CustomerTour';
 
 export type ApproveGuideService = (
   guideId: string
 ) => Promise<Guide>;
 
+export type RejectGuideService = (
+  guideId: string
+) => Promise<Guide>;
+
 export type GetRefundRequests = () => Promise<Trip[]>
 
 export type ApproveRefundService = (
+  tourId: string,
+  tripId: string,
+  customerId: string
+) => Promise<Trip>;
+
+export type RejectRefundService = (
   tourId: string,
   tripId: string,
   customerId: string
@@ -33,6 +43,12 @@ export type ApprovePaymentService = (
   customerId: string
 ) => Promise<Trip>;
 
+export type RejectPaymentService = (
+  tourId: string,
+  tripId: string,
+  customerId: string
+) => Promise<Trip>;
+
 export type MarkBadGuideService = (
   guideId: string
 ) => Promise<Guide>;
@@ -43,6 +59,15 @@ export function approveGuideService(getGuide: GetGuideDb, saveGuide: SaveGuideDb
     const approvedGuide = await approveGuide()(guide);
     await saveGuide(approvedGuide);
     return approvedGuide;
+  };
+}
+
+export function rejectGuideService(getGuide: GetGuideDb, saveGuide: SaveGuideDb): RejectGuideService {
+  return async (guideId) => {
+    const guide = await getGuide(guideId)
+    const rejectedGuide = await rejectGuide()(guide);
+    await saveGuide(rejectedGuide);
+    return rejectedGuide;
   };
 }
 
@@ -92,6 +117,44 @@ export function approveRefundService(
   }
 }
 
+export function rejectRefundService(
+  getCustomerDb: GetCustomerDb,
+  getTourDb: GetTourDb,
+  getTripDb: GetTripDb,
+  updateTourDb: UpdateTourDb,
+  updateTripDb: UpdateTripDb,
+  updateCustomerDb: UpdateCustomerDb
+): RejectRefundService {
+  return async (
+    tourId,
+    tripId,
+    customerId
+  ) => {
+    const requestedTrip = await getTripDb(tripId);
+    const tour = await getTourDb(tourId);
+    const customer = await getCustomerDb(customerId);
+
+    const notRefundedTrip = await rejectRefundRequest()(
+      requestedTrip
+    );
+    const updatedTour = await updateTripToTour()(
+      tour, 
+      notRefundedTrip
+    );
+    const updatedCustomer = await updateCustomerTripHistory()(
+      customer, 
+      notRefundedTrip
+    );
+
+    await updateCustomerDb(updatedCustomer);
+    await updateTourDb(updatedTour);
+    await updateTripDb(notRefundedTrip);
+
+    return notRefundedTrip;
+  }
+}
+
+
 export function getPendingPayments(getPendingPaymentTripDb: GetPendingPaymentTripDb): GetPendingPayments {
   return async () => {
     const results = await getPendingPaymentTripDb();
@@ -135,6 +198,43 @@ export function approvePaymentService(
     await updateTripDb(approvedTrip);
 
     return approvedTrip;
+  }
+}
+
+export function rejectPaymentService(
+  getCustomerDb: GetCustomerDb,
+  getTourDb: GetTourDb,
+  getTripDb: GetTripDb,
+  updateTourDb: UpdateTourDb,
+  updateTripDb: UpdateTripDb,
+  updateCustomerDb: UpdateCustomerDb
+): RejectPaymentService {
+  return async (
+    tourId,
+    tripId,
+    customerId
+  ) => {
+    const paidTrip = await getTripDb(tripId);
+    const tour = await getTourDb(tourId);
+    const customer = await getCustomerDb(customerId);
+
+    const rejectedTrip = await rejectTrip()(
+      paidTrip
+    );
+    const updatedTour = await updateTripToTour()(
+      tour, 
+      rejectedTrip
+    );
+    const updatedCustomer = await updateCustomerTripHistory()(
+      customer, 
+      rejectedTrip
+    );
+
+    await updateCustomerDb(updatedCustomer);
+    await updateTourDb(updatedTour);
+    await updateTripDb(rejectedTrip);
+
+    return rejectedTrip;
   }
 }
 
