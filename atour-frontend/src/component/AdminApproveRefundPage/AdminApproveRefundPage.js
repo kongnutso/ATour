@@ -5,7 +5,7 @@ import Table from '../Table';
 import PopUpModal from '../PopUpModal/PopUpModal';
 import COLOR from '../../utils/color';
 import { Button } from '../BaseComponent';
-import AdminMenuBar from '../AdminMenuBar';
+import axios from 'axios';
 
 // Mock data
 const tableProps = num => {
@@ -22,7 +22,7 @@ const tableProps = num => {
   }
   return dataArray;
 };
-const adminApproveColumns = (handleConfirm, handleReject) => [
+const adminApproveColumns = (handleApprove, handleReject) => [
   {
     Header: 'Request Date',
     accessor: 'requestDate',
@@ -60,7 +60,7 @@ const adminApproveColumns = (handleConfirm, handleReject) => [
     Cell: ({ original }) => {
       return (
         <Fragment>
-          <Button color={COLOR.primary} onClick={() => handleConfirm()}>
+          <Button color={COLOR.primary} onClick={() => handleApprove()}>
             <i className="fa fa-check" style={{ marginRight: '5px' }} />
             Approve
           </Button>
@@ -76,14 +76,51 @@ const adminApproveColumns = (handleConfirm, handleReject) => [
 ];
 
 class AdminApproveRefundPage extends Component {
-  state = { approveModal: false, rejectModal: false };
+  state = { approveModal: false, rejectModal: false, data: [] };
 
-  handleConfirm = () => {
+  componentDidMount() {
+    this.onQuery();
+  }
+
+  handleApprove = () => {
     this.setState({ approveModal: true });
+    //do approve somthing
   };
-  handleReject = () => {
+
+  handleReject = guideId => {
     this.setState({ rejectModal: true });
+    //do reject something
   };
+
+  onReject = ({ tourId, tripId, customerId }) => {
+    axios
+      .post('http://localhost:3000/admin/approveRefund', { tourId, tripId, customerId })
+      .then(res => {});
+    this.onQuery();
+  };
+
+  onQuery = () => {
+    axios.get('http://localhost:3000/admin/refundRequest').then(res => {
+      console.log(res);
+      this.setState({ data: this.mapInput(res.data) });
+    });
+  };
+  mapInput = arr => {
+    return arr.map(e => {
+      let guideStatus = false;
+      if (e._type === 2) {
+        guideStatus = true;
+      }
+      return {
+        guideId: e.guideId,
+        username: e.userName,
+        phoneNumber: e.profile.phoneNumber,
+        email: e.email,
+        status: guideStatus,
+      };
+    });
+  };
+
   render() {
     return (
       <Box>
@@ -114,7 +151,7 @@ class AdminApproveRefundPage extends Component {
         />
         <Table
           data={tableProps(4)}
-          columns={adminApproveColumns(this.handleConfirm, this.handleReject)}
+          columns={adminApproveColumns(this.handleApprove, this.handleReject)}
           defaultPageSize={10}
           style={{
             textAlign: 'center',
