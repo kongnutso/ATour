@@ -129,7 +129,9 @@ class EditAvailableDate extends React.Component {
             ))}
             <Grid columns={2}>
               <Grid.Column width={5}>
-                <Button onClick={this.onSubmitNewTrip}>Submit</Button>
+                <Button primary onClick={this.onSubmitNewTrip}>
+                  Submit
+                </Button>
               </Grid.Column>
               <Grid.Column width={11}>
                 <DatePicker
