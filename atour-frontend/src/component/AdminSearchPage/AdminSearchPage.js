@@ -7,27 +7,6 @@ import Table from '../Table';
 import PopUpModal from '../PopUpModal/PopUpModal';
 import COLOR from '../../utils/color';
 import { Button, SearchButton, Input } from '../BaseComponent';
-
-//Mock Data
-const tableProps = num => {
-  const dataArray = [];
-  for (let i = 0; i <= num; i++) {
-    dataArray.push({
-      username: `${String.fromCharCode(97 + i)}`,
-      phoneNumber: `${i}${i}${i}${i}${i}${i}`,
-      email: `${i}@hot.hr`,
-      status: true,
-    });
-  }
-  dataArray.push({
-    username: `asdsadsads`,
-    phoneNumber: `asdasdas`,
-    email: `$asdasds@hot.hr`,
-    status: false,
-  });
-  return dataArray;
-};
-
 const adminSearchColumns = handleReject => [
   {
     Header: 'Username',
@@ -73,7 +52,7 @@ const adminSearchColumns = handleReject => [
 ];
 
 class AdminSearchPage extends Component {
-  state = { username: '', rejectModal: false, data: [] };
+  state = { username: '', rejectModal: false, data: [], selectedGuideId: '' };
 
   componentDidMount() {
     this.onSearch('');
@@ -81,12 +60,15 @@ class AdminSearchPage extends Component {
 
   handleReject = guideId => {
     this.setState({ rejectModal: true });
-    this.onReject(guideId);
+    this.setState({ selectedGuideId: guideId });
   };
 
-  onReject = guideId => {
-    axios.post('http://localhost:3000/admin/markBadGuide', { guideId }).then(res => {});
-    this.onSearch('');
+  onReject = () => {
+    axios
+      .post('http://localhost:3000/admin/markBadGuide', { guideId: this.state.selectedGuideId })
+      .then(res => {
+        this.onSearch('');
+      });
   };
 
   onSearch = keyword => {
@@ -95,7 +77,8 @@ class AdminSearchPage extends Component {
     });
   };
   mapInput = arr => {
-    return arr.map(e => {
+    const filterAprroveGuide = arr.filter(e => e.approvalStatus === 1);
+    return filterAprroveGuide.map(e => {
       let guideStatus = false;
       if (e._type === 2) {
         guideStatus = true;
