@@ -12,7 +12,8 @@ import {
   ApprovedTrip,
   RefundRequestedTrip,
   CancelledTrip,
-  UnbookedTrip
+  UnbookedTrip,
+  RejectedPaidTrip
 } from './types';
 
 describe('CustomerTour', () => {
@@ -111,6 +112,49 @@ describe('CustomerTour', () => {
 
     const expectedTrip: PaidTrip = {
       ...paidTrip,
+      paidDate: new Date('2018-11-07'),
+      slipImages: [...slipImages, { url: 'www.adm2.co.th' }]
+    };
+    expect(resultTrip).toEqual(expectedTrip);
+  });
+
+  test('uploadPayment3', () => {
+    const rejectedPaidTrip: RejectedPaidTrip = {
+      _type: TripType.RejectedPaidTrip,
+      tripId: '123456987',
+      tripDate: new Date('2018-11-11'),
+      bookInfo: {
+        bookDate: new Date('2018-11-05'),
+        customerId: '963258741',
+        size: 5,
+        price: 5000
+      },
+      paidDate: new Date('2018-11-06'),
+      slipImages: [{ url: 'www.adm.co.th' }],
+      rejectDate: new Date('2018-11-07'),
+      tourId: 'tourId',
+      tourName: 'tourName'
+    };
+
+    const { slipImages } = rejectedPaidTrip;
+    const resultTrip = CustomerTourDomain.uploadPayment()(
+      rejectedPaidTrip,
+      { url: 'www.adm2.co.th' },
+      new Date('2018-11-07')
+    );
+
+    const expectedTrip: PaidTrip = {
+      _type: TripType.PaidTrip,
+      tripId: '123456987',
+      tripDate: new Date('2018-11-11'),
+      bookInfo: {
+        bookDate: new Date('2018-11-05'),
+        customerId: '963258741',
+        size: 5,
+        price: 5000
+      },
+      tourId: 'tourId',
+      tourName: 'tourName',
       paidDate: new Date('2018-11-07'),
       slipImages: [...slipImages, { url: 'www.adm2.co.th' }]
     };
