@@ -1,61 +1,67 @@
 import React, { Component, Fragment } from 'react';
 import { Flex, Box, Text } from 'rebass';
+import axios from 'axios';
 import { connect } from 'react-redux';
 import Table from '../Table';
 import PopUpModal from '../PopUpModal/PopUpModal';
 import COLOR from '../../utils/color';
 import { Button } from '../BaseComponent';
-import axios from 'axios';
+import parseDate from '../../utils/parseDateTime';
 
-// Mock data
-const tableProps = num => {
-  const dataArray = [];
-  for (let i = 0; i <= num; i++) {
-    dataArray.push({
-      date: `${i}/10/2018`,
-      username: `${String.fromCharCode(97 + i)}`,
-      phoneNumber: `${i}${i}${i}${i}${i}${i}`,
-      email: `${i}@hot.hr`,
-    });
-  }
-  return dataArray;
-};
 const adminApproveColumns = (handleApprove, handleReject) => [
   {
-    Header: 'Date',
-    accessor: 'date',
+    Header: 'Book Date',
+    accessor: 'bookDate',
   },
   {
-    Header: 'Username',
-    accessor: 'username',
+    Header: 'Trip Id',
+    accessor: 'tripId',
   },
   {
-    Header: 'Phone Number',
-    accessor: 'phoneNumber',
+    Header: 'Trip Date',
+    accessor: 'tripDate',
   },
   {
-    Header: 'Email',
-    accessor: 'email',
+    Header: 'Customer Id',
+    accessor: 'customerId',
+  },
+  {
+    Header: 'Price',
+    accessor: 'price',
+  },
+  {
+    Header: 'Paid Date',
+    accessor: 'paidDate',
   },
   {
     Header: 'Slip',
     accessor: 'slip',
     width: 100,
-    Cell: ({ original }) => <a href="imagURL">View</a>,
+    Cell: ({ original }) => {
+      return (
+        <a href={original.slip} target="_blank">
+          View
+        </a>
+      );
+    },
   },
   {
     Header: 'Status',
     accessor: 'status',
     width: 200,
     Cell: ({ original }) => {
+      const { tourId, tripId, customerId } = original;
       return (
         <Fragment>
-          <Button color={COLOR.primary} onClick={() => handleApprove()}>
+          <Button
+            color={COLOR.primary}
+            onClick={() => handleApprove({ tourId, tripId, customerId })}
+          >
             <i className="fa fa-check" style={{ marginRight: '5px' }} />
             Approve
           </Button>
           |
-          <Button color={COLOR.danger} onClick={() => handleReject()}>
+          <Button color={COLOR.danger} onClick={() => handleReject({ tourId, tripId, customerId })}>
             <i className="fa fa-times" style={{ marginRight: '5px' }} />
             Reject
           </Button>
@@ -66,25 +72,25 @@ const adminApproveColumns = (handleApprove, handleReject) => [
 ];
 
 class AdminApprovePaymentPage extends Component {
-  state = { approveModal: false, rejectModal: false, data: [], selectedRequest: '' };
+  state = { approveModal: false, rejectModal: false, data: [], selectedRequest: {} };
 
   componentDidMount() {
     this.onQuery();
   }
 
-  handleApprove = guideId => {
+  handleApprove = req => {
     this.setState({ approveModal: true });
-    this.setState({ selectedRequest: guideId });
+    this.setState({ selectedRequest: req });
   };
 
-  handleReject = guideId => {
+  handleReject = req => {
     this.setState({ rejectModal: true });
-    this.setState({ selectedRequest: guideId });
+    this.setState({ selectedRequest: req });
   };
 
   onApprove = () => {
     axios
-      .post('http://localhost:3000/admin/approveGuide', { guideId: this.state.selectedRequest })
+      .post('http://localhost:3000/admin/approvePayment', this.state.selectedRequest)
       .then(res => {
         this.onQuery();
       });
@@ -92,26 +98,28 @@ class AdminApprovePaymentPage extends Component {
 
   onReject = () => {
     axios
-      .post('http://localhost:3000/admin/rejectGuide', { guideId: this.state.selectedRequest })
+      .post('http://localhost:3000/admin/rejectPayment', this.state.selectedRequest)
       .then(res => {
         this.onQuery();
       });
   };
 
   onQuery = () => {
-    axios.get('http://localhost:3000/customer/pendingPayments').then(res => {
-      console.log(res);
-      //this.setState({ data: this.mapInput(res.data) });
+    axios.get('http://localhost:3000/admin/pendingPayments').then(res => {
+      this.setState({ data: this.mapInput(res.data) });
     });
   };
   mapInput = arr => {
-    const filterUnapprove = arr.filter(e => e._type === 0);
-    return filterUnapprove.map(e => {
+    return arr.map(e => {
       return {
-        guideId: e.guideId,
-        username: e.userName,
-        phoneNumber: e.profile.phoneNumber,
-        email: e.email,
+        bookDate: parseDate(e.bookInfo.bookDate),
+        customerId: e.bookInfo.customerId,
+        price: e.bookInfo.price,
+        paidDate: parseDate(e.paidDate),
+        slip: e.slipImages[0].url,
+        tripId: e.tripId,
+        tripDate: parseDate(e.tripDate),
+        tourId: e.tourId,
       };
     });
   };
@@ -129,7 +137,7 @@ class AdminApprovePaymentPage extends Component {
           modalName="Approve"
           headerText={`Approve Confirmation`}
           bodyText={`Do you want to Approve ? `}
-          // onConfirm
+          onConfirm={this.onApprove}
           type="Confirmation"
         />
 
@@ -139,12 +147,12 @@ class AdminApprovePaymentPage extends Component {
           modalName="Reject"
           headerText={`Reject Confirmation`}
           bodyText={`Do you want to Reject ? `}
-          // onConfirm
+          onConfirm={this.onReject}
           isDanger
           type="Confirmation"
         />
         <Table
-          data={tableProps(4)}
+          data={this.state.data}
           columns={adminApproveColumns(this.handleApprove, this.handleReject)}
           defaultPageSize={10}
           style={{
