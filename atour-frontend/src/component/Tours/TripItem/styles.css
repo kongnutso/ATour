@@ -1,7 +1,21 @@
 .calendar-icon-month {
+  text-align: center;
   color: white;
 }
 
 .calendar-icon-date {
+  text-align: center;
   color: black;
+}
+
+/* .trip-item-card {
+  padding: 0.25em 0.25em !important;
+} */
+
+.trip-item-description {
+  padding: 0.25em 0.25em !important;
+}
+
+.trip-header {
+  font-size: 1em !important;
 }
