@@ -1,71 +1,66 @@
 import React, { Component, Fragment } from 'react';
 import { Flex, Box, Text } from 'rebass';
 import { connect } from 'react-redux';
+import axios from 'axios';
 import Table from '../Table';
 import PopUpModal from '../PopUpModal/PopUpModal';
 import COLOR from '../../utils/color';
 import { Button } from '../BaseComponent';
-import axios from 'axios';
+import parseDate from '../../utils/parseDateTime';
 
-// Mock data
-const tableProps = num => {
-  const dataArray = [];
-  for (let i = 0; i <= num; i++) {
-    dataArray.push({
-      requestDate: `${i}/10/2018`,
-      username: `${String.fromCharCode(97 + i)}`,
-      phoneNumber: `${i}${i}${i}${i}${i}${i}`,
-      email: `${i}@hot.hr`,
-      tripDate: `${i}/10/2018`,
-      price: `${i}${i}${i}${i}`,
-    });
-  }
-  return dataArray;
-};
 const adminApproveColumns = (handleApprove, handleReject) => [
   {
     Header: 'Request Date',
     accessor: 'requestDate',
   },
+
   {
-    Header: 'Username',
-    accessor: 'username',
+    Header: 'Tour Id',
+    accessor: 'tourId',
   },
   {
-    Header: 'Phone Number',
-    accessor: 'phoneNumber',
-  },
-  {
-    Header: 'Email',
-    accessor: 'email',
+    Header: 'Trip Id',
+    accessor: 'tripId',
+    // Cell: ({ original }) => <a href="imagURL">View</a>,
   },
   {
     Header: 'Trip Date',
     accessor: 'tripDate',
   },
   {
-    Header: 'Trip Id',
-    accessor: 'tripId',
-    Cell: ({ original }) => <a href="imagURL">View</a>,
+    Header: 'Customer Id',
+    accessor: 'customerId',
+  },
+  {
+    Header: 'Paid Date',
+    accessor: 'paidDate',
+  },
+  {
+    Header: 'Approve Date',
+    accessor: 'approveDate',
   },
   {
     Header: 'Price',
     accessor: 'price',
-    width: 120,
   },
   {
     Header: 'Status',
     accessor: 'status',
     width: 200,
     Cell: ({ original }) => {
+      const { tourId, tripId, customerId } = original;
+
       return (
         <Fragment>
-          <Button color={COLOR.primary} onClick={() => handleApprove()}>
+          <Button
+            color={COLOR.primary}
+            onClick={() => handleApprove({ tourId, tripId, customerId })}
+          >
             <i className="fa fa-check" style={{ marginRight: '5px' }} />
             Approve
           </Button>
           |
-          <Button color={COLOR.danger} onClick={() => handleReject()}>
+          <Button color={COLOR.danger} onClick={() => handleReject({ tourId, tripId, customerId })}>
             <i className="fa fa-times" style={{ marginRight: '5px' }} />
             Reject
           </Button>
@@ -92,18 +87,20 @@ class AdminApproveRefundPage extends Component {
     this.setState({ selectedRequest: request });
   };
 
-  onApprove = ({ tourId, tripId, customerId }) => {
+  onApprove = () => {
     axios
-      .post('http://localhost:3000/admin/approveRefund', { tourId, tripId, customerId })
-      .then(res => {});
-    this.onQuery();
+      .post('http://localhost:3000/admin/approveRefund', this.state.selectedRequest)
+      .then(res => {
+        console.log(res);
+        this.onQuery();
+      });
   };
 
-  onReject = ({ tourId, tripId, customerId }) => {
-    axios
-      .post('http://localhost:3000/admin/approveRefund', { tourId, tripId, customerId })
-      .then(res => {});
-    this.onQuery();
+  onReject = () => {
+    axios.post('http://localhost:3000/admin/rejectRefund', this.state.selectedRequest).then(res => {
+      console.log(res);
+      this.onQuery();
+    });
   };
 
   onQuery = () => {
@@ -114,16 +111,17 @@ class AdminApproveRefundPage extends Component {
   };
   mapInput = arr => {
     return arr.map(e => {
-      let guideStatus = false;
-      if (e._type === 2) {
-        guideStatus = true;
-      }
       return {
-        guideId: e.guideId,
-        username: e.userName,
-        phoneNumber: e.profile.phoneNumber,
-        email: e.email,
-        status: guideStatus,
+        requestDate: parseDate(e.refundRequestDate),
+        approveDate: parseDate(e.approveDate),
+        bookDate: parseDate(e.bookInfo.bookDate),
+        customerId: e.bookInfo.customerId,
+        price: e.bookInfo.price,
+        paidDate: parseDate(e.paidDate),
+        slip: e.slipImages[0].url,
+        tripId: e.tripId,
+        tripDate: parseDate(e.tripDate),
+        tourId: e.tourId,
       };
     });
   };
@@ -142,7 +140,7 @@ class AdminApproveRefundPage extends Component {
           modalName="Approve"
           headerText={`Approve Confirmation`}
           bodyText={`Do you want to Approve ? `}
-          // onConfirm
+          onConfirm={this.onApprove}
           type="Confirmation"
         />
 
@@ -152,12 +150,12 @@ class AdminApproveRefundPage extends Component {
           modalName="Reject"
           headerText={`Reject Confirmation`}
           bodyText={`Do you want to Reject ? `}
-          // onConfirm
+          onConfirm={this.onReject}
           isDanger
           type="Confirmation"
         />
         <Table
-          data={tableProps(4)}
+          data={this.state.data}
           columns={adminApproveColumns(this.handleApprove, this.handleReject)}
           defaultPageSize={10}
           style={{
