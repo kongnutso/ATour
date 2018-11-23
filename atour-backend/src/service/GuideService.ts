@@ -33,7 +33,8 @@ export type LoginGuideService = (
 
 export type EditGuideService = (
   guideId: string,
-  guideProfile: UserProfile
+  guideProfile: UserProfile,
+  email: string
 ) => Promise<Guide>;
 
 export type GetGuideService = (guideId: string) => Promise<GuideDto>;
@@ -94,9 +95,9 @@ export function editGuideService(
   getGuide: GetGuideDb,
   saveGuide: SaveGuideDb
 ): EditGuideService {
-  return async (guideId, guideProfile) => {
+  return async (guideId, guideProfile, email) => {
     const guide = await getGuide(guideId);
-    const editedGuide = editGuide()(guide, guideProfile);
+    const editedGuide = editGuide()(guide, guideProfile, email);
     await saveGuide(editedGuide);
     return editedGuide;
   };
