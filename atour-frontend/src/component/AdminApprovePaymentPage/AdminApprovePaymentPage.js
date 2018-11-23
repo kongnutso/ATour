@@ -5,6 +5,7 @@ import Table from '../Table';
 import PopUpModal from '../PopUpModal/PopUpModal';
 import COLOR from '../../utils/color';
 import { Button } from '../BaseComponent';
+import axios from 'axios';
 
 // Mock data
 const tableProps = num => {
@@ -64,7 +65,28 @@ const adminApproveColumns = (handleConfirm, handleReject) => [
   },
 ];
 
-class AdminApprovePage extends Component {
+class AdminApprovePaymentPage extends Component {
+  componentDidMount() {
+    // const req = {
+    //   tourName: tourName,
+    //   tourId: tourId,
+    //   tripId: tripInfo.tripId,
+    //   tripDate: tripInfo.tripDate,
+    //   customerId,
+    //   size,
+    //   price,
+    //   guideName,
+    // };
+
+    // axios.post('http://localhost:3000/customer/bookTrip', req).then(res => {
+    //   console.log(res);
+    // });
+
+    axios.get('http://localhost:3000/admin/pendingPayments').then(res => {
+      console.log(res);
+    });
+  }
+
   state = { approveModal: false, rejectModal: false };
 
   handleConfirm = () => {
@@ -75,49 +97,43 @@ class AdminApprovePage extends Component {
   };
   render() {
     return (
-      <div style={{ marginTop: '30px', marginBottom: '30px' }}>
-        <Flex flexWrap="wrap" justifyContent="center">
-          <Box width={4 / 5}>
-            <Text fontSize={4} mb={4} mt={2}>
-              <i style={{ marginRight: '10px' }} className="fa fa-check-square-o" />
-              Payment Approval
-            </Text>
+      <Box>
+        <Text fontSize={4} mb={4} mt={2}>
+          <i style={{ marginRight: '10px' }} className="fa fa-check-square-o" />
+          Payment Approval
+        </Text>
 
-            <PopUpModal
-              isOpen={this.state.approveModal}
-              onCloseModal={() => this.setState({ approveModal: false })}
-              modalName="Approve"
-              headerText={`Approve Confirmation`}
-              bodyText={`Do you want to Approve ? `}
-              // onConfirm
-              type="Confirmation"
-            />
+        <PopUpModal
+          isOpen={this.state.approveModal}
+          onCloseModal={() => this.setState({ approveModal: false })}
+          modalName="Approve"
+          headerText={`Approve Confirmation`}
+          bodyText={`Do you want to Approve ? `}
+          // onConfirm
+          type="Confirmation"
+        />
 
-            <PopUpModal
-              isOpen={this.state.rejectModal}
-              onCloseModal={() => this.setState({ rejectModal: false })}
-              modalName="Reject"
-              headerText={`Reject Confirmation`}
-              bodyText={`Do you want to Reject ? `}
-              // onConfirm
-              isDanger
-              type="Confirmation"
-            />
-          </Box>
-          <Box width={4 / 5}>
-            <Table
-              data={tableProps(4)}
-              columns={adminApproveColumns(this.handleConfirm, this.handleReject)}
-              defaultPageSize={10}
-              style={{
-                textAlign: 'center',
-                display: 'flex',
-                alignItem: 'center',
-              }}
-            />
-          </Box>
-        </Flex>
-      </div>
+        <PopUpModal
+          isOpen={this.state.rejectModal}
+          onCloseModal={() => this.setState({ rejectModal: false })}
+          modalName="Reject"
+          headerText={`Reject Confirmation`}
+          bodyText={`Do you want to Reject ? `}
+          // onConfirm
+          isDanger
+          type="Confirmation"
+        />
+        <Table
+          data={tableProps(4)}
+          columns={adminApproveColumns(this.handleConfirm, this.handleReject)}
+          defaultPageSize={10}
+          style={{
+            textAlign: 'center',
+            display: 'flex',
+            alignItem: 'center',
+          }}
+        />
+      </Box>
     );
   }
 }
@@ -125,4 +141,4 @@ class AdminApprovePage extends Component {
 export default connect(
   null,
   null
-)(AdminApprovePage);
+)(AdminApprovePaymentPage);

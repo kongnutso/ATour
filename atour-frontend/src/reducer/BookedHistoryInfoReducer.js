@@ -4,11 +4,13 @@ import {
   SELECT_BOOKED_TRIP,
   SET_IMAGE_SLIP,
   REFUND_TRIP,
-  CANCEL_TRIP
+  CANCEL_TRIP,
+  CHANGE_REVIEW_INPUT,
+  CHENGE_REVIEW
 } from '../action/BookAction';
 
 const initialState = {
-  _type: 1,
+  _type: 6, //change from 1
   bookDate: '',
   tripDate: '',
   uploadedFileDate: '',
@@ -19,7 +21,9 @@ const initialState = {
   price: '',
   groupSize: '',
   tripId: '',
-  tourId: ''
+  tourId: '',
+  review: '1',
+  oldReview: '1'
 };
 
 function tourId(state = initialState.tourId, action) {
@@ -147,6 +151,26 @@ function slip(state = initialState.slip, action) {
   }
 }
 
+function review(state = initialState.review, action) {
+  switch (action.type) {
+    case CHANGE_REVIEW_INPUT:
+      return action.payload;
+    case CHENGE_REVIEW:
+      return action.payload;
+    default:
+      return state;
+  }
+}
+
+function oldReview(state = initialState.oldReview, action) {
+  switch (action.type) {
+    case CHENGE_REVIEW:
+      return action.payload;
+    default:
+      return state;
+  }
+}
+
 const reducer = combineReducers({
   _type,
   bookDate,
@@ -158,7 +182,9 @@ const reducer = combineReducers({
   groupSize,
   price,
   tripId,
-  tourId
+  tourId,
+  review,
+  oldReview
 });
 
 export default reducer;
