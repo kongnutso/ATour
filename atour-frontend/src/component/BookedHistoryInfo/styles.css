@@ -123,6 +123,16 @@
   color: #ffffff;
 }
 
+.bookedhistoryinfo-redbutton {
+  cursor: pointer;
+  width: 150px;
+  border-radius: 4px;
+  margin-left: 5px;
+  text-align: center;
+  background-color: #ec424b;
+  color: #ffffff;
+}
+
 .bookedhistoryinfo-graybutton {
   width: 150px;
   border-radius: 4px;
@@ -170,6 +180,16 @@
 .bookedHistoryInfo-info-each-2 {
   display: flex;
   width: 50%;
+}
+
+.bookedhistoryinfo-reviewhistory {
+  display: table-cell;
+  border: 2px;
+  border-style: solid;
+  border-color: #cccccc;
+  color: #cccccc;
+  height: 100px;
+  width: 700px;
 }
 
 .bookedHistoryInfo-info-each-value {
