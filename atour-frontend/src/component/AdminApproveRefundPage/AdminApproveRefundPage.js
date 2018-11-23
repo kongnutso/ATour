@@ -76,20 +76,27 @@ const adminApproveColumns = (handleApprove, handleReject) => [
 ];
 
 class AdminApproveRefundPage extends Component {
-  state = { approveModal: false, rejectModal: false, data: [] };
+  state = { approveModal: false, rejectModal: false, data: [], selectedRequest: {} };
 
   componentDidMount() {
     this.onQuery();
   }
 
-  handleApprove = () => {
+  handleApprove = request => {
     this.setState({ approveModal: true });
-    //do approve somthing
+    this.setState({ selectedRequest: request });
   };
 
-  handleReject = guideId => {
+  handleReject = request => {
     this.setState({ rejectModal: true });
-    //do reject something
+    this.setState({ selectedRequest: request });
+  };
+
+  onApprove = ({ tourId, tripId, customerId }) => {
+    axios
+      .post('http://localhost:3000/admin/approveRefund', { tourId, tripId, customerId })
+      .then(res => {});
+    this.onQuery();
   };
 
   onReject = ({ tourId, tripId, customerId }) => {

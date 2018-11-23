@@ -20,7 +20,7 @@ const tableProps = num => {
   }
   return dataArray;
 };
-const adminApproveColumns = (handleConfirm, handleReject) => [
+const adminApproveColumns = (handleApprove, handleReject) => [
   {
     Header: 'Date',
     accessor: 'date',
@@ -50,7 +50,7 @@ const adminApproveColumns = (handleConfirm, handleReject) => [
     Cell: ({ original }) => {
       return (
         <Fragment>
-          <Button color={COLOR.primary} onClick={() => handleConfirm()}>
+          <Button color={COLOR.primary} onClick={() => handleApprove()}>
             <i className="fa fa-check" style={{ marginRight: '5px' }} />
             Approve
           </Button>
@@ -66,34 +66,54 @@ const adminApproveColumns = (handleConfirm, handleReject) => [
 ];
 
 class AdminApprovePaymentPage extends Component {
+  state = { approveModal: false, rejectModal: false, data: [], selectedRequest: '' };
+
   componentDidMount() {
-    // const req = {
-    //   tourName: tourName,
-    //   tourId: tourId,
-    //   tripId: tripInfo.tripId,
-    //   tripDate: tripInfo.tripDate,
-    //   customerId,
-    //   size,
-    //   price,
-    //   guideName,
-    // };
-
-    // axios.post('http://localhost:3000/customer/bookTrip', req).then(res => {
-    //   console.log(res);
-    // });
-
-    axios.get('http://localhost:3000/admin/pendingPayments').then(res => {
-      console.log(res);
-    });
+    this.onQuery();
   }
 
-  state = { approveModal: false, rejectModal: false };
-
-  handleConfirm = () => {
+  handleApprove = guideId => {
     this.setState({ approveModal: true });
+    this.setState({ selectedRequest: guideId });
   };
-  handleReject = () => {
+
+  handleReject = guideId => {
     this.setState({ rejectModal: true });
+    this.setState({ selectedRequest: guideId });
+  };
+
+  onApprove = () => {
+    axios
+      .post('http://localhost:3000/admin/approveGuide', { guideId: this.state.selectedRequest })
+      .then(res => {
+        this.onQuery();
+      });
+  };
+
+  onReject = () => {
+    axios
+      .post('http://localhost:3000/admin/rejectGuide', { guideId: this.state.selectedRequest })
+      .then(res => {
+        this.onQuery();
+      });
+  };
+
+  onQuery = () => {
+    axios.get('http://localhost:3000/customer/pendingPayments').then(res => {
+      console.log(res);
+      //this.setState({ data: this.mapInput(res.data) });
+    });
+  };
+  mapInput = arr => {
+    const filterUnapprove = arr.filter(e => e._type === 0);
+    return filterUnapprove.map(e => {
+      return {
+        guideId: e.guideId,
+        username: e.userName,
+        phoneNumber: e.profile.phoneNumber,
+        email: e.email,
+      };
+    });
   };
   render() {
     return (
@@ -125,7 +145,7 @@ class AdminApprovePaymentPage extends Component {
         />
         <Table
           data={tableProps(4)}
-          columns={adminApproveColumns(this.handleConfirm, this.handleReject)}
+          columns={adminApproveColumns(this.handleApprove, this.handleReject)}
           defaultPageSize={10}
           style={{
             textAlign: 'center',

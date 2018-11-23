@@ -2,11 +2,9 @@ import React, { Component, Fragment } from 'react';
 import { Flex, Box, Text } from 'rebass';
 import { Redirect } from 'react-router-dom';
 import { Input, SearchButton as Button } from '../BaseComponent';
-import COLOR from '../../utils/color';
 
 export default class AdminLogin extends Component {
   componentDidMount() {
-    // const { activeItem } = this.props;
     // this.setState({ activeItem: mapPathName[activeItem] });
   }
 
