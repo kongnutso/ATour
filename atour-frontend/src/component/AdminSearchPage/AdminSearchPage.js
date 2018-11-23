@@ -13,12 +13,24 @@ const adminSearchColumns = handleReject => [
     accessor: 'username',
   },
   {
+    Header: 'First Name',
+    accessor: 'firstName',
+  },
+  {
     Header: 'Phone Number',
     accessor: 'phoneNumber',
   },
   {
     Header: 'Email',
     accessor: 'email',
+  },
+  {
+    Header: 'Bank Name',
+    accessor: 'bankName',
+  },
+  {
+    Header: 'Bank Account',
+    accessor: 'bankAccountNumber',
   },
   {
     Header: 'Status',
@@ -86,8 +98,11 @@ class AdminSearchPage extends Component {
       return {
         guideId: e.guideId,
         username: e.userName,
+        firstName: e.profile.firstName,
         phoneNumber: e.profile.phoneNumber,
         email: e.email,
+        bankName: e.bankName,
+        bankAccountNumber: e.bankAccountNumber,
         status: guideStatus,
       };
     });
