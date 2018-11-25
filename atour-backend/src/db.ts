@@ -75,7 +75,7 @@ export async function initMongo() {
   const approvetrip: ApprovedTrip = {
     _type: TripType.ApprovedTrip,
     tripId: 'tripId3',
-    tripDate: new Date('2018-11-11'),
+    tripDate: new Date('2018-11-24'),
     bookInfo: {
       bookDate: new Date('2018-11-01'),
       customerId: 'customerid',
@@ -279,10 +279,7 @@ export async function initMongo() {
   await db.collection('tour').deleteMany({});
   await db.collection('tour').insertMany(tours);
   await db.collection('trip').deleteMany({});
-  await db.collection('trip').insertMany(unbooktrips);
-  await db.collection('trip').insertOne(approvetrip);
-  await db.collection('trip').insertOne(paidTrip);
-  await db.collection('trip').insertOne(refundRequestTrip);
+  await db.collection('trip').insertMany([...unbooktrips, approvetrip, paidTrip, refundRequestTrip]);
   await db.collection('customer').deleteMany({});
   await db.collection('customer').insertOne(customer);
   await db.collection('customerToken').deleteMany({});

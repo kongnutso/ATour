@@ -136,7 +136,7 @@ export function refundTrip(): RefundTrip {
         return refundedTrip;
       }
       default: {
-        throw new Error('Trip is refund requested');
+        throw new Error('Trip is not refund requested');
       }
     }
   };
