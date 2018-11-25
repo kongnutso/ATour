@@ -127,8 +127,7 @@ export type Trip =
   | RefundRequestedTrip
   | RefundedTrip
   | FinishedTrip
-  | CancelledTrip
-  | RejectedPaidTrip;
+  | CancelledTrip;
 export enum TripType {
   UnbookedTrip,
   BookedTrip,
@@ -138,8 +137,7 @@ export enum TripType {
   RefundRequestedTrip,
   RefundedTrip,
   FinishedTrip,
-  CancelledTrip,
-
+  CancelledTrip
 }
 
 export type Tour = {
