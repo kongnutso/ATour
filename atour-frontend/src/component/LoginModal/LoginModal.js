@@ -38,7 +38,8 @@ class LoginModal extends React.Component {
   login() {
     const { userName, password, asCustomer } = this.state;
     this.setState({ sendRequest: true });
-    this.props.login(userName, password, asCustomer);
+    // this.props.login(userName, password, asCustomer);
+    this.props.login("guideuser", "password", false);
   }
 
   switchToSignUp() {

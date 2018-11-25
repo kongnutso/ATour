@@ -46,11 +46,7 @@ class TourItem extends React.Component {
   }
   renderContent() {
     return (
-      <Card
-        onClick={() => {
-          this.selectTour(this.props.tour);
-        }}
-      >
+      <Card>
         <Card.Content>
           <Image
             floated="right"
@@ -84,7 +80,6 @@ class TourItem extends React.Component {
     );
   }
   render() {
-    console.log("recieved from tours: ", this.props.tour);
     if (this.props.role == "Guide") {
       return (
         <Link

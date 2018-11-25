@@ -6,7 +6,6 @@ import "./styles.css";
 
 const mapMonth = month => {
   var monthName = new Array();
-  console.log("get month: ", month);
   monthName[0] = "JAN";
   monthName[1] = "FEB";
   monthName[2] = "MAR";
@@ -19,7 +18,6 @@ const mapMonth = month => {
   monthName[9] = "OCT";
   monthName[10] = "NOV";
   monthName[11] = "DEC";
-  console.log("month: ", monthName[month]);
   return monthName[month];
 };
 
@@ -30,7 +28,6 @@ const SmallCard = styled(Card)`
 `;
 
 const TripItem = props => (
-  // <Card fluid className="trip-item-card">
   <SmallCard>
     <Card.Content>
       <Card.Header className="trip-header">
@@ -41,24 +38,6 @@ const TripItem = props => (
       </Card.Description>
     </Card.Content>
   </SmallCard>
-  // <Card>
-  //   <Card.Content>
-  //     <Grid>
-  //       <Grid.Row>
-  //         <Grid.Column textAlign="center" color="blue">
-  //           <p>{mapMonth(props.date.getMonth)}</p>
-  //         </Grid.Column>
-  //       </Grid.Row>
-  //       <Grid.Row>
-  //         <Grid.Column>
-  //           <p className="calendar-icon-date">
-  //             {new Date(props.date).getDate()}
-  //           </p>
-  //         </Grid.Column>
-  //       </Grid.Row>
-  //     </Grid>
-  //   </Card.Content>
-  // </Card>
 );
 
 export default TripItem;

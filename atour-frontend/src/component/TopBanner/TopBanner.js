@@ -1,24 +1,24 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import './styles.css';
-import { Link } from 'react-router-dom';
-import RegisterModal from '../RegisterModal/RegisterModal';
-import { loginModal, registerModal } from '../../action/ModalAction';
-import { logout, resizeWindow } from '../../action/ApplicationAction';
-import { editProfile, getUserInfo } from '../../action/UserInfoAction';
-import { seeBookHistory } from '../../action/BookAction';
-import LoginModal from '../LoginModal/LoginModal';
-import logo from '../../image/Atour-logo.jpg';
-import autobind from 'react-autobind';
-import SideMenu from '../SideMenu/SideMenu';
-import ClickOutSide from 'react-click-outside-component';
+import React from "react";
+import { connect } from "react-redux";
+import "./styles.css";
+import { Link } from "react-router-dom";
+import RegisterModal from "../RegisterModal/RegisterModal";
+import { loginModal, registerModal } from "../../action/ModalAction";
+import { logout, resizeWindow } from "../../action/ApplicationAction";
+import { editProfile, getUserInfo } from "../../action/UserInfoAction";
+import { seeBookHistory } from "../../action/BookAction";
+import LoginModal from "../LoginModal/LoginModal";
+import logo from "../../image/Atour-logo.jpg";
+import autobind from "react-autobind";
+import SideMenu from "../SideMenu/SideMenu";
+import ClickOutSide from "react-click-outside-component";
 
 class TopBanner extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       isClickedDropdown: false,
-      sideMenuStatus: 'hidden',
+      sideMenuStatus: "hidden",
       topTransparent: props.transparent
     };
     autobind(this);
@@ -26,7 +26,7 @@ class TopBanner extends React.Component {
 
   componentDidMount() {
     const { resizeWindow } = this.props;
-    document.addEventListener('scroll', this.onScroll);
+    document.addEventListener("scroll", this.onScroll);
     window.onresize = function() {
       resizeWindow(window.innerWidth);
     };
@@ -37,7 +37,7 @@ class TopBanner extends React.Component {
       this.setState({ isClickedDropdown: false });
     }
     if (nextProps.width > 710) {
-      this.setState({ sideMenuStatus: 'hidden' });
+      this.setState({ sideMenuStatus: "hidden" });
     }
     if (nextProps.transparent !== this.props.transparent) {
       this.setState({ topTransparent: nextProps.transparent });
@@ -54,7 +54,7 @@ class TopBanner extends React.Component {
   }
 
   componentWillUnmount() {
-    document.removeEventListener('scroll', this.onScroll);
+    document.removeEventListener("scroll", this.onScroll);
   }
 
   onScroll() {
@@ -78,17 +78,17 @@ class TopBanner extends React.Component {
       document.body.scrollTop || document.documentElement.scrollTop;
     const { sideMenuStatus } = this.state;
     let nextStatus;
-    if (sideMenuStatus === 'hidden') {
-      nextStatus = 'isShowing';
+    if (sideMenuStatus === "hidden") {
+      nextStatus = "isShowing";
       this.setState({ topTransparent: false });
-    } else if (sideMenuStatus === 'isShowing') {
-      nextStatus = 'isHidding';
+    } else if (sideMenuStatus === "isShowing") {
+      nextStatus = "isHidding";
       if (documentBody <= 90) {
         this.setState({ topTransparent: true });
       }
-    } else
-      // else if (sideMenuStatus === "isHidding") nextStatus = "isShowing";
-      return;
+    }
+    // else if (sideMenuStatus === "isHidding") nextStatus = "isShowing";
+    else return;
     this.setState({ sideMenuStatus: nextStatus });
   }
 
@@ -118,12 +118,12 @@ class TopBanner extends React.Component {
         onClickOutside={() => this.setState({ isClickedDropdown: false })}
       >
         <div className="topbanner-login-dropdown">
-          {this.props.userInfo.role === 'Customer' ? (
+          {this.props.userInfo.role === "Customer" ? (
             <Link className="topbanner-link" to="/bookedHistory">
               <div
                 className="dropdown-item"
                 onClick={() => {
-                  console.log('check');
+                  console.log("check");
                   this.props.seeBookHistory(this.props.userInfo.customerId);
                   this.setState({ isClickedDropdown: false });
                 }}
@@ -143,7 +143,7 @@ class TopBanner extends React.Component {
                   Published Tour
                 </div>
               </Link>
-              <Link to="/viewDealtTrip" className="topbanner-link">
+              <Link to="/viewDealtTrips" className="topbanner-link">
                 <div
                   className="dropdown-item"
                   onClick={() => this.setState({ isClickedDropdown: false })}
@@ -249,9 +249,9 @@ class TopBanner extends React.Component {
             path={path}
           />
           <div
-            className={`topbanner-banner${topTransparent
-              ? '--transparent'
-              : ''}`}
+            className={`topbanner-banner${
+              topTransparent ? "--transparent" : ""
+            }`}
           >
             <div className="topbanner-logo-container">
               <div className="topbanner-logo">
@@ -267,7 +267,7 @@ class TopBanner extends React.Component {
             {renderMenu}
           </div>
         </div>
-        <div style={{ height: '50px' }} />
+        <div style={{ height: "50px" }} />
       </div>
     );
   }
@@ -289,4 +289,7 @@ const mapDispatchToProps = dispatch => ({
   seeBookHistory: customerId => dispatch(seeBookHistory(customerId))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(TopBanner);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(TopBanner);

@@ -10,14 +10,11 @@ import StarRatingComponent from "react-star-rating-component";
 import { selectTour, selectGuide } from "../../action/SelectAction";
 import TourItem from "../Tours/TourItem/TourItem";
 
-// target props: tourName, tourImage, tourRating, tourPrice, tourLocation
 class CardItem extends React.Component {
   selectTour() {
     this.props.selectTour(this.props.item);
   }
   render() {
-    console.log("ITEM: ", this.props.item);
-    console.log("ROLE: ", this.props.role);
     if (!this.props.isGuide) {
       if (this.props.role == "Guide") {
         return <TourItem tour={this.props.item} />;
