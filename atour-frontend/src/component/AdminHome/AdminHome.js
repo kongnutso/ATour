@@ -17,16 +17,16 @@ class AdminHome extends Component {
           <Flex flexWrap="wrap" justifyContent="center">
             <Box width={4 / 5}>
               <AdminMenuBar activeItem={this.props.match.params.type} />
-              <Route exact path="/admin/approvePayment" component={AdminApprovePaymentPage} />
-              <Route exact path="/admin/approveRefund" component={AdminApproveRefundPage} />
-              <Route exact path="/admin/search" component={AdminSearchPage} />
-              <Route exact path="/admin/approveGuide" component={AdminApproveGuidePage} />
+              <Route exact path="/minda/approvePayment" component={AdminApprovePaymentPage} />
+              <Route exact path="/minda/approveRefund" component={AdminApproveRefundPage} />
+              <Route exact path="/minda/search" component={AdminSearchPage} />
+              <Route exact path="/minda/approveGuide" component={AdminApproveGuidePage} />
             </Box>
           </Flex>
         </div>
       );
 
-    return <Redirect to="/admin" />;
+    return <Redirect to="/minda" />;
   }
 }
 const mapStateToProps = state => {

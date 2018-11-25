@@ -14,7 +14,7 @@ class AdminLogin extends Component {
   };
 
   render() {
-    if (this.state.login) return <Redirect to="/admin/approvePayment" />;
+    if (this.state.login) return <Redirect to="/minda/approvePayment" />;
     return (
       <Flex
         flexWrap="wrap"
