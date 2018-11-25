@@ -16,17 +16,24 @@ test:
     - npm test
 
 build:
+  image: docker:latest
   stage: build
   script: 
     - echo "Building the app"
     - cd atour-backend
-    - npm install --production
-    - npm run build
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.atour-se.net
+    - docker build -t registry.atour-se.net/atour-se:latest .
+    - docker push registry.atour-se.net/atour-se:latest
 
 deploy:
+  image: lachlanevenson/k8s-kubectl:latest
   stage: deploy
   script:
     - echo "Deploy to staging server"
+    - kubectl apply -f atour-backend-deployment.yaml
+    - kubectl apply -f atour-backend-service.yaml
+    - kubectl apply -f db-deployment.yaml
+    - kubectl apply -f db-service.yaml
   environment:
     name: production
     url: https://staging.example.com
