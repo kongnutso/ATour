@@ -13,7 +13,8 @@ test:
   script: 
     - echo "Running tests"
     - cd atour-backend
-    - npm test
+    - npm install --production
+    - npm run test-ci
 
 build:
   stage: build
