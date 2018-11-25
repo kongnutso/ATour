@@ -5,8 +5,7 @@ export const EDIT_GUIDE_USER_INFO = 'EDIT_GUIDE_USER_INFO';
 export function editUserInfo(userInfo, token, role) {
   return async dispatch => {
     try {
-      console.log(userInfo);
-      if (role === 'Customer') {
+      if (role === "Customer") {
         const payload = {
           customerId: userInfo.customerId,
           token,
@@ -17,13 +16,13 @@ export function editUserInfo(userInfo, token, role) {
           .then(res => {
             return res.data;
           });
-        console.log(res.email);
         return dispatch({
           type: EDIT_USER_INFO,
           payload: {
             email: res.email,
             phoneNumber: res.profile.phoneNumber,
-          },
+            profileImageUrl: res.profile.profileImageUrl
+          }
         });
       } else if (role === 'Guide') {
         const payload = {
@@ -32,15 +31,13 @@ export function editUserInfo(userInfo, token, role) {
           birthDate: userInfo.birthDate,
           gender: userInfo.gender,
           phoneNumber: userInfo.phoneNumber,
-          profileImageUrl: userInfo.imageUrl,
+          profileImageUrl: userInfo.profileImageUrl
         };
         const res = await axios
           .post(`http://localhost:3000/guide/${userInfo.guideId}`, payload)
           .then(res => {
             return res.data;
           });
-        console.log('in guide');
-        console.log(res);
         if (res.error) {
           return dispatch({ type: 'INVALID' });
         }
@@ -70,7 +67,7 @@ export function getUserInfo(userName, token) {
         type: GET_USER_INFO,
         payload: userInfo,
       });
-    } catch (e) {}
+    } catch (e) { }
   };
 }
 export const GET_GUIDE_INFO = 'GET_GUIDE_INFO';
@@ -98,7 +95,8 @@ export function getGuideInfo(guideId) {
           availableDate: userInfo.availableDate,
           dealtTrips: userInfo.dealtTrips,
           publishedTours: userInfo.publishedTours,
-          imageUrl: userInfo.imageUrl,
+          profileImageUrl: userInfo.profile.profileImageUrl,
+          imageUrl: userInfo.imageUrl
         };
         return dispatch({
           type: GET_GUIDE_INFO,

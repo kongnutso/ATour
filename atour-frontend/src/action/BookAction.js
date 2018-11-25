@@ -197,3 +197,44 @@ export function refundTrip(tourId, tripId, customerId) {
     }
   };
 }
+
+export const CHENGE_REVIEW = 'CHENGE_REVIEW';
+export function changeReview(review, customerId) {
+  return async dispatch => {
+    try {
+      if (customerId) {
+        const review = await axios
+          .post('http://localhost:3000/customer/...', {
+            review,
+            customerId
+          })
+          .then(res => {
+            return res.data;
+          });
+        return dispatch({
+          type: CHENGE_REVIEW,
+          payload: review
+        });
+      } else {
+        return dispatch({ type: 'INVALID' });
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+}
+
+export const CHANGE_REVIEW_INPUT = 'CHANGE_REVIEW_INPUT';
+export function reviewInputChange(review) {
+  return async dispatch => {
+    return dispatch({
+      type: CHANGE_REVIEW_INPUT,
+      payload: review
+    });
+  };
+}
+
+export const DELETE_REVIEW = 'DELETE_REVIEW';
+export function deleteReview() {
+  //do sth
+}
