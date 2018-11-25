@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import { Flex, Box, Text } from 'rebass';
+import { Box, Text } from 'rebass';
 import axios from 'axios';
 import { connect } from 'react-redux';
 import Table from '../Table';
@@ -39,7 +39,7 @@ const adminApproveColumns = (handleApprove, handleReject) => [
     width: 100,
     Cell: ({ original }) => {
       return (
-        <a href={original.slip} target="_blank">
+        <a href={original.slip} target="_blank" rel="noopener noreferrer">
           View
         </a>
       );

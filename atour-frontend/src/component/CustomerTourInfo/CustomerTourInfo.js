@@ -11,6 +11,7 @@ import { viewProfile, getGuideInfo } from "../../action/UserInfoAction";
 import tourImage from "../../image/TourImage.png";
 import { dateToString } from "../../utils/utils";
 import Review from "../Review/Review";
+import { Parallax, Background } from "react-parallax";
 
 class TourInfo extends React.Component {
   constructor() {
@@ -78,17 +79,7 @@ class TourInfo extends React.Component {
   }
 
   render() {
-    const {
-      tourName,
-      // tourimage,
-      // tourRating,
-      price,
-      //   tourLocation,
-      detail,
-      maximumSize,
-      guideName,
-      trips
-    } = this.props.tourInfo;
+    const { tourName, price, detail, maximumSize, trips } = this.props.tourInfo;
     const tripsInfo = trips.map(t => {
       const showDate = dateToString(t.tripDate);
       return { key: t.tripDate, text: showDate, value: t };
@@ -101,6 +92,7 @@ class TourInfo extends React.Component {
     if (this.state.redirect) {
       return <Redirect to={this.state.to} />;
     }
+    console.log("IMAGEURL: ", this.props.tourInfo.imageUrl);
     return (
       <div style={{ marginBottom: "100px" }}>
         <PopUpModal
@@ -120,7 +112,7 @@ class TourInfo extends React.Component {
           headerText={"Book Fail"}
           bodyText={this.state.errorMessage}
         />
-        <img src={tourImage} className="tourInfo-image" alt="" />
+        {/* <img src={tourImage} className="tourInfo-image" alt="" /> */}
         <div className="tourInfo-container">
           <div className="tourInfo-above-divider">
             <div className="tourInfo-header">
@@ -146,6 +138,16 @@ class TourInfo extends React.Component {
             </div>
           </div>
           <hr className="tourInfo-divider" />
+          <Parallax
+            bgImage={
+              this.props.tourInfo.imageUrl === null
+                ? tourImage
+                : this.props.tourInfo.imageUrl
+            }
+            bgImageAlt="the cat"
+            strength={300}
+            style={{ width: "100%", height: "400px", marginBottom: "50px" }}
+          />
           <div className="tourInfo-detail-container">
             <div className="tourInfo-detail">{detail}</div>
             <div className="tourInfo-booking-container">

@@ -28,28 +28,28 @@ export default class MenuExampleSecondaryPointing extends Component {
         <Menu pointing secondary color="blue" size="huge">
           <Menu.Item
             as={Link}
-            to="/admin/approvePayment"
+            to="/minda/approvePayment"
             name="paymentApproval"
             active={activeItem === 'paymentApproval'}
             onClick={this.handleItemClick}
           />
           <Menu.Item
             as={Link}
-            to="/admin/approveRefund"
+            to="/minda/approveRefund"
             name="refundApproval"
             active={activeItem === 'refundApproval'}
             onClick={this.handleItemClick}
           />
           <Menu.Item
             as={Link}
-            to="/admin/approveGuide"
+            to="/minda/approveGuide"
             name="guideApproval"
             active={activeItem === 'guideApproval'}
             onClick={this.handleItemClick}
           />
           <Menu.Item
             as={Link}
-            to="/admin/search"
+            to="/minda/search"
             name="searchGuide"
             active={activeItem === 'searchGuide'}
             onClick={this.handleItemClick}

@@ -1,11 +1,11 @@
 import React, { Component, Fragment } from 'react';
-import { Flex, Box, Text } from 'rebass';
+import { Box, Text } from 'rebass';
 import { connect } from 'react-redux';
+import axios from 'axios';
 import Table from '../Table';
 import PopUpModal from '../PopUpModal/PopUpModal';
 import COLOR from '../../utils/color';
 import { Button } from '../BaseComponent';
-import axios from 'axios';
 
 const adminApproveColumns = (handleApprove, handleReject) => [
   {

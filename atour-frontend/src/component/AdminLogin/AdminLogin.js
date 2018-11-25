@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Flex, Box, Text } from 'rebass';
 import { Redirect } from 'react-router-dom';
@@ -14,7 +14,7 @@ class AdminLogin extends Component {
   };
 
   render() {
-    if (this.state.login) return <Redirect to="/admin/approvePayment" />;
+    if (this.state.login) return <Redirect to="/minda/approvePayment" />;
     return (
       <Flex
         flexWrap="wrap"
