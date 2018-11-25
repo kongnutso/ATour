@@ -1,0 +1,8 @@
+before_script:
+  - docker --version
+  - docker info
+
+stages:
+  - build
+  - test
+  - deploy
