@@ -22,7 +22,7 @@ class AvailableDateItem extends React.Component {
       <Grid Columns={2}>
         <Grid.Column width={8} textAlign="left">
           <p>
-            - {date}/{month}/{year}
+            - {date}/{month + 1}/{year - 100}
           </p>
         </Grid.Column>
         <Grid.Column width={8} textAlign="right">
@@ -54,15 +54,32 @@ class EditAvailableDate extends React.Component {
       "renderEditAvailableDate",
       "onSubmitNewTrip",
       "handleDateSelect",
-      "deleteAvailableDate"
+      "deleteAvailableDate",
+      "sortTrips"
     );
+  }
+
+  sortTrips(trips) {
+    console.log("TRIP: ", trips);
+    if (trips.length === 0) {
+      return trips;
+    } else {
+      let output = trips.sort(
+        (a, b) => new Date(a.tripDate) - new Date(b.tripDate)
+      );
+      console.log("OUTPUT: ", output);
+      return output;
+    }
   }
 
   handleDateSelect(date) {
     this.setState({
       selectedDate: date
     });
-    console.log("current state: ", this.state);
+    console.log("current state: ", this.state.selectedDate);
+    console.log("date: ", this.state.selectedDate.getDate());
+    console.log("month: ", this.state.selectedDate.getMonth());
+    console.log("year: ", this.state.selectedDate.getYear());
   }
 
   async onSubmitNewTrip() {
@@ -104,7 +121,7 @@ class EditAvailableDate extends React.Component {
           <div>
             <h2>Edit Available Dates</h2>
             <hr color="black" size="50" />
-            {this.state.trips.map(trip => (
+            {this.sortTrips(this.state.trips).map(trip => (
               <AvailableDateItem
                 trip={trip}
                 deleteAvailableDate={this.deleteAvailableDate}
