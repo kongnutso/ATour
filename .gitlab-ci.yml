@@ -1,0 +1,14 @@
+image: node:10
+
+before_script:
+  - ls
+  - docker --version
+
+stages:
+  - build
+  - test
+  - deploy
+
+build-job:
+  script:
+    echo 'build-job is run'
