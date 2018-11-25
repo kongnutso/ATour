@@ -20,6 +20,7 @@ build:
   script: 
     - echo "Building the app"
     - cd atour-backend
+    - npm install --production
     - npm run build
 
 deploy:
