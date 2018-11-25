@@ -19,8 +19,8 @@ import {
 //TODO: create proper config file
 
 // Connection URL
-// const url = 'mongodb://db:27017';
-const url = 'mongodb://localhost:27017';
+const url = 'mongodb://db:27017';
+
 // Database Name
 const dbName = 'atour';
 
