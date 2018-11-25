@@ -19,7 +19,7 @@ spec:
         io.kompose.service: atour-backend
     spec:
       containers:
-        - image: registry.atour-se.net/atour-se:latest
+        - image: registry.gitlab.com/atour/atour/backend:latest
           name: atour-backend
           ports:
             - containerPort: 3000
