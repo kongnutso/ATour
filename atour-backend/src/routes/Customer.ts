@@ -44,7 +44,8 @@ import {
   seeBookHistoryService,
   refundTripService,
   cancelTripService,
-  getTourService
+  getTourService,
+  setFinishedTrip
 } from '../service/CustomerTourService';
 const router = express.Router();
 
@@ -285,6 +286,24 @@ router.post('/seeBookHistory', async (req, res) => {
   }
 });
 
+router.post('/finishTrip', async (req,res) => {
+  try {
+    const db: Db = res.locals.db;
+    const { tripId } = req.body;
+    const trip = await setFinishedTrip( 
+      updateCustomer(db),
+      updateTour(db),
+      updateTrip(db),
+      getTrip(db),
+      getCustomer(db),
+      getTour(db)
+    ) (tripId);
+    res.json(trip)
+  }catch(e){
+    res.json({trip: null, error: e.message})
+  }
+})
+
 router.post('/refundTrip', async (req, res) => {
   try {
     const db: Db = res.locals.db;
@@ -324,5 +343,6 @@ router.post('/cancelTrip', async (req, res) => {
     res.json({ trip: null, error: error.message });
   }
 });
+
 
 export default router;

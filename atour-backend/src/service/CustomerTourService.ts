@@ -11,7 +11,7 @@ import {
   DeleteReviewDb
 } from '../repository/Tour';
 
-import { Trip, Review, TripType, Tour } from '../domain/types';
+import { Trip, Review, TripType, Tour, FinishedTrip } from '../domain/types';
 
 import {
   bookTrip,
@@ -79,6 +79,35 @@ export type CancelTripService = (
 ) => Promise<Trip>;
 
 export type GetTourService = (tourId: string) => Promise<Tour>;
+
+export type FinishedTripService = (tripId: string) => Promise<Trip>;
+
+export function setFinishedTrip(
+  updateCustomerDb:UpdateCustomerDb,
+  updateTourDb: UpdateTourDb,
+  updateTripDb: UpdateTripDb,
+  getTripDb: GetTripDb,
+  getCustomerDb: GetCustomerDb,
+  getTourDb: GetTourDb
+):FinishedTripService {
+  return async tripId => {
+    const trip = await getTripDb(tripId);
+    const finishDate = trip.tripDate;
+    const _type = TripType.FinishedTrip;
+    if (trip._type === TripType.ApprovedTrip && new Date().getTime() - new Date(trip.tripDate).getTime() >= 0 ){
+      const acustomer = await getCustomerDb(trip.bookInfo.customerId)
+      const updatetrip: FinishedTrip = {...trip, _type, finishDate}
+      const customer = await updateCustomerTripHistory()(acustomer, updatetrip);
+      await updateCustomerDb(customer);
+      const tour = await getTourDb(trip.tourId);
+      await updateTripToTour()(tour, updatetrip);
+      await updateTripDb(updatetrip)
+      return updatetrip;
+    }
+      return trip;
+    
+  }
+}
 
 export function getTourService(getTourDb: GetTourDb): GetTourService {
   return async tourId => {

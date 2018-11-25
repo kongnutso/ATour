@@ -1,15 +1,15 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import autobind from 'react-autobind';
-import { Flex, Box } from 'rebass';
-import { Redirect } from 'react-router-dom';
-import tour from '../../image/Tour.jpg';
-import { selectBookedTrip } from '../../action/BookAction';
-import { getUserInfo } from '../../action/UserInfoAction';
-import { seeBookHistory } from '../../action/BookAction';
-import { dateToString } from '../../utils/utils';
-import { toStatus } from '../../utils/TripType';
-import './styles.css';
+import React from "react";
+import { connect } from "react-redux";
+import autobind from "react-autobind";
+import { Flex, Box } from "rebass";
+import { Redirect } from "react-router-dom";
+import tour from "../../image/Tour.jpg";
+import { selectBookedTrip } from "../../action/BookAction";
+import { getUserInfo } from "../../action/UserInfoAction";
+import { seeBookHistory } from "../../action/BookAction";
+import { dateToString } from "../../utils/utils";
+import { toStatus } from "../../utils/TripType";
+import "./styles.css";
 
 class BookedHistory extends React.Component {
   constructor() {
@@ -23,8 +23,9 @@ class BookedHistory extends React.Component {
     this.props.seeBookHistory(this.props.customerId);
   }
 
-  onSelect(tripId) {
-    this.props.selectBookedTrip(tripId);
+  onSelect(trip) {
+    const { tripId, tripDate, _type } = trip;
+    this.props.selectBookedTrip(tripId, tripDate, _type);
     this.setState({ redirect: true });
   }
 
@@ -33,7 +34,8 @@ class BookedHistory extends React.Component {
       <div key={item.tripId} className="bookedhistory-list">
         <div
           onClick={() => {
-            this.onSelect(item.tripId);
+            console.log(item);
+            this.onSelect(item);
           }}
         >
           <div className="bookedhistory-table">
@@ -108,7 +110,8 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => ({
-  selectBookedTrip: tour => dispatch(selectBookedTrip(tour)),
+  selectBookedTrip: (tripId, tripDate, _type) =>
+    dispatch(selectBookedTrip(tripId, tripDate, _type)),
   getUserInfo: (userName, token) => dispatch(getUserInfo(userName, token)),
   seeBookHistory: customerId => dispatch(seeBookHistory(customerId)),
 });
