@@ -256,7 +256,7 @@ describe('Admin', () => {
     );
     expect(resultTrip).toEqual(refundedTrip);
   });
-  test('RefundTrip', async () => {
+  test('RejectTrip', async () => {
     const requestedTrip: RefundRequestedTrip = {
       _type: TripType.RefundRequestedTrip,
       tripId: 'tripId',
