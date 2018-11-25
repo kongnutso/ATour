@@ -7,6 +7,7 @@ import { Card } from "semantic-ui-react";
 // tourName, tourImage, tourRating, tourPrice, tourLocation
 const Cards = props => {
   const { isGuide, items, role } = props;
+  console.log(items);
   return (
     <Flex
       style={{

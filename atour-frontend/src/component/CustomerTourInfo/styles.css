@@ -22,6 +22,12 @@
   margin-top: auto;
 }
 
+.tourInfo-review {
+  margin-bottom: 50px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
 .tourInfo-guideName {
   margin-top: 10px;
   color: #26abdc;
@@ -43,7 +49,7 @@
 .tourInfo-detail-container {
   display: flex;
   width: 100%;
-  min-height: 400px
+  min-height: 400px;
 }
 
 .tourInfo-detail {
