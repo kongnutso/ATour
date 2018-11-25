@@ -24,7 +24,7 @@ build:
   script: 
     - echo "Building the app"
     - cd atour-backend
-    - sudo service docker restart
+    - sudo systemctl start docker
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
     - docker build -t registry.gitlab.com/atour/atour/backend:latest .
     - docker push registry.gitlab.com/atour/atour/backend:latest
