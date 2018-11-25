@@ -1,21 +1,16 @@
 import React, { Component, Fragment } from 'react';
+import { connect } from 'react-redux';
 import { Flex, Box, Text } from 'rebass';
 import { Redirect } from 'react-router-dom';
 import { Input, SearchButton as Button } from '../BaseComponent';
-
-export default class AdminLogin extends Component {
-  componentDidMount() {
-    // this.setState({ activeItem: mapPathName[activeItem] });
-  }
-
+import { login } from '../../action/ApplicationAction';
+class AdminLogin extends Component {
   state = { username: '', password: '', login: false };
 
   handleItemClick = () => {
     const { username, password } = this.state;
-    console.log(username, password);
-    if (username === 'ching' && password === 'ching') {
-      this.setState({ login: true });
-    }
+    this.props.login(username, password, 'Admin');
+    this.setState({ login: true });
   };
 
   render() {
@@ -24,14 +19,25 @@ export default class AdminLogin extends Component {
       <Flex
         flexWrap="wrap"
         justifyContent="center"
-        style={{ height: '100vh', marginTop: '-50px' }}
+        style={{
+          height: '100vh',
+          marginTop: '-60px',
+          backgroundColor: '#1fc8db',
+          backgroundImage: 'linear-gradient(141deg, #9fb8ad 0%, #1fc8db 51%, #2cb5e8 75%)',
+        }}
         alignItems="center"
       >
-        <Flex width={2 / 5} flexWrap="wrap" style={{ height: '350px' }}>
-          <Box width={1} my={3}>
+        <Flex
+          width={2 / 5}
+          p={4}
+          flexWrap="wrap"
+          style={{ height: '350px', backgroundColor: '#fff' }}
+          alignItems="center"
+        >
+          <Box width={1} my={2}>
             <Text fontSize={4}>
               <i style={{ marginRight: '10px' }} className="fa fa-address-card-o" />
-              Welcome to Admin Page{' '}
+              Welcome to Admin Page
             </Text>
           </Box>
           <Text mt={3}> Username</Text>
@@ -46,8 +52,24 @@ export default class AdminLogin extends Component {
           />
           <Box mt={3} width={1} />
           <Button onClick={this.handleItemClick}>Log in</Button>
+          <Box mb={3} />
         </Flex>
       </Flex>
     );
   }
 }
+
+const mapStateToProps = state => {
+  return {
+    isLoginSuccess: state.user.isLoginSuccess,
+  };
+};
+
+const mapDispatchToProps = dispatch => ({
+  login: (userName, password, role) => dispatch(login(userName, password, role)),
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AdminLogin);
