@@ -18,6 +18,8 @@ spec:
       labels:
         io.kompose.service: atour-backend
     spec:
+      imagePullSecrets:
+        - name: gitlab-auth
       containers:
         - image: registry.gitlab.com/atour/atour/backend:latest
           name: atour-backend
