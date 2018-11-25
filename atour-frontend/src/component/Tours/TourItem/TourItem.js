@@ -9,6 +9,7 @@ import styled from "styled-components";
 import StarRatingComponent from "react-star-rating-component";
 import TripItem from "../TripItem/TripItem";
 import "./styles.css";
+import { selectTour } from "../../../action/SelectAction";
 
 const TripSection = styled(Card.Content)`
   padding: 0.5em 1.5em !important;
@@ -18,6 +19,10 @@ const TripSection = styled(Card.Content)`
 `;
 
 class TourItem extends React.Component {
+  selectTour() {
+    this.props.selectTour(this.props.item);
+  }
+
   filterString(string, threshold) {
     return string.substring(0, threshold) + "...";
   }
@@ -46,7 +51,12 @@ class TourItem extends React.Component {
   }
   renderContent() {
     return (
-      <Card>
+      <Card
+        style={{ height: "480px" }}
+        onClick={() => {
+          this.selectTour(this.props.item);
+        }}
+      >
         <Card.Content>
           <Image
             floated="right"
@@ -56,6 +66,7 @@ class TourItem extends React.Component {
                 ? require("../../../image/TourImage.png")
                 : this.props.tour.imageUrl
             }
+            style={{ height: "200px" }}
           />
           <Card.Header>
             {this.filterString(this.props.tour.tourName, 30)}
@@ -66,10 +77,10 @@ class TourItem extends React.Component {
           </Card.Description>
         </Card.Content>
         <TripSection>
-          <Grid columns={4}>
+          <Grid columns={4} style={{ height: "100px" }}>
             <Grid.Row textAlign="center">
-              {this.filterTrips(this.props.tour.trips).map(date => (
-                <Grid.Column>
+              {this.filterTrips(this.props.tour.trips).map((date, index) => (
+                <Grid.Column key={index}>
                   <TripItem date={date} />
                 </Grid.Column>
               ))}
@@ -99,7 +110,9 @@ const mapStateToProps = state => {
   };
 };
 
-const mapDispatchToProps = dispatch => ({});
+const mapDispatchToProps = dispatch => ({
+  selectTour: tour => dispatch(selectTour(tour))
+});
 
 export default connect(
   mapStateToProps,

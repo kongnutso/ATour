@@ -36,26 +36,6 @@ const Dec = ({ label, value, onChange }) => {
   return <Field label={label} onChange={onChange} value={extractedValue} />;
 };
 
-// function maximumSizeValidation(sizes) {
-//   let minimumSize = sizes.minimumSize ? sizes.minimumSize : 0;
-//   let maximumSize = sizes.maximumSize;
-//   let regex = /^(\$|)([1-9]\d{0,2}(\,\d{3})*|([1-9]\d*))(\.\d{2})?$/;
-
-//   console.log("min ", parseInt(minimumSize));
-//   console.log("max ", parseInt(maximumSize));
-//   let passed = maximumSize.match(regex);
-//   if (
-//     passed == null ||
-//     maximumSize.length > 50 ||
-//     !minimumSize ||
-//     !maximumSize ||
-//     parseInt(minimumSize) > parseInt(maximumSize)
-//   ) {
-//     return "maximum group size must ...";
-//   }
-//   return false;
-// }
-
 class EditTourModal extends React.Component {
   constructor(props) {
     console.log("MARK: ", props);

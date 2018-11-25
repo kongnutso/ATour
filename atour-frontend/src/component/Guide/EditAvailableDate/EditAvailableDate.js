@@ -121,8 +121,9 @@ class EditAvailableDate extends React.Component {
           <div>
             <h2>Edit Available Dates</h2>
             <hr color="black" size="50" />
-            {this.sortTrips(this.state.trips).map(trip => (
+            {this.sortTrips(this.state.trips).map((trip, index) => (
               <AvailableDateItem
+                key={index}
                 trip={trip}
                 deleteAvailableDate={this.deleteAvailableDate}
               />

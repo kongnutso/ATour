@@ -41,9 +41,6 @@ function maximumSizeValidation(sizes) {
   let minimumSize = sizes.minimumSize ? sizes.minimumSize : 0;
   let maximumSize = sizes.maximumSize;
   let regex = /^(\$|)([1-9]\d{0,2}(\,\d{3})*|([1-9]\d*))(\.\d{2})?$/;
-
-  console.log("min ", parseInt(minimumSize));
-  console.log("max ", parseInt(maximumSize));
   let passed = maximumSize.match(regex);
   if (
     passed == null ||
@@ -92,8 +89,6 @@ class PublishNewTourModal extends React.Component {
   }
 
   async onSubmitNewTourInfo() {
-    console.log("SUBMITTING...");
-    console.log(this.state.error);
     const {
       error: { tourName, price, minimumSize, maximumSize, detail, imageUrl }
     } = this.state;
@@ -111,7 +106,6 @@ class PublishNewTourModal extends React.Component {
           imageUrl: value.imageUrl
         })
         .then(res => {
-          console.log("submitted: ", res.data);
           this.onSubmitted();
         });
     }
@@ -142,7 +136,6 @@ class PublishNewTourModal extends React.Component {
       const error = validate(value);
       newError[field] = error;
     }
-    console.log("compare", isCompare);
     if (isCompare) {
       newValue[field] = mainValue;
     } else {

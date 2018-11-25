@@ -9,8 +9,8 @@ const Tours = props => {
   if (props.role === "Guide") {
     return (
       <Card.Group centered stackable itemsPerRow={3}>
-        {props.tours.map(tour => (
-          <TourItem tour={tour} />
+        {props.tours.map((tour, index) => (
+          <TourItem tour={tour} key={index} />
         ))}
       </Card.Group>
     );
