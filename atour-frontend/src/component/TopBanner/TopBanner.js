@@ -193,14 +193,8 @@ class TopBanner extends React.Component {
           <div className="topbanner-as-username">
             {this.props.userInfo.userName.substring(0, 8)}
           </div>
-<<<<<<< HEAD
 
           <i className="fa fa-arrow-circle-down topbanner-dropdown-arrow" />
-=======
-          {this.props.userInfo.role === "Admin" && (
-            <i className="fa fa-arrow-circle-down topbanner-dropdown-arrow" />
-          )}
->>>>>>> 54a0ff16cb6d96ab3b535e3896fb37c30d33c5e3
         </div>
         {dropDown}
       </div>

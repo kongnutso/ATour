@@ -190,7 +190,6 @@ class BookedHistoryInfo extends React.Component {
         groupSize,
         price,
         tripId,
-
         tourId
       },
       customerId
@@ -476,6 +475,7 @@ class BookedHistoryInfo extends React.Component {
 }
 
 const mapStateToProps = state => {
+  console.log(state);
   return {
     bookInfo: state.bookedHistoryInfo,
     customerId: state.user.customerId

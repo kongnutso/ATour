@@ -1,8 +1,9 @@
-import axios from 'axios';
+import axios from "axios";
+import { APPROVETRIP } from "../utils/TripType";
 
-export const BOOK_TRIP = 'BOOK_TRIP';
-export const BOOK_TRIP_ERROR = 'BOOK_TRIP_ERROR';
-export const CLEAR_BOOK_MESSAGE = '  CLEAR_BOOK_MESSAGE';
+export const BOOK_TRIP = "BOOK_TRIP";
+export const BOOK_TRIP_ERROR = "BOOK_TRIP_ERROR";
+export const CLEAR_BOOK_MESSAGE = "  CLEAR_BOOK_MESSAGE";
 
 export function clearBookMessage() {
   return { type: CLEAR_BOOK_MESSAGE };
@@ -30,20 +31,17 @@ export function bookTrip(
         guideName
       };
       const res = await axios
-        .post('http://localhost:3000/customer/bookTrip', req)
+        .post("http://localhost:3000/customer/bookTrip", req)
         .then(res => {
           return res.data;
         });
-      console.log(res.error);
       if (res.error) {
         return dispatch({
           type: BOOK_TRIP_ERROR,
           payload: { message: res.error }
         });
       } else {
-        console.log(res);
         const payload = await getTrip(res.tripId);
-        console.log(payload);
         return dispatch({
           type: BOOK_TRIP,
           payload
@@ -79,11 +77,38 @@ async function getTrip(tripId) {
   }
 }
 
-export const SELECT_BOOKED_TRIP = 'SELECT_BOOKED_TRIP';
-export function selectBookedTrip(tripId) {
+async function finishTrip(tripId) {
+  try {
+    const res = await axios
+      .post("http://localhost:3000/customer/finishTrip", { tripId })
+      .then(res => {
+        return res.data;
+      });
+    const payload = {
+      ...res.bookInfo,
+      guideId: res.guide.guideId,
+      tourName: res.tourName,
+      tripDate: res.tripDate,
+      _type: res._type,
+      tripId: res.tripId,
+      tourId: res.tourId,
+      uploadedFileDate: res.paidDate,
+      slip: res.slipImages
+    };
+    return payload;
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+export const SELECT_BOOKED_TRIP = "SELECT_BOOKED_TRIP";
+export function selectBookedTrip(tripId, tripDate, _type) {
   return async dispatch => {
     try {
-      const payload = await getTrip(tripId);
+      const finish =
+        new Date() - new Date(tripDate) > 0 && _type === APPROVETRIP;
+      const payload = finish ? await finishTrip(tripId) : await getTrip(tripId);
+
       console.log(payload);
       return dispatch({
         type: SELECT_BOOKED_TRIP,
@@ -95,13 +120,13 @@ export function selectBookedTrip(tripId) {
   };
 }
 
-export const SET_IMAGE_SLIP = 'SET_IMAGE_SLIP';
+export const SET_IMAGE_SLIP = "SET_IMAGE_SLIP";
 export function setImageSlip(slipUrl, tripId, tourId, customerId) {
   return async dispatch => {
     try {
       if (tripId) {
         const res = await axios
-          .post('http://localhost:3000/customer/uploadPayment', {
+          .post("http://localhost:3000/customer/uploadPayment", {
             tourId,
             tripId,
             customerId,
@@ -119,19 +144,19 @@ export function setImageSlip(slipUrl, tripId, tourId, customerId) {
           }
         });
       } else {
-        return dispatch({ type: 'INVALID' });
+        return dispatch({ type: "INVALID" });
       }
     } catch (e) {}
   };
 }
 
-export const SEE_BOOK_HISTORY = 'SEE_BOOK_HISTORY';
+export const SEE_BOOK_HISTORY = "SEE_BOOK_HISTORY";
 export function seeBookHistory(customerId) {
   return async dispatch => {
     try {
       if (customerId) {
         const tour = await axios
-          .post('http://localhost:3000/customer/seeBookHistory', { customerId })
+          .post("http://localhost:3000/customer/seeBookHistory", { customerId })
           .then(res => {
             return res.data;
           });
@@ -140,19 +165,19 @@ export function seeBookHistory(customerId) {
           payload: tour
         });
       } else {
-        return dispatch({ type: 'INVALID' });
+        return dispatch({ type: "INVALID" });
       }
     } catch (e) {}
   };
 }
 
-export const CANCEL_TRIP = 'CANCEL_TRIP';
+export const CANCEL_TRIP = "CANCEL_TRIP";
 export function cancelTrip(tourId, tripId, customerId) {
   return async dispatch => {
     try {
       if (customerId) {
         const cancel = await axios
-          .post('http://localhost:3000/customer/cancelTrip', {
+          .post("http://localhost:3000/customer/cancelTrip", {
             tourId: tourId,
             tripId: tripId,
             customerId: customerId
@@ -165,19 +190,19 @@ export function cancelTrip(tourId, tripId, customerId) {
           payload: cancel
         });
       } else {
-        return dispatch({ type: 'INVALID' });
+        return dispatch({ type: "INVALID" });
       }
     } catch (e) {}
   };
 }
 
-export const REFUND_TRIP = 'REFUND_TRIP';
+export const REFUND_TRIP = "REFUND_TRIP";
 export function refundTrip(tourId, tripId, customerId) {
   return async dispatch => {
     try {
       if (customerId) {
         const refund = await axios
-          .post('http://localhost:3000/customer/refundTrip', {
+          .post("http://localhost:3000/customer/refundTrip", {
             tourId: tourId,
             tripId: tripId,
             customerId: customerId
@@ -190,7 +215,7 @@ export function refundTrip(tourId, tripId, customerId) {
           payload: refund
         });
       } else {
-        return dispatch({ type: 'INVALID' });
+        return dispatch({ type: "INVALID" });
       }
     } catch (e) {
       console.log(e);
@@ -198,13 +223,13 @@ export function refundTrip(tourId, tripId, customerId) {
   };
 }
 
-export const CHENGE_REVIEW = 'CHENGE_REVIEW';
+export const CHENGE_REVIEW = "CHENGE_REVIEW";
 export function changeReview(review, customerId) {
   return async dispatch => {
     try {
       if (customerId) {
         const review = await axios
-          .post('http://localhost:3000/customer/...', {
+          .post("http://localhost:3000/customer/...", {
             review,
             customerId
           })
@@ -216,7 +241,7 @@ export function changeReview(review, customerId) {
           payload: review
         });
       } else {
-        return dispatch({ type: 'INVALID' });
+        return dispatch({ type: "INVALID" });
       }
     } catch (e) {
       console.log(e);
@@ -224,7 +249,7 @@ export function changeReview(review, customerId) {
   };
 }
 
-export const CHANGE_REVIEW_INPUT = 'CHANGE_REVIEW_INPUT';
+export const CHANGE_REVIEW_INPUT = "CHANGE_REVIEW_INPUT";
 export function reviewInputChange(review) {
   return async dispatch => {
     return dispatch({
@@ -234,7 +259,7 @@ export function reviewInputChange(review) {
   };
 }
 
-export const DELETE_REVIEW = 'DELETE_REVIEW';
+export const DELETE_REVIEW = "DELETE_REVIEW";
 export function deleteReview() {
   //do sth
 }
