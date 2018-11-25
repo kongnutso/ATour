@@ -8,7 +8,8 @@ import {
   getGuideForLogin,
   getTokenForGuide,
   getGuide,
-  getPublishedToursOfGuide
+  getPublishedToursOfGuide,
+  getDealtTrip
 } from '../repository/Guide';
 import {
   registerGuideService,
@@ -16,6 +17,7 @@ import {
   editGuideService,
   getGuideService
 } from '../service/GuideService';
+import { getCustomer } from '../repository/Customer';
 const router = express.Router();
 
 router.post('/login', async (req, res) => {
@@ -41,7 +43,9 @@ router.get('/:guideId', async (req, res) => {
     const { guideId } = req.params;
     const guideDto = await getGuideService(
       getGuide(db),
-      getPublishedToursOfGuide(db)
+      getPublishedToursOfGuide(db),
+      getDealtTrip(db),
+      getCustomer(db)
     )(guideId);
     res.json(guideDto);
   } catch (e) {
@@ -116,4 +120,14 @@ router.post('/:guideId', async (req, res) => {
   }
 });
 
+router.get('/dealtTrip/:guideId', async (req, res) => {
+  try {
+    const db: Db = res.locals.db;
+    const { guideId } = req.params;
+    const dealtTrips = await getDealtTrip(db)(guideId);
+    res.json(dealtTrips);
+  } catch (e) {
+    res.json(e.message);
+  }
+});
 export default router;

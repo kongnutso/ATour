@@ -5,12 +5,14 @@ import {
   GetGuideForLogin,
   GetTokenForGuide,
   GetGuideDb,
-  GetPublishedToursOfGuide
+  GetPublishedToursOfGuide,
+  GetDealtTrip
 } from '../repository/Guide';
 import { registerGuide, editGuide } from '../domain/Guide';
-import { Guide, Gender, UserProfile, GuideType } from '../domain/types';
+import { Guide, Gender, UserProfile, GuideType,  TripType } from '../domain/types';
 import { IdGenerator } from '../domain/Tour';
-import { GuideDto } from './dtoTypes';
+import { GuideDto, DealtTripDto } from './dtoTypes';
+import { GetCustomerDb } from 'repository/Customer';
 
 export type RegisterGuideService = (
   userName: string,
@@ -105,7 +107,9 @@ export function editGuideService(
 
 export function getGuideService(
   getGuide: GetGuideDb,
-  getPublishedTourOfGuide: GetPublishedToursOfGuide
+  getPublishedTourOfGuide: GetPublishedToursOfGuide,
+  getDealtTrip: GetDealtTrip,
+  getCustomer: GetCustomerDb
 ): GetGuideService {
   return async guideId => {
     const guide = await getGuide(guideId);
@@ -116,9 +120,27 @@ export function getGuideService(
       }
       default: {
         const publishedTours = await getPublishedTourOfGuide(guideId);
-        const guideDto: GuideDto = { ...guide, publishedTours };
+        const dealtTrips = await getDealtTrip(guideId);
+        let dealtTripsDto: DealtTripDto[] = [];
+        for(let i=0; i < dealtTrips.length; i++){
+          const trip = dealtTrips[i];
+          if (trip._type === TripType.ApprovedTrip) {
+            const customerId = trip.bookInfo.customerId
+            const customer = await getCustomer(customerId);
+            const dealtTripDto: DealtTripDto = { ...trip, customer };
+            dealtTripsDto = [...dealtTripsDto, dealtTripDto];
+          } else {
+            throw new Error('dealtTrip error');
+          }
+        }
+        const guideDto: GuideDto = { 
+          ...guide,
+          publishedTours,
+          dealtTrips: dealtTrips,
+          dealtTripsDto: dealtTripsDto };
         return guideDto;
       }
     }
   };
 }
+
