@@ -1,16 +1,17 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import './styles.css';
-import { Dropdown } from 'semantic-ui-react';
-import StarRatingComponent from 'react-star-rating-component';
-import PopUpModal from '../PopUpModal/PopUpModal';
-import { bookTrip, clearBookMessage } from '../../action/BookAction';
-import autobind from 'react-autobind';
-import { Redirect } from 'react-router-dom';
-import { viewProfile, getGuideInfo } from '../../action/UserInfoAction';
-import tourImage from '../../image/TourImage.png';
-import { dateToString } from '../../utils/utils';
-import Review from '../Review/Review'
+import React from "react";
+import { connect } from "react-redux";
+import "./styles.css";
+import { Dropdown } from "semantic-ui-react";
+import StarRatingComponent from "react-star-rating-component";
+import PopUpModal from "../PopUpModal/PopUpModal";
+import { bookTrip, clearBookMessage } from "../../action/BookAction";
+import autobind from "react-autobind";
+import { Redirect } from "react-router-dom";
+import { viewProfile, getGuideInfo } from "../../action/UserInfoAction";
+import tourImage from "../../image/TourImage.png";
+import { dateToString } from "../../utils/utils";
+import Review from "../Review/Review";
+import { Parallax, Background } from "react-parallax";
 
 class TourInfo extends React.Component {
   constructor() {
@@ -22,16 +23,16 @@ class TourInfo extends React.Component {
       errorDialog: false,
       groupSize: 0,
       redirect: false,
-      to: '/'
+      to: "/"
     };
     autobind(this);
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.bookMessage !== this.props.bookMessage) {
-      if (nextProps.bookMessage === 'done') {
+      if (nextProps.bookMessage === "done") {
         this.props.clearBookMessage();
-        this.setState({ redirect: true, to: '/bookedHistoryInfo' });
+        this.setState({ redirect: true, to: "/bookedHistoryInfo" });
       } else if (nextProps.bookMessage) {
         this.setState({
           errorDialog: true,
@@ -65,7 +66,7 @@ class TourInfo extends React.Component {
     if (!selectedTrip || !selectedTrip.tripId) {
       this.setState({
         errorDialog: true,
-        errorMessage: 'Please select booking date'
+        errorMessage: "Please select booking date"
       });
     } else if (groupSize <= maximumSize && groupSize >= minimumSize) {
       this.setState({ openConfirm: true });
@@ -94,20 +95,21 @@ class TourInfo extends React.Component {
       return { key: t.tripDate, text: showDate, value: t };
     });
     tripsInfo.unshift({
-      key: 'starter',
-      text: 'Please choose date',
+      key: "starter",
+      text: "Please choose date",
       value: {}
     });
     if (this.state.redirect) {
       return <Redirect to={this.state.to} />;
     }
+    console.log("IMAGEURL: ", this.props.tourInfo.imageUrl);
     return (
-      <div style={{ marginBottom: '100px' }}>
+      <div style={{ marginBottom: "100px" }}>
         <PopUpModal
           isOpen={this.state.openConfirm}
           onCloseModal={() => this.setState({ openConfirm: false })}
-          headerText={'Book Confirmation'}
-          bodyText={'Are you sure to book this trip ?'}
+          headerText={"Book Confirmation"}
+          bodyText={"Are you sure to book this trip ?"}
           type="Confirmation"
           onConfirm={this.onConfirm}
         />
@@ -117,10 +119,10 @@ class TourInfo extends React.Component {
             this.props.clearBookMessage();
             this.setState({ errorDialog: false });
           }}
-          headerText={'Book Fail'}
+          headerText={"Book Fail"}
           bodyText={this.state.errorMessage}
         />
-        <img src={tourImage} className="tourInfo-image" alt="" />
+        {/* <img src={tourImage} className="tourInfo-image" alt="" /> */}
         <div className="tourInfo-container">
           <div className="tourInfo-above-divider">
             <div className="tourInfo-header">
@@ -137,25 +139,35 @@ class TourInfo extends React.Component {
               <div
                 onClick={() => {
                   this.props.viewProfile();
-                  this.setState({ redirect: true, to: '/editProfile' });
+                  this.setState({ redirect: true, to: "/editProfile" });
                 }}
                 className="tourInfo-guideName"
               >
-                by {this.props.guide ? this.props.guide.userName : ''}
+                by {this.props.guide ? this.props.guide.userName : ""}
               </div>
             </div>
           </div>
           <hr className="tourInfo-divider" />
+          <Parallax
+            bgImage={
+              this.props.tourInfo.imageUrl === null
+                ? tourImage
+                : this.props.tourInfo.imageUrl
+            }
+            bgImageAlt="the cat"
+            strength={300}
+            style={{ width: "100%", height: "400px", marginBottom: "50px" }}
+          />
           <div className="tourInfo-detail-container">
             <div className="tourInfo-detail">{detail}</div>
             <div className="tourInfo-booking-container">
               Available date
               <Dropdown
                 style={{
-                  marginTop: '10px',
-                  width: '100%',
-                  marginBottom: '10px',
-                  minWidth: '30%'
+                  marginTop: "10px",
+                  width: "100%",
+                  marginBottom: "10px",
+                  minWidth: "30%"
                 }}
                 placeholder="Choose Date"
                 selection
@@ -182,8 +194,8 @@ class TourInfo extends React.Component {
               <button
                 onClick={() => this.onSubmit()}
                 className={
-                  'tourInfo-booking-submit' +
-                  (!this.props.user.userName ? '-disabled' : '')
+                  "tourInfo-booking-submit" +
+                  (!this.props.user.userName ? "-disabled" : "")
                 }
                 disabled={!this.props.user.userName}
               >
@@ -191,8 +203,7 @@ class TourInfo extends React.Component {
               </button>
             </div>
           </div>
-          <Review></Review>
-
+          <Review />
         </div>
       </div>
     );

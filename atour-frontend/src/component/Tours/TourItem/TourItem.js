@@ -24,7 +24,9 @@ class TourItem extends React.Component {
   }
 
   filterString(string, threshold) {
-    return string.substring(0, threshold) + "...";
+    return (
+      string.substring(0, threshold) + (string.length > threshold ? "..." : "")
+    );
   }
 
   filterTrips(trips) {
