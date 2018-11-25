@@ -57,6 +57,8 @@ type CancelTrip = (trip: Trip, date: Date) => CancelledTrip;
 
 type FreeTrip = (trip: Trip) => UnbookedTrip;
 
+type UpdateReviewToTour = (tour: Tour, review: Review) => Tour;
+
 
 export function bookTrip(): BookTrip {
   return (unbookedTrip, customerId, size, price, bookDate) => {
@@ -188,6 +190,23 @@ export function updateTripToTour(): UpdateTripToTour {
     return tour;
   };
 }
+
+export function updateReviewToTour(): UpdateReviewToTour {
+  return (tour, review) => {
+    const { reviews } = tour;
+    const reviewList = List(reviews);
+    const updateIdx = reviewList.findIndex(r => r.reviewId === review.reviewId);
+    if (updateIdx != -1) {
+      const updatedList = reviewList.set(updateIdx, review);
+      return {
+        ...tour,
+        review: updatedList.toArray()
+      };
+    }
+    return tour;
+  };
+}
+
 
 export function updateCustomerTripHistory(): UpdateCustomerTripHistory {
   return (customer, trip) => {

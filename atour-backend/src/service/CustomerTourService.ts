@@ -1,4 +1,4 @@
-import { GetCustomerDb, UpdateCustomerDb } from '../repository/Customer';
+import { GetCustomerDb, UpdateCustomerDb} from '../repository/Customer';
 
 import {
   GetTourDb,
@@ -25,9 +25,11 @@ import {
   addTripToCustomer,
   refundTrip,
   cancelTrip,
-  freeTrip
+  freeTrip,
+  updateReviewToTour
 } from '../domain/CustomerTour';
 import { IdGenerator, DateGenerator } from 'domain/Tour';
+import { ReviewDto, TourDto } from './dtoTypes';
 
 export type BookTripService = (
   tripId: string,
@@ -53,6 +55,7 @@ export type AddReviewService = (
 
 export type EditReviewService = (
   tourId: string,
+  tripId: string,
   customerId: string,
   reviewId: string,
   comment: string
@@ -60,6 +63,7 @@ export type EditReviewService = (
 
 export type RemoveReviewService = (
   tourId: string,
+  tripId: string,
   customerId: string,
   reviewId: string
 ) => Promise<Review>;
@@ -82,6 +86,9 @@ export type GetTourService = (tourId: string) => Promise<Tour>;
 
 export type FinishedTripService = (tripId: string) => Promise<Trip>;
 
+export type GetTourReviewService = (tourId: string) => Promise<TourDto>;
+
+
 export function setFinishedTrip(
   updateCustomerDb:UpdateCustomerDb,
   updateTourDb: UpdateTourDb,
@@ -96,7 +103,7 @@ export function setFinishedTrip(
     const _type = TripType.FinishedTrip;
     if (trip._type === TripType.ApprovedTrip && new Date().getTime() - new Date(trip.tripDate).getTime() >= 0 ){
       const acustomer = await getCustomerDb(trip.bookInfo.customerId)
-      const updatetrip: FinishedTrip = {...trip, _type, finishDate}
+      const updatetrip: FinishedTrip = {...trip, _type, finishDate, review: null}
       const customer = await updateCustomerTripHistory()(acustomer, updatetrip);
       await updateCustomerDb(customer);
       const tour = await getTourDb(trip.tourId);
@@ -189,7 +196,10 @@ export function uploadPaymentService(
 export function addReviewService(
   getTourDb: GetTourDb,
   getTripDb: GetTripDb,
+  getCustomer: GetCustomerDb,
   updateTourDb: UpdateTourDb,
+  updateTripDb: UpdateTripDb,
+  updateCustomerDb: UpdateCustomerDb,
   saveReviewDb: SaveReviewDb,
   idGenerator: IdGenerator,
   dateGenerator: DateGenerator
@@ -197,6 +207,7 @@ export function addReviewService(
   return async (tourId, tripId, customerId, comment) => {
     const tour = await getTourDb(tourId);
     const trip = await getTripDb(tripId);
+    const customer = await getCustomer(customerId);
     switch (trip._type) {
       case TripType.FinishedTrip: {
         const review = createReview(idGenerator)(
@@ -205,10 +216,14 @@ export function addReviewService(
           comment,
           dateGenerator()
         );
-
-        const updatedTour = addReviewToTour()(tour, review);
+        const updatedReviewTrip: FinishedTrip = {...trip,review: review};
+        const updatedReviewTour = addReviewToTour()(tour, review);
+        const updatedTripTour = updateTripToTour()(updatedReviewTour, updatedReviewTrip);
+        const updatedCustomer = updateCustomerTripHistory()(customer, updatedReviewTrip);
+        await updateTripDb(updatedReviewTrip);
         await saveReviewDb(review);
-        await updateTourDb(updatedTour);
+        await updateTourDb(updatedTripTour);
+        await updateCustomerDb(updatedCustomer);
         return review;
       }
       default: {
@@ -220,21 +235,33 @@ export function addReviewService(
 
 export function editReviewSrevice(
   getTourDb: GetTourDb,
+  getTripDb: GetTripDb,
   getReviewDb: GetReviewDb,
+  getCustomerDb: GetCustomerDb,
   updateTourDb: UpdateTourDb,
+  updateTripDb: UpdateTripDb,
+  updateCustomerDb: UpdateCustomerDb,
   updateReviewDb: UpdateReviewDb,
   dateGenerator: DateGenerator
 ): EditReviewService {
-  return async (tourId, customerId, reviewId, comment) => {
+  return async (tourId, tripId, customerId, reviewId, comment) => {
     const tour = await getTourDb(tourId);
     const review = await getReviewDb(reviewId);
+    const customer = await getCustomerDb(customerId);
+    const trip = await getTripDb(tripId);
 
-    if (review.authorId.localeCompare(customerId) == 0) {
+    if (review.authorId.localeCompare(customerId) == 0 && trip._type === TripType.FinishedTrip) {
       const updatedReview = editReview()(review, comment, dateGenerator());
 
-      const updatedTour = addReviewToTour()(tour, review);
+
+      const updatedReviewTrip: FinishedTrip = { ...trip, review: updatedReview };
+      const updatedReviewTour = updateReviewToTour()(tour, updatedReview);
+      const updatedTripTour = updateTripToTour()(updatedReviewTour, updatedReviewTrip);
+      const updatedCustomer = updateCustomerTripHistory()(customer, updatedReviewTrip);
+      await updateTripDb(updatedReviewTrip);
       await updateReviewDb(review);
-      await updateTourDb(updatedTour);
+      await updateTourDb(updatedTripTour);
+      await updateCustomerDb(updatedCustomer);
       return updatedReview;
     } else {
       throw new Error('This is not your review');
@@ -244,26 +271,34 @@ export function editReviewSrevice(
 
 export function removeReviewSrevice(
   getTourDb: GetTourDb,
+  getTripDb: GetTripDb,
   getReviewDb: GetReviewDb,
+  getCustomerDb: GetCustomerDb,
   updateTourDb: UpdateTourDb,
+  updateTripDb: UpdateTripDb,
+  updateCustomerDb: UpdateCustomerDb,
   deleteReviewDb: DeleteReviewDb
 ): RemoveReviewService {
-  return async (tourId, customerId, reviewId) => {
+  return async (tourId, tripId, customerId, reviewId) => {
     const tour = await getTourDb(tourId);
     const review = await getReviewDb(reviewId);
-
-    switch (review.authorId) {
-      case customerId: {
-        const updatedTour = removeReviewFromTour()(tour, review);
-
-        await deleteReviewDb(review);
-        await updateTourDb(updatedTour);
-        return review;
-      }
-      default: {
-        throw new Error('This is not your review');
-      }
+    const trip = await getTripDb(tripId);
+    const customer = await getCustomerDb(customerId);
+    if (review.authorId.localeCompare(customerId) == 0 && trip._type === TripType.FinishedTrip){
+      const updatedReviewTour = removeReviewFromTour()(tour, review);
+      const updatedReviewTrip: FinishedTrip = { ...trip, review: null };
+      const updatedTripTour = updateTripToTour()(updatedReviewTour, updatedReviewTrip);
+      const updatedCustomer = updateCustomerTripHistory()(customer, updatedReviewTrip);
+      await updateTripDb(updatedReviewTrip);
+      await updateTourDb(updatedTripTour);
+      await updateCustomerDb(updatedCustomer);
+      await deleteReviewDb(review);
+      await updateTourDb(updatedTripTour);
+      return review;
+    }else{
+      throw new Error('This is not your review');
     }
+    
   };
 }
 
@@ -339,3 +374,23 @@ export function cancelTripService(
     }
   };
 }
+
+export function getTourReviewService(
+  getTour : GetTourDb,
+  getCustomer: GetCustomerDb
+  ): GetTourReviewService {
+    return async (tourId) => {
+      const tour = await getTour(tourId);
+      const {reviews} = tour;
+      let reviewsDto: ReviewDto[] = [];
+      for(let i = 0; i< reviews.length; i++){
+        const review = reviews[i];
+        const customerId = review.authorId;
+        const customer = await getCustomer(customerId);
+        const reviewDto: ReviewDto = {...reviews[i],customer}
+        reviewsDto = [...reviewsDto,reviewDto]
+      }
+      const tourDto: TourDto = {...tour,reviewsDto};
+      return tourDto;
+    }
+  }
