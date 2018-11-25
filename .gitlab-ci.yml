@@ -21,6 +21,8 @@ build:
   stage: build
   variables:
     DOCKER_HOST: tcp://localhost:2375
+  services:
+    - docker:dind
   script: 
     - echo "Building the app"
     - cd atour-backend
