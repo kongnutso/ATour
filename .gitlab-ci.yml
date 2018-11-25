@@ -1,5 +1,8 @@
+image: node:10
+
 before_script:
   - ls
+  - docker --version
 
 stages:
   - build
