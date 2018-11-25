@@ -1,10 +1,11 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { Flex, Box } from 'rebass';
-import autobind from 'react-autobind';
-import { Form, TextArea } from 'semantic-ui-react';
-import PopUpModal from '../PopUpModal/PopUpModal';
+import React from "react";
+import { connect } from "react-redux";
+import { Link } from "react-router-dom";
+import { Flex, Box } from "rebass";
+import autobind from "react-autobind";
+import { Form, TextArea } from "semantic-ui-react";
+import PopUpModal from "../PopUpModal/PopUpModal";
+import { dateToString } from "../../utils/utils";
 import {
   setImageSlip,
   cancelTrip,
@@ -12,7 +13,7 @@ import {
   changeReview,
   reviewInputChange,
   deleteReview
-} from '../../action/BookAction';
+} from "../../action/BookAction";
 import {
   UNBOOKEDTRIP,
   BOOKEDTRIP,
@@ -22,8 +23,8 @@ import {
   REFUNDTRIP,
   FINISHEDTRIP,
   CANCELLEDTRIP
-} from '../../utils/TripType';
-import './styles.css';
+} from "../../utils/TripType";
+import "./styles.css";
 
 class BookedHistoryInfo extends React.Component {
   constructor() {
@@ -31,7 +32,7 @@ class BookedHistoryInfo extends React.Component {
     autobind(this);
     this.state = {
       confirmationModal: false,
-      inputImg: '',
+      inputImg: "",
       confirmModal: false,
       refund: false,
       cancel: false,
@@ -40,39 +41,41 @@ class BookedHistoryInfo extends React.Component {
   }
 
   classNameStatus(statusNumber, isDanger = false) {
-    let tempText = '';
+    let tempText = "";
     if (statusNumber === this.props.bookInfo._type)
       tempText = `bookedhistoryinfo-status-inprocess`;
     else if (statusNumber < this.props.bookInfo._type)
       return `bookedhistoryinfo-status-finish`;
     else tempText = `bookedhistoryinfo-status-coming`;
 
-    if (isDanger) tempText = tempText + '-danger';
+    if (isDanger) tempText = tempText + "-danger";
     return tempText;
   }
 
   classNameText(statusNumber) {
     if (statusNumber === this.props.bookInfo._type)
-      return 'bookedhistoryinfo-text-inprocess';
+      return "bookedhistoryinfo-text-inprocess";
     else if (statusNumber < this.props.bookInfo._type)
-      return 'bookedhistoryinfo-text-finish';
-    else return 'bookedhistoryinfo-text-coming';
+      return "bookedhistoryinfo-text-finish";
+    else return "bookedhistoryinfo-text-coming";
   }
 
   classNameColorButton(statusNumber) {
     if (statusNumber < this.props.bookInfo._type)
-      return 'bookedhistoryinfo-graybutton';
-    else return 'bookedhistoryinfo-bluebutton';
+      return "bookedhistoryinfo-graybutton";
+    else return "bookedhistoryinfo-bluebutton";
   }
 
   classNameRedColorButton(statusNumber) {
     if (statusNumber < this.props.bookInfo._type)
-      return 'bookedhistoryinfo-graybutton';
-    else return 'bookedhistoryinfo-redbutton';
+      return "bookedhistoryinfo-graybutton";
+    else return "bookedhistoryinfo-redbutton";
   }
 
   onClickSaveSlip(statusNumber) {
-    const { bookInfo: { _type, tripId, tourId } } = this.props;
+    const {
+      bookInfo: { _type, tripId, tourId }
+    } = this.props;
     if (statusNumber !== _type) return;
     else {
       this.props.setImageSlip(
@@ -93,7 +96,7 @@ class BookedHistoryInfo extends React.Component {
   }
 
   submitReview() {
-    console.log('submit review');
+    console.log("submit review");
     this.props.changeReview(
       this.props.bookInfo.review //bla aaaaa
     );
@@ -106,7 +109,7 @@ class BookedHistoryInfo extends React.Component {
   renderReview(statusNumber) {
     if (statusNumber > this.props.bookInfo._type) return <div />;
     else {
-      if (this.props.bookInfo.oldReview === '' || this.state.editReview) {
+      if (this.props.bookInfo.oldReview === "" || this.state.editReview) {
         return (
           <div>
             <Flex>
@@ -152,10 +155,12 @@ class BookedHistoryInfo extends React.Component {
   }
 
   renderRedButton() {
-    const { bookInfo: { _type } } = this.props;
+    const {
+      bookInfo: { _type }
+    } = this.props;
     let text;
-    if (_type < APPROVETRIP) text = 'Cancel';
-    else text = 'Refund';
+    if (_type < APPROVETRIP) text = "Cancel";
+    else text = "Refund";
     if (_type <= APPROVETRIP && _type > UNBOOKEDTRIP) {
       return (
         <div
@@ -195,16 +200,16 @@ class BookedHistoryInfo extends React.Component {
     const cancel = _type === CANCELLEDTRIP || _type === UNBOOKEDTRIP;
     const refund = _type === REFUNDREQUESTEDTRIP || _type === REFUNDTRIP;
     if (_type < APPROVETRIP) {
-      message = 'Cancel';
+      message = "Cancel";
     } else if (_type === APPROVETRIP) {
-      message = 'Refund';
+      message = "Refund";
     }
     return (
       <div className="bookedhistoryinfo-page">
         <PopUpModal
           isOpen={this.state.confirmModal}
           onCloseModal={() => this.setState({ confirmModal: false })}
-          headerText={'Upload Confirmation'}
+          headerText={"Upload Confirmation"}
           bodyText="Do you want to upload this link? "
           type="Confirmation"
           onConfirm={() => this.onClickSaveSlip(BOOKEDTRIP)} //change from 2
@@ -215,11 +220,11 @@ class BookedHistoryInfo extends React.Component {
           headerText={`${message} Confirmation`}
           bodyText={`Do you want to [${message}] ? `}
           onConfirm={() => {
-            if (message === 'Refund') {
+            if (message === "Refund") {
               console.log(message);
               this.setState({ refund: true });
               this.props.refundTrip(tourId, tripId, customerId);
-            } else if (message === 'Cancel') {
+            } else if (message === "Cancel") {
               this.setState({ cancel: true });
               this.props.cancelTrip(tourId, tripId, customerId);
             }
@@ -240,7 +245,7 @@ class BookedHistoryInfo extends React.Component {
               <div className="bookedHistoryInfo-info-each-1">
                 <div className="bookedHistoryInfo-info-topic">Tour name :</div>
                 <div className="bookedHistoryInfo-info-each-value">
-                  {tourName || 'test'}
+                  {tourName || "test"}
                 </div>
               </div>
             </div>
@@ -248,13 +253,13 @@ class BookedHistoryInfo extends React.Component {
               <div className="bookedHistoryInfo-info-each-1">
                 <div className="bookedHistoryInfo-info-topic">Trip date :</div>
                 <div className="bookedHistoryInfo-info-each-value">
-                  {tripDate || 'test'}
+                  {dateToString(tripDate) || "test"}
                 </div>
               </div>
               <div className="bookedHistoryInfo-info-each-2">
                 <div className="bookedHistoryInfo-info-topic">Guide :</div>
                 <div className="bookedHistoryInfo-info-each-value">
-                  {guideId || 'test'}
+                  {guideId || "test"}
                 </div>
               </div>
             </div>
@@ -262,13 +267,13 @@ class BookedHistoryInfo extends React.Component {
               <div className="bookedHistoryInfo-info-each-1">
                 <div className="bookedHistoryInfo-info-topic">Group size :</div>
                 <div className="bookedHistoryInfo-info-each-value">
-                  {groupSize || 'test'}
+                  {groupSize || "test"}
                 </div>
               </div>
               <div className="bookedHistoryInfo-info-each-2">
                 <div className="bookedHistoryInfo-info-topic">Price :</div>
                 <div className="bookedHistoryInfo-info-each-value">
-                  {price || 'test'}
+                  {price || "test"}
                 </div>
               </div>
             </div>
@@ -290,7 +295,6 @@ class BookedHistoryInfo extends React.Component {
               </Flex>
             </div>
             <div className={this.classNameText(BOOKEDTRIP)}>
-              {' '}
               {/*change from 2*/}
               <Flex>
                 <Box p={2} width={[1 / 4, 1 / 8, 1 / 15]}>
@@ -298,12 +302,20 @@ class BookedHistoryInfo extends React.Component {
                   {/*change from 2*/}
                 </Box>
                 <Box p={3} width={[3 / 4, 7 / 8, 14 / 15]}>
-                  Uploaded File Date: {uploadedFileDate}
+                  <div className="bookedHistoryInfo-payment-header">
+                    Payment slip upload
+                  </div>
+                  <div className="bookedHistoryInfo-bank-account">
+                    SCB 1234567 ATour-Corp
+                  </div>
+                  <div className="bookedHistoryInfo-slip-date">
+                    Uploaded slip date: {uploadedFileDate}
+                  </div>
                 </Box>
               </Flex>
               <Flex>
                 <Box width={1 / 15} />
-                <Box p={3} width={1} style={{ display: 'flex' }}>
+                <Box p={3} width={1} style={{ display: "flex" }}>
                   <input
                     value={this.state.inputImg}
                     onChange={this.inputChange}
@@ -320,13 +332,13 @@ class BookedHistoryInfo extends React.Component {
               </Flex>
               <Flex>
                 <Box width={1 / 15} />
-                <Box p={3} width={1} style={{ display: 'flex' }}>
+                <Box p={3} width={1} style={{ display: "flex" }}>
                   <div className="bookedhistoryinfo-upliadfile">{slip}</div>
                 </Box>
               </Flex>
             </div>
             {refund ? (
-              <div style={{ color: '#ec424b' }}>
+              <div style={{ color: "#ec424b" }}>
                 <Flex>
                   <Box p={2} width={[1 / 4, 1 / 8, 1 / 15]}>
                     <div
@@ -344,7 +356,7 @@ class BookedHistoryInfo extends React.Component {
                 </Flex>
               </div>
             ) : cancel ? (
-              <div style={{ color: '#ec424b' }}>
+              <div style={{ color: "#ec424b" }}>
                 <Flex>
                   <Box p={2} width={[1 / 4, 1 / 8, 1 / 15]}>
                     <div
@@ -397,13 +409,11 @@ class BookedHistoryInfo extends React.Component {
             ) : (
               cancel == false && (
                 <div className={this.classNameText(APPROVETRIP)}>
-                  {' '}
+                  {" "}
                   {/*change from 4*/}
                   <Flex>
                     <Box p={2} width={[1 / 4, 1 / 8, 1 / 15]}>
-                      <div className={this.classNameStatus(APPROVETRIP)}>
-                        4
-                      </div>{' '}
+                      <div className={this.classNameStatus(APPROVETRIP)}>4</div>{" "}
                       {/*change from 4*/}
                     </Box>
                     <Box p={3} width={[3 / 4, 7 / 8, 14 / 15]}>
@@ -416,20 +426,18 @@ class BookedHistoryInfo extends React.Component {
 
             {(refund || cancel) == false && (
               <div className={this.classNameText(FINISHEDTRIP)}>
-                {' '}
+                {" "}
                 {/*change from 5*/}
                 <Flex>
                   <Box p={2} width={[1 / 4, 1 / 8, 1 / 15]}>
-                    <div className={this.classNameStatus(FINISHEDTRIP)}>
-                      5
-                    </div>{' '}
+                    <div className={this.classNameStatus(FINISHEDTRIP)}>5</div>{" "}
                     {/*change from 5*/}
                   </Box>
-                  <Box p={3} width={[1 / 4, 2 / 8, 2 / 15]}>
+                  <Box p={3} width={[1 / 4, 2 / 8, 2 / 15, 2 / 20]}>
                     Review
                   </Box>
-                  <Box p={3} width={[1 / 4, 2 / 8, 3 / 15]}>
-                    {(this.props.bookInfo.oldReview !== '' ||
+                  <Box p={3} width={[1 / 4, 2 / 8, 3 / 15, 3 / 20]}>
+                    {(this.props.bookInfo.oldReview !== "" ||
                       this.state.editReview) && (
                       <div
                         className={this.classNameColorButton(FINISHEDTRIP)}
@@ -441,9 +449,9 @@ class BookedHistoryInfo extends React.Component {
                       </div>
                     )}
                   </Box>
-                  <Box p={3} width={[1 / 4, 2 / 8, 3 / 15]}>
+                  <Box p={3} width={[1 / 4, 2 / 8, 3 / 15, 3 / 20]}>
                     {console.log(this.props.bookInfo.review)}
-                    {(this.props.bookInfo.oldReview !== '' ||
+                    {(this.props.bookInfo.oldReview !== "" ||
                       this.state.editReview) && (
                       <div
                         className={this.classNameRedColorButton(FINISHEDTRIP)}
@@ -486,4 +494,7 @@ const mapDispatchToProps = dispatch => ({
   deleteReview: () => dispatch(deleteReview())
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(BookedHistoryInfo);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(BookedHistoryInfo);

@@ -247,6 +247,7 @@ function profile(state = initialState.profile, action) {
       };
     case EDIT_USER_INFO:
       state.phoneNumber = action.payload.phoneNumber;
+      state.profileImageUrl = action.payload.profileImageUrl
       return state;
     case LOGOUT:
       return {};
@@ -282,6 +283,8 @@ function guideInfo(state = initialState.guideInfo, action) {
     case GUIDE_LOGIN_SUCCESS:
     case EDIT_GUIDE_USER_INFO:
     case GET_GUIDE_INFO:
+      console.log(action.payload.guideInfo)
+      console.log(state)
       return action.payload.guideInfo;
     case LOGOUT:
       return {};
