@@ -39,7 +39,7 @@ const adminApproveColumns = (handleApprove, handleReject) => [
     width: 100,
     Cell: ({ original }) => {
       return (
-        <a href={original.slip} target="_blank">
+        <a href={original.slip} target="_blank" rel="noopener noreferrer">
           View
         </a>
       );

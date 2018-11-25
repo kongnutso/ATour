@@ -6,7 +6,7 @@ export const ON_SEARCH_GUIDE = 'ON_SEARCH_GUIDE';
 export function onChange(value) {
   return {
     type: ON_CHANGE,
-    payload: value
+    payload: value,
   };
 }
 
@@ -19,10 +19,9 @@ export function onSearch(keyword, isTour) {
           .then(res => {
             return res.data;
           });
-        console.log(res);
         return dispatch({
           type: ON_SEARCH_TOUR,
-          payload: res
+          payload: res,
         });
       } else {
         const res = await axios
@@ -32,7 +31,7 @@ export function onSearch(keyword, isTour) {
           });
         return dispatch({
           type: ON_SEARCH_GUIDE,
-          payload: res
+          payload: res,
         });
       }
     } catch (e) {}

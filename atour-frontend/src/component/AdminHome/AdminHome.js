@@ -11,7 +11,6 @@ import AdminApproveGuidePage from '../AdminApproveGuidePage';
 class AdminHome extends Component {
   render() {
     const { isLoginSuccess, userInfo } = this.props;
-    console.log('AdminHome', isLoginSuccess, userInfo.role);
     if (isLoginSuccess && userInfo.role === 'Admin')
       return (
         <div style={{ marginTop: '30px', marginBottom: '30px' }}>

@@ -91,14 +91,12 @@ class AdminApproveRefundPage extends Component {
     axios
       .post('http://localhost:3000/admin/approveRefund', this.state.selectedRequest)
       .then(res => {
-        console.log(res);
         this.onQuery();
       });
   };
 
   onReject = () => {
     axios.post('http://localhost:3000/admin/rejectRefund', this.state.selectedRequest).then(res => {
-      console.log(res);
       this.onQuery();
     });
   };
