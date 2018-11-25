@@ -53,7 +53,7 @@ ReactDOM.render(
             component={BookedHistoryInfo}
           />
           <Route exact path="/customerTourInfo" component={CustomerTourInfo} />
-          <Route exact path="/guideInfo" component={GuideInfo} />
+          <Route exact path="/guideInfo" component={EditProfile} />
           <Route exact path="/admin" component={AdminLogin} />
           <Route path="/admin/:type" component={AdminHome} />
 

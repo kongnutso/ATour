@@ -79,17 +79,7 @@ class TourInfo extends React.Component {
   }
 
   render() {
-    const {
-      tourName,
-      // tourimage,
-      // tourRating,
-      price,
-      //   tourLocation,
-      detail,
-      maximumSize,
-      guideName,
-      trips
-    } = this.props.tourInfo;
+    const { tourName, price, detail, maximumSize, trips } = this.props.tourInfo;
     const tripsInfo = trips.map(t => {
       const showDate = dateToString(t.tripDate);
       return { key: t.tripDate, text: showDate, value: t };
@@ -203,6 +193,7 @@ class TourInfo extends React.Component {
               </button>
             </div>
           </div>
+          <div className="tourInfo-review">Review</div>
           <Review />
         </div>
       </div>

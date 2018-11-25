@@ -8,9 +8,8 @@ import $ from 'jquery';
 
 class SideMenu extends React.Component {
   componentDidMount() {
-    $('.side-menu-menu').bind(
-      'animationend webkitAnimationEnd oAnimationEnd MSAnimationEnd',
-      () => this.toHidden()
+    $('.side-menu-menu').bind('animationend webkitAnimationEnd oAnimationEnd MSAnimationEnd', () =>
+      this.toHidden()
     );
   }
 
@@ -20,8 +19,7 @@ class SideMenu extends React.Component {
   }
 
   toHidden() {
-    if (this.props.sideMenuStatus === 'isHidding')
-      this.props.setSideMenuStatus('hidden');
+    if (this.props.sideMenuStatus === 'isHidding') this.props.setSideMenuStatus('hidden');
   }
 
   renderNotSignInSideMenu() {
@@ -52,10 +50,11 @@ class SideMenu extends React.Component {
   renderSignInSideMenu() {
     const {
       path,
-      userInfo: { role, userName }
+      userInfo: { role, userName },
     } = this.props;
-    const userFunction =
-      role === 'Customer' ? (
+    let userFunction;
+    if (role === 'Customer') {
+      userFunction = (
         <Link className="side-menu-link" to="/bookedHistory">
           <div
             className={
@@ -68,7 +67,9 @@ class SideMenu extends React.Component {
             Booked History
           </div>
         </Link>
-      ) : (
+      );
+    } else if (role === 'Guide') {
+      userFunction = (
         <div>
           <Link className="side-menu-link" to="/publishedTour">
             <div
@@ -96,6 +97,7 @@ class SideMenu extends React.Component {
           </Link>
         </div>
       );
+    }
     return (
       <div>
         <div className="dropdown-item side-menu-userInfo">
@@ -104,18 +106,20 @@ class SideMenu extends React.Component {
           {userName.substring(0, 8)}
         </div>
         {userFunction}
-        <Link className="side-menu-link" to="/editProfile">
-          <div
-            className={
-              'dropdown-item side-menu-item side-menu-user' +
-              (path === '/editProfile' ? ' side-menu-selected-item' : '')
-            }
-            onClick={() => this.onCloseSideMenu()}
-          >
-            <i className="fa fa-cog topbanner-icon" />
-            Edit Profile
-          </div>
-        </Link>
+        {role !== 'Admin' && (
+          <Link className="side-menu-link" to="/editProfile">
+            <div
+              className={
+                'dropdown-item side-menu-item side-menu-user' +
+                (path === '/editProfile' ? ' side-menu-selected-item' : '')
+              }
+              onClick={() => this.onCloseSideMenu()}
+            >
+              <i className="fa fa-cog topbanner-icon" />
+              Edit Profile
+            </div>
+          </Link>
+        )}
         <Link className="side-menu-link" to="/">
           <div
             className="dropdown-item side-menu-item side-menu-user"
@@ -137,18 +141,12 @@ class SideMenu extends React.Component {
       <div>
         <div className="side-menu" />
         <Link className="side-menu-link" to="/searchForTour">
-          <div
-            className={'dropdown-item side-menu-item'}
-            onClick={() => this.onCloseSideMenu()}
-          >
+          <div className={'dropdown-item side-menu-item'} onClick={() => this.onCloseSideMenu()}>
             <i className="fa fa-search topbanner-icon" /> Search for Tour
           </div>
         </Link>
         <Link className="side-menu-link" to="/searchForGuide">
-          <div
-            className="dropdown-item side-menu-item"
-            onClick={() => this.onCloseSideMenu()}
-          >
+          <div className="dropdown-item side-menu-item" onClick={() => this.onCloseSideMenu()}>
             <i className="fa fa-search topbanner-icon" /> Search for Guide
           </div>
         </Link>
@@ -214,12 +212,12 @@ class SideMenu extends React.Component {
 const mapDispatchToProps = dispatch => ({
   openRegisterModal: () => dispatch(registerModal(true)),
   openLoginModal: () => dispatch(loginModal(true)),
-  logout: () => dispatch(logout())
+  logout: () => dispatch(logout()),
 });
 
 const mapStateToProps = state => ({
   userInfo: state.user,
-  width: state.app.width
+  width: state.app.width,
 });
 
 export default connect(

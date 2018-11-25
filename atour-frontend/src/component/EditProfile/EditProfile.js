@@ -3,8 +3,10 @@ import { connect } from 'react-redux';
 import { Flex, Box, Image } from 'rebass';
 import { editUserInfo } from '../../action/UserInfoAction';
 import './styles.css';
-import { dateToString } from '../../utils/utils'
+import { dateToString } from '../../utils/utils';
 import { validateEmail, validatePhone } from '../../utils/validation';
+import logo from '../../image/Atour-logo.jpg';
+import Cards from '../Cards/Cards';
 
 class EditProfile extends React.Component {
   constructor() {
@@ -12,12 +14,12 @@ class EditProfile extends React.Component {
     this.state = { email: '', phoneNumber: '', profileImageUrl: '' };
   }
   componentWillReceiveProps(nextProps) {
-    const { email, phoneNumber, profileImageUrl, imageUrl } = nextProps.userInfo;
+    const { email, phoneNumber, profileImageUrl } = nextProps.userInfo;
     this.setState({ email, phoneNumber, profileImageUrl });
   }
 
   componentDidMount() {
-    const { email, phoneNumber, profileImageUrl, imageUrl } = this.props.userInfo;
+    const { email, phoneNumber, profileImageUrl } = this.props.userInfo;
     this.setState({ email, phoneNumber, profileImageUrl });
   }
 
@@ -56,7 +58,8 @@ class EditProfile extends React.Component {
       lastName,
       personalId,
       gender,
-      birthDate
+      birthDate,
+      publishedTours,
     } = this.props.userInfo;
     const { email, phoneNumber, profileImageUrl } = this.state;
     const { isView } = this.props;
@@ -73,22 +76,19 @@ class EditProfile extends React.Component {
               className="editProfilePage-content-img-container"
               p={3}
               width={[1, 1, 2 / 3, 1 / 3]}
-            ><div>
-                <Image
-                  src={profileImageUrl}
-                  className="editProfilePage-content-img"
-                />{isView ? null : <input
-                  value={profileImageUrl}
-                  onChange={e => this.setState({ profileImageUrl: e.target.value })}
-                  className="editProfilePage-content-img-input form-control"></input>
-                }
+            >
+              <div>
+                <Image src={profileImageUrl || logo} className="editProfilePage-content-img" />
+                {isView ? null : (
+                  <input
+                    value={profileImageUrl}
+                    onChange={e => this.setState({ profileImageUrl: e.target.value })}
+                    className="editProfilePage-content-img-input form-control"
+                  />
+                )}
               </div>
             </Box>
-            <Box
-              className="editProfilePage-content-box"
-              p={3}
-              width={[1, 1, 3 / 4, 1 / 2]}
-            >
+            <Box className="editProfilePage-content-box" p={3} width={[1, 1, 3 / 4, 1 / 2]}>
               <div style={{ fontWeight: '600' }}>Personnal Info</div>
               <div className="editProfilePage-content-info">
                 <Flex>
@@ -106,9 +106,7 @@ class EditProfile extends React.Component {
                     <div>Social ID</div>
                   </Box>
                   <Box p={3} width={1 / 2}>
-                    <div className="editProfilePage-content-info-userinfo">
-                      {personalId}
-                    </div>
+                    <div className="editProfilePage-content-info-userinfo">{personalId}</div>
                   </Box>
                 </Flex>
                 <Flex>
@@ -116,9 +114,7 @@ class EditProfile extends React.Component {
                     <div>Gender</div>
                   </Box>
                   <Box p={3} width={1 / 2}>
-                    <div className="editProfilePage-content-info-userinfo">
-                      {gender}
-                    </div>
+                    <div className="editProfilePage-content-info-userinfo">{gender}</div>
                   </Box>
                 </Flex>
                 <Flex>
@@ -133,9 +129,7 @@ class EditProfile extends React.Component {
                 </Flex>
               </div>
 
-              <div style={{ fontWeight: '600', marginTop: '30px' }}>
-                Contact Info
-              </div>
+              <div style={{ fontWeight: '600', marginTop: '30px' }}>Contact Info</div>
               <div className="editProfilePage-content-info">
                 <Flex>
                   <Box p={3} width={1 / 2}>
@@ -145,14 +139,12 @@ class EditProfile extends React.Component {
                     {isView ? (
                       <div>{phoneNumber}</div>
                     ) : (
-                        <input
-                          className="form-control"
-                          value={phoneNumber}
-                          onChange={e =>
-                            this.setState({ phoneNumber: e.target.value })
-                          }
-                        />
-                      )}
+                      <input
+                        className="form-control"
+                        value={phoneNumber}
+                        onChange={e => this.setState({ phoneNumber: e.target.value })}
+                      />
+                    )}
                   </Box>
                 </Flex>
                 <Flex>
@@ -163,12 +155,12 @@ class EditProfile extends React.Component {
                     {isView ? (
                       <div>{email}</div>
                     ) : (
-                        <input
-                          className="form-control"
-                          value={email}
-                          onChange={e => this.setState({ email: e.target.value })}
-                        />
-                      )}
+                      <input
+                        className="form-control"
+                        value={email}
+                        onChange={e => this.setState({ email: e.target.value })}
+                      />
+                    )}
                   </Box>
                 </Flex>
               </div>
@@ -183,23 +175,19 @@ class EditProfile extends React.Component {
             </Box>
           </Flex>
         </div>
+        {isView ? (
+          <div className="editProfilePage-tour-container">
+            <div className="editProfilePage-tour-header">Tour</div>
+            <Cards role="Customer" isGuide={false} items={publishedTours} />
+          </div>
+        ) : null}
       </div>
     );
   }
 }
 
 const mapStateToProps = state => {
-  console.log(state.user.guideInfo)
-  const {
-    isView,
-    profile,
-    guideInfo,
-    token,
-    email,
-    personalId,
-    role,
-    customerId
-  } = state.user;
+  const { isView, profile, guideInfo, token, email, personalId, role, customerId } = state.user;
   return {
     userInfo: isView
       ? guideInfo
@@ -208,13 +196,12 @@ const mapStateToProps = state => {
         : { ...guideInfo, ...guideInfo.profile },
     isView,
     role,
-    token
+    token,
   };
 };
 
 const mapDispatchToProps = dispatch => ({
-  editUserInfo: (userInfo, token, role) =>
-    dispatch(editUserInfo(userInfo, token, role))
+  editUserInfo: (userInfo, token, role) => dispatch(editUserInfo(userInfo, token, role)),
 });
 
 export default connect(

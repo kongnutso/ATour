@@ -309,7 +309,8 @@ class BookedHistoryInfo extends React.Component {
                     SCB 1234567 ATour-Corp
                   </div>
                   <div className="bookedHistoryInfo-slip-date">
-                    Uploaded slip date: {uploadedFileDate}
+                    Uploaded slip date:{" "}
+                    {uploadedFileDate ? dateToString(uploadedFileDate) : "-"}
                   </div>
                 </Box>
               </Flex>
@@ -388,7 +389,7 @@ class BookedHistoryInfo extends React.Component {
                     <div className={this.classNameStatus(APPROVETRIP)}>3</div>
                   </Box>
                   <Box p={3} width={[3 / 4, 7 / 8, 14 / 15]}>
-                    Approve
+                    Approved Payment
                   </Box>
                 </Flex>
               </div>

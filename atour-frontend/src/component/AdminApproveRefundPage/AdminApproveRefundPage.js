@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import { Flex, Box, Text } from 'rebass';
+import { Box, Text } from 'rebass';
 import { connect } from 'react-redux';
 import axios from 'axios';
 import Table from '../Table';
@@ -91,21 +91,18 @@ class AdminApproveRefundPage extends Component {
     axios
       .post('http://localhost:3000/admin/approveRefund', this.state.selectedRequest)
       .then(res => {
-        console.log(res);
         this.onQuery();
       });
   };
 
   onReject = () => {
     axios.post('http://localhost:3000/admin/rejectRefund', this.state.selectedRequest).then(res => {
-      console.log(res);
       this.onQuery();
     });
   };
 
   onQuery = () => {
     axios.get('http://localhost:3000/admin/refundRequest').then(res => {
-      console.log(res);
       this.setState({ data: this.mapInput(res.data) });
     });
   };

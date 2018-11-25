@@ -47,13 +47,23 @@
   height: 150px;
 }
 
+.editProfilePage-tour-container {
+  margin-left: 50px;
+  margin-top: 50px;
+}
+
+.editProfilePage-tour-header {
+  font-weight: 600;
+  font-size: 20px;
+}
+
 .editProfilePage-content-img-container {
   display: flex;
   justify-content: center;
   margin-top: 30px;
 }
 
-.editProfilePage-content-img-input{
+.editProfilePage-content-img-input {
   width: 150px;
   margin-top: 15px;
 }
@@ -86,7 +96,7 @@
     width: 150px;
   }
 
-  .editProfilePage-content-img-input{
+  .editProfilePage-content-img-input {
     margin-top: 15px;
     width: 150px;
   }
