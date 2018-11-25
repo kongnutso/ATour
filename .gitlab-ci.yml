@@ -1,8 +1,13 @@
 before_script:
   - docker --version
   - docker info
+  - docker-compose --version
 
 stages:
   - build
   - test
   - deploy
+
+build-job:
+  script:
+    echo 'builde-job is run'
