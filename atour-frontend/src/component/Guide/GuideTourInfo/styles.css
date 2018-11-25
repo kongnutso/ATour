@@ -1,0 +1,25 @@
+.tour-location {
+  font-size: 30px !important;
+  margin-left: 10px !important;
+  color: cornflowerblue;
+  display: inline-block;
+  vertical-align: top;
+}
+
+.tour-info-header p {
+  margin: 0;
+  padding: 0;
+  font-size: 36px;
+  display: inline-block;
+  line-height: 80px;
+  vertical-align: top;
+}
+
+.available-date-info {
+  display: inline-block;
+  vertical-align: top;
+}
+
+.tour-info-stars {
+  margin-left: 10px !important;
+}

@@ -1,0 +1,44 @@
+.error-text {
+  color: red;
+}
+
+.edit-tour-form-control {
+  width: 410px;
+  /* text-align: left; */
+}
+
+.edit-tour-modal-container {
+  /* text-align: left; */
+  border: 1px solid rgb(204, 204, 204);
+  background: rgb(255, 255, 255);
+  overflow: auto;
+  border-radius: 4px;
+  outline: none;
+  padding: 20px;
+  margin: auto;
+  width: 450px;
+  margin-top: 200px;
+}
+.edit-tour-label {
+  /* text-align:  right; */
+  clear: both;
+  /* float: left; */
+  margin-right: 15px;
+}
+
+/* .edit-input {
+  float: right;
+} */
+
+.selectiveButton {
+  width: 149px;
+  border-radius: 0;
+  background-color: white;
+  color: #26abdc;
+  border-color: #26abdc;
+}
+
+.selected {
+  background-color: #26abdc;
+  color: white;
+}
