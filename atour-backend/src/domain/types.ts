@@ -105,6 +105,7 @@ export type FinishedTrip = {
   finishDate: Date;
   tourId: string;
   tourName: string;
+  review: Review | null;
 };
 
 export type CancelledTrip = {

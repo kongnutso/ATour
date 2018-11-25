@@ -45,7 +45,8 @@ import {
   refundTripService,
   cancelTripService,
   getTourService,
-  setFinishedTrip
+  setFinishedTrip,
+  getTourReviewService
 } from '../service/CustomerTourService';
 const router = express.Router();
 
@@ -225,7 +226,10 @@ router.post('/addReview', async (req, res) => {
     const review = await addReviewService(
       getTour(db),
       getTrip(db),
+      getCustomer(db),
       updateTour(db),
+      updateTrip(db),
+      updateCustomer(db),
       saveReview(db),
       () => uuid(),
       () => new Date()
@@ -240,14 +244,18 @@ router.post('/addReview', async (req, res) => {
 router.post('/editReview', async (req, res) => {
   try {
     const db: Db = res.locals.db;
-    const { tourId, customerId, reviewId, comment } = req.body;
+    const { tourId, tripId, customerId, reviewId, comment } = req.body;
     const review = await editReviewSrevice(
       getTour(db),
+      getTrip(db),
       getReview(db),
+      getCustomer(db),
       updateTour(db),
+      updateTrip(db),
+      updateCustomer(db),
       updateReview(db),
       () => new Date()
-    )(tourId, customerId, reviewId, comment);
+    )(tourId, tripId,customerId, reviewId, comment);
     res.json(review);
   } catch (error) {
     console.log(error.message);
@@ -258,13 +266,17 @@ router.post('/editReview', async (req, res) => {
 router.post('/removeReview', async (req, res) => {
   try {
     const db: Db = res.locals.db;
-    const { tourId, customerId, reviewId } = req.body;
+    const { tourId, tripId, customerId, reviewId } = req.body;
     const review = await removeReviewSrevice(
       getTour(db),
+      getTrip(db),
       getReview(db),
+      getCustomer(db),
       updateTour(db),
+      updateTrip(db),
+      updateCustomer(db),
       deleteReview(db)
-    )(tourId, customerId, reviewId);
+    )(tourId, tripId, customerId, reviewId);
     res.json(review);
   } catch (error) {
     console.log(error.message);
@@ -342,5 +354,18 @@ router.post('/cancelTrip', async (req, res) => {
   }
 });
 
+router.post('/getTourReview', async (req, res) => {
+  try {
+    const db: Db = res.locals.db;
+    const { tourId } = req.body;
+    const tourDto = await getTourReviewService(
+      getTour(db),
+      getCustomer(db)
+      )(tourId);
+    res.json(tourDto);
+  } catch (e) {
+    res.json({ tour: null, error: e.message });
+  }
+});
 
 export default router;

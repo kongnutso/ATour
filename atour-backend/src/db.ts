@@ -11,7 +11,9 @@ import {
   UnApprovedGuide,
   BadGuide,
   PaidTrip,
-  RefundRequestedTrip
+  RefundRequestedTrip,
+  Review,
+  FinishedTrip
 } from './domain/types';
 
 //TODO: create proper config file
@@ -51,6 +53,39 @@ export async function initMongo() {
     tourName: 'Befriend the Elephants and Learn How to Make Coffee the Karen Way!'
   }
 
+  const review: Review = {
+    reviewId: 'reviewid1',
+    authorId: 'customerid1',
+    date: new Date('2018-11-27'),
+    comment: 'Hi, I like this trip so much.\
+     I would like to suggest you guys to take spend your time to this trip'
+  }
+
+  const finishedTrip: FinishedTrip = {
+    _type: TripType.FinishedTrip,
+    tripId: 'tripId7',
+    tripDate: new Date('2018-11-25'),
+    bookInfo: {
+      bookDate: new Date('2018-11-06'),
+      customerId: 'customerid',
+      size: 2,
+      price: 4000
+    },
+    paidDate: new Date('2018-11-08'),
+    slipImages: [
+      {
+        url:
+          'https://i0.wp.com/www.theparadigmng.com/wp-content/uploads/2014/08/ATM.jpg'
+      }
+    ],
+    approveDate: new Date('2018-11-09'),
+    finishDate: new Date('2018-11-26'),
+    tourId: 'tourid',
+    tourName:
+      'Live the Agricultural Life in the Mountains of Chiang Mai',
+    review: review
+  };
+
   const paidTrip: PaidTrip = {
     _type: TripType.PaidTrip,
     tripId: 'tripId5',
@@ -68,6 +103,7 @@ export async function initMongo() {
           'https://i0.wp.com/www.theparadigmng.com/wp-content/uploads/2014/08/ATM.jpg'
       }
     ],
+    
     tourId: 'tourid2',
     tourName: 'Explore the Bua Tong "Sticky" Waterfall with a Super Local Expert'
   }
@@ -132,7 +168,7 @@ export async function initMongo() {
       gender: 'Female',
       profileImageUrl: null
     },
-    tripHistory: [approvetrip, paidTrip, refundRequestTrip, approvetrip2]
+    tripHistory: [approvetrip, paidTrip, refundRequestTrip, approvetrip2, finishedTrip]
   };
   const customertoken = {
     customerId: 'customerid',
@@ -166,8 +202,8 @@ export async function initMongo() {
       minimumSize: 1,
       maximumSize: 5,
       price: 5000,
-      reviews: [],
-      trips: unbooktrips,
+      reviews: [review],
+      trips: [...unbooktrips, finishedTrip],
       imageUrl: null
     },
     {
@@ -296,6 +332,9 @@ export async function initMongo() {
     token: 'aksjdflkajasdjkfklaj'
   };
 
+
+
+
   await db.collection('guide').deleteMany({});
   await db.collection('guide').insertOne(guide);
   await db.collection('guide').insertOne(unApproveGuide);
@@ -303,13 +342,15 @@ export async function initMongo() {
   await db.collection('tour').deleteMany({});
   await db.collection('tour').insertMany(tours);
   await db.collection('trip').deleteMany({});
-  await db.collection('trip').insertMany([...unbooktrips, approvetrip, approvetrip2, paidTrip, refundRequestTrip]);
+  await db.collection('trip').insertMany([...unbooktrips, approvetrip, approvetrip2, paidTrip, refundRequestTrip, finishedTrip]);
   await db.collection('customer').deleteMany({});
   await db.collection('customer').insertOne(customer);
   await db.collection('customerToken').deleteMany({});
   await db.collection('customerToken').insertOne(customertoken);
   await db.collection('guideToken').deleteMany({});
   await db.collection('guideToken').insertOne(guidetoken);
+  await db.collection('review').deleteMany({});
+  await db.collection('review').insertOne(review);
   console.log('seed complete');
 
   return {

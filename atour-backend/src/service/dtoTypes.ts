@@ -6,7 +6,8 @@ import {
   ApprovedGuide,
   BadGuide,
   RejectedGuide,
-  Customer
+  Customer,
+  Review
 } from '../domain/types';
 
 export type GuideDto =
@@ -31,3 +32,7 @@ export type RejectedGuideDto = RejectedGuide & {
 export type TripDto = Trip & { tour: Tour; guide: Guide };
 
 export type DealtTripDto = Trip & {customer : Customer};
+
+export type ReviewDto = Review & {customer: Customer};
+
+export type TourDto = Tour & { reviewsDto: ReviewDto[] };
