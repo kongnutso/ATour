@@ -94,6 +94,30 @@ export async function initMongo() {
     tourName:
       'Explore the Bua Tong "Sticky" Waterfall with a Super Local Expert'
   };
+
+  const approvetrip2: ApprovedTrip = {
+    _type: TripType.ApprovedTrip,
+    tripId: 'tripId6',
+    tripDate: new Date('2018-11-25'),
+    bookInfo: {
+      bookDate: new Date('2018-11-06'),
+      customerId: 'customerid',
+      size: 2,
+      price: 4000
+    },
+    paidDate: new Date('2018-11-08'),
+    slipImages: [
+      {
+        url:
+          'https://i0.wp.com/www.theparadigmng.com/wp-content/uploads/2014/08/ATM.jpg'
+      }
+    ],
+    approveDate: new Date('2018-11-09'),
+    tourId: 'tourid2',
+    tourName:
+      'Explore the Bua Tong "Sticky" Waterfall with a Super Local Expert'
+  };
+
   const customer: Customer = {
     customerId: 'customerid',
     userName: 'username',
@@ -108,7 +132,7 @@ export async function initMongo() {
       gender: 'Female',
       profileImageUrl: null
     },
-    tripHistory: [approvetrip, paidTrip, refundRequestTrip]
+    tripHistory: [approvetrip, paidTrip, refundRequestTrip, approvetrip2]
   };
   const customertoken = {
     customerId: 'customerid',
@@ -157,7 +181,7 @@ export async function initMongo() {
       maximumSize: 5,
       price: 5000,
       reviews: [],
-      trips: [approvetrip, paidTrip],
+      trips: [approvetrip, paidTrip, approvetrip2],
       imageUrl: null
     },
     {
@@ -222,7 +246,7 @@ export async function initMongo() {
     bankName: 'SCB',
     approvalStatus: ApprovalStatus.Approved,
     availableDate: [],
-    dealtTrips: [approvetrip]
+    dealtTrips: [approvetrip, approvetrip2]
   };
 
   const unApproveGuide: UnApprovedGuide = {
@@ -279,7 +303,7 @@ export async function initMongo() {
   await db.collection('tour').deleteMany({});
   await db.collection('tour').insertMany(tours);
   await db.collection('trip').deleteMany({});
-  await db.collection('trip').insertMany([...unbooktrips, approvetrip, paidTrip, refundRequestTrip]);
+  await db.collection('trip').insertMany([...unbooktrips, approvetrip, approvetrip2, paidTrip, refundRequestTrip]);
   await db.collection('customer').deleteMany({});
   await db.collection('customer').insertOne(customer);
   await db.collection('customerToken').deleteMany({});
