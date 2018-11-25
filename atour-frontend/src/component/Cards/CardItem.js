@@ -8,7 +8,7 @@ import { Card, Header, Image } from "semantic-ui-react";
 import styled from "styled-components";
 import StarRatingComponent from "react-star-rating-component";
 import { selectTour, selectGuide } from "../../action/SelectAction";
-import TourItem from "../Tours/TourItem";
+import TourItem from "../Tours/TourItem/TourItem";
 
 // target props: tourName, tourImage, tourRating, tourPrice, tourLocation
 class CardItem extends React.Component {
