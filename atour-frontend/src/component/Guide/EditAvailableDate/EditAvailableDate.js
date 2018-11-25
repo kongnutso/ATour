@@ -60,7 +60,6 @@ class EditAvailableDate extends React.Component {
   }
 
   sortTrips(trips) {
-    console.log("TRIP: ", trips);
     if (trips.length === 0) {
       return trips;
     } else {

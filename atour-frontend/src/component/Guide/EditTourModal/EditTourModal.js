@@ -38,7 +38,6 @@ const Dec = ({ label, value, onChange }) => {
 
 class EditTourModal extends React.Component {
   constructor(props) {
-    console.log("MARK: ", props);
     super(props);
     this.state = {
       value: {
