@@ -55,7 +55,7 @@ export async function initMongo() {
 
   const review: Review = {
     reviewId: 'reviewid1',
-    authorId: 'customerid1',
+    authorId: 'customerid',
     date: new Date('2018-11-27'),
     comment: 'Hi, I like this trip so much.\
      I would like to suggest you guys to take spend your time to this trip'
