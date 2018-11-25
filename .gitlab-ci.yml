@@ -19,6 +19,8 @@ test:
 build:
   image: docker:latest
   stage: build
+  variables:
+    DOCKER_HOST: tcp://localhost:2375
   script: 
     - echo "Building the app"
     - cd atour-backend
