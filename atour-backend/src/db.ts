@@ -303,7 +303,7 @@ export async function initMongo() {
   await db.collection('tour').deleteMany({});
   await db.collection('tour').insertMany(tours);
   await db.collection('trip').deleteMany({});
-  await db.collection('trip').insertMany([...unbooktrips, approvetrip, paidTrip, refundRequestTrip]);
+  await db.collection('trip').insertMany([...unbooktrips, approvetrip, approvetrip2, paidTrip, refundRequestTrip]);
   await db.collection('customer').deleteMany({});
   await db.collection('customer').insertOne(customer);
   await db.collection('customerToken').deleteMany({});
