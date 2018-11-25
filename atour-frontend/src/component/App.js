@@ -41,7 +41,6 @@ class App extends React.Component {
     this.props.getAllTour();
   }
   render() {
-    console.log("role: ", this.props.role);
     if (this.props.role === "Guide") {
       return <Redirect to="/guideHome" />;
     }

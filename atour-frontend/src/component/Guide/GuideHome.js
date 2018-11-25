@@ -23,31 +23,9 @@ class GuideHome extends React.Component {
     const self = this;
     this.props.getGuideInfo(this.props.guideInfo.guideId);
     const guideId = this.props.guideInfo.guideId;
-    console.log("guide id", guideId);
-    // axios.get("http://localhost:3000/guide/" + guideId).then(res => {
-    //   console.log(res.data);
-    //   self.setState({
-    //     data: res.data.publishedTours,
-    //     isLoaded: true,
-    //     guideId: guideId
-    //   });
-    // });
   }
 
-  // updateGuideHome() {
-  //   const guideId = this.state.isLoaded;
-  //   const self = this;
-  //   self.setState(
-  //     { isLoaded: false },
-  //     axios.get("http://localhost:3000/guide/" + guideId).then(res => {
-  //       console.log(res.data);
-  //       self.setState({ data: res.data.publishedTours, isLoaded: true });
-  //     })
-  //   );
-  // }
-
   render() {
-    // console.log("publishedTours: ", publishedTours);
     if (!this.props.guideInfo.publishedTours) return <div />;
     return (
       <Container>
@@ -68,12 +46,6 @@ class GuideHome extends React.Component {
               </Grid.Column>
             </Grid.Row>
             <hr color="black" size="50" width="1100" />
-            {/* <Grid.Row>
-              <Grid.Column>
-                <Tours tours={this.props.guideInfo.publishedTours} />
-                )}
-              </Grid.Column> */}
-            {/* </Grid.Row> */}
             <Flex>
               <Cards
                 items={this.props.guideInfo.publishedTours}
@@ -89,7 +61,6 @@ class GuideHome extends React.Component {
 }
 
 const mapStateToProps = state => {
-  console.log(state.user.guideInfo);
   return {
     userName: state.user.userName,
     guideInfo: state.user.guideInfo,

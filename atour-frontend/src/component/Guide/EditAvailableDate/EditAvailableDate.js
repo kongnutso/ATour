@@ -60,7 +60,6 @@ class EditAvailableDate extends React.Component {
   }
 
   sortTrips(trips) {
-    console.log("TRIP: ", trips);
     if (trips.length === 0) {
       return trips;
     } else {
@@ -121,15 +120,18 @@ class EditAvailableDate extends React.Component {
           <div>
             <h2>Edit Available Dates</h2>
             <hr color="black" size="50" />
-            {this.sortTrips(this.state.trips).map(trip => (
+            {this.sortTrips(this.state.trips).map((trip, index) => (
               <AvailableDateItem
+                key={index}
                 trip={trip}
                 deleteAvailableDate={this.deleteAvailableDate}
               />
             ))}
             <Grid columns={2}>
               <Grid.Column width={5}>
-                <Button onClick={this.onSubmitNewTrip}>Submit</Button>
+                <Button primary onClick={this.onSubmitNewTrip}>
+                  Submit
+                </Button>
               </Grid.Column>
               <Grid.Column width={11}>
                 <DatePicker

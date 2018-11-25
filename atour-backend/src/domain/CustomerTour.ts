@@ -98,6 +98,19 @@ export function uploadPayment(): UploadPayment {
           slipImages: addedSlipImages
         };
       }
+      case TripType.RejectedPaidTrip: {
+        const addedSlipImages = [...trip.slipImages, slipImage];
+        return {
+          _type: TripType.PaidTrip,
+          tripId: trip.tripId,
+          tripDate: trip.tripDate,
+          bookInfo: trip.bookInfo,
+          paidDate: paidDate,
+          slipImages: addedSlipImages,
+          tourId: trip.tourId,
+          tourName: trip.tourName,
+        };
+      }
       default: {
         throw new Error('Trip is not booked or paid');
       }

@@ -44,9 +44,7 @@ class GuideTourInfo extends React.Component {
     });
   }
 
-  // console.log("received from tourItem:  ", props.location.state);
   render() {
-    // console.log("state: ", this.state);
     return (
       <Container>
         <div className="topbanner-user-container">
@@ -57,13 +55,13 @@ class GuideTourInfo extends React.Component {
         </div>
         <Segment style={{ padding: "8em 0em" }} vertical>
           <Grid columns={2} stackable>
-            <Grid.Column width={8} textAlign="left">
+            <Grid.Column width={12} textAlign="left">
               <div class="tour-info-header">
                 <p>{this.state.tourName}</p>
                 <p className="tour-location">{this.state.tourLocation}</p>
               </div>
             </Grid.Column>
-            <Grid.Column width={8} textAlign="right">
+            <Grid.Column width={4} textAlign="right">
               <Button icon onClick={this.props.onClickEditTour}>
                 Edit Tour
                 <Icon name="edit" />
@@ -94,11 +92,6 @@ class GuideTourInfo extends React.Component {
                 </p>
               </Grid.Column>
               <Grid.Column width={6} textAlign="right">
-                {/* <AvailableDates
-                availableDates={trips}
-                onClickEditAvailableDate={props.onClickEditAvailableDate}
-              /> */}
-
                 <EditAvailableDate tour={this.state.tour} />
               </Grid.Column>
             </Grid>

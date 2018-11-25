@@ -6,7 +6,10 @@ import {
   approveRefundService,
   markBadGuideService,
   getRefundRequests,
-  getPendingPayments
+  getPendingPayments,
+  rejectPaymentService,
+  rejectRefundService,
+  rejectGuideService
 } from '../service/AdminService';
 import { getGuide, saveGuide } from '../repository/Guide';
 import { getCustomer, updateCustomer } from '../repository/Customer';
@@ -20,6 +23,25 @@ router.post('/approveGuide', async (req, res) => {
       guideId
     } = req.body;
     const approvedGuide = await approveGuideService(
+      getGuide(db),
+      saveGuide(db)
+    )(
+      guideId
+    );
+    res.json(approvedGuide);
+  } catch (error) {
+    console.log(error.message);
+    res.json({ profile: null, error: error.message });
+  }
+});
+
+router.post('/rejectGuide', async (req, res) => {
+  try {
+    const db: Db = res.locals.db;
+    const {
+      guideId
+    } = req.body;
+    const approvedGuide = await rejectGuideService(
       getGuide(db),
       saveGuide(db)
     )(
@@ -90,6 +112,33 @@ router.post('/approvePayment', async (req, res) => {
   }
 });
 
+router.post('/rejectPayment', async (req, res) => {
+  try {
+    const db: Db = res.locals.db;
+    const {
+      tourId,
+      tripId,
+      customerId,
+    } = req.body;
+    const rejectedPayment = await rejectPaymentService(
+      getCustomer(db), 
+      getTour(db),
+      getTrip(db),
+      updateTour(db),
+      updateTrip(db),
+      updateCustomer(db)
+    )(
+      tourId,
+      tripId,
+      customerId,
+    );
+    res.json(rejectedPayment);
+  } catch (error) {
+    console.log(error.message);
+    res.json({ profile: null, error: error.message });
+  }
+});
+
 router.get('/refundRequest', async (req, res) => {
   try {
     const db: Db = res.locals.db;
@@ -123,6 +172,33 @@ router.post('/approveRefund', async (req, res) => {
       customerId,
     );
     res.json(refundedPayment);
+  } catch (error) {
+    console.log(error.message);
+    res.json({ profile: null, error: error.message });
+  }
+});
+
+router.post('/rejectRefund', async (req, res) => {
+  try {
+    const db: Db = res.locals.db;
+    const {
+      tourId,
+      tripId,
+      customerId,
+    } = req.body;
+    const rejectedRefund = await rejectRefundService(
+      getCustomer(db), 
+      getTour(db),
+      getTrip(db),
+      updateTour(db),
+      updateTrip(db),
+      updateCustomer(db)
+    )(
+      tourId,
+      tripId,
+      customerId,
+    );
+    res.json(rejectedRefund);
   } catch (error) {
     console.log(error.message);
     res.json({ profile: null, error: error.message });

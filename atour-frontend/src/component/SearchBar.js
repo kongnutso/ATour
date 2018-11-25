@@ -1,21 +1,21 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { Box, Flex, Text } from 'rebass';
-import { Link, Redirect } from 'react-router-dom';
-import Modal from 'react-modal';
-import autobind from 'react-autobind';
-import classNames from 'classnames';
-import { SearchButton, Input } from '../component/BaseComponent';
-import { Icon, Grid } from 'semantic-ui-react';
-import styled from 'styled-components';
-import { onChange, onSearch } from '../action/SearchAction';
+import React from "react";
+import { connect } from "react-redux";
+import { Box, Flex, Text } from "rebass";
+import { Link, Redirect } from "react-router-dom";
+import Modal from "react-modal";
+import autobind from "react-autobind";
+import classNames from "classnames";
+import { SearchButton, Input } from "../component/BaseComponent";
+import { Icon, Grid } from "semantic-ui-react";
+import styled from "styled-components";
+import { onChange, onSearch } from "../action/SearchAction";
 
 const SearchContainer = styled(Flex)`
   background-color: rgb(22,22,22,0.7);
   padding-bottom : 15px;
   padding-top: 20px;
   justify-content: center;
-  /* // background-image: url(${require('../image/Studio-Tour.jpg')}); */
+  /* // background-image: url(${require("../image/Studio-Tour.jpg")}); */
 /* //   width: 2000px; */
 /* //   height: 2000px; */
 `;
@@ -31,12 +31,12 @@ const GridWithBackground = styled(Grid)`
 
 class SearchBar extends React.Component {
   componentDidMount() {
-    window.addEventListener('resize', this.updateWindowDimensions);
+    window.addEventListener("resize", this.updateWindowDimensions);
     this.resize();
   }
 
   componentWillUnmount() {
-    window.removeEventListener('resize', this.updateWindowDimensions);
+    window.removeEventListener("resize", this.updateWindowDimensions);
   }
 
   resize() {
@@ -44,14 +44,13 @@ class SearchBar extends React.Component {
   }
 
   state = {
-    searchType: 'tourName',
-    tours: ['Japan', 'England', 'Thailand', 'Taiwan', 'Tongchai'],
+    searchType: "tourName",
+    tours: ["Japan", "England", "Thailand", "Taiwan", "Tongchai"],
     mobile: true,
     redirect: false
   };
 
   onEnter = () => {
-    // console.log(this.props.term);
     this.props.onSearch(this.props.term);
     this.setState({ redirect: true });
   };
@@ -63,7 +62,7 @@ class SearchBar extends React.Component {
       <SearchContainer mx={[4, 2]} px={[4, 0]} width={[1, 4 / 5, 7 / 10]}>
         <Box width={[1, 4 / 5]}>
           <Text fontSize={4} mb={4} color="white">
-            <i style={{ marginRight: '10px' }} className="fa fa-search" />
+            <i style={{ marginRight: "10px" }} className="fa fa-search" />
             Where to ?
           </Text>
 
@@ -85,7 +84,7 @@ class SearchBar extends React.Component {
               <Link to="/searchForTour">
                 <SearchButton onClick={() => onSearch(term, true)}>
                   <Icon name="search" />
-                  {!mobile && 'Search'}
+                  {!mobile && "Search"}
                 </SearchButton>
               </Link>
             </Box>
