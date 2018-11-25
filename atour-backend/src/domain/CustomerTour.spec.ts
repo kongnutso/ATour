@@ -176,7 +176,8 @@ describe('CustomerTour', () => {
       approveDate: new Date('2018-11-08'),
       finishDate: new Date('2018-11-11'),
       tourId: 'tourId',
-      tourName: 'tourName'
+      tourName: 'tourName',
+      review: null
     };
 
     const resultReview = CustomerTourDomain.createReview(() => 'reviewId')(
