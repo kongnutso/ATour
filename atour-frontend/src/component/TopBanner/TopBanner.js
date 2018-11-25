@@ -180,7 +180,7 @@ class TopBanner extends React.Component {
             {this.props.userInfo.userName.substring(0, 8)}
           </div>
 
-          <i className="fa fa-arrow-circle-down topbanner-dropdown-arrow" />
+          <i className="fa fa-chevron-circle-down topbanner-dropdown-arrow" />
         </div>
         {dropDown}
       </div>
