@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import { Flex, Box, Text } from 'rebass';
+import { Box, Text } from 'rebass';
 import { connect } from 'react-redux';
 import axios from 'axios';
 import Table from '../Table';
@@ -105,7 +105,6 @@ class AdminApproveRefundPage extends Component {
 
   onQuery = () => {
     axios.get('http://localhost:3000/admin/refundRequest').then(res => {
-      console.log(res);
       this.setState({ data: this.mapInput(res.data) });
     });
   };

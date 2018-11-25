@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Flex, Box, Text } from 'rebass';
 import { Redirect } from 'react-router-dom';
