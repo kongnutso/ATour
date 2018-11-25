@@ -2,13 +2,32 @@ image: node:10
 
 before_script:
   - ls
-  - docker --version
 
 stages:
   - build
   - test
   - deploy
 
-build-job:
+test:
+  stage: test
+  script: 
+    - echo "Running tests"
+    - cd atour-backend
+    - npm test
+
+build:
+  stage: build
+  script: 
+    - echo "Building the app"
+    - cd atour-backend
+    - npm run build
+
+deploy:
+  stage: deploy
   script:
-    echo 'build-job is run'
+    - echo "Deploy to staging server"
+  environment:
+    name: production
+    url: https://staging.example.com
+  only:
+    - master
