@@ -1,8 +1,5 @@
 before_script:
   - ls
-  - docker --version
-  - docker info
-  - docker-compose --version
 
 stages:
   - build
