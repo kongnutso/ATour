@@ -3,42 +3,46 @@ import { connect } from 'react-redux';
 import { Flex, Box, Image } from 'rebass';
 import { editUserInfo } from '../../action/UserInfoAction';
 import './styles.css';
+import { dateToString } from '../../utils/utils'
 import { validateEmail, validatePhone } from '../../utils/validation';
 
 class EditProfile extends React.Component {
   constructor() {
     super();
-    this.state = { email: '', phoneNumber: '' };
+    this.state = { email: '', phoneNumber: '', profileImageUrl: '' };
   }
   componentWillReceiveProps(nextProps) {
-    const { email, phoneNumber } = nextProps.userInfo;
-    this.setState({ email, phoneNumber });
+    const { email, phoneNumber, profileImageUrl, imageUrl } = nextProps.userInfo;
+    this.setState({ email, phoneNumber, profileImageUrl });
   }
 
   componentDidMount() {
-    const { email, phoneNumber } = this.props.userInfo;
-    this.setState({ email, phoneNumber });
+    const { email, phoneNumber, profileImageUrl, imageUrl } = this.props.userInfo;
+    this.setState({ email, phoneNumber, profileImageUrl });
   }
 
   editUserInfo() {
-    const { email, phoneNumber } = this.state;
+    const { email, phoneNumber, profileImageUrl } = this.state;
     const { userInfo, token, role } = this.props;
     if (
       email !== this.props.userInfo.email ||
-      phoneNumber !== this.props.userInfo.phoneNumber
+      phoneNumber !== this.props.userInfo.phoneNumber ||
+      profileImageUrl !== this.props.userInfo.profileImageUrl
     ) {
       const emailError = validateEmail(email);
       const phoneError = validatePhone(phoneNumber);
+
       let errorMessage =
         emailError && phoneError
           ? emailError + '\n' + phoneError
           : emailError
-          ? emailError
-          : phoneError
-          ? phoneError
-          : '';
+            ? emailError
+            : phoneError
+              ? phoneError
+              : '';
       if (!errorMessage) {
         const res = userInfo;
+        res.profileImageUrl = profileImageUrl;
         res.email = email;
         res.phoneNumber = phoneNumber;
         this.props.editUserInfo(res, token, role);
@@ -54,7 +58,7 @@ class EditProfile extends React.Component {
       gender,
       birthDate
     } = this.props.userInfo;
-    const { email, phoneNumber } = this.state;
+    const { email, phoneNumber, profileImageUrl } = this.state;
     const { isView } = this.props;
     const headerText = isView ? 'Guide Profile' : 'Edit Profile';
     return (
@@ -69,11 +73,16 @@ class EditProfile extends React.Component {
               className="editProfilePage-content-img-container"
               p={3}
               width={[1, 1, 2 / 3, 1 / 3]}
-            >
-              <Image
-                src="https://source.unsplash.com/random/720x720"
-                className="editProfilePage-content-img"
-              />
+            ><div>
+                <Image
+                  src={profileImageUrl}
+                  className="editProfilePage-content-img"
+                />{isView ? null : <input
+                  value={profileImageUrl}
+                  onChange={e => this.setState({ profileImageUrl: e.target.value })}
+                  className="editProfilePage-content-img-input form-control"></input>
+                }
+              </div>
             </Box>
             <Box
               className="editProfilePage-content-box"
@@ -118,7 +127,7 @@ class EditProfile extends React.Component {
                   </Box>
                   <Box p={3} width={1 / 2}>
                     <div className="editProfilePage-content-info-userinfo">
-                      {birthDate}
+                      {dateToString(birthDate)}
                     </div>
                   </Box>
                 </Flex>
@@ -136,14 +145,14 @@ class EditProfile extends React.Component {
                     {isView ? (
                       <div>{phoneNumber}</div>
                     ) : (
-                      <input
-                        className="form-control"
-                        value={phoneNumber}
-                        onChange={e =>
-                          this.setState({ phoneNumber: e.target.value })
-                        }
-                      />
-                    )}
+                        <input
+                          className="form-control"
+                          value={phoneNumber}
+                          onChange={e =>
+                            this.setState({ phoneNumber: e.target.value })
+                          }
+                        />
+                      )}
                   </Box>
                 </Flex>
                 <Flex>
@@ -154,12 +163,12 @@ class EditProfile extends React.Component {
                     {isView ? (
                       <div>{email}</div>
                     ) : (
-                      <input
-                        className="form-control"
-                        value={email}
-                        onChange={e => this.setState({ email: e.target.value })}
-                      />
-                    )}
+                        <input
+                          className="form-control"
+                          value={email}
+                          onChange={e => this.setState({ email: e.target.value })}
+                        />
+                      )}
                   </Box>
                 </Flex>
               </div>
@@ -180,6 +189,7 @@ class EditProfile extends React.Component {
 }
 
 const mapStateToProps = state => {
+  console.log(state.user.guideInfo)
   const {
     isView,
     profile,
@@ -194,8 +204,8 @@ const mapStateToProps = state => {
     userInfo: isView
       ? guideInfo
       : role === 'Customer'
-      ? { ...profile, email, personalId, customerId }
-      : guideInfo,
+        ? { ...profile, email, personalId, customerId }
+        : { ...guideInfo, ...guideInfo.profile },
     isView,
     role,
     token

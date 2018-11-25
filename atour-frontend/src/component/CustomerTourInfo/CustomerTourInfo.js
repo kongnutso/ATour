@@ -10,6 +10,7 @@ import { Redirect } from 'react-router-dom';
 import { viewProfile, getGuideInfo } from '../../action/UserInfoAction';
 import tourImage from '../../image/TourImage.png';
 import { dateToString } from '../../utils/utils';
+import Review from '../Review/Review'
 
 class TourInfo extends React.Component {
   constructor() {
@@ -101,7 +102,7 @@ class TourInfo extends React.Component {
       return <Redirect to={this.state.to} />;
     }
     return (
-      <div>
+      <div style={{ marginBottom: '100px' }}>
         <PopUpModal
           isOpen={this.state.openConfirm}
           onCloseModal={() => this.setState({ openConfirm: false })}
@@ -190,6 +191,8 @@ class TourInfo extends React.Component {
               </button>
             </div>
           </div>
+          <Review></Review>
+
         </div>
       </div>
     );

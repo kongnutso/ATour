@@ -53,6 +53,11 @@
   margin-top: 30px;
 }
 
+.editProfilePage-content-img-input{
+  width: 150px;
+  margin-top: 15px;
+}
+
 .editProfilePage-content-info-userinfo {
   font-weight: 600;
   word-break: break-all;
@@ -74,12 +79,18 @@
 
 @media screen and (max-width: 700px) {
   .editProfilePage-content-img-container {
-    height: 200px;
+    height: 250px;
   }
   .editProfilePage-content-img {
-    height: 100px;
-    width: 100px;
+    height: 150px;
+    width: 150px;
   }
+
+  .editProfilePage-content-img-input{
+    margin-top: 15px;
+    width: 150px;
+  }
+
   .editProfilePage-content-container {
     display: inline;
   }

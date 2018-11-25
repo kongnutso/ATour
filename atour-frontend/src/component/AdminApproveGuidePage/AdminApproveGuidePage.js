@@ -5,21 +5,9 @@ import Table from '../Table';
 import PopUpModal from '../PopUpModal/PopUpModal';
 import COLOR from '../../utils/color';
 import { Button } from '../BaseComponent';
+import axios from 'axios';
 
-// Mock data
-const tableProps = num => {
-  const dataArray = [];
-  for (let i = 0; i <= num; i++) {
-    dataArray.push({
-      date: `${i}/10/2018`,
-      username: `${String.fromCharCode(97 + i)}`,
-      phoneNumber: `${i}${i}${i}${i}${i}${i}`,
-      email: `${i}@hot.hr`,
-    });
-  }
-  return dataArray;
-};
-const adminApproveColumns = (handleConfirm, handleReject) => [
+const adminApproveColumns = (handleApprove, handleReject) => [
   {
     Header: 'Username',
     accessor: 'username',
@@ -33,18 +21,19 @@ const adminApproveColumns = (handleConfirm, handleReject) => [
     accessor: 'email',
   },
   {
-    Header: 'Status',
-    accessor: 'status',
+    Header: 'Action',
+    accessor: 'action',
     width: 200,
     Cell: ({ original }) => {
+      const { guideId } = original;
       return (
         <Fragment>
-          <Button color={COLOR.primary} onClick={() => handleConfirm()}>
+          <Button color={COLOR.primary} onClick={() => handleApprove(guideId)}>
             <i className="fa fa-check" style={{ marginRight: '5px' }} />
             Approve
           </Button>
           |
-          <Button color={COLOR.danger} onClick={() => handleReject()}>
+          <Button color={COLOR.danger} onClick={() => handleReject(guideId)}>
             <i className="fa fa-times" style={{ marginRight: '5px' }} />
             Reject
           </Button>
@@ -55,15 +44,56 @@ const adminApproveColumns = (handleConfirm, handleReject) => [
 ];
 
 class AdminApproveGuidePage extends Component {
-  state = { approveModal: false, rejectModal: false };
+  state = { approveModal: false, rejectModal: false, data: [], selectedGuideId: '' };
 
-  handleConfirm = () => {
+  componentDidMount() {
+    this.onQuery();
+  }
+
+  handleApprove = guideId => {
     this.setState({ approveModal: true });
+    this.setState({ selectedGuideId: guideId });
   };
-  handleReject = () => {
+
+  handleReject = guideId => {
     this.setState({ rejectModal: true });
+    this.setState({ selectedGuideId: guideId });
+  };
+
+  onApprove = () => {
+    axios
+      .post('http://localhost:3000/admin/approveGuide', { guideId: this.state.selectedGuideId })
+      .then(res => {
+        this.onQuery();
+      });
+  };
+
+  onReject = () => {
+    axios
+      .post('http://localhost:3000/admin/rejectGuide', { guideId: this.state.selectedGuideId })
+      .then(res => {
+        this.onQuery();
+      });
+  };
+
+  onQuery = () => {
+    axios.post('http://localhost:3000/customer/searchGuide', { keyword: '' }).then(res => {
+      this.setState({ data: this.mapInput(res.data) });
+    });
+  };
+  mapInput = arr => {
+    const filterUnapprove = arr.filter(e => e._type === 0);
+    return filterUnapprove.map(e => {
+      return {
+        guideId: e.guideId,
+        username: e.userName,
+        phoneNumber: e.profile.phoneNumber,
+        email: e.email,
+      };
+    });
   };
   render() {
+    const { data } = this.state;
     return (
       <Box>
         <Text fontSize={4} mb={4} mt={2}>
@@ -77,7 +107,7 @@ class AdminApproveGuidePage extends Component {
           modalName="Approve"
           headerText={`Approve Confirmation`}
           bodyText={`Do you want to Approve ? `}
-          // onConfirm
+          onConfirm={this.onApprove}
           type="Confirmation"
         />
 
@@ -87,13 +117,13 @@ class AdminApproveGuidePage extends Component {
           modalName="Reject"
           headerText={`Reject Confirmation`}
           bodyText={`Do you want to Reject ? `}
-          // onConfirm
+          onConfirm={this.onReject}
           isDanger
           type="Confirmation"
         />
         <Table
-          data={tableProps(4)}
-          columns={adminApproveColumns(this.handleConfirm, this.handleReject)}
+          data={data}
+          columns={adminApproveColumns(this.handleApprove, this.handleReject)}
           defaultPageSize={10}
           style={{
             textAlign: 'center',

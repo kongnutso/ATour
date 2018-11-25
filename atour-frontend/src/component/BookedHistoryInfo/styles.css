@@ -2,6 +2,7 @@
   margin-left: 100px;
   margin-right: 100px;
   margin-top: 30px;
+  margin-bottom: 50px;
 }
 
 .bookedhistoryinfo-header {
@@ -115,22 +116,28 @@
 
 .bookedhistoryinfo-bluebutton {
   cursor: pointer;
-  width: 150px;
   border-radius: 4px;
   margin-left: 5px;
   text-align: center;
+  height: 24px;
   background-color: #26abdc;
   color: #ffffff;
+  padding-top: 2px;
+  width: 100%;
+  max-width: 150px;
 }
 
 .bookedhistoryinfo-redbutton {
   cursor: pointer;
-  width: 150px;
+  width: 100%;
   border-radius: 4px;
   margin-left: 5px;
   text-align: center;
   background-color: #ec424b;
   color: #ffffff;
+  height: 24px;
+  padding-top: 2px;
+  max-width: 150px;
 }
 
 .bookedhistoryinfo-graybutton {
@@ -140,6 +147,8 @@
   text-align: center;
   background-color: #cccccc;
   color: #ffffff;
+  cursor: pointer;
+  padding-top: 2px;
 }
 
 .bookedhistoryinfo-rating:hover {
@@ -156,6 +165,15 @@
   font-size: 16px;
   font-weight: 600;
   margin-bottom: 30px;
+}
+
+.bookedHistoryInfo-payment-header {
+  margin-bottom: 15px;
+}
+
+.bookedHistoryInfo-bank-account {
+  margin-bottom: 15px;
+  color: black;
 }
 
 .bookedHistoryInfo-info-topic {
@@ -220,6 +238,19 @@
   .bookedhistoryinfo-page {
     margin-left: 50px;
     margin-right: 50px;
+  }
+  .bookedHistoryInfo-info-topic {
+    width: 100%;
+  }
+  .bookedHistoryInfo-info-each-1 {
+    display: inline;
+    width: 60%;
+  }
+
+  .bookedHistoryInfo-info-each-2 {
+    display: inline;
+    width: 40%;
+    margin-left: 10px;
   }
 }
 

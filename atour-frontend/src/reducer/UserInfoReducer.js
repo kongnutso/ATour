@@ -3,8 +3,9 @@ import {
   LOGOUT,
   LOGIN_SUCCESS,
   GUIDE_LOGIN_SUCCESS,
+  ADMIN_LOGIN_SUCCESS,
   LOGIN_FAILED,
-  CLEAR_ERROR
+  CLEAR_ERROR,
 } from '../action/ApplicationAction';
 import {
   EDIT_USER_INFO,
@@ -12,7 +13,7 @@ import {
   EDIT_PROFILE,
   GET_USER_INFO,
   GET_GUIDE_INFO,
-  EDIT_GUIDE_USER_INFO
+  EDIT_GUIDE_USER_INFO,
 } from '../action/UserInfoAction';
 
 const initialState = {
@@ -29,7 +30,7 @@ const initialState = {
     firstName: '',
     lastName: '',
     birthDate: '',
-    phoneNumber: ''
+    phoneNumber: '',
   },
   guideInfo: null,
   // guideInfo: {
@@ -165,7 +166,7 @@ const initialState = {
   //   //     }
   //   //   ]
   // },
-  isView: false
+  isView: false,
 };
 
 function customerId(state = initialState.customerId, action) {
@@ -181,6 +182,7 @@ function customerId(state = initialState.customerId, action) {
 
 function isLoginSuccess(state = initialState.isLoginSuccess, action) {
   switch (action.type) {
+    case ADMIN_LOGIN_SUCCESS:
     case GUIDE_LOGIN_SUCCESS:
     case LOGIN_SUCCESS:
       return true;
@@ -225,6 +227,8 @@ function userName(state = initialState.userName, action) {
       return action.payload.userName;
     case GUIDE_LOGIN_SUCCESS:
       return action.payload.userName;
+    case ADMIN_LOGIN_SUCCESS:
+      return action.payload.userName;
     case LOGOUT:
       return '';
     default:
@@ -243,10 +247,11 @@ function profile(state = initialState.profile, action) {
         ...action.payload.profile,
         socialID,
         name: fullName,
-        email
+        email,
       };
     case EDIT_USER_INFO:
       state.phoneNumber = action.payload.phoneNumber;
+      state.profileImageUrl = action.payload.profileImageUrl
       return state;
     case LOGOUT:
       return {};
@@ -282,6 +287,8 @@ function guideInfo(state = initialState.guideInfo, action) {
     case GUIDE_LOGIN_SUCCESS:
     case EDIT_GUIDE_USER_INFO:
     case GET_GUIDE_INFO:
+      console.log(action.payload.guideInfo)
+      console.log(state)
       return action.payload.guideInfo;
     case LOGOUT:
       return {};
@@ -296,6 +303,8 @@ function role(state = initialState.role, action) {
       console.log('SUCCESS AT ROLE');
       return action.payload.role;
     case GUIDE_LOGIN_SUCCESS:
+      return action.payload.role;
+    case ADMIN_LOGIN_SUCCESS:
       return action.payload.role;
     case LOGOUT:
       return '';
@@ -314,7 +323,7 @@ const reducer = combineReducers({
   guideInfo,
   email,
   personalId,
-  customerId
+  customerId,
 });
 
 export default reducer;

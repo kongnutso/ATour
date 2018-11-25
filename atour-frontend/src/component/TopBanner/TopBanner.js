@@ -118,7 +118,7 @@ class TopBanner extends React.Component {
         onClickOutside={() => this.setState({ isClickedDropdown: false })}
       >
         <div className="topbanner-login-dropdown">
-          {this.props.userInfo.role === "Customer" ? (
+          {this.props.userInfo.role === "Customer" && (
             <Link className="topbanner-link" to="/bookedHistory">
               <div
                 className="dropdown-item"
@@ -132,7 +132,8 @@ class TopBanner extends React.Component {
                 Booked History
               </div>
             </Link>
-          ) : (
+          )}
+          {this.props.userInfo.role === "Guide" && (
             <div>
               <Link to="/publishedTour" className="topbanner-link">
                 <div
@@ -154,18 +155,20 @@ class TopBanner extends React.Component {
               </Link>
             </div>
           )}
-          <Link to="/editProfile" className="topbanner-link">
-            <div
-              className="dropdown-item"
-              onClick={() => {
-                this.props.editProfile();
-                this.setState({ isClickedDropdown: false });
-              }}
-            >
-              <i className="fa fa-cog topbanner-icon" />
-              Edit Profile
-            </div>
-          </Link>
+          {this.props.userInfo.role !== "Admin" && (
+            <Link to="/editProfile" className="topbanner-link">
+              <div
+                className="dropdown-item"
+                onClick={() => {
+                  this.props.editProfile();
+                  this.setState({ isClickedDropdown: false });
+                }}
+              >
+                <i className="fa fa-cog topbanner-icon" />
+                Edit Profile
+              </div>
+            </Link>
+          )}
           <Link to="/" className="topbanner-link">
             <div
               className="dropdown-item"
@@ -190,7 +193,9 @@ class TopBanner extends React.Component {
           <div className="topbanner-as-username">
             {this.props.userInfo.userName.substring(0, 8)}
           </div>
-          <i className="fa fa-arrow-circle-down topbanner-dropdown-arrow" />
+          {this.props.userInfo.role === "Admin" && (
+            <i className="fa fa-arrow-circle-down topbanner-dropdown-arrow" />
+          )}
         </div>
         {dropDown}
       </div>
