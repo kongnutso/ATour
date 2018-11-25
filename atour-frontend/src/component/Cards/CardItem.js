@@ -10,49 +10,46 @@ import StarRatingComponent from "react-star-rating-component";
 import { selectTour, selectGuide } from "../../action/SelectAction";
 import TourItem from "../Tours/TourItem/TourItem";
 
-// target props: tourName, tourImage, tourRating, tourPrice, tourLocation
 class CardItem extends React.Component {
   selectTour() {
     this.props.selectTour(this.props.item);
   }
   render() {
-    console.log("ITEM: ", this.props.item);
-    console.log("ROLE: ", this.props.role);
     if (!this.props.isGuide) {
-      if (this.props.role == "Guide") {
-        return <TourItem tour={this.props.item} />;
-      } else {
-        return (
-          <Link to="/customerTourInfo">
-            <Card
-              style={{ height: "400px" }}
-              onClick={() => {
-                this.selectTour(this.props.item);
-              }}
-            >
-              <Image src={require("../../image/TourImage.png")} />
-              <Card.Content>
-                <Card.Meta>
-                  <span>{this.props.item.tourLocation}</span>
-                </Card.Meta>
-                <Card.Header>
-                  {this.props.item.tourName.substring(0, 40) + " ..."}
-                </Card.Header>
-                <Card.Description>
-                  {this.props.item.price + " bath"}{" "}
-                </Card.Description>
-                <Card.Content>
-                  <StarRatingComponent
-                    name=""
-                    starCount={5}
-                    value={this.props.item.tourRating}
-                  />
-                </Card.Content>
-              </Card.Content>
-            </Card>
-          </Link>
-        );
-      }
+      // if (this.props.role == "Guide") {
+      return <TourItem tour={this.props.item} item={this.props.item} />;
+      // } else {
+      //   return (
+      //     <Link to="/customerTourInfo">
+      //       <Card
+      //         style={{ height: "400px" }}
+      //         onClick={() => {
+      //           this.selectTour(this.props.item);
+      //         }}
+      //       >
+      //         <Image src={require("../../image/TourImage.png")} />
+      //         <Card.Content>
+      //           <Card.Meta>
+      //             <span>{this.props.item.tourLocation}</span>
+      //           </Card.Meta>
+      //           <Card.Header>
+      //             {this.props.item.tourName.substring(0, 40) + " ..."}
+      //           </Card.Header>
+      //           <Card.Description>
+      //             {this.props.item.price + " bath"}{" "}
+      //           </Card.Description>
+      //           <Card.Content>
+      //             <StarRatingComponent
+      //               name=""
+      //               starCount={5}
+      //               value={this.props.item.tourRating}
+      //             />
+      //           </Card.Content>
+      //         </Card.Content>
+      //       </Card>
+      //     </Link>
+      //   );
+      // }
     } else {
       const {
         item: {
@@ -61,7 +58,6 @@ class CardItem extends React.Component {
         },
         item
       } = this.props;
-      console.log(item);
       return (
         <Link to="/guideInfo">
           <Card

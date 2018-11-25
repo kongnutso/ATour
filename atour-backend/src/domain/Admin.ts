@@ -7,7 +7,9 @@ import {
   ApprovedGuide,
   GuideType,
   ApprovalStatus,
-  BadGuide
+  BadGuide,
+  RejectedPaidTrip,
+  RejectedGuide
 } from './types';
 
 type ApproveGuide = (g: Guide) => ApprovedGuide;
@@ -29,6 +31,26 @@ export function approveGuide(): ApproveGuide {
       dealtTrips: [],
     };
     return approvedGuide;
+  };
+}
+
+type RejectGuide = (g: Guide) => RejectedGuide;
+
+export function rejectGuide(): RejectGuide {
+  return (guide: Guide) => {
+    const rejectedGuide: RejectedGuide = {
+      _type: GuideType.RejectedGuide,
+      guideId: guide.guideId,
+      userName: guide.userName,
+      password: guide.password,
+      personalId: guide.personalId,
+      bankAccountNumber: guide.bankAccountNumber,
+      bankName: guide.bankName,
+      email: guide.email,
+      profile: guide.profile,
+      approvalStatus: ApprovalStatus.NotApprove
+    };
+    return rejectedGuide;
   };
 }
 
@@ -81,6 +103,25 @@ export function approveTrip(): ApproveTrip {
   };
 }
 
+type RejectTrip = (t: Trip) => RejectedPaidTrip;
+
+export function rejectTrip(): RejectTrip {
+  return (trip) => {
+    switch (trip._type) {
+      case TripType.PaidTrip: {
+        const rejectedTrip: RejectedPaidTrip = {
+          ...trip,
+          _type: TripType.RejectedPaidTrip
+        };
+        return rejectedTrip;
+      }
+      default: {
+        throw new Error('Trip is not paid');
+      }
+    }
+  };
+}
+
 type RefundTrip = (t: Trip, d: Date) => RefundedTrip;
 
 export function refundTrip(): RefundTrip {
@@ -93,6 +134,32 @@ export function refundTrip(): RefundTrip {
           refundDate: refundDate
         };
         return refundedTrip;
+      }
+      default: {
+        throw new Error('Trip is refund requested');
+      }
+    }
+  };
+}
+
+type RejectRefundTrip = (t: Trip) => ApprovedTrip;
+
+export function rejectRefundRequest(): RejectRefundTrip {
+  return (trip) => {
+    switch (trip._type) {
+      case TripType.RefundRequestedTrip: {
+        const approvedTrip: ApprovedTrip = {
+          _type: TripType.ApprovedTrip,
+          tripId: trip.tripId,
+          tripDate: trip.tripDate,
+          bookInfo: trip.bookInfo,
+          paidDate: trip.paidDate,
+          slipImages: trip.slipImages,
+          approveDate: trip.approveDate,
+          tourId: trip.tourId,
+          tourName: trip.tourName
+        };
+        return approvedTrip;
       }
       default: {
         throw new Error('Trip is refund requested');

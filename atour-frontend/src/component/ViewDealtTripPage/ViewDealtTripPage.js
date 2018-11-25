@@ -1,10 +1,11 @@
-import React, { Component } from 'react';
-import { Flex, Box, Text } from 'rebass';
-import { Menu, Segment, Icon } from 'semantic-ui-react';
-import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
-import Table from '../Table';
-import { SearchButton, Input } from '../BaseComponent';
+import React, { Component } from "react";
+import { Flex, Box, Text } from "rebass";
+import { Menu, Segment, Icon } from "semantic-ui-react";
+import { Link } from "react-router-dom";
+import { connect } from "react-redux";
+import Table from "../Table";
+import { SearchButton, Input } from "../BaseComponent";
+import { getDealtTrips } from "../../action/DealtTripAction";
 
 // Mock data
 const tableProps = num => {
@@ -13,42 +14,42 @@ const tableProps = num => {
     dataArray.push({
       date: `${i}/10/2018`,
       deal: `${String.fromCharCode(97 + i)}asdasdsadsada`,
-      tourUrl: '2ewds2wds',
+      tourUrl: "2ewds2wds",
       username: `${String.fromCharCode(97 + i)}`,
       phoneNumber: `${i}${i}${i}${i}${i}${i}`,
-      email: `${i}@hot.hr`,
+      email: `${i}@hot.hr`
     });
   }
   return dataArray;
 };
 const viewDealTripColumns = () => [
   {
-    Header: 'Date',
-    accessor: 'date',
+    Header: "Date",
+    accessor: "date",
     width: 250,
     Cell: ({ original }) => {
       const { date } = original;
       return <Text fontWeight="bold">{date}</Text>;
-    },
+    }
   },
   {
-    Header: 'Deal Name',
-    accessor: 'deal',
+    Header: "Deal Name",
+    accessor: "deal",
     width: 250,
     Cell: ({ original }) => {
       const { deal, tourUrl } = original;
       return (
-        <Link to={'/' + tourUrl}>
+        <Link to={"/" + tourUrl}>
           <Text fontWeight="bold" color="#333">
             {deal}
           </Text>
         </Link>
       );
-    },
+    }
   },
   {
-    Header: 'Customer Name',
-    accessor: 'username',
+    Header: "Customer Name",
+    accessor: "username",
     width: 400,
     Cell: ({ original }) => {
       const { username, phoneNumber, email } = original;
@@ -61,65 +62,102 @@ const viewDealTripColumns = () => [
           </Flex>
           <Flex width={1} justifyContent="flex-start">
             <Box ml={[2, 3, 4, 5]}>
-              <i style={{ marginRight: '10px' }} className="fa fa-phone" /> {phoneNumber}
+              <i style={{ marginRight: "10px" }} className="fa fa-phone" />{" "}
+              {phoneNumber}
             </Box>
           </Flex>
           <Flex width={1} justifyContent="flex-start">
             <Box ml={[2, 3, 4, 5]}>
-              <i style={{ marginRight: '10px' }} className="fa fa-envelope-o" />
+              <i style={{ marginRight: "10px" }} className="fa fa-envelope-o" />
               {email}
             </Box>
           </Flex>
         </Flex>
       );
-    },
-  },
+    }
+  }
 ];
 
 class ViewDealtTripPage extends Component {
-  state = { activeItem: 'current', searchTerm: { date: '', deal: '', username: '' } };
+  state = {
+    activeItem: "current",
+    searchTerm: { date: "", deal: "", username: "" },
+    activeDealtTrips: []
+  };
 
   onSearch = () => {
     console.log(`Search :`, this.state.searchTerm);
+    let searchOutput = [];
+    let searchTerm = this.state.searchTerm;
+    this.props.dealtTrips.map(dealtTrip => {
+      let isPass = true;
+      if (searchTerm.date !== "") {
+        isPass = new Date(dealtTrip.tripDate) === new Date(searchTerm.date);
+      }
+      if (searchTerm.deal !== "") {
+        isPass = dealtTrip.tourName === searchTerm.deal;
+      }
+      if (searchTerm.username !== "") {
+        isPass = dealtTrip.bookInfo.customerId === searchTerm.username;
+      }
+      if (this.state.activeItem === "current") {
+        isPass = new Date(dealtTrip.tripDate) >= new Date();
+      }
+      if (this.state.activeItem === "history") {
+        isPass = new Date(dealtTrip.tripDate) < new Date();
+      }
+      if (isPass) {
+        searchOutput.push(dealtTrip);
+      }
+    });
+    return searchOutput;
   };
 
   handleMenuClick = (e, { name }) => this.setState({ activeItem: name });
 
   render() {
+    console.log("Dealt Trips: ", this.props.dealtTrips);
     const { activeItem, searchTerm } = this.state;
     return (
-      <div style={{ marginTop: '30px', marginBottom: '30px' }}>
+      <div style={{ marginTop: "30px", marginBottom: "30px" }}>
         <Flex flexWrap="wrap" justifyContent="center">
           <Box width={4 / 5}>
             <Text fontSize={4} mb={1} mt={3}>
-              <i style={{ marginRight: '10px' }} className="fa fa-th-list" />
+              <i style={{ marginRight: "10px" }} className="fa fa-th-list" />
               View Dealt Trips
             </Text>
-            <hr style={{ border: '1px solid' }} />
+            <hr style={{ border: "1px solid" }} />
             <Menu tabular attached="top">
               <Menu.Item
                 name="current"
-                active={activeItem === 'current'}
+                active={activeItem === "current"}
                 onClick={this.handleMenuClick}
               />
               <Menu.Item
                 name="history"
-                active={activeItem === 'history'}
+                active={activeItem === "history"}
                 onClick={this.handleMenuClick}
               />
             </Menu>
             <Segment attached="bottom">
               <Text fontSize={3} mb={1} mt={2}>
-                <i style={{ marginRight: '10px' }} className="fa fa-search" />
+                <i style={{ marginRight: "10px" }} className="fa fa-search" />
                 Search
               </Text>
 
-              <Flex alignItems="flex-start" justifyContent="flex-start" mb={[3, 4]} width={1}>
+              <Flex
+                alignItems="flex-start"
+                justifyContent="flex-start"
+                mb={[3, 4]}
+                width={1}
+              >
                 <Box my={1} width={1 / 3} pr={1}>
                   <Input
                     placeholder="Date"
                     onChange={e =>
-                      this.setState({ searchTerm: { ...searchTerm, date: e.target.value } })
+                      this.setState({
+                        searchTerm: { ...searchTerm, date: e.target.value }
+                      })
                     }
                     onEnterText={this.onSearch}
                   />
@@ -128,7 +166,9 @@ class ViewDealtTripPage extends Component {
                   <Input
                     placeholder="Deal Name"
                     onChange={e =>
-                      this.setState({ searchTerm: { ...searchTerm, deal: e.target.value } })
+                      this.setState({
+                        searchTerm: { ...searchTerm, deal: e.target.value }
+                      })
                     }
                     onEnterText={this.onSearch}
                   />
@@ -137,7 +177,9 @@ class ViewDealtTripPage extends Component {
                   <Input
                     placeholder="Customer Name"
                     onChange={e =>
-                      this.setState({ searchTerm: { ...searchTerm, username: e.target.value } })
+                      this.setState({
+                        searchTerm: { ...searchTerm, username: e.target.value }
+                      })
                     }
                     onEnterText={this.onSearch}
                   />
@@ -155,9 +197,9 @@ class ViewDealtTripPage extends Component {
                   columns={viewDealTripColumns()}
                   defaultPageSize={10}
                   style={{
-                    textAlign: 'center',
-                    display: 'flex',
-                    alignItem: 'center',
+                    textAlign: "center",
+                    display: "flex",
+                    alignItem: "center"
                   }}
                 />
               </Box>
@@ -169,7 +211,14 @@ class ViewDealtTripPage extends Component {
   }
 }
 
+const mapStateToProps = state => {
+  return {
+    guideInfo: state.user.guideInfo,
+    dealtTrips: state.user.guideInfo.dealtTrips
+  };
+};
+
 export default connect(
-  null,
+  mapStateToProps,
   null
 )(ViewDealtTripPage);

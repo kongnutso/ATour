@@ -99,7 +99,8 @@ router.post('/:guideId', async (req, res) => {
       birthDate,
       gender,
       phoneNumber,
-      profileImageUrl
+      profileImageUrl,
+      email
     } = req.body;
     const guide = await editGuideService(getGuide(db), saveGuide(db))(guideId, {
       firstName,
@@ -108,7 +109,7 @@ router.post('/:guideId', async (req, res) => {
       gender,
       phoneNumber,
       profileImageUrl
-    });
+    }, email);
     res.json(guide);
   } catch (e) {
     res.json(e.message);

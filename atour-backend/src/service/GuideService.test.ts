@@ -146,10 +146,11 @@ describe('GuideService', () => {
     const editedGuide = await GuideService.editGuideService(
       fakeGetGuide,
       fakeSaveGuide
-    )('guideId', newProfile);
+    )('guideId', newProfile, 'newemail@gmail.com');
     expect(editedGuide).toEqual({
       ...guide,
-      profile: newProfile
+      profile: newProfile,
+      email: 'newemail@gmail.com'
     });
   });
 

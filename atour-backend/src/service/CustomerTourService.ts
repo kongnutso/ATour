@@ -135,28 +135,25 @@ export function uploadPaymentService(
     const tour = await getTourDb(tourId);
     const customer = await getCustomerDb(customerId);
     const trip = await getTripDb(tripId);
+    if (trip._type === TripType.BookedTrip || trip._type === TripType.PaidTrip || trip._type === TripType.RejectedPaidTrip ){
+      const paidTrip = uploadPayment()(
+        trip,
+        { url: slipUrl },
+        dateGenerator()
+      );
 
-    switch (trip._type) {
-      case TripType.BookedTrip || TripType.PaidTrip: {
-        const paidTrip = uploadPayment()(
-          trip,
-          { url: slipUrl },
-          dateGenerator()
-        );
+      const updatedTour = updateTripToTour()(tour, paidTrip);
 
-        const updatedTour = updateTripToTour()(tour, paidTrip);
+      const updatedCustomer = updateCustomerTripHistory()(customer, paidTrip);
 
-        const updatedCustomer = updateCustomerTripHistory()(customer, paidTrip);
-
-        await updateCustomerDb(updatedCustomer);
-        await updateTourDb(updatedTour);
-        await updateTripDb(paidTrip);
-        return paidTrip;
-      }
-      default: {
-        throw new Error('Trip is not booked or paid');
-      }
+      await updateCustomerDb(updatedCustomer);
+      await updateTourDb(updatedTour);
+      await updateTripDb(paidTrip);
+      return paidTrip;
+    }else{
+      throw new Error('Trip is not booked, paid or payment rejected');
     }
+    
   };
 }
 

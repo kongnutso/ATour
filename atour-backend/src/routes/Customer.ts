@@ -4,7 +4,6 @@ import { Db } from 'mongodb';
 import {
   saveCustomer,
   checkCustomerUsernameDuplicate,
-  editCustomerProfile,
   login,
   saveCustomerToken,
   getCustomerToken,
@@ -109,7 +108,7 @@ router.post('/editProfile', async (req, res) => {
   try {
     const db: Db = res.locals.db;
     const { customerId, email, phoneNumber, profileImageUrl } = req.body;
-    const customer = await editCustomerProfileService(editCustomerProfile(db))(
+    const customer = await editCustomerProfileService(updateCustomer(db), getCustomer(db))(
       customerId,
       email,
       phoneNumber,

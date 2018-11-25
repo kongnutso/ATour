@@ -1,4 +1,5 @@
-import { Customer, UserProfile, Tour } from '../domain/types';
+
+import { Customer, Tour } from '../domain/types';
 import { Db } from 'mongodb';
 
 export type GetCustomerDb = (customerId: string)=> Promise<Customer>;
@@ -6,16 +7,10 @@ export type SaveCustomerDb = (customer: Customer) => Promise<void>;
 export type CheckCustomerUsernameDuplicate = (
     customerUsername: string
 ) => Promise<boolean>;
+
 export type GetCustomerLogin = (
     userName: string,
     password: string
-) => Promise<Customer>;
-
-export type EditCustomerProfileDb = (
-    customerId: string,
-    email: string,
-    phoneNumber: string,
-    profileImageUrl: string
 ) => Promise<Customer>;
 
 export type SaveCustomerTokenDb = (
@@ -101,21 +96,6 @@ export function login(db:Db): GetCustomerLogin {
     ) => {
         const result:Customer = await db.collection('customer').findOne({userName, password});
         return result;
-    }
-}
-
-export function editCustomerProfile(db: Db): EditCustomerProfileDb {
-    return async (
-        customerId,
-        email,
-        phoneNumber,
-        profileImageUrl
-    ) => {
-        const customer = await db.collection('customer').findOne({customerId});
-        const newCustomerProfile: UserProfile = {...customer.profile, phoneNumber ,profileImageUrl};
-        const newCustomer: Customer = {...customer, email, profile: newCustomerProfile };
-        await db.collection('customer').updateOne({customerId}, {$set: newCustomer})
-        return newCustomer;
     }
 }
 

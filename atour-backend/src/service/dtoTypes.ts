@@ -1,44 +1,26 @@
 import {
   UnApprovedGuide,
-  GuideType,
-  UserProfile,
-  ApprovalStatus,
   Trip,
   Tour,
-  Guide
+  Guide,
+  ApprovedGuide,
+  BadGuide,
+  RejectedGuide
 } from '../domain/types';
 
-export type GuideDto = UnApprovedGuideDto | ApprovedGuideDto | BadGuideDto;
+export type GuideDto =
+  | UnApprovedGuideDto
+  | ApprovedGuideDto
+  | BadGuideDto
+  | RejectedGuideDto;
 export type UnApprovedGuideDto = UnApprovedGuide;
-export type ApprovedGuideDto = {
-  _type: GuideType.ApprovedGuide;
-  guideId: string;
-  userName: string;
-  password: string;
-  personalId: string;
-  email: string;
-  profile: UserProfile;
-  bankAccountNumber: string;
-  bankName: string;
-  approvalStatus: ApprovalStatus.Approved;
-  availableDate: Date[];
-  dealtTrips: Trip[];
+export type ApprovedGuideDto = ApprovedGuide & {
   publishedTours: Tour[];
 };
-
-export type BadGuideDto = {
-  _type: GuideType.BadGuide;
-  guideId: string;
-  userName: string;
-  password: string;
-  personalId: string;
-  email: string;
-  profile: UserProfile;
-  bankAccountNumber: string;
-  bankName: string;
-  approvalStatus: ApprovalStatus.Approved;
-  availableDate: Date[];
-  dealtTrips: Trip[];
+export type BadGuideDto = BadGuide & {
+  publishedTours: Tour[];
+};
+export type RejectedGuideDto = RejectedGuide & {
   publishedTours: Tour[];
 };
 

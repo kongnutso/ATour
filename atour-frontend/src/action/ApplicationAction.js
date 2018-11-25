@@ -48,7 +48,6 @@ export function login(userName, password, role) {
           .then(res => {
             return res.data;
           });
-        console.log(res);
         if (res === "Cannot read property 'guideId' of null") {
           return dispatch({
             type: LOGIN_FAILED

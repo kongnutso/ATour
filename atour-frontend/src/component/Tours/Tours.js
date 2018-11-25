@@ -6,13 +6,11 @@ import TourItem from "./TourItem/TourItem";
 import { Card } from "semantic-ui-react";
 
 const Tours = props => {
-  // console.log("received from guideHome ", props.tours);
-  // console.log("ROLE: ", props.role);
   if (props.role === "Guide") {
     return (
       <Card.Group centered stackable itemsPerRow={3}>
-        {props.tours.map(tour => (
-          <TourItem tour={tour} />
+        {props.tours.map((tour, index) => (
+          <TourItem tour={tour} key={index} />
         ))}
       </Card.Group>
     );

@@ -28,7 +28,7 @@ class AdminLogin extends Component {
         alignItems="center"
       >
         <Flex
-          width={2 / 5}
+          width={[4 / 5, 3 / 5, 2 / 5]}
           p={4}
           flexWrap="wrap"
           style={{ height: '350px', backgroundColor: '#fff' }}
