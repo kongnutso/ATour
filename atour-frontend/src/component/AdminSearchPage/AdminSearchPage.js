@@ -1,49 +1,55 @@
-import React, { Component, Fragment } from 'react';
-import { Flex, Box, Text } from 'rebass';
-import { Icon } from 'semantic-ui-react';
-import { connect } from 'react-redux';
-import axios from 'axios';
-import Table from '../Table';
-import PopUpModal from '../PopUpModal/PopUpModal';
-import COLOR from '../../utils/color';
-import { Button, SearchButton, Input } from '../BaseComponent';
+import React, { Component, Fragment } from "react";
+import { Flex, Box, Text } from "rebass";
+import { Icon } from "semantic-ui-react";
+import { connect } from "react-redux";
+import axios from "axios";
+import Table from "../Table";
+import PopUpModal from "../PopUpModal/PopUpModal";
+import COLOR from "../../utils/color";
+import { Button, SearchButton, Input } from "../BaseComponent";
+import { API_ENDPOINT } from "../../utils/utils";
+
 const adminSearchColumns = handleReject => [
   {
-    Header: 'Username',
-    accessor: 'username',
+    Header: "Username",
+    accessor: "username"
   },
   {
-    Header: 'First Name',
-    accessor: 'firstName',
+    Header: "First Name",
+    accessor: "firstName"
   },
   {
-    Header: 'Phone Number',
-    accessor: 'phoneNumber',
+    Header: "Phone Number",
+    accessor: "phoneNumber"
   },
   {
-    Header: 'Email',
-    accessor: 'email',
+    Header: "Email",
+    accessor: "email"
   },
   {
-    Header: 'Bank Name',
-    accessor: 'bankName',
+    Header: "Bank Name",
+    accessor: "bankName"
   },
   {
-    Header: 'Bank Account',
-    accessor: 'bankAccountNumber',
+    Header: "Bank Account",
+    accessor: "bankAccountNumber"
   },
   {
-    Header: 'Status',
-    accessor: 'status',
+    Header: "Status",
+    accessor: "status",
     width: 120,
     Cell: ({ original }) => {
       const { status } = original;
-      return <Fragment>{status ? <Text color={COLOR.danger}>Bad</Text> : 'Normal'}</Fragment>;
-    },
+      return (
+        <Fragment>
+          {status ? <Text color={COLOR.danger}>Bad</Text> : "Normal"}
+        </Fragment>
+      );
+    }
   },
   {
-    Header: 'Action',
-    accessor: 'action',
+    Header: "Action",
+    accessor: "action",
     width: 150,
     Cell: ({ original }) => {
       const { status, guideId } = original;
@@ -53,21 +59,21 @@ const adminSearchColumns = handleReject => [
             <Text color={COLOR.disable_text}>-- No Action --</Text>
           ) : (
             <Button color={COLOR.danger} onClick={() => handleReject(guideId)}>
-              <i className="fa fa-ban" style={{ marginRight: '5px' }} />
+              <i className="fa fa-ban" style={{ marginRight: "5px" }} />
               Mark Bad
             </Button>
           )}
         </Fragment>
       );
-    },
-  },
+    }
+  }
 ];
 
 class AdminSearchPage extends Component {
-  state = { username: '', rejectModal: false, data: [], selectedGuideId: '' };
+  state = { username: "", rejectModal: false, data: [], selectedGuideId: "" };
 
   componentDidMount() {
-    this.onSearch('');
+    this.onSearch("");
   }
 
   handleReject = guideId => {
@@ -77,16 +83,20 @@ class AdminSearchPage extends Component {
 
   onReject = () => {
     axios
-      .post('http://localhost:3000/admin/markBadGuide', { guideId: this.state.selectedGuideId })
+      .post("http://" + API_ENDPOINT + "/admin/markBadGuide", {
+        guideId: this.state.selectedGuideId
+      })
       .then(res => {
-        this.onSearch('');
+        this.onSearch("");
       });
   };
 
   onSearch = keyword => {
-    axios.post('http://localhost:3000/customer/searchGuide', { keyword }).then(res => {
-      this.setState({ data: this.mapInput(res.data) });
-    });
+    axios
+      .post("http://" + API_ENDPOINT + "/customer/searchGuide", { keyword })
+      .then(res => {
+        this.setState({ data: this.mapInput(res.data) });
+      });
   };
   mapInput = arr => {
     const filterAprroveGuide = arr.filter(e => e.approvalStatus === 1);
@@ -103,7 +113,7 @@ class AdminSearchPage extends Component {
         email: e.email,
         bankName: e.bankName,
         bankAccountNumber: e.bankAccountNumber,
-        status: guideStatus,
+        status: guideStatus
       };
     });
   };
@@ -112,11 +122,16 @@ class AdminSearchPage extends Component {
     return (
       <Box>
         <Text fontSize={4} mb={4} mt={2}>
-          <i style={{ marginRight: '10px' }} className="fa fa-search" />
+          <i style={{ marginRight: "10px" }} className="fa fa-search" />
           Search Guide
         </Text>
 
-        <Flex alignItems="flex-start" justifyContent="flex-start" mb={[3, 4]} width={1}>
+        <Flex
+          alignItems="flex-start"
+          justifyContent="flex-start"
+          mb={[3, 4]}
+          width={1}
+        >
           <Box my={1} width={4 / 5}>
             <Input
               placeholder="Username"
@@ -148,9 +163,9 @@ class AdminSearchPage extends Component {
           columns={adminSearchColumns(this.handleReject)}
           defaultPageSize={10}
           style={{
-            textAlign: 'center',
-            display: 'flex',
-            alignItem: 'center',
+            textAlign: "center",
+            display: "flex",
+            alignItem: "center"
           }}
         />
       </Box>

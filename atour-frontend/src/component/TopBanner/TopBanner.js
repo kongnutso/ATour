@@ -1,32 +1,32 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import './styles.css';
-import { Link } from 'react-router-dom';
-import RegisterModal from '../RegisterModal/RegisterModal';
-import { loginModal, registerModal } from '../../action/ModalAction';
-import { logout, resizeWindow } from '../../action/ApplicationAction';
-import { editProfile, getUserInfo } from '../../action/UserInfoAction';
-import { seeBookHistory } from '../../action/BookAction';
-import LoginModal from '../LoginModal/LoginModal';
-import logo from '../../image/Atour-logo.jpg';
-import autobind from 'react-autobind';
-import SideMenu from '../SideMenu/SideMenu';
-import ClickOutSide from 'react-click-outside-component';
+import React from "react";
+import { connect } from "react-redux";
+import "./styles.css";
+import { Link } from "react-router-dom";
+import RegisterModal from "../RegisterModal/RegisterModal";
+import { loginModal, registerModal } from "../../action/ModalAction";
+import { logout, resizeWindow } from "../../action/ApplicationAction";
+import { editProfile, getUserInfo } from "../../action/UserInfoAction";
+import { seeBookHistory } from "../../action/BookAction";
+import LoginModal from "../LoginModal/LoginModal";
+import logo from "../../image/Atour-logo.jpg";
+import autobind from "react-autobind";
+import SideMenu from "../SideMenu/SideMenu";
+import ClickOutSide from "react-click-outside-component";
 
 class TopBanner extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       isClickedDropdown: false,
-      sideMenuStatus: 'hidden',
-      topTransparent: props.transparent,
+      sideMenuStatus: "hidden",
+      topTransparent: props.transparent
     };
     autobind(this);
   }
 
   componentDidMount() {
     const { resizeWindow } = this.props;
-    document.addEventListener('scroll', this.onScroll);
+    document.addEventListener("scroll", this.onScroll);
     window.onresize = function() {
       resizeWindow(window.innerWidth);
     };
@@ -37,24 +37,31 @@ class TopBanner extends React.Component {
       this.setState({ isClickedDropdown: false });
     }
     if (nextProps.width > 710) {
-      this.setState({ sideMenuStatus: 'hidden' });
+      this.setState({ sideMenuStatus: "hidden" });
     }
     if (nextProps.transparent !== this.props.transparent) {
       this.setState({ topTransparent: nextProps.transparent });
     }
-    if (this.props.isLoginSuccess !== nextProps.isLoginSuccess && nextProps.isLoginSuccess) {
-      this.props.getUserInfo(nextProps.userInfo.userName, nextProps.userInfo.token);
+    if (
+      this.props.isLoginSuccess !== nextProps.isLoginSuccess &&
+      nextProps.isLoginSuccess
+    ) {
+      this.props.getUserInfo(
+        nextProps.userInfo.userName,
+        nextProps.userInfo.token
+      );
     }
   }
 
   componentWillUnmount() {
-    document.removeEventListener('scroll', this.onScroll);
+    document.removeEventListener("scroll", this.onScroll);
   }
 
   onScroll() {
     // This also can change to dispatch transparent action
     // May need to have variable to know which page need transparent
-    const documentBody = document.body.scrollTop || document.documentElement.scrollTop;
+    const documentBody =
+      document.body.scrollTop || document.documentElement.scrollTop;
     if (documentBody > 90 || !this.props.transparent) {
       this.setState({ topTransparent: false });
     } else {
@@ -67,14 +74,15 @@ class TopBanner extends React.Component {
   }
 
   onClickOpenMenu() {
-    const documentBody = document.body.scrollTop || document.documentElement.scrollTop;
+    const documentBody =
+      document.body.scrollTop || document.documentElement.scrollTop;
     const { sideMenuStatus } = this.state;
     let nextStatus;
-    if (sideMenuStatus === 'hidden') {
-      nextStatus = 'isShowing';
+    if (sideMenuStatus === "hidden") {
+      nextStatus = "isShowing";
       this.setState({ topTransparent: false });
-    } else if (sideMenuStatus === 'isShowing') {
-      nextStatus = 'isHidding';
+    } else if (sideMenuStatus === "isShowing") {
+      nextStatus = "isHidding";
       if (documentBody <= 90) {
         this.setState({ topTransparent: true });
       }
@@ -88,7 +96,10 @@ class TopBanner extends React.Component {
     return (
       <div className="topbanner-user-container">
         <div className="topbanner-right">
-          <div onClick={this.props.openRegisterModal} className="topbanner-menu">
+          <div
+            onClick={this.props.openRegisterModal}
+            className="topbanner-menu"
+          >
             Sign up
           </div>
         </div>
@@ -103,9 +114,11 @@ class TopBanner extends React.Component {
 
   renderSignIn() {
     const dropDown = this.state.isClickedDropdown ? (
-      <ClickOutSide onClickOutside={() => this.setState({ isClickedDropdown: false })}>
+      <ClickOutSide
+        onClickOutside={() => this.setState({ isClickedDropdown: false })}
+      >
         <div className="topbanner-login-dropdown">
-          {this.props.userInfo.role === 'Customer' && (
+          {this.props.userInfo.role === "Customer" && (
             <Link className="topbanner-link" to="/bookedHistory">
               <div
                 className="dropdown-item"
@@ -119,7 +132,7 @@ class TopBanner extends React.Component {
               </div>
             </Link>
           )}
-          {this.props.userInfo.role === 'Guide' && (
+          {this.props.userInfo.role === "Guide" && (
             <div>
               <Link to="/publishedTour" className="topbanner-link">
                 <div
@@ -141,7 +154,7 @@ class TopBanner extends React.Component {
               </Link>
             </div>
           )}
-          {this.props.userInfo.role !== 'Admin' && (
+          {this.props.userInfo.role !== "Admin" && (
             <Link to="/editProfile" className="topbanner-link">
               <div
                 className="dropdown-item"
@@ -209,7 +222,10 @@ class TopBanner extends React.Component {
     return (
       <div className="topbanner-right-container">
         <div className="topbanner-right topbanner-first">
-          <Link to="/searchForTour" className="topbanner-link">
+          <Link
+            to={{ pathname: "/searchForTour", state: { isSearch: true } }}
+            className="topbanner-link"
+          >
             <div className="topbanner-menu">Search for Tour</div>
           </Link>
         </div>
@@ -226,7 +242,8 @@ class TopBanner extends React.Component {
   render() {
     const { sideMenuStatus, topTransparent } = this.state;
     const path = this.props.location.pathname;
-    const renderMenu = this.props.width <= 710 ? this.renderSideMenuButton() : this.renderMenu();
+    const renderMenu =
+      this.props.width <= 710 ? this.renderSideMenuButton() : this.renderMenu();
     return (
       <div>
         <LoginModal />
@@ -237,18 +254,26 @@ class TopBanner extends React.Component {
             setSideMenuStatus={this.setSideMenuStatus}
             path={path}
           />
-          <div className={`topbanner-banner${topTransparent ? '--transparent' : ''}`}>
+          <div
+            className={`topbanner-banner${
+              topTransparent ? "--transparent" : ""
+            }`}
+          >
             <div className="topbanner-logo-container">
               <div className="topbanner-logo">
                 <Link to="/">
-                  <img className="topbanner-logo-img" src={logo} alt="topbanner-logo" />
+                  <img
+                    className="topbanner-logo-img"
+                    src={logo}
+                    alt="topbanner-logo"
+                  />
                 </Link>
               </div>
             </div>
             {renderMenu}
           </div>
         </div>
-        <div style={{ height: '50px' }} />
+        <div style={{ height: "50px" }} />
       </div>
     );
   }
@@ -257,7 +282,7 @@ class TopBanner extends React.Component {
 const mapStateToProps = state => ({
   userInfo: state.user,
   width: state.app.width,
-  isLoginSuccess: state.user.isLoginSuccess,
+  isLoginSuccess: state.user.isLoginSuccess
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -267,7 +292,7 @@ const mapDispatchToProps = dispatch => ({
   resizeWindow: width => dispatch(resizeWindow(width)),
   editProfile: () => dispatch(editProfile()),
   getUserInfo: (userName, token) => dispatch(getUserInfo(userName, token)),
-  seeBookHistory: customerId => dispatch(seeBookHistory(customerId)),
+  seeBookHistory: customerId => dispatch(seeBookHistory(customerId))
 });
 
 export default connect(

@@ -13,7 +13,8 @@ import {
   EDIT_PROFILE,
   GET_USER_INFO,
   GET_GUIDE_INFO,
-  EDIT_GUIDE_USER_INFO
+  EDIT_GUIDE_USER_INFO,
+  UPDATED
 } from "../action/UserInfoAction";
 
 const initialState = {
@@ -32,6 +33,7 @@ const initialState = {
     birthDate: "",
     phoneNumber: ""
   },
+  isUpdated: false,
   guideInfo: null,
   isView: false
 };
@@ -59,6 +61,18 @@ function isLoginSuccess(state = initialState.isLoginSuccess, action) {
       return null;
     case LOGOUT:
       return null;
+    default:
+      return state;
+  }
+}
+
+function isUpdated(state = initialState.isUpdated, action) {
+  switch (action.type) {
+    case EDIT_GUIDE_USER_INFO:
+    case EDIT_USER_INFO:
+      return true;
+    case UPDATED:
+      return false;
     default:
       return state;
   }
@@ -117,9 +131,12 @@ function profile(state = initialState.profile, action) {
         email
       };
     case EDIT_USER_INFO:
-      state.phoneNumber = action.payload.phoneNumber;
-      state.profileImageUrl = action.payload.profileImageUrl;
-      return state;
+      const news = {
+        ...state,
+        phoneNumber: action.payload.phoneNumber,
+        profileImageUrl: action.payload.profileImageUrl
+      };
+      return news;
     case LOGOUT:
       return {};
     default:
@@ -154,8 +171,6 @@ function guideInfo(state = initialState.guideInfo, action) {
     case GUIDE_LOGIN_SUCCESS:
     case EDIT_GUIDE_USER_INFO:
     case GET_GUIDE_INFO:
-      console.log(action.payload.guideInfo);
-      console.log(state);
       return action.payload.guideInfo;
     case LOGOUT:
       return {};
@@ -167,7 +182,6 @@ function guideInfo(state = initialState.guideInfo, action) {
 function role(state = initialState.role, action) {
   switch (action.type) {
     case LOGIN_SUCCESS:
-      console.log("SUCCESS AT ROLE");
       return action.payload.role;
     case GUIDE_LOGIN_SUCCESS:
       return action.payload.role;
@@ -190,7 +204,8 @@ const reducer = combineReducers({
   guideInfo,
   email,
   personalId,
-  customerId
+  customerId,
+  isUpdated
 });
 
 export default reducer;

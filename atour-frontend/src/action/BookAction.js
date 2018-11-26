@@ -1,5 +1,6 @@
 import axios from "axios";
 import { APPROVETRIP } from "../utils/TripType";
+import { API_ENDPOINT } from "../utils/utils";
 
 export const BOOK_TRIP = "BOOK_TRIP";
 export const BOOK_TRIP_ERROR = "BOOK_TRIP_ERROR";
@@ -31,7 +32,7 @@ export function bookTrip(
         guideName
       };
       const res = await axios
-        .post("http://localhost:3000/customer/bookTrip", req)
+        .post("http://" + API_ENDPOINT + "/customer/bookTrip", req)
         .then(res => {
           return res.data;
         });
@@ -56,10 +57,11 @@ export function bookTrip(
 async function getTrip(tripId) {
   try {
     const res = await axios
-      .get(`http://localhost:3000/trip/${tripId}`)
+      .get("http://" + API_ENDPOINT + "/trip/" + tripId)
       .then(res => {
         return res.data;
       });
+    console.log(res);
     const payload = {
       ...res.bookInfo,
       guideId: res.guide.guideId,
@@ -69,7 +71,8 @@ async function getTrip(tripId) {
       tripId: res.tripId,
       tourId: res.tourId,
       uploadedFileDate: res.paidDate,
-      slip: res.slipImages
+      slip: res.slipImages,
+      review: res.review
     };
     return payload;
   } catch (e) {
@@ -80,13 +83,12 @@ async function getTrip(tripId) {
 async function finishTrip(tripId) {
   try {
     const res = await axios
-      .post("http://localhost:3000/customer/finishTrip", { tripId })
+      .post("http://" + API_ENDPOINT + "/customer/finishTrip", { tripId })
       .then(res => {
         return res.data;
       });
     const payload = {
       ...res.bookInfo,
-      guideId: res.guide.guideId,
       tourName: res.tourName,
       tripDate: res.tripDate,
       _type: res._type,
@@ -108,7 +110,6 @@ export function selectBookedTrip(tripId, tripDate, _type) {
       const finish =
         new Date() - new Date(tripDate) > 0 && _type === APPROVETRIP;
       const payload = finish ? await finishTrip(tripId) : await getTrip(tripId);
-
       console.log(payload);
       return dispatch({
         type: SELECT_BOOKED_TRIP,
@@ -126,7 +127,7 @@ export function setImageSlip(slipUrl, tripId, tourId, customerId) {
     try {
       if (tripId) {
         const res = await axios
-          .post("http://localhost:3000/customer/uploadPayment", {
+          .post("http://" + API_ENDPOINT + "/customer/uploadPayment", {
             tourId,
             tripId,
             customerId,
@@ -156,7 +157,9 @@ export function seeBookHistory(customerId) {
     try {
       if (customerId) {
         const tour = await axios
-          .post("http://localhost:3000/customer/seeBookHistory", { customerId })
+          .post("http://" + API_ENDPOINT + "/customer/seeBookHistory", {
+            customerId
+          })
           .then(res => {
             return res.data;
           });
@@ -177,7 +180,7 @@ export function cancelTrip(tourId, tripId, customerId) {
     try {
       if (customerId) {
         const cancel = await axios
-          .post("http://localhost:3000/customer/cancelTrip", {
+          .post("http://" + API_ENDPOINT + "/customer/cancelTrip", {
             tourId: tourId,
             tripId: tripId,
             customerId: customerId
@@ -202,7 +205,7 @@ export function refundTrip(tourId, tripId, customerId) {
     try {
       if (customerId) {
         const refund = await axios
-          .post("http://localhost:3000/customer/refundTrip", {
+          .post("http://" + API_ENDPOINT + "/customer/refundTrip", {
             tourId: tourId,
             tripId: tripId,
             customerId: customerId
@@ -223,22 +226,31 @@ export function refundTrip(tourId, tripId, customerId) {
   };
 }
 
-export const CHENGE_REVIEW = "CHENGE_REVIEW";
-export function changeReview(review, customerId) {
+export const CHANGE_REVIEW = "CHANGE_REVIEW";
+export function changeReview(tourId, tripId, customerId, reviewId, comment) {
   return async dispatch => {
     try {
       if (customerId) {
         const review = await axios
-          .post("http://localhost:3000/customer/...", {
-            review,
-            customerId
-          })
+          .post(
+            "http://" +
+              API_ENDPOINT +
+              "/customer/" +
+              (reviewId ? "editReview" : "addReview"),
+            {
+              comment,
+              tourId,
+              tripId,
+              reviewId,
+              customerId
+            }
+          )
           .then(res => {
             return res.data;
           });
         return dispatch({
-          type: CHENGE_REVIEW,
-          payload: review
+          type: CHANGE_REVIEW,
+          payload: { review }
         });
       } else {
         return dispatch({ type: "INVALID" });
@@ -249,17 +261,30 @@ export function changeReview(review, customerId) {
   };
 }
 
-export const CHANGE_REVIEW_INPUT = "CHANGE_REVIEW_INPUT";
-export function reviewInputChange(review) {
-  return async dispatch => {
-    return dispatch({
-      type: CHANGE_REVIEW_INPUT,
-      payload: review
-    });
-  };
-}
-
 export const DELETE_REVIEW = "DELETE_REVIEW";
-export function deleteReview() {
-  //do sth
+export function deleteReview(tourId, tripId, customerId, reviewId) {
+  return async dispatch => {
+    try {
+      if (customerId) {
+        const review = await axios
+          .post("http://" + API_ENDPOINT + "/customer/removeReview", {
+            reviewId,
+            tourId,
+            tripId,
+            customerId
+          })
+          .then(res => {
+            return res.data;
+          });
+        return dispatch({
+          type: CHANGE_REVIEW,
+          payload: { review: {} }
+        });
+      } else {
+        return dispatch({ type: "INVALID" });
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
 }

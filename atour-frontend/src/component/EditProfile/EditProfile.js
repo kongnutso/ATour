@@ -1,21 +1,40 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { Flex, Box, Image } from 'rebass';
-import { editUserInfo } from '../../action/UserInfoAction';
-import './styles.css';
-import { dateToString } from '../../utils/utils';
-import { validateEmail, validatePhone } from '../../utils/validation';
-import logo from '../../image/Atour-logo.jpg';
-import Cards from '../Cards/Cards';
+import React from "react";
+import { connect } from "react-redux";
+import { Flex, Box, Image } from "rebass";
+import { editUserInfo, updated } from "../../action/UserInfoAction";
+import "./styles.css";
+import { dateToString } from "../../utils/utils";
+import { validateEmail, validatePhone } from "../../utils/validation";
+import logo from "../../image/Atour-logo.jpg";
+import Cards from "../Cards/Cards";
+import PopUpModal from "../PopUpModal/PopUpModal";
 
 class EditProfile extends React.Component {
   constructor() {
     super();
-    this.state = { email: '', phoneNumber: '', profileImageUrl: '' };
+    this.state = {
+      email: "",
+      phoneNumber: "",
+      profileImageUrl: "",
+      saveChanged: false
+    };
   }
+
+  componentWillUnmount() {
+    this.props.updated();
+  }
+
   componentWillReceiveProps(nextProps) {
+    console.log("in nextProps");
     const { email, phoneNumber, profileImageUrl } = nextProps.userInfo;
     this.setState({ email, phoneNumber, profileImageUrl });
+    console.log(nextProps.isUpdated);
+    console.log(this.props.userInfo);
+    if (nextProps.isUpdated) {
+      this.setState({ saveChanged: true });
+      this.props.updated();
+      console.log("saved");
+    }
   }
 
   componentDidMount() {
@@ -36,12 +55,12 @@ class EditProfile extends React.Component {
 
       let errorMessage =
         emailError && phoneError
-          ? emailError + '\n' + phoneError
+          ? emailError + "\n" + phoneError
           : emailError
-            ? emailError
-            : phoneError
-              ? phoneError
-              : '';
+          ? emailError
+          : phoneError
+          ? phoneError
+          : "";
       if (!errorMessage) {
         const res = userInfo;
         res.profileImageUrl = profileImageUrl;
@@ -59,13 +78,18 @@ class EditProfile extends React.Component {
       personalId,
       gender,
       birthDate,
-      publishedTours,
+      publishedTours
     } = this.props.userInfo;
     const { email, phoneNumber, profileImageUrl } = this.state;
     const { isView } = this.props;
-    const headerText = isView ? 'Guide Profile' : 'Edit Profile';
+    const headerText = isView ? "Guide Profile" : "Edit Profile";
     return (
       <div className="editProfilePage">
+        <PopUpModal
+          isOpen={this.state.saveChanged}
+          onCloseModal={() => this.setState({ saveChanged: false })}
+          headerText="Your Information is updated"
+        />
         <div className="editProfilePage-header">
           <i className="fa fa-cog editProfilePage-header-icon" />
           <div className="editProfilePage-header-text">{headerText}</div>
@@ -78,18 +102,28 @@ class EditProfile extends React.Component {
               width={[1, 1, 2 / 3, 1 / 3]}
             >
               <div>
-                <Image src={profileImageUrl || logo} className="editProfilePage-content-img" />
+                <Image
+                  src={profileImageUrl || logo}
+                  className="editProfilePage-content-img"
+                />
                 {isView ? null : (
                   <input
+                    placeholder="your image url"
                     value={profileImageUrl}
-                    onChange={e => this.setState({ profileImageUrl: e.target.value })}
+                    onChange={e =>
+                      this.setState({ profileImageUrl: e.target.value })
+                    }
                     className="editProfilePage-content-img-input form-control"
                   />
                 )}
               </div>
             </Box>
-            <Box className="editProfilePage-content-box" p={3} width={[1, 1, 3 / 4, 1 / 2]}>
-              <div style={{ fontWeight: '600' }}>Personnal Info</div>
+            <Box
+              className="editProfilePage-content-box"
+              p={3}
+              width={[1, 1, 3 / 4, 1 / 2]}
+            >
+              <div style={{ fontWeight: "600" }}>Personnal Info</div>
               <div className="editProfilePage-content-info">
                 <Flex>
                   <Box p={3} width={[1, 1, 1 / 2]}>
@@ -97,7 +131,7 @@ class EditProfile extends React.Component {
                   </Box>
                   <Box p={3} width={[1, 1, 1 / 2]}>
                     <div className="editProfilePage-content-info-userinfo">
-                      {firstName + ' ' + lastName}
+                      {firstName + " " + lastName}
                     </div>
                   </Box>
                 </Flex>
@@ -106,7 +140,9 @@ class EditProfile extends React.Component {
                     <div>Social ID</div>
                   </Box>
                   <Box p={3} width={1 / 2}>
-                    <div className="editProfilePage-content-info-userinfo">{personalId}</div>
+                    <div className="editProfilePage-content-info-userinfo">
+                      {personalId}
+                    </div>
                   </Box>
                 </Flex>
                 <Flex>
@@ -114,7 +150,9 @@ class EditProfile extends React.Component {
                     <div>Gender</div>
                   </Box>
                   <Box p={3} width={1 / 2}>
-                    <div className="editProfilePage-content-info-userinfo">{gender}</div>
+                    <div className="editProfilePage-content-info-userinfo">
+                      {gender}
+                    </div>
                   </Box>
                 </Flex>
                 <Flex>
@@ -129,7 +167,9 @@ class EditProfile extends React.Component {
                 </Flex>
               </div>
 
-              <div style={{ fontWeight: '600', marginTop: '30px' }}>Contact Info</div>
+              <div style={{ fontWeight: "600", marginTop: "30px" }}>
+                Contact Info
+              </div>
               <div className="editProfilePage-content-info">
                 <Flex>
                   <Box p={3} width={1 / 2}>
@@ -142,7 +182,9 @@ class EditProfile extends React.Component {
                       <input
                         className="form-control"
                         value={phoneNumber}
-                        onChange={e => this.setState({ phoneNumber: e.target.value })}
+                        onChange={e =>
+                          this.setState({ phoneNumber: e.target.value })
+                        }
                       />
                     )}
                   </Box>
@@ -187,21 +229,36 @@ class EditProfile extends React.Component {
 }
 
 const mapStateToProps = state => {
-  const { isView, profile, guideInfo, token, email, personalId, role, customerId } = state.user;
+  const {
+    isView,
+    profile,
+    guideInfo,
+    token,
+    email,
+    personalId,
+    role,
+    customerId,
+    userName,
+    isUpdated
+  } = state.user;
+  console.log(state.user);
   return {
     userInfo: isView
       ? guideInfo
-      : role === 'Customer'
-        ? { ...profile, email, personalId, customerId }
-        : { ...guideInfo, ...guideInfo.profile },
+      : role === "Customer"
+      ? { ...profile, email, personalId, customerId, userName }
+      : { ...guideInfo, ...guideInfo.profile },
     isView,
     role,
     token,
+    isUpdated
   };
 };
 
 const mapDispatchToProps = dispatch => ({
-  editUserInfo: (userInfo, token, role) => dispatch(editUserInfo(userInfo, token, role)),
+  editUserInfo: (userInfo, token, role) =>
+    dispatch(editUserInfo(userInfo, token, role)),
+  updated: () => dispatch(updated())
 });
 
 export default connect(

@@ -1,9 +1,9 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { Card, Image } from 'semantic-ui-react';
-import { selectTour, selectGuide } from '../../action/SelectAction';
-import TourItem from '../Tours/TourItem/TourItem';
+import React from "react";
+import { connect } from "react-redux";
+import { Link } from "react-router-dom";
+import { Card, Image } from "semantic-ui-react";
+import { selectTour, selectGuide } from "../../action/SelectAction";
+import TourItem from "../Tours/TourItem/TourItem";
 
 class CardItem extends React.Component {
   selectTour() {
@@ -11,7 +11,14 @@ class CardItem extends React.Component {
   }
   render() {
     if (!this.props.isGuide) {
-      return <TourItem tour={this.props.item} item={this.props.item} />;
+      console.log("NINJA", this.props.role);
+      return (
+        <TourItem
+          tour={this.props.item}
+          item={this.props.item}
+          theRole={this.props.role}
+        />
+      );
       // } else {
       //   return (
       //     <Link to="/customerTourInfo">
@@ -48,25 +55,25 @@ class CardItem extends React.Component {
       const {
         item: {
           userName,
-          profile: { firstName, lastName, gender },
+          profile: { firstName, lastName, gender }
         },
-        item,
+        item
       } = this.props;
       return (
         <Link to="/guideInfo">
           <Card
-            style={{ height: '400px' }}
+            style={{ height: "400px" }}
             onClick={() => {
               this.props.selectGuide(item);
             }}
           >
-            <Image src={require('../../image/TourImage.png')} />
+            <Image src={require("../../image/TourImage.png")} />
             <Card.Content>
               <Card.Header>{userName}</Card.Header>
-              <Card.Content style={{ marginTop: '10px' }}>
-                {'Full Name: ' + firstName + ' ' + lastName}
+              <Card.Content style={{ marginTop: "10px" }}>
+                {"Full Name: " + firstName + " " + lastName}
               </Card.Content>
-              <Card.Content> {'Gender: ' + gender}</Card.Content>
+              <Card.Content> {"Gender: " + gender}</Card.Content>
             </Card.Content>
           </Card>
         </Link>
@@ -77,7 +84,7 @@ class CardItem extends React.Component {
 
 const mapDispatchToProps = dispatch => ({
   selectTour: tour => dispatch(selectTour(tour)),
-  selectGuide: guide => dispatch(selectGuide(guide)),
+  selectGuide: guide => dispatch(selectGuide(guide))
 });
 
 export default connect(

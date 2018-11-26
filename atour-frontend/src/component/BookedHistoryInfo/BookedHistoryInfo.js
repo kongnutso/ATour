@@ -11,7 +11,6 @@ import {
   cancelTrip,
   refundTrip,
   changeReview,
-  reviewInputChange,
   deleteReview
 } from "../../action/BookAction";
 import {
@@ -33,11 +32,32 @@ class BookedHistoryInfo extends React.Component {
     this.state = {
       confirmationModal: false,
       inputImg: "",
+      comment: "",
       confirmModal: false,
       refund: false,
       cancel: false,
-      editReview: false
+      editReview: false,
+      reviewChanged: false,
+      isDeleted: false
     };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (
+      nextProps.bookInfo &&
+      nextProps.bookInfo.review.comment !== this.props.bookInfo.review.comment
+    ) {
+      this.setState({ comment: nextProps.bookInfo.review.comment });
+      if (nextProps.bookInfo.tripId === this.props.bookInfo.tripId) {
+        this.setState({ reviewChanged: true });
+      }
+    }
+    if (
+      this.props.bookInfo.review.reviewId &&
+      !nextProps.bookInfo.review.reviewId
+    ) {
+      this.setState({ isDeleted: true });
+    }
   }
 
   classNameStatus(statusNumber, isDanger = false) {
@@ -91,25 +111,42 @@ class BookedHistoryInfo extends React.Component {
     this.setState({ inputImg: event.target.value });
   }
 
-  reviewInputChange(event) {
-    this.props.reviewInputChange(event.target.value);
-  }
-
   submitReview() {
-    console.log("submit review");
+    //tourId, tripId, customerId, comment
+    const {
+      bookInfo: {
+        tourId,
+        tripId,
+        review: { reviewId }
+      },
+      customerId
+    } = this.props;
     this.props.changeReview(
-      this.props.bookInfo.review //bla aaaaa
+      tourId,
+      tripId,
+      customerId,
+      reviewId,
+      this.state.comment
     );
+    this.setState({ editReview: false });
   }
 
   deleteReview() {
-    this.props.deleteReview();
+    const {
+      bookInfo: {
+        tourId,
+        tripId,
+        review: { reviewId }
+      },
+      customerId
+    } = this.props;
+    this.props.deleteReview(tourId, tripId, customerId, reviewId);
   }
 
   renderReview(statusNumber) {
     if (statusNumber > this.props.bookInfo._type) return <div />;
     else {
-      if (this.props.bookInfo.oldReview === "" || this.state.editReview) {
+      if (!this.props.bookInfo.review.comment || this.state.editReview) {
         return (
           <div>
             <Flex>
@@ -118,22 +155,32 @@ class BookedHistoryInfo extends React.Component {
                 <Form>
                   <TextArea
                     autoHeight
-                    value={this.props.bookInfo.review}
-                    onChange={this.reviewInputChange}
+                    value={this.state.comment}
+                    onChange={e => this.setState({ comment: e.target.value })}
                   />
                 </Form>
               </Box>
             </Flex>
             <Flex>
               <Box p={2} width={1 / 15} />
-              <Box p={3} width={14 / 15}>
-                <div
-                  className={this.classNameColorButton(statusNumber)}
-                  onClick={() => this.submitReview()}
-                >
-                  Submit
-                </div>
-              </Box>
+              <Flex style={{ width: "100%" }}>
+                <Box p={3} width={7 / 15}>
+                  <div
+                    className={this.classNameColorButton(statusNumber)}
+                    onClick={() => this.submitReview()}
+                  >
+                    Submit
+                  </div>
+                </Box>
+                <Box p={3} width={7 / 15}>
+                  <div
+                    className="bookedhistoryinfo-redbutton"
+                    onClick={() => this.setState({ editReview: false })}
+                  >
+                    Cancel
+                  </div>
+                </Box>
+              </Flex>
             </Flex>
           </div>
         );
@@ -144,7 +191,7 @@ class BookedHistoryInfo extends React.Component {
               <Box p={2} width={1 / 15} />
               <Box p={3} width={14 / 15}>
                 <div className="bookedhistoryinfo-reviewhistory">
-                  {this.props.bookInfo.oldReview}
+                  {this.props.bookInfo.review.comment}
                 </div>
               </Box>
             </Flex>
@@ -214,13 +261,34 @@ class BookedHistoryInfo extends React.Component {
           onConfirm={() => this.onClickSaveSlip(BOOKEDTRIP)} //change from 2
         />
         <PopUpModal
+          isOpen={this.state.deleteModal}
+          onCloseModal={() => this.setState({ deleteModal: false })}
+          headerText="Delete Review Confirmation"
+          bodyText="Do you want to delete review? "
+          type="Confirmation"
+          isDanger
+          onConfirm={() => this.deleteReview()}
+        />
+        <PopUpModal
+          isOpen={this.state.reviewChanged}
+          onCloseModal={() => this.setState({ reviewChanged: false })}
+          headerText="Review is changed"
+          bodyText=""
+        />
+
+        <PopUpModal
+          isOpen={this.state.isDeleted}
+          onCloseModal={() => this.setState({ isDeleted: false })}
+          headerText="Review is deleted"
+          bodyText=""
+        />
+        <PopUpModal
           isOpen={this.state.confirmationModal}
           onCloseModal={() => this.setState({ confirmationModal: false })}
           headerText={`${message} Confirmation`}
           bodyText={`Do you want to [${message}] ? `}
           onConfirm={() => {
             if (message === "Refund") {
-              console.log(message);
               this.setState({ refund: true });
               this.props.refundTrip(tourId, tripId, customerId);
             } else if (message === "Cancel") {
@@ -289,7 +357,7 @@ class BookedHistoryInfo extends React.Component {
                   <div className={this.classNameStatus(UNBOOKEDTRIP)}>1</div>
                 </Box>
                 <Box p={3} width={[3 / 4, 7 / 8, 14 / 15]}>
-                  Booked Date: {bookDate}
+                  Booked Date: {dateToString(bookDate)}
                 </Box>
               </Flex>
             </div>
@@ -308,7 +376,7 @@ class BookedHistoryInfo extends React.Component {
                     SCB 1234567 ATour-Corp
                   </div>
                   <div className="bookedHistoryInfo-slip-date">
-                    Uploaded slip date:{" "}
+                    Uploaded slip date:
                     {uploadedFileDate ? dateToString(uploadedFileDate) : "-"}
                   </div>
                 </Box>
@@ -426,7 +494,6 @@ class BookedHistoryInfo extends React.Component {
 
             {(refund || cancel) == false && (
               <div className={this.classNameText(FINISHEDTRIP)}>
-                {" "}
                 {/*change from 5*/}
                 <Flex>
                   <Box p={2} width={[1 / 4, 1 / 8, 1 / 15]}>
@@ -437,31 +504,30 @@ class BookedHistoryInfo extends React.Component {
                     Review
                   </Box>
                   <Box p={3} width={[1 / 4, 2 / 8, 3 / 15, 3 / 20]}>
-                    {(this.props.bookInfo.oldReview !== "" ||
-                      this.state.editReview) && (
-                      <div
-                        className={this.classNameColorButton(FINISHEDTRIP)}
-                        onClick={() => {
-                          this.setState({ editReview: true });
-                        }}
-                      >
-                        Edit
-                      </div>
-                    )}
+                    {this.props.bookInfo.review.comment &&
+                      !this.state.editReview && (
+                        <div
+                          className={this.classNameColorButton(FINISHEDTRIP)}
+                          onClick={() => {
+                            this.setState({ editReview: true });
+                          }}
+                        >
+                          Edit
+                        </div>
+                      )}
                   </Box>
                   <Box p={3} width={[1 / 4, 2 / 8, 3 / 15, 3 / 20]}>
-                    {console.log(this.props.bookInfo.review)}
-                    {(this.props.bookInfo.oldReview !== "" ||
-                      this.state.editReview) && (
-                      <div
-                        className={this.classNameRedColorButton(FINISHEDTRIP)}
-                        onClick={() => {
-                          this.deleteReview();
-                        }}
-                      >
-                        Delete
-                      </div>
-                    )}
+                    {this.props.bookInfo.review.comment &&
+                      !this.state.editReview && (
+                        <div
+                          className={this.classNameRedColorButton(FINISHEDTRIP)}
+                          onClick={() => {
+                            this.setState({ deleteModal: true });
+                          }}
+                        >
+                          Delete
+                        </div>
+                      )}
                   </Box>
                 </Flex>
                 {this.renderReview(FINISHEDTRIP)} {/*change from 5*/}
@@ -475,7 +541,6 @@ class BookedHistoryInfo extends React.Component {
 }
 
 const mapStateToProps = state => {
-  console.log(state);
   return {
     bookInfo: state.bookedHistoryInfo,
     customerId: state.user.customerId
@@ -489,10 +554,10 @@ const mapDispatchToProps = dispatch => ({
     dispatch(cancelTrip(tourId, tripId, customerId)),
   refundTrip: (tourId, tripId, customerId) =>
     dispatch(refundTrip(tourId, tripId, customerId)),
-  changeReview: (review, customerId) =>
-    dispatch(changeReview(review, customerId)),
-  reviewInputChange: review => dispatch(reviewInputChange(review)),
-  deleteReview: () => dispatch(deleteReview())
+  changeReview: (tourId, tripId, customerId, reviewId, comment) =>
+    dispatch(changeReview(tourId, tripId, customerId, reviewId, comment)),
+  deleteReview: (tourId, tripId, customerId, reviewId) =>
+    dispatch(deleteReview(tourId, tripId, customerId, reviewId))
 });
 
 export default connect(

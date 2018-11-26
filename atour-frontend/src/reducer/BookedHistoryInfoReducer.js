@@ -1,29 +1,27 @@
-import { combineReducers } from 'redux';
+import { combineReducers } from "redux";
 import {
   BOOK_TRIP,
   SELECT_BOOKED_TRIP,
   SET_IMAGE_SLIP,
   REFUND_TRIP,
   CANCEL_TRIP,
-  CHANGE_REVIEW_INPUT,
-  CHENGE_REVIEW
-} from '../action/BookAction';
+  CHANGE_REVIEW
+} from "../action/BookAction";
 
 const initialState = {
   _type: 6, //change from 1
-  bookDate: '',
-  tripDate: '',
-  uploadedFileDate: '',
-  bookedId: '',
-  slip: '',
-  guideId: '',
-  tourName: '',
-  price: '',
-  groupSize: '',
-  tripId: '',
-  tourId: '',
-  review: '1',
-  oldReview: '1'
+  bookDate: "",
+  tripDate: "",
+  uploadedFileDate: "",
+  bookedId: "",
+  slip: "",
+  guideId: "",
+  tourName: "",
+  price: "",
+  groupSize: "",
+  tripId: "",
+  tourId: "",
+  review: {}
 };
 
 function tourId(state = initialState.tourId, action) {
@@ -49,7 +47,7 @@ function price(state = initialState.price, action) {
   switch (action.type) {
     case BOOK_TRIP:
     case SELECT_BOOKED_TRIP:
-      if (action.payload._type === 0) return 'Unbooked';
+      if (action.payload._type === 0) return "Unbooked";
 
       return action.payload.price;
     default:
@@ -61,7 +59,7 @@ function groupSize(state = initialState.groupSize, action) {
   switch (action.type) {
     case BOOK_TRIP:
     case SELECT_BOOKED_TRIP:
-      if (action.payload._type === 0) return 'Unbooked';
+      if (action.payload._type === 0) return "Unbooked";
       return action.payload.size;
     default:
       return state;
@@ -72,7 +70,7 @@ function guideId(state = initialState.guideId, action) {
   switch (action.type) {
     case BOOK_TRIP:
     case SELECT_BOOKED_TRIP:
-      return action.payload.guideId;
+      return action.payload.guideId || state;
     default:
       return state;
   }
@@ -105,7 +103,7 @@ function bookDate(state = initialState.bookDate, action) {
   switch (action.type) {
     case BOOK_TRIP:
     case SELECT_BOOKED_TRIP:
-      if (action.payload._type === 0) return 'unbooked';
+      if (action.payload._type === 0) return "unbooked";
       return action.payload.bookDate;
     default:
       return state;
@@ -125,10 +123,10 @@ function tripDate(state = initialState.tripDate, action) {
 function uploadedFileDate(state = initialState.uploadedFileDate, action) {
   switch (action.type) {
     case BOOK_TRIP:
-      return '-';
+      return "-";
     case SELECT_BOOKED_TRIP:
     case SET_IMAGE_SLIP:
-      if (action.payload._type < 2) return '';
+      if (action.payload._type < 2) return "";
       return action.payload.uploadedFileDate;
     default:
       return state;
@@ -138,12 +136,11 @@ function uploadedFileDate(state = initialState.uploadedFileDate, action) {
 function slip(state = initialState.slip, action) {
   switch (action.type) {
     case BOOK_TRIP:
-      return '';
+      return "";
     case SELECT_BOOKED_TRIP:
     case SET_IMAGE_SLIP:
-      if (action.payload._type < 2) return '';
+      if (action.payload._type < 2) return "";
       if (action.payload.slip) {
-        console.log(action.payload.slip);
         return action.payload.slip[action.payload.slip.length - 1].url;
       }
     default:
@@ -153,19 +150,9 @@ function slip(state = initialState.slip, action) {
 
 function review(state = initialState.review, action) {
   switch (action.type) {
-    case CHANGE_REVIEW_INPUT:
-      return action.payload;
-    case CHENGE_REVIEW:
-      return action.payload;
-    default:
-      return state;
-  }
-}
-
-function oldReview(state = initialState.oldReview, action) {
-  switch (action.type) {
-    case CHENGE_REVIEW:
-      return action.payload;
+    case SELECT_BOOKED_TRIP:
+    case CHANGE_REVIEW:
+      return action.payload.review || {};
     default:
       return state;
   }
@@ -183,8 +170,7 @@ const reducer = combineReducers({
   price,
   tripId,
   tourId,
-  review,
-  oldReview
+  review
 });
 
 export default reducer;
