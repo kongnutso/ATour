@@ -32,7 +32,7 @@ build:
     - docker push registry.gitlab.com/atour/atour/backend:latest
 
 deploy:
-  image: lachlanevenson/k8s-kubectl:latest
+  image: lachlanevenson/k8s-kubectl:v1.11.4
   stage: deploy
   script:
     - echo "Deploy to staging server"
