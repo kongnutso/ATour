@@ -51,7 +51,7 @@ import {
 const router = express.Router();
 
 router.get('/', (req, res) => {
-  res.send('Hello Customer New');
+  res.send('Hello Customer New Test Deploy');
 });
 
 router.post('/register', async (req, res) => {
