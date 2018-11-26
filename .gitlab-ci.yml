@@ -48,12 +48,13 @@ deploy:
       --docker-username=$DOCKER_USERNAME 
       --docker-password=$DOCKER_PASSWORD 
       --docker-email=$DOCKER_EMAIL
-    - sed -i "s/__VERSION__/latest-workaround/" atour-backend-deployment.yaml atour-backend-service.yaml db-deployment.yaml db-service.yaml
+    - sed -i "s/__VERSION__/${CI_COMMIT_REF_NAME}/" atour-backend-deployment.yaml atour-backend-service.yaml db-deployment.yaml db-service.yaml
+    - sed -i "s/rolling-again/again-rolling/" atour-backend-deployment.yaml atour-backend-service.yaml db-deployment.yaml db-service.yaml
     - kubectl apply -f atour-backend-deployment.yaml
     - kubectl apply -f atour-backend-service.yaml
     - kubectl apply -f db-deployment.yaml
     - kubectl apply -f db-service.yaml
-    - sed -i "s/latest-workaround/${CI_COMMIT_REF_NAME}/" atour-backend-deployment.yaml atour-backend-service.yaml db-deployment.yaml db-service.yaml
+    - sed -i "s/again-rolling/rolling-again/" atour-backend-deployment.yaml atour-backend-service.yaml db-deployment.yaml db-service.yaml
     - kubectl apply -f atour-backend-deployment.yaml
     - kubectl apply -f atour-backend-service.yaml
     - kubectl apply -f db-deployment.yaml

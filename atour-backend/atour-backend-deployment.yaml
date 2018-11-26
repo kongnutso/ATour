@@ -17,6 +17,7 @@ spec:
       creationTimestamp: null
       labels:
         io.kompose.service: atour-backend
+        workaround: rolling-again
     spec:
       imagePullSecrets:
         - name: gitlab-auth
