@@ -140,7 +140,8 @@ describe('GuideService', () => {
     const fakeSaveGuide: SaveGuideDb = async savedGuide => {
       expect(savedGuide).toEqual({
         ...guide,
-        profile: newProfile
+        profile: newProfile,
+        email: 'newemail@gmail.com'
       });
     };
     const editedGuide = await GuideService.editGuideService(

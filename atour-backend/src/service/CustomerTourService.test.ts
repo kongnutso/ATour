@@ -622,4 +622,105 @@ describe('CustomerService', () => {
 
     expect(resultTrip).toEqual(expectedTrip);
   });
+
+  test('setFinishTrip', async () => {
+    const fakeUpdateCustomer: UpdateCustomerDb = async (customer:Customer)=> {
+      console.log('saved customer')
+    }
+    const fakeUpdateTour: UpdateTourDb = async (tour: Tour) => {
+      console.log('saved tour')
+    }
+    const fakeUpdateTrip: UpdateTripDb = async (trip: Trip) => {
+      console.log('saved trip')
+    }
+    
+    const trip: ApprovedTrip = {
+      _type: TripType.ApprovedTrip,
+      tripId: 'tripId',
+      tripDate: new Date('2018-11-20'),
+      bookInfo: {
+        bookDate: new Date('2018-11-05'),
+        customerId: 'customerId',
+        size: 5,
+        price: 5000
+      },
+      slipImages: [{ url: 'www.adm.co.th' }],
+      paidDate: new Date('2018-11-05'),
+      approveDate: new Date('2018-11-18'),
+      tourId: 'tourId',
+      tourName: 'tourName'
+    };
+
+    const customer: Customer = {
+      customerId: 'customerid',
+      userName: 'customerUser',
+      password: 'password',
+      email: 'customer@test.com',
+      personalId: '1234567890123',
+      profile: {
+        firstName: 'Customername',
+        lastName: 'Clastname',
+        birthDate: new Date('1997-05-07'),
+        phoneNumber: '0811111111',
+        gender: 'Female',
+        profileImageUrl: null
+      },
+      tripHistory: [trip]
+    };
+
+    const tour: Tour = {
+      tourId: 'tourId',
+      tourName: 'Changmai',
+      minimumSize: 1,
+      maximumSize: 5,
+      price: 3500,
+      detail: 'trip to Changmai',
+      reviews: [],
+      trips: [trip],
+      guideId: 'guideid',
+      imageUrl: null
+    };
+
+    const fakeGetCustomer: GetCustomerDb = async customerId => {
+      return customer;
+    };
+
+    const fakeGetTour: GetTourDb = async tourId => {
+      return tour;
+    };
+
+    const fakeGetTrip: GetTripDb = async tripId => {
+      return trip;
+    };
+
+    const resultsTrip = await CustomerTourService.setFinishedTrip(
+      fakeUpdateCustomer, 
+      fakeUpdateTour,
+      fakeUpdateTrip,
+      fakeGetTrip,
+      fakeGetCustomer,
+      fakeGetTour
+    )(trip.tourId)
+
+    const expected: FinishedTrip = {
+      _type: TripType.FinishedTrip,
+      tripId: 'tripId',
+      tripDate: new Date('2018-11-20'),
+      bookInfo: {
+        bookDate: new Date('2018-11-05'),
+        customerId: 'customerId',
+        size: 5,
+        price: 5000
+      },
+      slipImages: [{ url: 'www.adm.co.th' }],
+      paidDate: new Date('2018-11-05'),
+      approveDate: new Date('2018-11-18'),
+      finishDate: new Date('2018-11-20'),
+      tourId: 'tourId',
+      tourName: 'tourName'
+    }
+    expect(resultsTrip).toEqual(expected)
+
+  })
+
 });
