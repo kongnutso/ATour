@@ -1,5 +1,6 @@
 import React from "react";
 import autobind from "react-autobind";
+import { connect } from "react-redux";
 import "./styles.css";
 import DatePicker from "react-date-picker";
 import { API_ENDPOINT } from "../../../utils/utils";
@@ -28,14 +29,18 @@ class AvailableDateItem extends React.Component {
           </p>
         </Grid.Column>
         <Grid.Column width={8} textAlign="right">
-          <Button
-            icon
-            onClick={this.props.deleteAvailableDate}
-            value={this.props.trip.tripId}
-            color="red"
-          >
-            <Icon name="delete" />
-          </Button>
+          {this.props.isDealt ? (
+            <Button icon color="red" />
+          ) : (
+            <Button
+              icon
+              onClick={this.props.deleteAvailableDate}
+              value={this.props.trip.tripId}
+              color="red"
+            >
+              <Icon name="delete" />
+            </Button>
+          )}
         </Grid.Column>
       </Grid>
     );
@@ -47,17 +52,29 @@ class EditAvailableDate extends React.Component {
     super(props);
     this.state = {
       trips: props.tour.trips,
-      // availableDates: props.availableDates,
+      dealtTripsIds: [],
       selectedDate: new Date()
     };
 
     autobind(
       this,
+      "componentDidMount",
       "renderEditAvailableDate",
       "onSubmitNewTrip",
       "handleDateSelect",
       "deleteAvailableDate",
       "sortTrips"
+    );
+  }
+  componentDidMount() {
+    let dealtTripsIdsList = [];
+    this.props.guideInfo.dealtTrips.map(dealtTrip => {
+      dealtTripsIdsList.push(dealtTrip.tripId);
+    });
+    const self = this;
+    this.setState(
+      { dealtTripsIds: dealtTripsIdsList },
+      console.log("DEALT TRIPS: ", dealtTripsIdsList)
     );
   }
 
@@ -68,7 +85,6 @@ class EditAvailableDate extends React.Component {
       let output = trips.sort(
         (a, b) => new Date(a.tripDate) - new Date(b.tripDate)
       );
-      console.log("OUTPUT: ", output);
       return output;
     }
   }
@@ -77,21 +93,24 @@ class EditAvailableDate extends React.Component {
     this.setState({
       selectedDate: date
     });
-    console.log("current state: ", this.state.selectedDate);
-    console.log("date: ", this.state.selectedDate.getDate());
-    console.log("month: ", this.state.selectedDate.getMonth());
-    console.log("year: ", this.state.selectedDate.getYear());
   }
 
   async onSubmitNewTrip() {
-    const url =
-      "http://" + API_ENDPOINT + "/tour/" + this.props.tour.tourId + "/trips";
-    const res = await axios
-      .post(url, { date: this.state.selectedDate })
-      .then(res => {
-        console.log(res.data);
-        this.setState({ trips: res.data.trips });
-      });
+    let isUnique = true;
+    this.state.trips.map(trip => {
+      if (String(this.state.selectedDate) === String(new Date(trip.tripDate))) {
+        isUnique = false;
+      }
+    });
+    if (isUnique === true) {
+      const url =
+        "http://" + API_ENDPOINT + "/tour/" + this.props.tour.tourId + "/trips";
+      const res = await axios
+        .post(url, { date: this.state.selectedDate })
+        .then(res => {
+          this.setState({ trips: res.data.trips });
+        });
+    }
   }
 
   async deleteAvailableDate(e) {
@@ -100,9 +119,6 @@ class EditAvailableDate extends React.Component {
       target = target.parentNode;
     }
     const clickedValue = target.value;
-    console.log(target);
-    console.log("clicked id ", clickedValue);
-    // console.log("after deleted ", newAvailableDates);
     const url =
       "http://" +
       API_ENDPOINT +
@@ -110,9 +126,7 @@ class EditAvailableDate extends React.Component {
       String(this.props.tour.tourId) +
       "/trips/" +
       String(clickedValue);
-    console.log("request to send: ", url);
     const res = await axios.delete(url).then(res => {
-      console.log("after delete: ", res.data);
       this.setState({ trips: res.data.trips });
     });
   }
@@ -129,6 +143,7 @@ class EditAvailableDate extends React.Component {
                 key={index}
                 trip={trip}
                 deleteAvailableDate={this.deleteAvailableDate}
+                isDealt={this.state.dealtTripsIds.indexOf(trip.tripId) >= 0}
               />
             ))}
             <Grid columns={2}>
@@ -153,5 +168,13 @@ class EditAvailableDate extends React.Component {
     return <Container>{this.renderEditAvailableDate()}</Container>;
   }
 }
+const mapStateToProps = state => {
+  return {
+    guideInfo: state.user.guideInfo
+  };
+};
 
-export default EditAvailableDate;
+export default connect(
+  mapStateToProps,
+  null
+)(EditAvailableDate);
