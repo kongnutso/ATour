@@ -60,6 +60,7 @@ async function getTrip(tripId) {
       .then(res => {
         return res.data;
       });
+    console.log(res);
     const payload = {
       ...res.bookInfo,
       guideId: res.guide.guideId,
@@ -69,7 +70,8 @@ async function getTrip(tripId) {
       tripId: res.tripId,
       tourId: res.tourId,
       uploadedFileDate: res.paidDate,
-      slip: res.slipImages
+      slip: res.slipImages,
+      review: res.review
     };
     return payload;
   } catch (e) {
@@ -84,9 +86,9 @@ async function finishTrip(tripId) {
       .then(res => {
         return res.data;
       });
+    console.log(res);
     const payload = {
       ...res.bookInfo,
-      guideId: res.guide.guideId,
       tourName: res.tourName,
       tripDate: res.tripDate,
       _type: res._type,
@@ -95,6 +97,7 @@ async function finishTrip(tripId) {
       uploadedFileDate: res.paidDate,
       slip: res.slipImages
     };
+    console.log(payload);
     return payload;
   } catch (e) {
     console.log(e);
@@ -108,8 +111,6 @@ export function selectBookedTrip(tripId, tripDate, _type) {
       const finish =
         new Date() - new Date(tripDate) > 0 && _type === APPROVETRIP;
       const payload = finish ? await finishTrip(tripId) : await getTrip(tripId);
-
-      console.log(payload);
       return dispatch({
         type: SELECT_BOOKED_TRIP,
         payload
@@ -223,22 +224,30 @@ export function refundTrip(tourId, tripId, customerId) {
   };
 }
 
-export const CHENGE_REVIEW = "CHENGE_REVIEW";
-export function changeReview(review, customerId) {
+export const CHANGE_REVIEW = "CHANGE_REVIEW";
+export function changeReview(tourId, tripId, customerId, comment, isNew) {
   return async dispatch => {
+    console.log(tourId, tripId, customerId, comment, isNew);
     try {
       if (customerId) {
         const review = await axios
-          .post("http://localhost:3000/customer/...", {
-            review,
-            customerId
-          })
+          .post(
+            "http://localhost:3000/customer/" +
+              (isNew ? "addReview" : "editReview"),
+            {
+              comment,
+              tourId,
+              tripId,
+              customerId
+            }
+          )
           .then(res => {
             return res.data;
           });
+        console.log(review);
         return dispatch({
-          type: CHENGE_REVIEW,
-          payload: review
+          type: CHANGE_REVIEW,
+          payload: { review }
         });
       } else {
         return dispatch({ type: "INVALID" });
@@ -249,17 +258,30 @@ export function changeReview(review, customerId) {
   };
 }
 
-export const CHANGE_REVIEW_INPUT = "CHANGE_REVIEW_INPUT";
-export function reviewInputChange(review) {
-  return async dispatch => {
-    return dispatch({
-      type: CHANGE_REVIEW_INPUT,
-      payload: review
-    });
-  };
-}
-
 export const DELETE_REVIEW = "DELETE_REVIEW";
-export function deleteReview() {
-  //do sth
+export function deleteReview(tourId, tripId, customerId, reviewId) {
+  return async dispatch => {
+    try {
+      if (customerId) {
+        const review = await axios
+          .post("http://localhost:3000/customer/removeReview", {
+            reviewId,
+            tourId,
+            tripId,
+            customerId
+          })
+          .then(res => {
+            return res.data;
+          });
+        return dispatch({
+          type: CHANGE_REVIEW,
+          payload: { review: {} }
+        });
+      } else {
+        return dispatch({ type: "INVALID" });
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
 }

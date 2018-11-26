@@ -16,6 +16,7 @@ export function editUserInfo(userInfo, token, role) {
           .then(res => {
             return res.data;
           });
+        console.log(res);
         return dispatch({
           type: EDIT_USER_INFO,
           payload: {
@@ -95,7 +96,7 @@ export function getGuideInfo(guideId) {
           bankName: userInfo.bankName,
           approvalStatus: userInfo.approvalStatus,
           availableDate: userInfo.availableDate,
-          dealtTripsDto: userInfo.dealtTripsDto,
+          dealtTrips: userInfo.dealtTrips,
           publishedTours: userInfo.publishedTours,
           profileImageUrl: userInfo.profile.profileImageUrl,
           imageUrl: userInfo.imageUrl
@@ -111,7 +112,10 @@ export function getGuideInfo(guideId) {
   };
 }
 
-// export const
+export const UPDATED = "UPDATED";
+export function updated() {
+  return { type: UPDATED };
+}
 
 export const EDIT_PROFILE = "EDIT_PROFILE";
 export function editProfile() {

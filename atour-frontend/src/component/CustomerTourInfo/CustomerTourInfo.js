@@ -79,11 +79,36 @@ class TourInfo extends React.Component {
   }
 
   render() {
-    const { tourName, price, detail, maximumSize, trips } = this.props.tourInfo;
-    const tripsInfo = trips.map(t => {
-      const showDate = dateToString(t.tripDate);
-      return { key: t.tripDate, text: showDate, value: t };
-    });
+    const {
+      tourName,
+      price,
+      detail,
+      maximumSize,
+      trips,
+      reviewsDto
+    } = this.props.tourInfo;
+    console.log(this.props);
+    const tripsInfo = trips
+      ? trips.map(t => {
+          const showDate = dateToString(t.tripDate);
+          return { key: t.tripDate, text: showDate, value: t };
+        })
+      : [];
+    const reviewInfo = reviewsDto
+      ? reviewsDto.map(r => {
+          return (
+            <Review
+              key={r.reviewId}
+              comment={r.comment}
+              image={r.customer.profile.profileImageUrl}
+              fullName={
+                r.customer.profile.firstName + " " + r.customer.profile.lastName
+              }
+              date={r.date}
+            />
+          );
+        })
+      : null;
     tripsInfo.unshift({
       key: "starter",
       text: "Please choose date",
@@ -194,7 +219,7 @@ class TourInfo extends React.Component {
             </div>
           </div>
           <div className="tourInfo-review">Review</div>
-          <Review />
+          {reviewInfo}
         </div>
       </div>
     );
