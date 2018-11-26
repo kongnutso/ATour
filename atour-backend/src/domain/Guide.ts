@@ -5,7 +5,7 @@ import {
   UnApprovedGuide,
   ApprovalStatus,
   Gender,
-  UserProfile
+  UserProfile,
 } from './types';
 import { IdGenerator } from './Tour';
 
@@ -28,6 +28,7 @@ type AddPublishedTour = (c: Guide, t: Tour) => Guide;
 type EditPublishedTour = (c: Guide, editedTour: Tour) => Guide;
 
 type EditGuide = (g: Guide, p: UserProfile, email: string) => Guide;
+
 
 export function registerGuide(idGenerator: IdGenerator): RegisterGuide {
   return (
@@ -103,3 +104,4 @@ export function editGuide(): EditGuide {
     };
   };
 }
+

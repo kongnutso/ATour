@@ -233,8 +233,27 @@ describe('CustomerService', () => {
       approveDate: new Date('2018-11-08'),
       finishDate: new Date('2018-11-11'),
       tourId: 'tourId',
-      tourName: 'tourName'
+      tourName: 'tourName',
+      review: null
     };
+
+    const customer: Customer = {
+      customerId: 'customerid',
+      userName: 'customerUser',
+      password: 'password',
+      email: 'customer@test.com',
+      personalId: '1234567890123',
+      profile: {
+        firstName: 'Customername',
+        lastName: 'Clastname',
+        birthDate: new Date('1997-05-07'),
+        phoneNumber: '0811111111',
+        gender: 'Female',
+        profileImageUrl: null
+      },
+      tripHistory: []
+    };
+
 
     const fakeGetTour: GetTourDb = async tourId => {
       return tour;
@@ -244,14 +263,25 @@ describe('CustomerService', () => {
       return trip;
     };
 
+    const fakeGetCustomer: GetCustomerDb = async tourId => {
+      return customer;
+    };
+
     const fakeUpdateTour: UpdateTourDb = async tour => console.log(tour);
+
+    const fakeUpdateTrip: UpdateTripDb = async trip => console.log(trip);
+
+    const fakeUpdateCustomer: UpdateCustomerDb = async customer => console.log(customer);
 
     const fakeSaveReview: SaveReviewDb = async review => console.log(trip);
 
     const resultReview = await CustomerTourService.addReviewService(
       fakeGetTour,
       fakeGetTrip,
+      fakeGetCustomer,
       fakeUpdateTour,
+      fakeUpdateTrip,
+      fakeUpdateCustomer,
       fakeSaveReview,
       () => 'reviewId',
       () => new Date('2018-11-15')
@@ -268,19 +298,8 @@ describe('CustomerService', () => {
   });
 
   test('EditReview', async () => {
-    const tour: Tour = {
-      tourId: 'tourId',
-      tourName: 'Changmai',
-      minimumSize: 1,
-      maximumSize: 5,
-      price: 3500,
-      detail: 'trip to Changmai',
-      reviews: [],
-      trips: [],
-      guideId: 'guideid',
-      imageUrl: null
-    };
-
+    
+    
     const review: Review = {
       reviewId: 'reviewId',
       authorId: 'customerId',
@@ -288,8 +307,64 @@ describe('CustomerService', () => {
       date: new Date('2018-11-15')
     };
 
+    const trip: FinishedTrip = {
+      _type: TripType.FinishedTrip,
+      tripId: 'tripId',
+      tripDate: new Date('2018-11-11'),
+      bookInfo: {
+        bookDate: new Date('2018-11-05'),
+        customerId: 'customerId',
+        size: 5,
+        price: 5000
+      },
+      paidDate: new Date('2018-11-06'),
+      slipImages: [{ url: 'www.adm.co.th' }],
+      approveDate: new Date('2018-11-08'),
+      finishDate: new Date('2018-11-11'),
+      tourId: 'tourId',
+      tourName: 'Changmai',
+      review: review
+    };
+
+    const tour: Tour = {
+      tourId: 'tourId',
+      tourName: 'Changmai',
+      minimumSize: 1,
+      maximumSize: 5,
+      price: 3500,
+      detail: 'trip to Changmai',
+      reviews: [review],
+      trips: [trip],
+      guideId: 'guideid',
+      imageUrl: null
+    };
+
+    const customer: Customer = {
+      customerId: 'customerid',
+      userName: 'customerUser',
+      password: 'password',
+      email: 'customer@test.com',
+      personalId: '1234567890123',
+      profile: {
+        firstName: 'Customername',
+        lastName: 'Clastname',
+        birthDate: new Date('1997-05-07'),
+        phoneNumber: '0811111111',
+        gender: 'Female',
+        profileImageUrl: null
+      },
+      tripHistory: [trip]
+    };
     const fakeGetTour: GetTourDb = async tourId => {
       return tour;
+    };
+
+    const fakeGetTrip: GetTripDb = async tripId => {
+      return trip;
+    };
+
+    const fakeGetCustomer: GetCustomerDb = async tourId => {
+      return customer;
     };
 
     const fakeGetReview: GetReviewDb = async reviewId => {
@@ -298,16 +373,24 @@ describe('CustomerService', () => {
 
     const fakeUpdateTour: UpdateTourDb = async tour => console.log(tour);
 
+    const fakeUpdateTrip: UpdateTripDb = async trip => console.log(trip);
+
+    const fakeUpdateCustomer: UpdateCustomerDb = async customer => console.log(customer);
+
     const fakeUpdateReview: UpdateReviewDb = async review =>
       console.log(review);
 
     const resultReview = await CustomerTourService.editReviewSrevice(
       fakeGetTour,
+      fakeGetTrip,
       fakeGetReview,
+      fakeGetCustomer,
       fakeUpdateTour,
+      fakeUpdateTrip,
+      fakeUpdateCustomer,
       fakeUpdateReview,
       () => new Date('2018-11-16')
-    )('tourId', 'customerId', 'reviewId', 'comment2');
+    )('tourId', 'tripId','customerId', 'reviewId', 'comment2');
 
     const expectedReview: Review = {
       reviewId: 'reviewId',
@@ -320,19 +403,6 @@ describe('CustomerService', () => {
   });
 
   test('removeReview', async () => {
-    const tour: Tour = {
-      tourId: 'tourId',
-      tourName: 'Changmai',
-      minimumSize: 1,
-      maximumSize: 5,
-      price: 3500,
-      detail: 'trip to Changmai',
-      reviews: [],
-      trips: [],
-      guideId: 'guideid',
-      imageUrl: null
-    };
-
     const review: Review = {
       reviewId: 'reviewId',
       authorId: 'customerId',
@@ -340,8 +410,65 @@ describe('CustomerService', () => {
       date: new Date('2018-11-15')
     };
 
+    const trip: FinishedTrip = {
+      _type: TripType.FinishedTrip,
+      tripId: 'tripId',
+      tripDate: new Date('2018-11-11'),
+      bookInfo: {
+        bookDate: new Date('2018-11-05'),
+        customerId: 'customerId',
+        size: 5,
+        price: 5000
+      },
+      paidDate: new Date('2018-11-06'),
+      slipImages: [{ url: 'www.adm.co.th' }],
+      approveDate: new Date('2018-11-08'),
+      finishDate: new Date('2018-11-11'),
+      tourId: 'tourId',
+      tourName: 'Changmai',
+      review: review
+    };
+
+    const tour: Tour = {
+      tourId: 'tourId',
+      tourName: 'Changmai',
+      minimumSize: 1,
+      maximumSize: 5,
+      price: 3500,
+      detail: 'trip to Changmai',
+      reviews: [review],
+      trips: [trip],
+      guideId: 'guideid',
+      imageUrl: null
+    };
+
+    const customer: Customer = {
+      customerId: 'customerid',
+      userName: 'customerUser',
+      password: 'password',
+      email: 'customer@test.com',
+      personalId: '1234567890123',
+      profile: {
+        firstName: 'Customername',
+        lastName: 'Clastname',
+        birthDate: new Date('1997-05-07'),
+        phoneNumber: '0811111111',
+        gender: 'Female',
+        profileImageUrl: null
+      },
+      tripHistory: [trip]
+    };
+
     const fakeGetTour: GetTourDb = async tourId => {
       return tour;
+    };
+
+    const fakeGetTrip: GetTripDb = async tripId => {
+      return trip;
+    };
+
+    const fakeGetCustomer: GetCustomerDb = async tourId => {
+      return customer;
     };
 
     const fakeGetReview: GetReviewDb = async reviewId => {
@@ -350,15 +477,23 @@ describe('CustomerService', () => {
 
     const fakeUpdateTour: UpdateTourDb = async tour => console.log(tour);
 
+    const fakeUpdateTrip: UpdateTripDb = async trip => console.log(trip);
+
+    const fakeUpdateCustomer: UpdateCustomerDb = async customer => console.log(customer);
+
     const fakeDeleteReview: DeleteReviewDb = async review =>
       console.log(review);
 
     const resultReview = await CustomerTourService.removeReviewSrevice(
       fakeGetTour,
+      fakeGetTrip,
       fakeGetReview,
+      fakeGetCustomer,
       fakeUpdateTour,
-      fakeDeleteReview
-    )('tourId', 'customerId', 'reviewId');
+      fakeUpdateTrip,
+      fakeUpdateCustomer,
+      fakeDeleteReview,
+    )('tourId','tripid', 'customerId', 'reviewId');
 
     const expectedReview: Review = {
       reviewId: 'reviewId',

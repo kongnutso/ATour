@@ -1,4 +1,4 @@
-version: '3.3'
+version: '3.0'
 
 services:
   db:
@@ -13,5 +13,5 @@ services:
     ports:
       - "3000:3000"
     restart: always
-    volumes:
-      - .:/app
+    # volumes:
+    #   - .:/app

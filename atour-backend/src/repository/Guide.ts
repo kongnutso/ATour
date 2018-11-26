@@ -1,4 +1,4 @@
-import { Guide, Tour } from '../domain/types';
+import { Guide, Tour, Trip} from '../domain/types';
 import { Db } from 'mongodb';
 
 export type GetGuideDb = (guideId: string) => Promise<Guide>;
@@ -21,6 +21,8 @@ export type SaveGuideTokenDb = (
 ) => Promise<void>;
 
 export type GetPublishedToursOfGuide = (guideId: string) => Promise<Tour[]>;
+
+export type GetDealtTrip = (guidId: string) => Promise<Trip[]>;
 
 export function getGuide(db: Db): GetGuideDb {
   return async guideId => {
@@ -76,3 +78,16 @@ export function getPublishedToursOfGuide(db: Db): GetPublishedToursOfGuide {
     return tours;
   };
 }
+
+export function getDealtTrip(db: Db): GetDealtTrip {
+  return async guideId => {
+    const tours = await db.collection('tour').find({guideId}).project({_id:0,tourName:1}).toArray();
+    let tourNames: string[] = []
+    tours.forEach(function (element) {
+      tourNames = [...tourNames,element.tourName];
+    })
+    const trips = await db.collection('trip').find({tourName: {$in: tourNames},_type: 4}).toArray();
+    return trips;
+  }
+}
+

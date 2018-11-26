@@ -5,7 +5,7 @@ import {
   CheckGuideUserNameDuplicate,
   GetGuideForLogin,
   GetTokenForGuide,
-  GetGuideDb
+  GetGuideDb,
 } from '../repository/Guide';
 import {
   UnApprovedGuide,
@@ -14,8 +14,12 @@ import {
   Guide,
   UserProfile,
   Tour,
-  ApprovedGuide
+  ApprovedGuide,
+  ApprovedTrip,
+  TripType,
+  Customer
 } from '../domain/types';
+import { DealtTripDto } from './dtoTypes';
 describe('GuideService', () => {
   test('registerGuide', async () => {
     const fakeCheckGuideUserNameDuplicated: CheckGuideUserNameDuplicate = async () =>
@@ -182,12 +186,44 @@ describe('GuideService', () => {
     const fakeGetPublishedTourOfGuide = () => {
       throw new Error('This should not be called');
     };
-    GuideService.getGuideService(fakeGetGuide, fakeGetPublishedTourOfGuide)(
+
+    const fakeGetDealtTrip  = () => {
+      throw new Error('This should not be called');
+    };
+
+    const fakeGetCustomer = () => {
+      throw new Error('This should not be called');
+    }
+
+    GuideService.getGuideService(
+      fakeGetGuide,
+      fakeGetPublishedTourOfGuide,
+      fakeGetDealtTrip,
+      fakeGetCustomer
+      )(
       'guideId'
     );
   });
 
   test('getApprovedGuide', async () => {
+
+    const trip: ApprovedTrip = {
+      _type: TripType.ApprovedTrip,
+      tripId: 'tripId',
+      tripDate: new Date('2018-11-11'),
+      bookInfo: {
+        bookDate: new Date('2018-11-05'),
+        customerId: 'customerId',
+        size: 5,
+        price: 5000
+      },
+      slipImages: [{ url: 'www.adm.co.th' }],
+      paidDate: new Date('2018-11-05'),
+      approveDate: new Date('2018-11-06'),
+      tourId: 'uuid',
+      tourName: 'Changmai Trip'
+    };
+
     const guide: ApprovedGuide = {
       _type: GuideType.ApprovedGuide,
       guideId: 'guideId',
@@ -207,7 +243,7 @@ describe('GuideService', () => {
       },
       approvalStatus: ApprovalStatus.Approved,
       availableDate: [],
-      dealtTrips: []
+      dealtTrips: [trip]
     };
     const expectedTour: Tour = {
       tourId: 'uuid',
@@ -217,10 +253,34 @@ describe('GuideService', () => {
       price: 5000,
       detail: 'trip to Changmai',
       reviews: [],
-      trips: [],
+      trips: [trip],
       guideId: 'guideid',
       imageUrl: null
     };
+
+    const customer: Customer = {
+      customerId: 'customerId',
+      userName: 'customerUser',
+      password: 'password',
+      email: 'customer@test.com',
+      personalId: '1234567890123',
+      profile: {
+        firstName: 'Customername',
+        lastName: 'Clastname',
+        birthDate: new Date('1997-05-07'),
+        phoneNumber: '0811111111',
+        gender: 'Female',
+        profileImageUrl: null
+      },
+      tripHistory: [trip]
+    };
+
+    const expectedDealtTripDto: DealtTripDto = {
+      ...trip,
+      customer
+    }
+    
+
     const fakeGetGuide: GetGuideDb = async guideId => {
       expect(guideId).toEqual('guideId');
       return guide;
@@ -229,13 +289,26 @@ describe('GuideService', () => {
       expect(guideId).toEqual('guideId');
       return [expectedTour];
     };
+
+    const fakeGetDealtTrip = async guideId => {
+      expect(guideId).toEqual('guideId');
+      return [trip];
+    };
+
+    const fakeGetCustomer = async customerId => {
+      expect(customerId).toEqual('customerId');
+      return customer;
+    };
     const guideDto = await GuideService.getGuideService(
       fakeGetGuide,
-      fakeGetPublishedTourOfGuide
+      fakeGetPublishedTourOfGuide,
+      fakeGetDealtTrip,
+      fakeGetCustomer
     )('guideId');
     expect(guideDto).toEqual({
       ...guide,
-      publishedTours: [expectedTour]
+      publishedTours: [expectedTour],
+      dealtTripsDto: [expectedDealtTripDto]
     });
   });
 });
