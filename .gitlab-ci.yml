@@ -36,7 +36,7 @@ deploy:
   stage: deploy
   script:
     - echo "Deploy to staging server"
-    - echo $KUBE_CONFIG > $KUBECONFIG
+    - echo $KUBE_CONFIG > ~/.kube/config
     - cd atour-backend
     - kubectl config current-context
     - kubectl config get-contexts
