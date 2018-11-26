@@ -21,7 +21,7 @@ spec:
       imagePullSecrets:
         - name: gitlab-auth
       containers:
-        - image: registry.gitlab.com/atour/atour/backend:latest
+        - image: registry.gitlab.com/atour/atour/backend:__VERSION__
           name: atour-backend
           ports:
             - containerPort: 3000
