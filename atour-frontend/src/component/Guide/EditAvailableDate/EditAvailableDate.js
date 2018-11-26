@@ -82,14 +82,22 @@ class EditAvailableDate extends React.Component {
   }
 
   async onSubmitNewTrip() {
-    const url =
-      "http://localhost:3000/tour/" + this.props.tour.tourId + "/trips";
-    const res = await axios
-      .post(url, { date: this.state.selectedDate })
-      .then(res => {
-        console.log(res.data);
-        this.setState({ trips: res.data.trips });
-      });
+    let isUnique = true;
+    this.state.trips.map(trip => {
+      if (String(this.state.selectedDate) === String(new Date(trip.tripDate))) {
+        isUnique = false;
+      }
+    });
+    if (isUnique === true) {
+      const url =
+        "http://localhost:3000/tour/" + this.props.tour.tourId + "/trips";
+      const res = await axios
+        .post(url, { date: this.state.selectedDate })
+        .then(res => {
+          console.log(res.data);
+          this.setState({ trips: res.data.trips });
+        });
+    }
   }
 
   async deleteAvailableDate(e) {
