@@ -852,7 +852,8 @@ describe('CustomerService', () => {
       approveDate: new Date('2018-11-18'),
       finishDate: new Date('2018-11-20'),
       tourId: 'tourId',
-      tourName: 'tourName'
+      tourName: 'tourName',
+      review: null
     }
     expect(resultsTrip).toEqual(expected)
 
