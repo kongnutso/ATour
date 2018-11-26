@@ -36,10 +36,10 @@ deploy:
   stage: deploy
   script:
     - echo "Deploy to staging server"
-    - kubectl create secret docker-registry gitlab-auth \
-      --docker-server=https://registry.gitlab.com \
-      --docker-username=$DOCKER_USERNAME \
-      --docker-password=$DOCKER_PASSWORD \
+    - kubectl create secret docker-registry gitlab-auth 
+      --docker-server=https://registry.gitlab.com 
+      --docker-username=$DOCKER_USERNAME 
+      --docker-password=$DOCKER_PASSWORD 
       --docker-email=$DOCKER_EMAIL
     - kubectl apply -f atour-backend-deployment.yaml
     - kubectl apply -f atour-backend-service.yaml
