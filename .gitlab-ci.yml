@@ -36,7 +36,7 @@ deploy:
   stage: deploy
   script:
     - echo "Deploy to staging server"
-    - echo $KUBE_CONFIG | base64 -d > $KUBECONFIG
+    - kubectl config set-cluster atour-se --server="$KUBE_URL" --insecure-skip-tls-verify=true
     - cd atour-backend
     - kubectl config current-context
     - kubectl config get-contexts
