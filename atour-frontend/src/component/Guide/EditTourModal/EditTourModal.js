@@ -9,6 +9,7 @@ import { getGuideInfo } from "../../../action/UserInfoAction";
 import { Grid, Button } from "semantic-ui-react";
 import "./styles.css";
 import axios from "axios";
+import { API_ENDPOINT } from "../../../utils/utils";
 
 function Field(props) {
   const { inputType, error, label, onChange, value } = props;
@@ -92,7 +93,7 @@ class EditTourModal extends React.Component {
       !detail &&
       !imageUrl
     ) {
-      const url = "http://localhost:3000/tour/" + this.props.tour.tourId;
+      const url = "http://" + API_ENDPOINT + "/tour/" + this.props.tour.tourId;
       console.log("SENDING: ", url);
       console.log("value: ", this.state.value);
       const value = this.state.value;

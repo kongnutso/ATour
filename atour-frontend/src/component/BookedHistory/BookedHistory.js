@@ -19,7 +19,10 @@ class BookedHistory extends React.Component {
   }
 
   componentDidMount() {
-    this.props.getUserInfo(this.props.userInfo.userName, this.props.userInfo.token);
+    this.props.getUserInfo(
+      this.props.userInfo.userName,
+      this.props.userInfo.token
+    );
     this.props.seeBookHistory(this.props.customerId);
   }
 
@@ -34,22 +37,31 @@ class BookedHistory extends React.Component {
       <div key={item.tripId} className="bookedhistory-list">
         <div
           onClick={() => {
-            console.log(item);
             this.onSelect(item);
           }}
         >
           <div className="bookedhistory-table">
             <Flex className="bookedhistory-each">
               <Box p={2} className="bookedhistory-image-container">
-                <img className="bookedhistory-tourimage" src={tour} alt={item.tourName} />
+                <img
+                  className="bookedhistory-tourimage"
+                  src={tour}
+                  alt={item.tourName}
+                />
               </Box>
-              <Box className="bookedHistory-content" p={2} width={[6 / 10, 10 / 15]}>
+              <Box
+                className="bookedHistory-content"
+                p={2}
+                width={[6 / 10, 10 / 15]}
+              >
                 <Flex>
                   <Box p={2} width={[3 / 6, 3 / 10]}>
                     Tour
                   </Box>
                   <Box p={2} className="bookedHistory-value" width={[1 / 1]}>
-                    {item.tourName.length > 20 ? item.tourName.substring(0, 20) : item.tourName}
+                    {item.tourName.length > 20
+                      ? item.tourName.substring(0, 20)
+                      : item.tourName}
                   </Box>
                 </Flex>
                 <Flex>
@@ -105,7 +117,7 @@ const mapStateToProps = state => {
   return {
     bookedList: state.bookedHistory.bookedList,
     customerId: state.user.customerId,
-    userInfo: state.user,
+    userInfo: state.user
   };
 };
 
@@ -113,7 +125,7 @@ const mapDispatchToProps = dispatch => ({
   selectBookedTrip: (tripId, tripDate, _type) =>
     dispatch(selectBookedTrip(tripId, tripDate, _type)),
   getUserInfo: (userName, token) => dispatch(getUserInfo(userName, token)),
-  seeBookHistory: customerId => dispatch(seeBookHistory(customerId)),
+  seeBookHistory: customerId => dispatch(seeBookHistory(customerId))
 });
 
 export default connect(

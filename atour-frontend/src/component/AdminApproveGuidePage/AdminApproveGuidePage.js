@@ -1,50 +1,56 @@
-import React, { Component, Fragment } from 'react';
-import { Box, Text } from 'rebass';
-import { connect } from 'react-redux';
-import axios from 'axios';
-import Table from '../Table';
-import PopUpModal from '../PopUpModal/PopUpModal';
-import COLOR from '../../utils/color';
-import { Button } from '../BaseComponent';
+import React, { Component, Fragment } from "react";
+import { Box, Text } from "rebass";
+import { connect } from "react-redux";
+import axios from "axios";
+import Table from "../Table";
+import PopUpModal from "../PopUpModal/PopUpModal";
+import COLOR from "../../utils/color";
+import { Button } from "../BaseComponent";
+import { API_ENDPOINT } from "../../utils/utils";
 
 const adminApproveColumns = (handleApprove, handleReject) => [
   {
-    Header: 'Username',
-    accessor: 'username',
+    Header: "Username",
+    accessor: "username"
   },
   {
-    Header: 'Phone Number',
-    accessor: 'phoneNumber',
+    Header: "Phone Number",
+    accessor: "phoneNumber"
   },
   {
-    Header: 'Email',
-    accessor: 'email',
+    Header: "Email",
+    accessor: "email"
   },
   {
-    Header: 'Action',
-    accessor: 'action',
+    Header: "Action",
+    accessor: "action",
     width: 200,
     Cell: ({ original }) => {
       const { guideId } = original;
       return (
         <Fragment>
           <Button color={COLOR.primary} onClick={() => handleApprove(guideId)}>
-            <i className="fa fa-check" style={{ marginRight: '5px' }} />
+            <i className="fa fa-check" style={{ marginRight: "5px" }} />
             Approve
           </Button>
           |
           <Button color={COLOR.danger} onClick={() => handleReject(guideId)}>
-            <i className="fa fa-times" style={{ marginRight: '5px' }} />
+            <i className="fa fa-times" style={{ marginRight: "5px" }} />
             Reject
           </Button>
         </Fragment>
       );
-    },
-  },
+    }
+  }
 ];
 
 class AdminApproveGuidePage extends Component {
-  state = { approveModal: false, rejectModal: false, data: [], selectedGuideId: '' };
+  state = {
+    approveModal: false,
+    rejectModal: false,
+    data: [],
+    selectedGuideId: ""
+  };
 
   componentDidMount() {
     this.onQuery();
@@ -62,7 +68,9 @@ class AdminApproveGuidePage extends Component {
 
   onApprove = () => {
     axios
-      .post('http://localhost:3000/admin/approveGuide', { guideId: this.state.selectedGuideId })
+      .post("http://" + API_ENDPOINT + "/admin/approveGuide", {
+        guideId: this.state.selectedGuideId
+      })
       .then(res => {
         this.onQuery();
       });
@@ -70,16 +78,20 @@ class AdminApproveGuidePage extends Component {
 
   onReject = () => {
     axios
-      .post('http://localhost:3000/admin/rejectGuide', { guideId: this.state.selectedGuideId })
+      .post("http://" + API_ENDPOINT + "/admin/rejectGuide", {
+        guideId: this.state.selectedGuideId
+      })
       .then(res => {
         this.onQuery();
       });
   };
 
   onQuery = () => {
-    axios.post('http://localhost:3000/customer/searchGuide', { keyword: '' }).then(res => {
-      this.setState({ data: this.mapInput(res.data) });
-    });
+    axios
+      .post("http://" + API_ENDPOINT + "/customer/searchGuide", { keyword: "" })
+      .then(res => {
+        this.setState({ data: this.mapInput(res.data) });
+      });
   };
   mapInput = arr => {
     const filterUnapprove = arr.filter(e => e._type === 0);
@@ -88,7 +100,7 @@ class AdminApproveGuidePage extends Component {
         guideId: e.guideId,
         username: e.userName,
         phoneNumber: e.profile.phoneNumber,
-        email: e.email,
+        email: e.email
       };
     });
   };
@@ -97,7 +109,7 @@ class AdminApproveGuidePage extends Component {
     return (
       <Box>
         <Text fontSize={4} mb={4} mt={2}>
-          <i style={{ marginRight: '10px' }} className="fa fa-users" />
+          <i style={{ marginRight: "10px" }} className="fa fa-users" />
           Guide Approval
         </Text>
 
@@ -126,9 +138,9 @@ class AdminApproveGuidePage extends Component {
           columns={adminApproveColumns(this.handleApprove, this.handleReject)}
           defaultPageSize={10}
           style={{
-            textAlign: 'center',
-            display: 'flex',
-            alignItem: 'center',
+            textAlign: "center",
+            display: "flex",
+            alignItem: "center"
           }}
         />
       </Box>

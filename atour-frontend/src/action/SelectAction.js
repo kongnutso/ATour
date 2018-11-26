@@ -1,11 +1,12 @@
 import axios from "axios";
+import { API_ENDPOINT } from "../utils/utils";
 
 export const SELECT_TOUR = "SELECT_TOUR";
 export function selectTour(tour) {
   return async dispatch => {
     try {
       const res = await axios
-        .post("http://localhost:3000/customer/getTourReview", {
+        .post("http://" + API_ENDPOINT + "/customer/getTourReview", {
           tourId: tour.tourId
         })
         .then(res => {

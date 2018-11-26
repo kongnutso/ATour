@@ -141,7 +141,6 @@ function slip(state = initialState.slip, action) {
     case SET_IMAGE_SLIP:
       if (action.payload._type < 2) return "";
       if (action.payload.slip) {
-        console.log(action.payload.slip);
         return action.payload.slip[action.payload.slip.length - 1].url;
       }
     default:

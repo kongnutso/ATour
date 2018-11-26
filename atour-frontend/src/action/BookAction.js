@@ -1,5 +1,6 @@
 import axios from "axios";
 import { APPROVETRIP } from "../utils/TripType";
+import { API_ENDPOINT } from "../utils/utils";
 
 export const BOOK_TRIP = "BOOK_TRIP";
 export const BOOK_TRIP_ERROR = "BOOK_TRIP_ERROR";
@@ -31,7 +32,7 @@ export function bookTrip(
         guideName
       };
       const res = await axios
-        .post("http://localhost:3000/customer/bookTrip", req)
+        .post("http://" + API_ENDPOINT + "/customer/bookTrip", req)
         .then(res => {
           return res.data;
         });
@@ -56,7 +57,7 @@ export function bookTrip(
 async function getTrip(tripId) {
   try {
     const res = await axios
-      .get(`http://localhost:3000/trip/${tripId}`)
+      .get("http://" + API_ENDPOINT + "/trip/" + tripId)
       .then(res => {
         return res.data;
       });
@@ -82,11 +83,10 @@ async function getTrip(tripId) {
 async function finishTrip(tripId) {
   try {
     const res = await axios
-      .post("http://localhost:3000/customer/finishTrip", { tripId })
+      .post("http://" + API_ENDPOINT + "/customer/finishTrip", { tripId })
       .then(res => {
         return res.data;
       });
-    console.log(res);
     const payload = {
       ...res.bookInfo,
       tourName: res.tourName,
@@ -97,7 +97,6 @@ async function finishTrip(tripId) {
       uploadedFileDate: res.paidDate,
       slip: res.slipImages
     };
-    console.log(payload);
     return payload;
   } catch (e) {
     console.log(e);
@@ -111,6 +110,7 @@ export function selectBookedTrip(tripId, tripDate, _type) {
       const finish =
         new Date() - new Date(tripDate) > 0 && _type === APPROVETRIP;
       const payload = finish ? await finishTrip(tripId) : await getTrip(tripId);
+      console.log(payload);
       return dispatch({
         type: SELECT_BOOKED_TRIP,
         payload
@@ -127,7 +127,7 @@ export function setImageSlip(slipUrl, tripId, tourId, customerId) {
     try {
       if (tripId) {
         const res = await axios
-          .post("http://localhost:3000/customer/uploadPayment", {
+          .post("http://" + API_ENDPOINT + "/customer/uploadPayment", {
             tourId,
             tripId,
             customerId,
@@ -157,7 +157,9 @@ export function seeBookHistory(customerId) {
     try {
       if (customerId) {
         const tour = await axios
-          .post("http://localhost:3000/customer/seeBookHistory", { customerId })
+          .post("http://" + API_ENDPOINT + "/customer/seeBookHistory", {
+            customerId
+          })
           .then(res => {
             return res.data;
           });
@@ -178,7 +180,7 @@ export function cancelTrip(tourId, tripId, customerId) {
     try {
       if (customerId) {
         const cancel = await axios
-          .post("http://localhost:3000/customer/cancelTrip", {
+          .post("http://" + API_ENDPOINT + "/customer/cancelTrip", {
             tourId: tourId,
             tripId: tripId,
             customerId: customerId
@@ -203,7 +205,7 @@ export function refundTrip(tourId, tripId, customerId) {
     try {
       if (customerId) {
         const refund = await axios
-          .post("http://localhost:3000/customer/refundTrip", {
+          .post("http://" + API_ENDPOINT + "/customer/refundTrip", {
             tourId: tourId,
             tripId: tripId,
             customerId: customerId
@@ -225,26 +227,27 @@ export function refundTrip(tourId, tripId, customerId) {
 }
 
 export const CHANGE_REVIEW = "CHANGE_REVIEW";
-export function changeReview(tourId, tripId, customerId, comment, isNew) {
+export function changeReview(tourId, tripId, customerId, reviewId, comment) {
   return async dispatch => {
-    console.log(tourId, tripId, customerId, comment, isNew);
     try {
       if (customerId) {
         const review = await axios
           .post(
-            "http://localhost:3000/customer/" +
-              (isNew ? "addReview" : "editReview"),
+            "http://" +
+              API_ENDPOINT +
+              "/customer/" +
+              (reviewId ? "editReview" : "addReview"),
             {
               comment,
               tourId,
               tripId,
+              reviewId,
               customerId
             }
           )
           .then(res => {
             return res.data;
           });
-        console.log(review);
         return dispatch({
           type: CHANGE_REVIEW,
           payload: { review }
@@ -264,7 +267,7 @@ export function deleteReview(tourId, tripId, customerId, reviewId) {
     try {
       if (customerId) {
         const review = await axios
-          .post("http://localhost:3000/customer/removeReview", {
+          .post("http://" + API_ENDPOINT + "/customer/removeReview", {
             reviewId,
             tourId,
             tripId,

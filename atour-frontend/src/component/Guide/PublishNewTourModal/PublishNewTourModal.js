@@ -10,6 +10,7 @@ import { getGuideInfo } from "../../../action/UserInfoAction";
 import "./styles.css";
 import { Grid, Button } from "semantic-ui-react";
 import axios from "axios";
+import { API_ENDPOINT } from "../../../utils/utils";
 
 function Field(props) {
   const { inputType, error, label, onChange, value } = props;
@@ -93,7 +94,7 @@ class PublishNewTourModal extends React.Component {
       error: { tourName, price, minimumSize, maximumSize, detail, imageUrl }
     } = this.state;
     if (!tourName && !price && !minimumSize && !maximumSize && !detail) {
-      const url = "http://localhost:3000/tour";
+      const url = "http://" + API_ENDPOINT + "/tour";
       const value = this.state.value;
       const res = await axios
         .post(url, {

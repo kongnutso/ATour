@@ -2,6 +2,8 @@ import React from "react";
 import autobind from "react-autobind";
 import "./styles.css";
 import DatePicker from "react-date-picker";
+import { API_ENDPOINT } from "../../../utils/utils";
+
 import {
   Container,
   Segment,
@@ -83,7 +85,7 @@ class EditAvailableDate extends React.Component {
 
   async onSubmitNewTrip() {
     const url =
-      "http://localhost:3000/tour/" + this.props.tour.tourId + "/trips";
+      "http://" + API_ENDPOINT + "/tour/" + this.props.tour.tourId + "/trips";
     const res = await axios
       .post(url, { date: this.state.selectedDate })
       .then(res => {
@@ -102,7 +104,9 @@ class EditAvailableDate extends React.Component {
     console.log("clicked id ", clickedValue);
     // console.log("after deleted ", newAvailableDates);
     const url =
-      "http://localhost:3000/tour/" +
+      "http://" +
+      API_ENDPOINT +
+      "/tour/" +
       String(this.props.tour.tourId) +
       "/trips/" +
       String(clickedValue);

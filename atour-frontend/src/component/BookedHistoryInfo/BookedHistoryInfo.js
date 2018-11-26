@@ -11,7 +11,6 @@ import {
   cancelTrip,
   refundTrip,
   changeReview,
-  reviewInputChange,
   deleteReview
 } from "../../action/BookAction";
 import {
@@ -38,7 +37,8 @@ class BookedHistoryInfo extends React.Component {
       refund: false,
       cancel: false,
       editReview: false,
-      reviewChanged: false
+      reviewChanged: false,
+      isDeleted: false
     };
   }
 
@@ -48,12 +48,15 @@ class BookedHistoryInfo extends React.Component {
       nextProps.bookInfo.review.comment !== this.props.bookInfo.review.comment
     ) {
       this.setState({ comment: nextProps.bookInfo.review.comment });
-      console.log(this.props.bookInfo.tripId);
-      console.log(nextProps.bookInfo.tripId);
       if (nextProps.bookInfo.tripId === this.props.bookInfo.tripId) {
-        console.log("in changed");
         this.setState({ reviewChanged: true });
       }
+    }
+    if (
+      this.props.bookInfo.review.reviewId &&
+      !nextProps.bookInfo.review.reviewId
+    ) {
+      this.setState({ isDeleted: true });
     }
   }
 
@@ -122,8 +125,8 @@ class BookedHistoryInfo extends React.Component {
       tourId,
       tripId,
       customerId,
-      this.state.comment,
-      reviewId ? false : true
+      reviewId,
+      this.state.comment
     );
     this.setState({ editReview: false });
   }
@@ -269,11 +272,14 @@ class BookedHistoryInfo extends React.Component {
         <PopUpModal
           isOpen={this.state.reviewChanged}
           onCloseModal={() => this.setState({ reviewChanged: false })}
-          headerText={
-            this.props.bookInfo.review.reviewId
-              ? "Review is changed"
-              : "Review is deleted"
-          }
+          headerText="Review is changed"
+          bodyText=""
+        />
+
+        <PopUpModal
+          isOpen={this.state.isDeleted}
+          onCloseModal={() => this.setState({ isDeleted: false })}
+          headerText="Review is deleted"
           bodyText=""
         />
         <PopUpModal
@@ -283,7 +289,6 @@ class BookedHistoryInfo extends React.Component {
           bodyText={`Do you want to [${message}] ? `}
           onConfirm={() => {
             if (message === "Refund") {
-              console.log(message);
               this.setState({ refund: true });
               this.props.refundTrip(tourId, tripId, customerId);
             } else if (message === "Cancel") {
@@ -352,7 +357,7 @@ class BookedHistoryInfo extends React.Component {
                   <div className={this.classNameStatus(UNBOOKEDTRIP)}>1</div>
                 </Box>
                 <Box p={3} width={[3 / 4, 7 / 8, 14 / 15]}>
-                  Booked Date: {bookDate}
+                  Booked Date: {dateToString(bookDate)}
                 </Box>
               </Flex>
             </div>
@@ -512,7 +517,6 @@ class BookedHistoryInfo extends React.Component {
                       )}
                   </Box>
                   <Box p={3} width={[1 / 4, 2 / 8, 3 / 15, 3 / 20]}>
-                    {console.log(this.props.bookInfo.review)}
                     {this.props.bookInfo.review.comment &&
                       !this.state.editReview && (
                         <div
@@ -537,7 +541,6 @@ class BookedHistoryInfo extends React.Component {
 }
 
 const mapStateToProps = state => {
-  console.log(state);
   return {
     bookInfo: state.bookedHistoryInfo,
     customerId: state.user.customerId
@@ -551,8 +554,8 @@ const mapDispatchToProps = dispatch => ({
     dispatch(cancelTrip(tourId, tripId, customerId)),
   refundTrip: (tourId, tripId, customerId) =>
     dispatch(refundTrip(tourId, tripId, customerId)),
-  changeReview: (tourId, tripId, customerId, comment, isNew) =>
-    dispatch(changeReview(tourId, tripId, customerId, comment, isNew)),
+  changeReview: (tourId, tripId, customerId, reviewId, comment) =>
+    dispatch(changeReview(tourId, tripId, customerId, reviewId, comment)),
   deleteReview: (tourId, tripId, customerId, reviewId) =>
     dispatch(deleteReview(tourId, tripId, customerId, reviewId))
 });

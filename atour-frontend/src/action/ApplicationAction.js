@@ -1,6 +1,6 @@
 import axios from "axios";
 import { isNullOrUndefined } from "util";
-
+import { API_ENDPOINT } from "../utils/utils";
 export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
 export const GUIDE_LOGIN_SUCCESS = "GUIDE_LOGIN_SUCCESS";
 export const ADMIN_LOGIN_SUCCESS = "ADMIN_LOGIN_SUCCESS";
@@ -21,7 +21,7 @@ export function login(userName, password, role) {
     try {
       if (role === "Customer") {
         const res = await axios
-          .post("http://localhost:3000/customer/login", {
+          .post("http://" + API_ENDPOINT + "/customer/login", {
             userName,
             password
           })
@@ -41,7 +41,7 @@ export function login(userName, password, role) {
         }
       } else if (role === "Guide") {
         const res = await axios
-          .post("http://localhost:3000/guide/login", {
+          .post("http://" + API_ENDPOINT + "/guide/login", {
             userName,
             password
           })
