@@ -259,7 +259,7 @@ export function editReviewSrevice(
       const updatedTripTour = updateTripToTour()(updatedReviewTour, updatedReviewTrip);
       const updatedCustomer = updateCustomerTripHistory()(customer, updatedReviewTrip);
       await updateTripDb(updatedReviewTrip);
-      await updateReviewDb(review);
+      await updateReviewDb(updatedReview);
       await updateTourDb(updatedTripTour);
       await updateCustomerDb(updatedCustomer);
       return updatedReview;
