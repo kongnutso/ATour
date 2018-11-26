@@ -37,6 +37,8 @@ deploy:
   script:
     - echo "Deploy to staging server"
     - cd atour-backend
+    - kubectl config current-context
+    - kubectl config get-contexts
     - if kubectl get secret gitlab-auth; then
         kubectl delete secret gitlab-auth;
       fi 
