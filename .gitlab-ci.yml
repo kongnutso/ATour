@@ -13,20 +13,45 @@ test:
   script: 
     - echo "Running tests"
     - cd atour-backend
-    - npm test
+    - npm install --production
+    - npm run test-ci
 
 build:
+  image: docker:stable
   stage: build
+  variables:
+    DOCKER_HOST: tcp://docker:2375
+  services:
+    - docker:dind
   script: 
     - echo "Building the app"
     - cd atour-backend
-    - npm install --production
-    - npm run build
+    - docker info
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
+    - docker build -t registry.gitlab.com/atour/atour/backend:latest .
+    - docker push registry.gitlab.com/atour/atour/backend:latest
 
 deploy:
+  image: lwolf/helm-kubectl-docker:v152_213
   stage: deploy
   script:
     - echo "Deploy to staging server"
+    - kubectl config set-cluster atour-se --server="$KUBE_URL" --insecure-skip-tls-verify=true
+    - cd atour-backend
+    - kubectl config current-context
+    - kubectl config get-contexts
+    - if kubectl get secret gitlab-auth; then
+        kubectl delete secret gitlab-auth;
+      fi 
+    - kubectl create secret docker-registry gitlab-auth 
+      --docker-server=https://registry.gitlab.com 
+      --docker-username=$DOCKER_USERNAME 
+      --docker-password=$DOCKER_PASSWORD 
+      --docker-email=$DOCKER_EMAIL
+    - kubectl apply -f atour-backend-deployment.yaml
+    - kubectl apply -f atour-backend-service.yaml
+    - kubectl apply -f db-deployment.yaml
+    - kubectl apply -f db-service.yaml
   environment:
     name: production
     url: https://staging.example.com
