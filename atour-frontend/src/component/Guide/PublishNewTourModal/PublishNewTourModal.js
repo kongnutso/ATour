@@ -74,7 +74,8 @@ class PublishNewTourModal extends React.Component {
         maximumSize: true,
         detail: true,
         imageUrl: true
-      }
+      },
+      guideApproval: true
     };
 
     autobind(
@@ -84,12 +85,12 @@ class PublishNewTourModal extends React.Component {
       "onCloseModal",
       "onFieldChange",
       "maximumSizeValidation",
-      "onSubmitNewTourInfo",
       "onSubmitted"
     );
   }
 
   async onSubmitNewTourInfo() {
+    console.log("AHM");
     const {
       error: { tourName, price, minimumSize, maximumSize, detail, imageUrl }
     } = this.state;
@@ -107,6 +108,7 @@ class PublishNewTourModal extends React.Component {
           imageUrl: value.imageUrl
         })
         .then(res => {
+          console.log("RES: ", res);
           this.onSubmitted();
         });
     }
@@ -114,6 +116,7 @@ class PublishNewTourModal extends React.Component {
 
   onSubmitted() {
     // update reducers
+    console.log("THIPOK");
     this.props.getGuideInfo(this.props.guideId);
     this.onCloseModal();
   }
