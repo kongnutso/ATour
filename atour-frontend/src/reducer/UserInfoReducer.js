@@ -16,6 +16,7 @@ import {
   EDIT_GUIDE_USER_INFO,
   UPDATED
 } from "../action/UserInfoAction";
+import { SELECT_GUIDE } from "../action/SelectAction";
 
 const initialState = {
   isLoginSuccess: null,
@@ -81,6 +82,7 @@ function isUpdated(state = initialState.isUpdated, action) {
 function isView(state = initialState.isView, action) {
   switch (action.type) {
     case VIEW_PROFILE:
+    case SELECT_GUIDE:
       return true;
     case EDIT_PROFILE:
       return false;
@@ -171,6 +173,8 @@ function guideInfo(state = initialState.guideInfo, action) {
     case GUIDE_LOGIN_SUCCESS:
     case EDIT_GUIDE_USER_INFO:
     case GET_GUIDE_INFO:
+    case SELECT_GUIDE:
+      console.log(action.payload.guideInfo);
       return action.payload.guideInfo;
     case LOGOUT:
       return {};

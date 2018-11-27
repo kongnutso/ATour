@@ -113,3 +113,11 @@
     padding-right: 0;
   }
 }
+
+.bad-guid {
+  color: red;
+  font-stretch: narrower;
+  font-weight: bold;
+  text-align: center;
+  padding: 1em 1em;
+}

@@ -19,5 +19,6 @@ export function selectTour(tour) {
 
 export const SELECT_GUIDE = "SELECT_GUIDE";
 export function selectGuide(guide) {
-  return { type: SELECT_GUIDE, payload: guide };
+  console.log(guide);
+  return { type: SELECT_GUIDE, payload: { guideInfo: guide } };
 }

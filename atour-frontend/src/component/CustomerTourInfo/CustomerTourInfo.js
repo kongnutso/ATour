@@ -87,7 +87,6 @@ class TourInfo extends React.Component {
       trips,
       reviewsDto
     } = this.props.tourInfo;
-    console.log(this.props);
     const tripsInfo = trips
       ? trips.map(t => {
           const showDate = dateToString(t.tripDate);
@@ -117,7 +116,6 @@ class TourInfo extends React.Component {
     if (this.state.redirect) {
       return <Redirect to={this.state.to} />;
     }
-    console.log("IMAGEURL: ", this.props.tourInfo.imageUrl);
     return (
       <div style={{ marginBottom: "100px" }}>
         <PopUpModal

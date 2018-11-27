@@ -66,6 +66,7 @@ class EditProfile extends React.Component {
         res.profileImageUrl = profileImageUrl;
         res.email = email;
         res.phoneNumber = phoneNumber;
+        console.log(role);
         this.props.editUserInfo(res, token, role);
       }
     }
@@ -80,6 +81,7 @@ class EditProfile extends React.Component {
       birthDate,
       publishedTours
     } = this.props.userInfo;
+    console.log(this.props.userInfo);
     const { email, phoneNumber, profileImageUrl } = this.state;
     const { isView } = this.props;
     const headerText = isView ? "Guide Profile" : "Edit Profile";
@@ -106,6 +108,9 @@ class EditProfile extends React.Component {
                   src={profileImageUrl || logo}
                   className="editProfilePage-content-img"
                 />
+                {this.props._type === 2 ? (
+                  <div className="bad-guid">BAD GUIDE</div>
+                ) : null}
                 {isView ? null : (
                   <input
                     placeholder="your image url"
@@ -241,17 +246,18 @@ const mapStateToProps = state => {
     userName,
     isUpdated
   } = state.user;
-  console.log(state.user);
+  console.log("GUIDE INFO: ", state.user.guideInfo);
   return {
     userInfo: isView
-      ? guideInfo
+      ? { ...guideInfo, ...guideInfo.profile }
       : role === "Customer"
       ? { ...profile, email, personalId, customerId, userName }
       : { ...guideInfo, ...guideInfo.profile },
     isView,
     role,
     token,
-    isUpdated
+    isUpdated,
+    _type: state.user.guideInfo._type
   };
 };
 

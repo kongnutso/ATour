@@ -1,16 +1,16 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import './styles.css';
-import { Dropdown } from 'semantic-ui-react';
-import StarRatingComponent from 'react-star-rating-component';
-import PopUpModal from '../PopUpModal/PopUpModal';
-import { bookTrip } from '../../action/BookAction';
-import autobind from 'react-autobind';
-import tourImage from '../../image/TourImage.png';
-import { selectTour } from '../../action/SelectAction';
-import axios from 'axios'; //for demo
-import Cards from '../Cards/Cards';
-import { Card } from 'semantic-ui-react';
+import React from "react";
+import { connect } from "react-redux";
+import "./styles.css";
+import { Dropdown } from "semantic-ui-react";
+import StarRatingComponent from "react-star-rating-component";
+import PopUpModal from "../PopUpModal/PopUpModal";
+import { bookTrip } from "../../action/BookAction";
+import autobind from "react-autobind";
+import tourImage from "../../image/TourImage.png";
+import { selectTour } from "../../action/SelectAction";
+import axios from "axios"; //for demo
+import Cards from "../Cards/Cards";
+import { Card } from "semantic-ui-react";
 class GuideInfo extends React.Component {
   render() {
     if (!this.props.guide) return <div />;
@@ -19,7 +19,7 @@ class GuideInfo extends React.Component {
       email,
       publishedTours
     } = this.props.guide;
-    const fullName = firstName + ' ' + lastName;
+    const fullName = firstName + " " + lastName;
     return (
       <div>
         <img src={tourImage} className="guideInfo-image" alt="" />
@@ -35,9 +35,9 @@ class GuideInfo extends React.Component {
               <div className="guideInfo-contact-header">Contact Info</div>
               <div className="guideInfo-contact-info">
                 <div className="guideInfo-contact-info-topic">
-                  {'Phone Number'}
+                  {"Phone Number"}
                   <br />
-                  {'Email'}
+                  {"Email"}
                 </div>
                 <div className="guideInfo-contact-info-value">
                   {phoneNumber} <br /> {email}

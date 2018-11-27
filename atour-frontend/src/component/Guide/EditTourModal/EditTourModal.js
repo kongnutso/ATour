@@ -71,7 +71,6 @@ class EditTourModal extends React.Component {
   }
 
   async onSubmitNewTourInfo() {
-    console.log("SUBMITTING...");
     console.log(this.state.error);
     let handleToUpdate = this.props.updateStates;
     let value = this.state.value;
@@ -94,8 +93,6 @@ class EditTourModal extends React.Component {
       !imageUrl
     ) {
       const url = "http://" + API_ENDPOINT + "/tour/" + this.props.tour.tourId;
-      console.log("SENDING: ", url);
-      console.log("value: ", this.state.value);
       const value = this.state.value;
       const res = await axios
         .post(url, {

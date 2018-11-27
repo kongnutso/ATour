@@ -93,7 +93,6 @@ class TourItem extends React.Component {
     );
   }
   render() {
-    console.log("ROOLELE: ", this.props.theRole);
     if (this.props.role == "Guide" && this.props.theRole !== "customer") {
       return (
         <Link

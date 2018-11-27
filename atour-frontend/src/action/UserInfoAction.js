@@ -27,13 +27,9 @@ export function editUserInfo(userInfo, token, role) {
           }
         });
       } else if (role === "Guide") {
+        console.log("in guide");
         const payload = {
-          firstName: userInfo.firstName,
-          lastName: userInfo.lastName,
-          birthDate: userInfo.birthDate,
-          gender: userInfo.gender,
-          phoneNumber: userInfo.phoneNumber,
-          profileImageUrl: userInfo.profileImageUrl
+          ...userInfo
         };
         const res = await axios
           .post(
@@ -41,6 +37,8 @@ export function editUserInfo(userInfo, token, role) {
             payload
           )
           .then(res => {
+            console.log(res.data);
+
             return res.data;
           });
         if (res.error) {
