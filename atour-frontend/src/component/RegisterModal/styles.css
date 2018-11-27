@@ -1,0 +1,89 @@
+.error-text {
+  color: red;
+}
+
+.form-control .registerModal {
+  width: 300px;
+}
+
+.modal-container-registerModal {
+  border: 1px solid rgb(204, 204, 204);
+  background: rgb(255, 255, 255);
+  overflow: auto;
+  border-radius: 4px;
+  outline: none;
+  padding: 20px;
+  margin: auto;
+  width: 340px;
+  margin-top: 100px;
+  margin-bottom: 100px;
+}
+
+.registerModal-formProgress-container {
+  margin-bottom: 20px;
+}
+
+.registerModal-next-btn {
+  width: 300px;
+  background-color: #26abdc;
+  border-color: #26abdc;
+}
+
+.to-login-container {
+  margin-top: 15px;
+  text-align: center;
+}
+
+.to-login-text {
+  display: inline;
+}
+
+.to-login-link {
+  color: #2297c7;
+  cursor: pointer;
+  text-decoration: underline;
+  display: inline;
+  margin-left: 10px;
+}
+
+.selectiveButton-registerModal {
+  width: 149px;
+  border-radius: 0;
+  background-color: white;
+  color: #26abdc;
+  border-color: #26abdc;
+  margin-top: 5px;
+  margin-bottom: 15px;
+}
+
+.registerModal-confirm-btn {
+  width: 149px;
+  background-color: #26abdc;
+  border-color: #26abdc;
+}
+
+.registerModal-confirm-btn:hover {
+  background-color: #2297c7;
+  border-color: #2297c7;
+}
+
+.registerModal-back-btn {
+  width: 149px;
+  background-color: #ec424b;
+}
+
+.registerModal-back-btn:hover {
+  background-color: #cc0000;
+  border-color: #cc0000;
+}
+
+.selected {
+  background-color: #26abdc;
+  color: white;
+}
+
+.registerModal-signUp-text {
+  text-align: center;
+  font-size: 24px;
+  margin-bottom: 10px;
+}
