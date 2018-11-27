@@ -26,7 +26,6 @@ class GuideHome extends React.Component {
   }
 
   render() {
-    if (!this.props.guideInfo.publishedTours) return <div />;
     return (
       <Container>
         <PublishNewTourModal updateGuideHome={this.updateGuideHome} />
@@ -47,11 +46,15 @@ class GuideHome extends React.Component {
             </Grid.Row>
             <hr color="black" size="50" width="1100" />
             <Flex>
-              <Cards
-                items={this.props.guideInfo.publishedTours}
-                isGuide={false}
-                role="Guide"
-              />
+              {!this.props.guideInfo.publishedTours ? (
+                <div />
+              ) : (
+                <Cards
+                  items={this.props.guideInfo.publishedTours}
+                  isGuide={false}
+                  role="Guide"
+                />
+              )}
             </Flex>
           </Grid>
         </Segment>

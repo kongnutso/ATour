@@ -175,49 +175,52 @@ class TourInfo extends React.Component {
           />
           <div className="tourInfo-detail-container">
             <div className="tourInfo-detail">{detail}</div>
-            <div className="tourInfo-booking-container">
-              Available date
-              <Dropdown
-                style={{
-                  marginTop: "10px",
-                  width: "100%",
-                  marginBottom: "10px",
-                  minWidth: "30%"
-                }}
-                placeholder="Choose Date"
-                selection
-                value={this.state.selectedTrip}
-                onChange={(e, { value }) =>
-                  this.setState({ selectedTrip: value })
-                }
-                options={tripsInfo}
-              />
-              Group size
-              <br />
-              <input
-                className="tourInfo-booking-group-size"
-                value={this.state.groupSize}
-                onChange={e => this.setState({ groupSize: e.target.value })}
-              />
-              {` / ${maximumSize}`}
-              <br />
-              Price <br />
-              <div className="tourInfo-booking-price-container">
-                THB
-                <div className="tourInfo-booking-price">{price} bath</div>
+            {this.props.user.role === "Guide" ? null : (
+              <div className="tourInfo-booking-container">
+                Available date
+                <Dropdown
+                  style={{
+                    marginTop: "10px",
+                    width: "100%",
+                    marginBottom: "10px",
+                    minWidth: "30%"
+                  }}
+                  placeholder="Choose Date"
+                  selection
+                  value={this.state.selectedTrip}
+                  onChange={(e, { value }) =>
+                    this.setState({ selectedTrip: value })
+                  }
+                  options={tripsInfo}
+                />
+                Group size
+                <br />
+                <input
+                  className="tourInfo-booking-group-size"
+                  value={this.state.groupSize}
+                  onChange={e => this.setState({ groupSize: e.target.value })}
+                />
+                {` / ${maximumSize}`}
+                <br />
+                Price <br />
+                <div className="tourInfo-booking-price-container">
+                  THB
+                  <div className="tourInfo-booking-price">{price} bath</div>
+                </div>
+                <button
+                  onClick={() => this.onSubmit()}
+                  className={
+                    "tourInfo-booking-submit" +
+                    (!this.props.user.userName ? "-disabled" : "")
+                  }
+                  disabled={!this.props.user.userName}
+                >
+                  Submit
+                </button>
               </div>
-              <button
-                onClick={() => this.onSubmit()}
-                className={
-                  "tourInfo-booking-submit" +
-                  (!this.props.user.userName ? "-disabled" : "")
-                }
-                disabled={!this.props.user.userName}
-              >
-                Submit
-              </button>
-            </div>
+            )}
           </div>
+
           <div className="tourInfo-review">Review</div>
           {reviewInfo}
         </div>
