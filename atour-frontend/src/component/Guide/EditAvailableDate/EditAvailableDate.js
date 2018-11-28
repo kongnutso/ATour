@@ -86,6 +86,7 @@ class EditAvailableDate extends React.Component {
   }
 
   async onSubmitNewTrip() {
+    if (this.state.selectedDate <= new Date()) return;
     let isUnique = true;
     this.state.trips.map(trip => {
       if (String(this.state.selectedDate) === String(new Date(trip.tripDate))) {
