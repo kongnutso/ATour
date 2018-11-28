@@ -123,8 +123,12 @@ export function addTripService(
 ): AddTripService {
   return async (tourId: string, date: string) => {
     const tour = await getTourDb(tourId);
-    const tripAddedTour = addTrip(idGenerator)(tour, new Date(date));
+    const addedTrip = addTrip(idGenerator)(tour, new Date(date));
+    const {trips} = tour;
+    const addedTrips = [...trips,addedTrip]
+    const tripAddedTour = {...tour,trips: addedTrips}
     await saveTourDb(tripAddedTour);
+    await saveTripDb(addedTrip);
     return tripAddedTour;
   };
 }
@@ -138,6 +142,7 @@ export function deleteTripService(
     const tour = await getTourDb(tourId);
     const tripDeletedTour = deleteTrip()(tour, tripId);
     await saveTourDb(tripDeletedTour);
+    await deleteTripDb(tripId);
     return tripDeletedTour;
   };
 }

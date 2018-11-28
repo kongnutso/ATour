@@ -1,4 +1,4 @@
-import { Tour, UnbookedTrip, PartialTour, TripType } from './types';
+import { Tour, UnbookedTrip, PartialTour, TripType, Trip } from './types';
 
 export type IdGenerator = () => string;
 export type DateGenerator = () => Date;
@@ -15,7 +15,7 @@ export type PublishTour = (
 
 export type EditTour = (t: Tour, updateInfo: PartialTour) => Tour;
 
-export type AddTrip = (t: Tour, d: Date) => Tour;
+export type AddTrip = (t: Tour, d: Date) => Trip;
 
 export type DeleteTrip = (t: Tour, tripId: string) => Tour;
 
@@ -55,7 +55,7 @@ export function editTour(): EditTour {
 }
 
 export function addTrip(idGenerator: IdGenerator): AddTrip {
-  return (tour: Tour, tripDate: Date): Tour => {
+  return (tour: Tour, tripDate: Date): Trip => {
     const addedTrip: UnbookedTrip = {
       _type: TripType.UnbookedTrip,
       tripId: idGenerator(),
@@ -63,11 +63,7 @@ export function addTrip(idGenerator: IdGenerator): AddTrip {
       tourId: tour.tourId,
       tourName: tour.tourName
     };
-    const newTrips = [...tour.trips, addedTrip];
-    return {
-      ...tour,
-      trips: newTrips
-    };
+    return addedTrip
   };
 }
 
