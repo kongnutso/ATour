@@ -143,6 +143,7 @@ function slip(state = initialState.slip, action) {
       if (action.payload.slip) {
         return action.payload.slip[action.payload.slip.length - 1].url;
       }
+      return "";
     default:
       return state;
   }

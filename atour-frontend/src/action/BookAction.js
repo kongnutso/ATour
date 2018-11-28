@@ -10,26 +10,16 @@ export function clearBookMessage() {
   return { type: CLEAR_BOOK_MESSAGE };
 }
 
-export function bookTrip(
-  tourName,
-  tourId,
-  tripInfo,
-  price,
-  size,
-  customerId,
-  guideName
-) {
+export function bookTrip(tourId, tripInfo, price, size, customerId) {
   return async dispatch => {
     try {
       const req = {
-        tourName: tourName,
         tourId: tourId,
         tripId: tripInfo.tripId,
         tripDate: tripInfo.tripDate,
         customerId,
         size,
-        price,
-        guideName
+        price
       };
       const res = await axios
         .post("http://" + API_ENDPOINT + "/customer/bookTrip", req)

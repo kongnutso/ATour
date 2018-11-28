@@ -109,7 +109,8 @@ class EditProfile extends React.Component {
                   src={profileImageUrl || logo}
                   className="editProfilePage-content-img"
                 />
-                {this.props._type === 2 ? (
+                {(this.props.role === "Guide" || isView) &&
+                this.props.userInfo._type === 2 ? (
                   <div className="bad-guid">BAD GUIDE</div>
                 ) : null}
                 {isView ? null : (
@@ -256,8 +257,7 @@ const mapStateToProps = state => {
     isView,
     role,
     token,
-    isUpdated,
-    _type: state.user.guideInfo._type
+    isUpdated
   };
 };
 
