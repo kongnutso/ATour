@@ -17,7 +17,7 @@ test:
     - npm run test-ci
 
 build:
-  image: docker:stable
+  image: docker:18
   stage: build
   variables:
     DOCKER_HOST: tcp://docker:2375
