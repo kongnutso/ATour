@@ -12,19 +12,33 @@ export function onChange(value) {
   };
 }
 
-export function onSearch(keyword, isTour) {
+export function onSearch(keyword, isTour, isMultiple) {
   return async dispatch => {
     try {
       if (isTour) {
-        const res = await axios
-          .post("http://" + API_ENDPOINT + "/customer/searchTour", { keyword })
-          .then(res => {
-            return res.data;
+        if (isMultiple) {
+          const res = await axios
+            .get("http://" + API_ENDPOINT + "/customer/searchTour", { keyword })
+            .then(res => {
+              return res.data;
+            });
+          return dispatch({
+            type: ON_SEARCH_TOUR,
+            payload: res
           });
-        return dispatch({
-          type: ON_SEARCH_TOUR,
-          payload: res
-        });
+        } else {
+          const res = await axios
+            .post("http://" + API_ENDPOINT + "/customer/searchTour", {
+              keyword
+            })
+            .then(res => {
+              return res.data;
+            });
+          return dispatch({
+            type: ON_SEARCH_TOUR,
+            payload: res
+          });
+        }
       } else {
         const res = await axios
           .post("http://" + API_ENDPOINT + "/customer/searchGuide", { keyword })

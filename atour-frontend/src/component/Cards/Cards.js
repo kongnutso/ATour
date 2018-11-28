@@ -2,8 +2,6 @@ import React from "react";
 import { Flex } from "rebass";
 import CardItem from "./CardItem";
 
-// target props: tours
-// tourName, tourImage, tourRating, tourPrice, tourLocation
 const Cards = props => {
   const { isGuide, items, role, tours } = props;
   return (
