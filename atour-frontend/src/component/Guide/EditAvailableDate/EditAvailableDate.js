@@ -72,10 +72,7 @@ class EditAvailableDate extends React.Component {
       dealtTripsIdsList.push(dealtTrip.tripId);
     });
     const self = this;
-    this.setState(
-      { dealtTripsIds: dealtTripsIdsList },
-      console.log("DEALT TRIPS: ", dealtTripsIdsList)
-    );
+    this.setState({ dealtTripsIds: dealtTripsIdsList });
   }
 
   sortTrips(trips) {

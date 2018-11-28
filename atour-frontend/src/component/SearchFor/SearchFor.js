@@ -17,7 +17,6 @@ class SearchFor extends Component {
     const Header = "Search For " + (isTour ? "Tour" : "Guide");
     const placeholder = isTour ? "Tour Name" : "Guide Name";
     const items = isTour ? tours : guides;
-    console.log("ITEMS: ", items);
     return (
       <div
         className="my fucking flag"
@@ -53,7 +52,12 @@ class SearchFor extends Component {
             </Flex>
 
             <Flex>
-              <Cards items={items} isGuide={!isTour} role="customer" />
+              <Cards
+                items={items}
+                isGuide={!isTour}
+                role="customer"
+                tours={this.props.tours}
+              />
             </Flex>
           </Box>
         </Flex>

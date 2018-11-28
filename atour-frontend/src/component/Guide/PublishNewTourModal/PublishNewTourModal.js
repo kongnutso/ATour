@@ -90,7 +90,6 @@ class PublishNewTourModal extends React.Component {
   }
 
   async onSubmitNewTourInfo() {
-    console.log("AHM");
     const {
       error: { tourName, price, minimumSize, maximumSize, detail, imageUrl }
     } = this.state;
@@ -108,7 +107,6 @@ class PublishNewTourModal extends React.Component {
           imageUrl: value.imageUrl
         })
         .then(res => {
-          console.log("RES: ", res);
           this.onSubmitted();
         });
     }
@@ -116,7 +114,6 @@ class PublishNewTourModal extends React.Component {
 
   onSubmitted() {
     // update reducers
-    console.log("THIPOK");
     this.props.getGuideInfo(this.props.guideId);
     this.onCloseModal();
   }

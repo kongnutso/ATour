@@ -48,7 +48,6 @@ function tourList(state = initialState.tourList, action) {
 function selectedTour(state = initialState.selectedTour, action) {
   switch (action.type) {
     case SELECT_TOUR:
-      console.log(action.payload);
       return action.payload;
     default:
       return state;

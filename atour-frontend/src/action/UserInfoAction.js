@@ -17,7 +17,6 @@ export function editUserInfo(userInfo, token, role) {
           .then(res => {
             return res.data;
           });
-        console.log(res);
         return dispatch({
           type: EDIT_USER_INFO,
           payload: {
@@ -27,7 +26,6 @@ export function editUserInfo(userInfo, token, role) {
           }
         });
       } else if (role === "Guide") {
-        console.log("in guide");
         const payload = {
           ...userInfo
         };
@@ -37,8 +35,6 @@ export function editUserInfo(userInfo, token, role) {
             payload
           )
           .then(res => {
-            console.log(res.data);
-
             return res.data;
           });
         if (res.error) {
@@ -87,24 +83,8 @@ export function getGuideInfo(guideId) {
             return res.data;
           });
         const guideInfo = {
-          guideId: userInfo.guideId,
-          userName: userInfo.userName,
-          password: userInfo.password,
-          personalId: userInfo.personalId,
-          email: userInfo.email,
-          firstName: userInfo.profile.firstName,
-          lastName: userInfo.profile.lastName,
-          birthDate: userInfo.profile.birthDate,
-          gender: userInfo.profile.gender,
-          phoneNumber: userInfo.profile.phoneNumber,
-          bankAccountNumber: userInfo.bankAccountNumber,
-          bankName: userInfo.bankName,
-          approvalStatus: userInfo.approvalStatus,
-          availableDate: userInfo.availableDate,
-          dealtTrips: userInfo.dealtTrips,
-          publishedTours: userInfo.publishedTours,
-          profileImageUrl: userInfo.profile.profileImageUrl,
-          imageUrl: userInfo.imageUrl
+          ...userInfo,
+          ...userInfo.profile
         };
         return dispatch({
           type: GET_GUIDE_INFO,

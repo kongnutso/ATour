@@ -28,7 +28,7 @@ const SmallCard = styled(Card)`
 `;
 
 const TripItem = props => (
-  <SmallCard>
+  <SmallCard as="div">
     <Card.Content>
       <Card.Header className="trip-header">
         {mapMonth(props.date.getMonth())}

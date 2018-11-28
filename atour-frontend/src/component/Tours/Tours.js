@@ -8,7 +8,7 @@ import { Card } from "semantic-ui-react";
 const Tours = props => {
   if (props.role === "Guide") {
     return (
-      <Card.Group centered stackable itemsPerRow={3}>
+      <Card.Group centered stackable itemsPerRow={4}>
         {props.tours.map((tour, index) => (
           <TourItem tour={tour} key={index} />
         ))}

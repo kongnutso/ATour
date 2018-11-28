@@ -5,7 +5,7 @@ import CardItem from "./CardItem";
 // target props: tours
 // tourName, tourImage, tourRating, tourPrice, tourLocation
 const Cards = props => {
-  const { isGuide, items, role } = props;
+  const { isGuide, items, role, tours } = props;
   return (
     <Flex
       style={{
@@ -22,7 +22,12 @@ const Cards = props => {
               key={isGuide ? item.guideId : item.tourId}
               style={{ margin: "10px 20px 10px 20px" }}
             >
-              <CardItem item={item} isGuide={isGuide} role={role} />
+              <CardItem
+                item={item}
+                isGuide={isGuide}
+                role={role}
+                tours={tours}
+              />
             </div>
           ))
         : null}

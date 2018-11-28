@@ -86,7 +86,6 @@ class ViewDealtTripPage extends Component {
   };
 
   onSearch = () => {
-    console.log(`Search :`, this.state.searchTerm);
     let searchOutput = [];
     let searchTerm = this.state.searchTerm;
     this.props.dealtTrips.map(dealtTrip => {
@@ -116,7 +115,6 @@ class ViewDealtTripPage extends Component {
   handleMenuClick = (e, { name }) => this.setState({ activeItem: name });
 
   render() {
-    console.log("Dealt Trips: ", this.props.dealtTrips);
     const { activeItem, searchTerm } = this.state;
     return (
       <div style={{ marginTop: "30px", marginBottom: "30px" }}>

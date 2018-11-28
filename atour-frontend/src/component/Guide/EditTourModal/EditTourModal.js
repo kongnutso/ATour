@@ -71,7 +71,6 @@ class EditTourModal extends React.Component {
   }
 
   async onSubmitNewTourInfo() {
-    console.log(this.state.error);
     let handleToUpdate = this.props.updateStates;
     let value = this.state.value;
     handleToUpdate(
@@ -130,7 +129,6 @@ class EditTourModal extends React.Component {
       const error = validate(value);
       newError[field] = error;
     }
-    console.log("compare", isCompare);
     if (isCompare) {
       newValue[field] = mainValue;
     } else {
