@@ -23,7 +23,8 @@ class TourInfo extends React.Component {
       errorDialog: false,
       groupSize: 0,
       redirect: false,
-      to: "/"
+      to: "/",
+      start: true
     };
     autobind(this);
   }
@@ -40,11 +41,13 @@ class TourInfo extends React.Component {
         });
       }
     }
-  }
-
-  componentDidMount() {
-    this.setState({ groupSize: this.props.tourInfo.minimumSize });
-    this.props.getGuideInfo(this.props.tourInfo.guideId);
+    if (this.state.start && nextProps.tourInfo.guideId) {
+      this.setState({
+        groupSize: nextProps.tourInfo.minimumSize,
+        start: false
+      });
+      this.props.getGuideInfo(nextProps.tourInfo.guideId);
+    }
   }
 
   // tripId, tripDate, customerId, size, price
