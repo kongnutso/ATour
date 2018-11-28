@@ -6,6 +6,7 @@ import { connect } from "react-redux";
 import Table from "../Table";
 import { SearchButton, Input } from "../BaseComponent";
 import { getDealtTrips } from "../../action/DealtTripAction";
+import { dateToString } from "../../utils/utils";
 
 // Mock data
 const tableProps = num => {
@@ -26,50 +27,50 @@ const viewDealTripColumns = () => [
   {
     Header: "Date",
     accessor: "date",
-    width: 250,
+    width: 200,
     Cell: ({ original }) => {
       const { date } = original;
       return <Text fontWeight="bold">{date}</Text>;
     }
   },
   {
-    Header: "Deal Name",
-    accessor: "deal",
-    width: 250,
+    Header: "Tour Name",
+    accessor: "tourName",
+    width: 500,
     Cell: ({ original }) => {
-      const { deal, tourUrl } = original;
+      const { tourName } = original;
       return (
-        <Link to={"/" + tourUrl}>
-          <Text fontWeight="bold" color="#333">
-            {deal}
-          </Text>
-        </Link>
+        // <Link to={"/" + tourUrl}>
+        <Text fontWeight="bold" color="#333">
+          {tourName}
+        </Text>
+        // </Link>
       );
     }
   },
   {
     Header: "Customer Name",
-    accessor: "username",
-    width: 400,
+    accessor: "customerName",
+    width: 250,
     Cell: ({ original }) => {
-      const { username, phoneNumber, email } = original;
+      const { customerName, customerPhoneNumber, customerEmail } = original;
       return (
         <Flex flexWrap="wrap">
           <Flex width={1} justifyContent="flex-start">
             <Box ml={[2, 3, 4, 5]}>
-              <Text fontWeight="bold">{username}</Text>
+              <Text fontWeight="bold">{customerName}</Text>
             </Box>
           </Flex>
           <Flex width={1} justifyContent="flex-start">
             <Box ml={[2, 3, 4, 5]}>
               <i style={{ marginRight: "10px" }} className="fa fa-phone" />{" "}
-              {phoneNumber}
+              {customerPhoneNumber}
             </Box>
           </Flex>
           <Flex width={1} justifyContent="flex-start">
             <Box ml={[2, 3, 4, 5]}>
               <i style={{ marginRight: "10px" }} className="fa fa-envelope-o" />
-              {email}
+              {customerEmail}
             </Box>
           </Flex>
         </Flex>
@@ -81,43 +82,79 @@ const viewDealTripColumns = () => [
 class ViewDealtTripPage extends Component {
   state = {
     activeItem: "current",
-    searchTerm: { date: "", deal: "", username: "" },
-    activeDealtTrips: []
+    searchTerm: { date: "", tourName: "", customerName: "" },
+    activeDealtTrips: this.props.guideInfo.dealtTripsDto,
+    dealtTrips: this.props.guideInfo.dealtTripsDto
   };
 
+  componentDidMount() {
+    this.onSearch();
+  }
+
+  mapDealtTripToInfo(dealtTrips) {
+    let output = [];
+    dealtTrips.map(dealtTrip => {
+      const customer = dealtTrip.customer.profile;
+      output.push({
+        date: dateToString(dealtTrip.tripDate),
+        tourName: dealtTrip.tourName,
+        customerName: customer.firstName + " " + customer.lastName,
+        customerPhoneNumber: customer.phoneNumber,
+        customerEmail: dealtTrip.customer.email
+      });
+    });
+    return output;
+  }
+
   onSearch = () => {
-    console.log(`Search :`, this.state.searchTerm);
     let searchOutput = [];
     let searchTerm = this.state.searchTerm;
-    this.props.dealtTrips.map(dealtTrip => {
+    this.state.dealtTrips.map(dealtTrip => {
       let isPass = true;
       if (searchTerm.date !== "") {
-        isPass = new Date(dealtTrip.tripDate) === new Date(searchTerm.date);
+        if (!dateToString(dealtTrip.tripDate).includes(searchTerm.date)) {
+          isPass = false;
+        }
       }
-      if (searchTerm.deal !== "") {
-        isPass = dealtTrip.tourName === searchTerm.deal;
+      if (searchTerm.tourName !== "") {
+        if (!dealtTrip.tourName.includes(searchTerm.tourName)) {
+          isPass = false;
+        }
       }
-      if (searchTerm.username !== "") {
-        isPass = dealtTrip.bookInfo.customerId === searchTerm.username;
+      if (searchTerm.customerName !== "") {
+        let customerName =
+          dealtTrip.customer.profile.firstName +
+          " " +
+          dealtTrip.customer.profile.lastName;
+        if (!customerName.includes(searchTerm.customerName)) {
+          isPass = false;
+        }
       }
       if (this.state.activeItem === "current") {
-        isPass = new Date(dealtTrip.tripDate) >= new Date();
+        if (!(new Date(dealtTrip.tripDate) >= new Date())) {
+          isPass = false;
+        }
       }
       if (this.state.activeItem === "history") {
-        isPass = new Date(dealtTrip.tripDate) < new Date();
+        if (!(new Date(dealtTrip.tripDate) < new Date())) {
+          isPass = false;
+        }
       }
       if (isPass) {
         searchOutput.push(dealtTrip);
       }
     });
-    return searchOutput;
+    this.setState({ activeDealtTrips: searchOutput });
   };
 
-  handleMenuClick = (e, { name }) => this.setState({ activeItem: name });
+  handleMenuClick = (e, { name }) => {
+    this.setState({ activeItem: name }, this.onSearch);
+  };
 
   render() {
-    console.log("Dealt Trips: ", this.props.dealtTrips);
     const { activeItem, searchTerm } = this.state;
+    console.log("guideInfo", this.props.guideInfo);
+    console.log("mapped: ", this.mapDealtTripToInfo(this.state.dealtTrips));
     return (
       <div style={{ marginTop: "30px", marginBottom: "30px" }}>
         <Flex flexWrap="wrap" justifyContent="center">
@@ -167,7 +204,7 @@ class ViewDealtTripPage extends Component {
                     placeholder="Deal Name"
                     onChange={e =>
                       this.setState({
-                        searchTerm: { ...searchTerm, deal: e.target.value }
+                        searchTerm: { ...searchTerm, tourName: e.target.value }
                       })
                     }
                     onEnterText={this.onSearch}
@@ -178,7 +215,10 @@ class ViewDealtTripPage extends Component {
                     placeholder="Customer Name"
                     onChange={e =>
                       this.setState({
-                        searchTerm: { ...searchTerm, username: e.target.value }
+                        searchTerm: {
+                          ...searchTerm,
+                          customerName: e.target.value
+                        }
                       })
                     }
                     onEnterText={this.onSearch}
@@ -193,7 +233,8 @@ class ViewDealtTripPage extends Component {
               </Flex>
               <Box width={1}>
                 <Table
-                  data={tableProps(4)}
+                  // data={tableProps(4)}
+                  data={this.mapDealtTripToInfo(this.state.activeDealtTrips)}
                   columns={viewDealTripColumns()}
                   defaultPageSize={10}
                   style={{

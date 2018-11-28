@@ -33,7 +33,6 @@ export function login(userName, password, role) {
             type: LOGIN_FAILED
           });
         } else {
-          console.log("res: ", res);
           return dispatch({
             type: LOGIN_SUCCESS,
             payload: { userName, role: "Customer", token: res }
@@ -53,7 +52,6 @@ export function login(userName, password, role) {
             type: LOGIN_FAILED
           });
         } else {
-          console.log("res: ", res.guide);
           return dispatch({
             type: GUIDE_LOGIN_SUCCESS,
             payload: {
