@@ -7,7 +7,6 @@ const initialState = {
 function dealtTripList(state = initialState.dealtTripList, action) {
   switch (action.type) {
     case ADD_DEALT_TRIPS:
-      console.log("received payload: ", action.payload);
       return [...state.dealtTripList, action.payload.dealtTrips];
     default:
       return state;

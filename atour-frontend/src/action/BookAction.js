@@ -61,7 +61,6 @@ async function getTrip(tripId) {
       .then(res => {
         return res.data;
       });
-    console.log(res);
     const payload = {
       ...res.bookInfo,
       guideId: res.guide.guideId,
@@ -110,7 +109,6 @@ export function selectBookedTrip(tripId, tripDate, _type) {
       const finish =
         new Date() - new Date(tripDate) > 0 && _type === APPROVETRIP;
       const payload = finish ? await finishTrip(tripId) : await getTrip(tripId);
-      console.log(payload);
       return dispatch({
         type: SELECT_BOOKED_TRIP,
         payload

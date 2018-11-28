@@ -1,23 +1,24 @@
 import React from "react";
-import classNames from "classnames";
-import { Card, Header, Image, Grid } from "semantic-ui-react";
+import { Card } from "semantic-ui-react";
 import styled from "styled-components";
 import "./styles.css";
 
 const mapMonth = month => {
   var monthName = new Array();
-  monthName[0] = "JAN";
-  monthName[1] = "FEB";
-  monthName[2] = "MAR";
-  monthName[3] = "APR";
-  monthName[4] = "MAY";
-  monthName[5] = "JUN";
-  monthName[6] = "JUL";
-  monthName[7] = "AUG";
-  monthName[8] = "SEP";
-  monthName[9] = "OCT";
-  monthName[10] = "NOV";
-  monthName[11] = "DEC";
+  monthName = [
+    "JAN",
+    "FEB",
+    "MAR",
+    "APR",
+    "MAY",
+    "JUN",
+    "JUL",
+    "AUG",
+    "SEP",
+    "OCT",
+    "NOV",
+    "DEC"
+  ];
   return monthName[month];
 };
 

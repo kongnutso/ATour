@@ -43,19 +43,18 @@ class TourInfo extends React.Component {
   }
 
   componentDidMount() {
-    this.setState({ groupSize: this.props.tourInfo.minGroupSize });
+    this.setState({ groupSize: this.props.tourInfo.minimumSize });
     this.props.getGuideInfo(this.props.tourInfo.guideId);
   }
 
+  // tripId, tripDate, customerId, size, price
   onConfirm() {
     this.props.bookTrip(
-      this.props.tourInfo.tourName,
-      this.props.tourInfo.tourId,
-      this.state.selectedTrip,
-      this.props.tourInfo.price,
-      this.state.groupSize,
+      this.state.selectedTrip.tripId,
+      this.state.selectedTrip.tripDate,
       this.props.user.customerId,
-      this.props.guide
+      this.state.groupSize,
+      this.props.tourInfo.price
     );
     this.setState({ openConfirm: false });
   }
@@ -68,7 +67,10 @@ class TourInfo extends React.Component {
         errorDialog: true,
         errorMessage: "Please select booking date"
       });
-    } else if (groupSize <= maximumSize && groupSize >= minimumSize) {
+    } else if (
+      parseInt(groupSize) <= parseInt(maximumSize) &&
+      parseInt(groupSize) >= parseInt(minimumSize)
+    ) {
       this.setState({ openConfirm: true });
     } else {
       this.setState({
@@ -186,9 +188,9 @@ class TourInfo extends React.Component {
                   placeholder="Choose Date"
                   selection
                   value={this.state.selectedTrip}
-                  onChange={(e, { value }) =>
-                    this.setState({ selectedTrip: value })
-                  }
+                  onChange={(e, { value }) => {
+                    this.setState({ selectedTrip: value });
+                  }}
                   options={tripsInfo}
                 />
                 Group size
@@ -237,18 +239,8 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => ({
-  bookTrip: (
-    tourName,
-    tourInfo,
-    tripInfo,
-    price,
-    size,
-    customerId,
-    guideName
-  ) =>
-    dispatch(
-      bookTrip(tourName, tourInfo, tripInfo, price, size, customerId, guideName)
-    ),
+  bookTrip: (tripId, tripDate, customerId, size, price) =>
+    dispatch(bookTrip(tripId, tripDate, customerId, size, price)),
   viewProfile: () => dispatch(viewProfile()),
   getGuideInfo: guideId => dispatch(getGuideInfo(guideId)),
   clearBookMessage: () => dispatch(clearBookMessage())

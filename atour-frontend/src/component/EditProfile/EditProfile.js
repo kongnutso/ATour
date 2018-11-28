@@ -1,7 +1,11 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Flex, Box, Image } from "rebass";
-import { editUserInfo, updated } from "../../action/UserInfoAction";
+import {
+  editUserInfo,
+  updated,
+  getGuideInfo
+} from "../../action/UserInfoAction";
 import "./styles.css";
 import { dateToString } from "../../utils/utils";
 import { validateEmail, validatePhone } from "../../utils/validation";
@@ -25,21 +29,20 @@ class EditProfile extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log("in nextProps");
     const { email, phoneNumber, profileImageUrl } = nextProps.userInfo;
     this.setState({ email, phoneNumber, profileImageUrl });
-    console.log(nextProps.isUpdated);
-    console.log(this.props.userInfo);
     if (nextProps.isUpdated) {
       this.setState({ saveChanged: true });
       this.props.updated();
-      console.log("saved");
     }
   }
 
   componentDidMount() {
     const { email, phoneNumber, profileImageUrl } = this.props.userInfo;
     this.setState({ email, phoneNumber, profileImageUrl });
+    if (this.props.role === "Guide" || this.props.isView) {
+      this.props.getGuideInfo(this.props.userInfo.guideId);
+    }
   }
 
   editUserInfo() {
@@ -66,7 +69,6 @@ class EditProfile extends React.Component {
         res.profileImageUrl = profileImageUrl;
         res.email = email;
         res.phoneNumber = phoneNumber;
-        console.log(role);
         this.props.editUserInfo(res, token, role);
       }
     }
@@ -81,7 +83,6 @@ class EditProfile extends React.Component {
       birthDate,
       publishedTours
     } = this.props.userInfo;
-    console.log(this.props.userInfo);
     const { email, phoneNumber, profileImageUrl } = this.state;
     const { isView } = this.props;
     const headerText = isView ? "Guide Profile" : "Edit Profile";
@@ -246,7 +247,6 @@ const mapStateToProps = state => {
     userName,
     isUpdated
   } = state.user;
-  console.log("GUIDE INFO: ", state.user.guideInfo);
   return {
     userInfo: isView
       ? { ...guideInfo, ...guideInfo.profile }
@@ -264,7 +264,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => ({
   editUserInfo: (userInfo, token, role) =>
     dispatch(editUserInfo(userInfo, token, role)),
-  updated: () => dispatch(updated())
+  updated: () => dispatch(updated()),
+  getGuideInfo: guideId => dispatch(getGuideInfo(guideId))
 });
 
 export default connect(

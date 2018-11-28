@@ -174,7 +174,6 @@ function guideInfo(state = initialState.guideInfo, action) {
     case EDIT_GUIDE_USER_INFO:
     case GET_GUIDE_INFO:
     case SELECT_GUIDE:
-      console.log(action.payload.guideInfo);
       return action.payload.guideInfo;
     case LOGOUT:
       return {};

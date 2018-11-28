@@ -5,14 +5,7 @@ import "./styles.css";
 import DatePicker from "react-date-picker";
 import { API_ENDPOINT } from "../../../utils/utils";
 
-import {
-  Container,
-  Segment,
-  Grid,
-  Button,
-  Icon,
-  Card
-} from "semantic-ui-react";
+import { Container, Grid, Button, Icon, Card } from "semantic-ui-react";
 import axios from "axios";
 
 class AvailableDateItem extends React.Component {
@@ -72,10 +65,7 @@ class EditAvailableDate extends React.Component {
       dealtTripsIdsList.push(dealtTrip.tripId);
     });
     const self = this;
-    this.setState(
-      { dealtTripsIds: dealtTripsIdsList },
-      console.log("DEALT TRIPS: ", dealtTripsIdsList)
-    );
+    this.setState({ dealtTripsIds: dealtTripsIdsList });
   }
 
   sortTrips(trips) {

@@ -152,7 +152,6 @@ export function validatePrice(price) {
 }
 
 export function validateDetail(detail) {
-  console.log("detail: ", detail);
   if (!detail || detail.length < 5 || detail.length > 500) {
     return "Detail must ...";
   }
