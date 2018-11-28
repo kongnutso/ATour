@@ -92,10 +92,15 @@ class TourInfo extends React.Component {
       reviewsDto
     } = this.props.tourInfo;
     const tripsInfo = trips
-      ? trips.map(t => {
-          const showDate = dateToString(t.tripDate);
-          return { key: t.tripDate, text: showDate, value: t };
-        })
+      ? trips
+          .filter(t => {
+            if (new Date() - new Date(t.tripDate) > -86400000) return false;
+            return true;
+          })
+          .map(t => {
+            const showDate = dateToString(t.tripDate);
+            return { key: t.tripDate, text: showDate, value: t };
+          })
       : [];
     const reviewInfo = reviewsDto
       ? reviewsDto.map(r => {
