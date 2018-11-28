@@ -1,0 +1,15 @@
+export default {
+  primary: '#26a8dc',
+  primary_darker: '#2297c7',
+  secondary: '#333',
+  secondary_lighter: '#777',
+  disable_field: '#e3e3e3',
+  disable_text: '#ccc',
+  danger: '#ec424b',
+  danger_darker: '#cc0000',
+  success: '#00c851',
+  success_darker: '#007e33',
+  warning: '#ffbb33',
+  warning_darker: '#ff8800',
+  white: '#fff',
+};

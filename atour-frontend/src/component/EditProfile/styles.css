@@ -1,0 +1,123 @@
+.editProfilePage {
+  margin-left: 10%;
+  margin-top: 5%;
+  margin-right: 10%;
+}
+
+.editProfilePage-header-text {
+  font-size: 20px;
+  font-weight: 600;
+  padding-top: 6px;
+}
+
+.editProfilePage-header-icon {
+  font-size: 28px;
+  margin-right: 5px;
+  margin-top: 1px;
+}
+
+.editProfilePage-header {
+  display: flex;
+  width: 100%;
+  height: 50px;
+  border-style: solid;
+  border-color: black;
+  border-width: 0px 0px 3px 0px;
+}
+
+.editProfilePage-content-container {
+  margin-top: 3%;
+  display: flex;
+  width: 100%;
+}
+
+.editProfilePage-content {
+  width: 100%;
+}
+
+.editProfilePage-content-info {
+  border-width: 1px;
+  border-style: solid;
+  border-color: #e3e3e3;
+}
+
+.editProfilePage-content-img {
+  border-radius: 50%;
+  width: 150px;
+  height: 150px;
+}
+
+.editProfilePage-tour-container {
+  margin-left: 50px;
+  margin-top: 50px;
+}
+
+.editProfilePage-tour-header {
+  font-weight: 600;
+  font-size: 20px;
+}
+
+.editProfilePage-content-img-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.editProfilePage-content-img-input {
+  width: 150px;
+  margin-top: 15px;
+}
+
+.editProfilePage-content-info-userinfo {
+  font-weight: 600;
+  word-break: break-all;
+}
+.editProfilePage-save-btn {
+  width: 100%;
+  margin-top: 20px;
+  background-color: #26abdc;
+  border-color: #26abdc;
+}
+
+.editProfilePage-save-btn:hover,
+.editProfilePage-save-btn:active,
+.editProfilePage-save-btn:focus,
+.editProfilePage-save-btn:visited {
+  background-color: #2297c7;
+  border-color: #2297c7;
+}
+
+@media screen and (max-width: 700px) {
+  .editProfilePage-content-img-container {
+    height: 250px;
+  }
+  .editProfilePage-content-img {
+    height: 150px;
+    width: 150px;
+  }
+
+  .editProfilePage-content-img-input {
+    margin-top: 15px;
+    width: 150px;
+  }
+
+  .editProfilePage-content-container {
+    display: inline;
+  }
+
+  .editProfilePage-content {
+    display: inline;
+  }
+  .editProfilePage-content-box {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+
+.bad-guid {
+  color: red;
+  font-stretch: narrower;
+  font-weight: bold;
+  text-align: center;
+  padding: 1em 1em;
+}

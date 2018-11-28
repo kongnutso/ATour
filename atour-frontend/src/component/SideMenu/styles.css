@@ -1,0 +1,149 @@
+.side-menu-item {
+  padding: 15px;
+  width: 100%;
+  display: flex;
+  justify-content: left;
+  height: 50px;
+  border-style: solid;
+  border-width: 0px;
+  border-top-width: 1px;
+  border-bottom-width: 1px;
+  border-color: #e3e3e3;
+}
+
+.side-menu-user {
+  padding-left: 40px;
+}
+
+.side-menu-userInfo {
+  padding: 15px;
+  width: 100%;
+  display: flex;
+  justify-content: left;
+  height: 50px;
+  border-style: solid;
+  border-width: 0px;
+  border-top-width: 1px;
+  border-bottom-width: 1px;
+  border-color: #e3e3e3;
+  color: #777777;
+}
+
+.side-menu-userInfo:hover,
+.side-menu-userInfo:active,
+.side-menu-userInfo:visited,
+.side-menu-userInfo:focus {
+  background-color: white;
+  color: #777777;
+}
+
+.side-menu-selected-item {
+  color: #26a8dc;
+}
+
+.side-menu-link {
+  text-decoration: none;
+}
+
+.side-menu-link:hover,
+.side-menu-link:active,
+.side-menu-link:visited,
+.side-menu-link:focus {
+  text-decoration: none;
+}
+
+.side-menu-menu {
+  background: rgba(255, 255, 255, 0.97);
+  box-shadow: 0px 7px 10px #d5cfcf;
+  position: absolute;
+  right: 0%;
+  top: 48px;
+  width: 100%;
+}
+
+.side-menu-menu.isShowing {
+  animation-duration: 0.5s;
+  animation-name: slideinHigh;
+  animation-fill-mode: forwards;
+}
+
+.side-menu-menu.isHidding {
+  animation-duration: 0.5s;
+  animation-name: slideoutHigh;
+  animation-fill-mode: forwards;
+}
+
+@keyframes slideout {
+  0% {
+    right: 0%;
+  }
+  100% {
+    right: -100%;
+  }
+}
+
+@keyframes slideoutHigh {
+  0% {
+    right: 0%;
+  }
+  100% {
+    right: -100%;
+  }
+}
+
+@keyframes slideoutMed {
+  0% {
+    right: 0%;
+  }
+  100% {
+    right: -100%;
+  }
+}
+
+@keyframes slidein {
+  0% {
+    right: -100%;
+  }
+  100% {
+    right: 0%;
+  }
+}
+
+@keyframes slideinHigh {
+  0% {
+    right: -100%;
+  }
+  100% {
+    right: 0%;
+  }
+}
+
+@keyframes slideinMed {
+  0% {
+    right: -100%;
+  }
+  100% {
+    right: 0%;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .side-menu-menu {
+    font-size: 14px;
+  }
+  .side-menu-menu.isShowing {
+    animation-name: slidein;
+  }
+  .side-menu-menu.isHidding {
+    animation-name: slideout;
+  }
+}
+
+@media screen and (max-width: 550px) {
+  .side-menu-menu.isShowing {
+    animation-name: slideinMed;
+  }
+  .side-menu-menu.isHidding {
+    animation-name: slideoutMed;
+  }
+}

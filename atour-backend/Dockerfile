@@ -12,4 +12,5 @@ RUN npm install
 # --> Expose our server port.
 EXPOSE 3000
 # --> Run our app.
-CMD ["npm", "run", "dev"]
+RUN npm run build
+CMD ["node", "dist/server.js"]

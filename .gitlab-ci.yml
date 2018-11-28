@@ -28,8 +28,8 @@ build:
     - cd atour-backend
     - docker info
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
-    - docker build -t registry.gitlab.com/atour/atour/backend:latest .
-    - docker push registry.gitlab.com/atour/atour/backend:latest
+    - docker build -t registry.gitlab.com/atour/atour/backend:${CI_COMMIT_REF_NAME} .
+    - docker push registry.gitlab.com/atour/atour/backend:${CI_COMMIT_REF_NAME}
 
 deploy:
   image: lwolf/helm-kubectl-docker:v152_213
@@ -48,6 +48,13 @@ deploy:
       --docker-username=$DOCKER_USERNAME 
       --docker-password=$DOCKER_PASSWORD 
       --docker-email=$DOCKER_EMAIL
+    - sed -i "s/__VERSION__/${CI_COMMIT_REF_NAME}/" atour-backend-deployment.yaml atour-backend-service.yaml db-deployment.yaml db-service.yaml
+    - sed -i "s/rolling-again/again-rolling/" atour-backend-deployment.yaml atour-backend-service.yaml db-deployment.yaml db-service.yaml
+    - kubectl apply -f atour-backend-deployment.yaml
+    - kubectl apply -f atour-backend-service.yaml
+    - kubectl apply -f db-deployment.yaml
+    - kubectl apply -f db-service.yaml
+    - sed -i "s/again-rolling/rolling-again/" atour-backend-deployment.yaml atour-backend-service.yaml db-deployment.yaml db-service.yaml
     - kubectl apply -f atour-backend-deployment.yaml
     - kubectl apply -f atour-backend-service.yaml
     - kubectl apply -f db-deployment.yaml

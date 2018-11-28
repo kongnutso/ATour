@@ -1,0 +1,83 @@
+.modal-container-popUpModal {
+  border: 1px solid rgb(204, 204, 204);
+  background: rgb(255, 255, 255, 1);
+  overflow: auto;
+  border-radius: 4px;
+  outline: none;
+  padding: 20px;
+  margin: auto;
+  width: 270px;
+  margin-top: 200px;
+}
+
+.popUpModal-line {
+  border: 1px solid;
+}
+
+.popUpModal-confirm {
+  border: 1px solid #26a8dc;
+  background-color: #26a8dc;
+  cursor: pointer;
+  float: right;
+  width: 100px;
+  border-radius: 2px;
+  text-align: center;
+  color: white;
+}
+.popUpModal-confirm-danger {
+  border: 1px solid #ec424b;
+  background-color: #ec424b;
+  cursor: pointer;
+  float: right;
+  width: 100px;
+  border-radius: 2px;
+  text-align: center;
+  color: white;
+}
+
+.popUpModal-confirm:hover {
+  background-color: #2297c7;
+  border: 1px solid #2297c7;
+}
+
+.popUpModal-confirm-danger:hover {
+  background-color: #cc0000;
+  border: 1px solid #cc0000;
+}
+
+.popUpModal-ok {
+  border: 1px solid #26a8dc;
+  background-color: #26a8dc;
+  cursor: pointer;
+  float: right;
+  width: 100%;
+  border-radius: 2px;
+  text-align: center;
+  color: white;
+}
+
+.popUpModal-ok:hover {
+  background-color: #2297c7;
+}
+
+.popUpModal-cancel {
+  cursor: pointer;
+  border: 1px solid #cccccc;
+  float: right;
+  width: 100px;
+  border-radius: 2px;
+  text-align: center;
+  margin-left: 10px;
+  background-color: #ffffff;
+  color: #cccccc;
+}
+
+.popUpModal-button-container {
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.popUpModal-topic {
+  font-size: 20px;
+}

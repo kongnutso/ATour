@@ -1,0 +1,107 @@
+.bookedhistory-page {
+  margin-left: 100px;
+  margin-right: 100px;
+  margin-top: 30px;
+}
+.bookedhistory-header {
+  text-align: left;
+  font-size: 24px;
+}
+
+.bookedhistory-line {
+  border: 1px solid;
+}
+
+.bookedhistory-topic {
+  padding-right: 25px;
+}
+
+.bookedhistory-table {
+  color: #000000;
+}
+.bookedhistory-table:hover {
+  background-color: #e3e3e3;
+}
+
+.bookedhistory-list {
+  margin-left: 100px;
+  margin-right: 100px;
+  cursor: pointer;
+}
+
+.bookedhistory-tourimage {
+  height: 200px;
+  width: 200px;
+}
+
+.bookedHistory-value {
+  margin-left: 8%;
+}
+
+@media screen and (max-width: 1200px) {
+  .bookedHistory-content {
+    margin-left: 50px;
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  .bookedhistory-list {
+    margin-left: 50px;
+    margin-right: 0px;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .bookedhistory-list {
+    margin-left: 0px;
+    margin-right: 0px;
+  }
+  .bookedHistory-content {
+    margin-left: 50px;
+  }
+}
+
+@media screen and (max-width: 650px) {
+  .bookedhistiry-list {
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+  .bookedhistory-tourimage {
+    height: 125px;
+    width: 125px;
+  }
+  .bookedhistory-page {
+    margin-left: 50px;
+    margin-right: 50px;
+  }
+  .bookedhistory-table {
+    font-size: 14px;
+  }
+
+  .bookedHistory-value {
+    margin-left: 8;
+  }
+
+  .bookedHistory-content {
+    margin-left: 0px;
+  }
+
+  .bookedhistory-image-container {
+    width: 125;
+    height: 125px;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .bookedhistory-header {
+    font-size: 20px;
+  }
+  .bookedhistory-tourimage {
+    height: 100px;
+    width: 100px;
+  }
+  .bookedhistory-image-container {
+    width: 100px;
+    height: 100px;
+  }
+}

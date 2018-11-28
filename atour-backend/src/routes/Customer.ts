@@ -51,7 +51,7 @@ import {
 const router = express.Router();
 
 router.get('/', (req, res) => {
-  res.send('Hello Customer');
+  res.send('Hello Customer New Test Deploy');
 });
 
 router.post('/register', async (req, res) => {
@@ -288,6 +288,8 @@ router.post('/seeBookHistory', async (req, res) => {
   try {
     const db: Db = res.locals.db;
     const { customerId } = req.body;
+    const customer = await getCustomer(db)(customerId);
+    console.log(customer);
     const trips = await seeBookHistoryService(getCustomer(db))(customerId);
     res.json(trips);
   } catch (error) {

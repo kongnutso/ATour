@@ -1,0 +1,261 @@
+.bookedhistoryinfo-page {
+  margin-left: 100px;
+  margin-right: 100px;
+  margin-top: 30px;
+  margin-bottom: 50px;
+}
+
+.bookedhistoryinfo-header {
+  text-align: left;
+  font-size: 24px;
+}
+
+.bookedhistoryinfo-line {
+  border: 1px solid;
+}
+
+.bookedhistoryinfo-headbutton {
+  cursor: pointer;
+  float: right;
+  border-radius: 4px;
+  width: 100px;
+  text-align: center;
+  background-color: #ec424b;
+  color: #ffffff;
+}
+
+.bookedhistoryinfo-headbutton-gray {
+  cursor: pointer;
+  float: right;
+  border-radius: 4px;
+  width: 100px;
+  text-align: center;
+  background-color: #cccccc;
+  color: #ffffff;
+}
+
+.bookedhistoryinfo-status-inprocess {
+  display: table-cell;
+  border-style: solid;
+  display: table-cell;
+  border-color: #26abdc;
+  background-color: #26abdc;
+  height: 40px;
+  width: 40px;
+  text-align: center;
+  vertical-align: middle;
+  border-radius: 50%;
+  color: #ffffff;
+}
+
+.bookedhistoryinfo-status-inprocess-danger {
+  display: table-cell;
+  border-style: solid;
+  display: table-cell;
+  border-color: #ec424b;
+  background-color: #ec424b;
+  height: 40px;
+  width: 40px;
+  text-align: center;
+  vertical-align: middle;
+  border-radius: 50%;
+  color: #ffffff;
+}
+
+.bookedhistoryinfo-status-finish {
+  display: table-cell;
+  border-style: solid;
+  display: table-cell;
+  border-color: #cccccc;
+  background-color: #cccccc;
+  height: 40px;
+  width: 40px;
+  text-align: center;
+  vertical-align: middle;
+  border-radius: 50%;
+  color: #ffffff;
+}
+
+.bookedhistoryinfo-status-coming {
+  display: table-cell;
+  border-style: solid;
+  border-color: #26abdc;
+  background-color: #ffffff;
+  height: 40px;
+  width: 40px;
+  text-align: center;
+  vertical-align: middle;
+  border-radius: 50%;
+  color: #26abdc;
+}
+
+.bookedhistoryinfo-status-coming-danger {
+  display: table-cell;
+  border-style: solid;
+  border-color: #ec424b;
+  background-color: #ffffff;
+  height: 40px;
+  width: 40px;
+  text-align: center;
+  vertical-align: middle;
+  border-radius: 50%;
+  color: #ec424b;
+}
+
+.bookedhistoryinfo-text-inprocess {
+  color: #26abdc;
+}
+
+.bookedhistoryinfo-text-coming {
+  color: #000000;
+}
+
+.bookedhistoryinfo-text-finish {
+  color: #cccccc;
+}
+
+.bookedhistoryinfo-bluebutton {
+  cursor: pointer;
+  border-radius: 4px;
+  margin-left: 5px;
+  text-align: center;
+  height: 24px;
+  background-color: #26abdc;
+  color: #ffffff;
+  padding-top: 2px;
+  width: 100%;
+  max-width: 150px;
+}
+
+.bookedhistoryinfo-redbutton {
+  cursor: pointer;
+  width: 100%;
+  border-radius: 4px;
+  margin-left: 5px;
+  text-align: center;
+  background-color: #ec424b;
+  color: #ffffff;
+  height: 24px;
+  padding-top: 2px;
+  max-width: 150px;
+}
+
+.bookedhistoryinfo-graybutton {
+  width: 150px;
+  border-radius: 4px;
+  margin-left: 5px;
+  text-align: center;
+  background-color: #cccccc;
+  color: #ffffff;
+  cursor: pointer;
+  padding-top: 2px;
+}
+
+.bookedhistoryinfo-rating:hover {
+  background-color: white;
+}
+
+.bookedhistoryinfo-upliadfile {
+  margin-left: 5px;
+}
+
+.bookedHistoryInfo-info-container {
+  display: block;
+  margin-top: 25px;
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 30px;
+}
+
+.bookedHistoryInfo-payment-header {
+  margin-bottom: 15px;
+}
+
+.bookedHistoryInfo-bank-account {
+  margin-bottom: 15px;
+  color: black;
+}
+
+.bookedHistoryInfo-info-topic {
+  width: 20%;
+}
+
+.bookedHistoryInfo-info {
+  margin-left: 5%;
+}
+
+.bookedHistoryInfo-info-each {
+  display: flex;
+  margin-top: 20px;
+  width: 100%;
+}
+
+.bookedHistoryInfo-info-each-1 {
+  display: flex;
+  width: 50%;
+}
+
+.bookedHistoryInfo-info-each-2 {
+  display: flex;
+  width: 50%;
+}
+
+.bookedhistoryinfo-reviewhistory {
+  display: table-cell;
+  border: 2px;
+  border-style: solid;
+  border-color: #cccccc;
+  color: #cccccc;
+  height: 100px;
+  width: 700px;
+}
+
+.bookedHistoryInfo-info-each-value {
+  margin-left: 2%;
+}
+
+@media screen and (max-width: 800px) {
+  .bookedhistoryinfo-status-inprocess,
+  .bookedhistoryinfo-status-finish,
+  .bookedhistoryinfo-status-coming {
+    height: 30px;
+  }
+  .bookedhistoryinfo-header {
+    font-size: 16px;
+  }
+}
+
+@media screen and (max-width: 415px) {
+  .bookedhistoryinfo-status-inprocess,
+  .bookedhistoryinfo-status-finish,
+  .bookedhistoryinfo-status-coming {
+    height: 35px;
+  }
+  .bookedhistoryinfo-headbutton,
+  .bookedhistoryinfo-headbutton-gray {
+    width: 50px;
+  }
+  .bookedhistoryinfo-page {
+    margin-left: 50px;
+    margin-right: 50px;
+  }
+  .bookedHistoryInfo-info-topic {
+    width: 100%;
+  }
+  .bookedHistoryInfo-info-each-1 {
+    display: inline;
+    width: 60%;
+  }
+
+  .bookedHistoryInfo-info-each-2 {
+    display: inline;
+    width: 40%;
+    margin-left: 10px;
+  }
+}
+
+@media screen and (max-width: 376px) {
+  .bookedhistoryinfo-header {
+    font-size: 14px;
+  }
+}
