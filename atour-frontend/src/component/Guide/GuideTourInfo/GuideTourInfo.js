@@ -10,10 +10,8 @@ import {
   Segment,
   Icon,
   Button,
-  Card,
   Image
 } from "semantic-ui-react";
-import StarRatingComponent from "react-star-rating-component";
 import autobind from "react-autobind";
 
 class GuideTourInfo extends React.Component {

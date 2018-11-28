@@ -28,5 +28,7 @@ export function toStatus(number) {
       return "Finished trip";
     case 8:
       return "Canceled trip";
+    default:
+      return "Invalid";
   }
 }
