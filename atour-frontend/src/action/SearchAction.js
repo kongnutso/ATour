@@ -12,13 +12,16 @@ export function onChange(value) {
   };
 }
 
-export function onSearch(keyword, isTour, isMultiple) {
+export function onSearch(keyword, isTour) {
   return async dispatch => {
     try {
       if (isTour) {
-        if (isMultiple) {
+        if (keyword === "") {
+          console.log("EVERYTHING");
           const res = await axios
-            .get("http://" + API_ENDPOINT + "/customer/searchTour", { keyword })
+            .get("http://" + API_ENDPOINT + "/customer/searchTours", {
+              keyword
+            })
             .then(res => {
               return res.data;
             });
