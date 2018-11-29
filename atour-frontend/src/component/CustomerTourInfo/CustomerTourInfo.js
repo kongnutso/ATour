@@ -50,14 +50,13 @@ class TourInfo extends React.Component {
     }
   }
 
-  // tripId, tripDate, customerId, size, price
   onConfirm() {
     this.props.bookTrip(
-      this.state.selectedTrip.tripId,
-      this.state.selectedTrip.tripDate,
-      this.props.user.customerId,
+      this.props.tourInfo.tourId,
+      this.state.selectedTrip,
+      this.props.tourInfo.price,
       this.state.groupSize,
-      this.props.tourInfo.price
+      this.props.user.customerId
     );
     this.setState({ openConfirm: false });
   }
@@ -93,10 +92,15 @@ class TourInfo extends React.Component {
       reviewsDto
     } = this.props.tourInfo;
     const tripsInfo = trips
-      ? trips.map(t => {
-          const showDate = dateToString(t.tripDate);
-          return { key: t.tripDate, text: showDate, value: t };
-        })
+      ? trips
+          .filter(t => {
+            if (new Date() - new Date(t.tripDate) > -86400000) return false;
+            return true;
+          })
+          .map(t => {
+            const showDate = dateToString(t.tripDate);
+            return { key: t.tripDate, text: showDate, value: t };
+          })
       : [];
     const reviewInfo = reviewsDto
       ? reviewsDto.map(r => {
@@ -242,8 +246,8 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => ({
-  bookTrip: (tripId, tripDate, customerId, size, price) =>
-    dispatch(bookTrip(tripId, tripDate, customerId, size, price)),
+  bookTrip: (tourId, tripInfo, price, size, customerId) =>
+    dispatch(bookTrip(tourId, tripInfo, price, size, customerId)),
   viewProfile: () => dispatch(viewProfile()),
   getGuideInfo: guideId => dispatch(getGuideInfo(guideId)),
   clearBookMessage: () => dispatch(clearBookMessage())
