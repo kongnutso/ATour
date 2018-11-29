@@ -86,7 +86,7 @@ deploy-frontend:
   script:
     - echo "Deploy to staging server"
     - kubectl config set-cluster atour-se --server="$KUBE_URL" --insecure-skip-tls-verify=true
-    - cd atour-backend
+    - cd atour-frontend
     - kubectl config current-context
     - kubectl config get-contexts
     - if kubectl get secret gitlab-auth; then
