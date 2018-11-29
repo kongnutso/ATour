@@ -26,6 +26,8 @@ spec:
           ports:
             - containerPort: 3000
           resources: {}
-          workaround: rolling-again
+          env:
+            - name: WORKAROUND
+              value: rolling-again
       restartPolicy: Always
 status: {}
