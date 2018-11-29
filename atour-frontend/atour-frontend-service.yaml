@@ -6,7 +6,7 @@ metadata:
     kompose.version: 1.16.0 (0c01309)
   creationTimestamp: null
   labels:
-    app: atour-frontend
+    io.kompose.service: atour-frontend
   name: atour-frontend
 spec:
   ports:
@@ -14,7 +14,7 @@ spec:
       port: 80
       targetPort: 80
   selector:
-    app: atour-frontend
+    io.kompose.service: atour-frontend
   type: LoadBalancer
 status:
   loadBalancer: {}
