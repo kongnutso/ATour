@@ -10,26 +10,41 @@ stages:
 
 test:
   stage: test
-  script: 
+  script:
     - echo "Running tests"
     - cd atour-backend
     - npm install --production
     - npm run test-ci
 
-build:
-  image: docker:18-dind
+build-backend:
+  image: docker:stable
   stage: build
   variables:
     DOCKER_HOST: tcp://docker:2375
   services:
     - docker:dind
-  script: 
+  script:
     - echo "Building the app"
     - cd atour-backend
     - docker info
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
     - docker build -t registry.gitlab.com/atour/atour/backend:${CI_COMMIT_REF_NAME} .
     - docker push registry.gitlab.com/atour/atour/backend:${CI_COMMIT_REF_NAME}
+
+build-frontend:
+  image: docker:stable
+  stage: build
+  variables:
+    DOCKER_HOST: tcp://docker:2375
+  services:
+    - docker:dind
+  script:
+    - echo "Building the app"
+    - cd atour-frontend
+    - docker info
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN registry.gitlab.com
+    - docker build -t registry.gitlab.com/atour/atour/frontend:${CI_COMMIT_REF_NAME} .
+    - docker push registry.gitlab.com/atour/atour/frontend:${CI_COMMIT_REF_NAME}
 
 deploy:
   image: lwolf/helm-kubectl-docker:v152_213
@@ -41,12 +56,12 @@ deploy:
     - kubectl config current-context
     - kubectl config get-contexts
     - if kubectl get secret gitlab-auth; then
-        kubectl delete secret gitlab-auth;
-      fi 
-    - kubectl create secret docker-registry gitlab-auth 
-      --docker-server=https://registry.gitlab.com 
-      --docker-username=$DOCKER_USERNAME 
-      --docker-password=$DOCKER_PASSWORD 
+      kubectl delete secret gitlab-auth;
+      fi
+    - kubectl create secret docker-registry gitlab-auth
+      --docker-server=https://registry.gitlab.com
+      --docker-username=$DOCKER_USERNAME
+      --docker-password=$DOCKER_PASSWORD
       --docker-email=$DOCKER_EMAIL
     - sed -i "s/__VERSION__/${CI_COMMIT_REF_NAME}/" atour-backend-deployment.yaml atour-backend-service.yaml db-deployment.yaml db-service.yaml
     - sed -i "s/rolling-again/again-rolling/" atour-backend-deployment.yaml atour-backend-service.yaml db-deployment.yaml db-service.yaml
@@ -59,6 +74,14 @@ deploy:
     - kubectl apply -f atour-backend-service.yaml
     - kubectl apply -f db-deployment.yaml
     - kubectl apply -f db-service.yaml
+    - cd ../atour-frontend
+    - sed -i "s/__VERSION__/${CI_COMMIT_REF_NAME}/" atour-frontend-deployment.yaml atour-frontend-service.yaml
+    - sed -i "s/rollingworkaround/workaroundrolling/" atour-frontend-deployment.yaml atour-frontend-service.yaml
+    - kubectl apply -f atour-frontend-deployment.yaml
+    - kubectl apply -f atour-frontend-service.yaml
+    - sed -i "s/workaroundrolling/rollingworkaround/" atour-frontend-deployment.yaml atour-frontend-service.yaml
+    - kubectl apply -f atour-frontend-deployment.yaml
+    - kubectl apply -f atour-frontend-service.yaml
   environment:
     name: production
     url: https://staging.example.com
