@@ -74,29 +74,7 @@ deploy-backend:
     - kubectl apply -f atour-backend-service.yaml
     - kubectl apply -f db-deployment.yaml
     - kubectl apply -f db-service.yaml
-  environment:
-    name: production
-    url: https://staging.example.com
-  only:
-    - master
-
-deploy-frontend:
-  image: lwolf/helm-kubectl-docker:v152_213
-  stage: deploy
-  script:
-    - echo "Deploy to staging server"
-    - kubectl config set-cluster atour-se --server="$KUBE_URL" --insecure-skip-tls-verify=true
-    - cd atour-frontend
-    - kubectl config current-context
-    - kubectl config get-contexts
-    - if kubectl get secret gitlab-auth; then
-        kubectl delete secret gitlab-auth;
-      fi 
-    - kubectl create secret docker-registry gitlab-auth 
-      --docker-server=https://registry.gitlab.com 
-      --docker-username=$DOCKER_USERNAME 
-      --docker-password=$DOCKER_PASSWORD 
-      --docker-email=$DOCKER_EMAIL
+    - cd ../atour-frontend
     - sed -i "s/__VERSION__/${CI_COMMIT_REF_NAME}/" atour-frontend-deployment.yaml atour-frontend-service.yaml 
     - sed -i "s/rolling-again/again-rolling/" atour-frontend-deployment.yaml atour-frontend-service.yaml
     - kubectl apply -f atour-frontend-deployment.yaml
@@ -104,7 +82,6 @@ deploy-frontend:
     - sed -i "s/again-rolling/rolling-again/" atour-frontend-deployment.yaml atour-frontend-service.yaml
     - kubectl apply -f atour-frontend-deployment.yaml
     - kubectl apply -f atour-frontend-service.yaml
-
   environment:
     name: production
     url: https://staging.example.com
