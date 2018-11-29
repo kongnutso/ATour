@@ -10,7 +10,7 @@ stages:
 
 test:
   stage: test
-  script: 
+  script:
     - echo "Running tests"
     - cd atour-backend
     - npm install --production
@@ -23,7 +23,7 @@ build-backend:
     DOCKER_HOST: tcp://docker:2375
   services:
     - docker:dind
-  script: 
+  script:
     - echo "Building the app"
     - cd atour-backend
     - docker info
@@ -38,7 +38,7 @@ build-frontend:
     DOCKER_HOST: tcp://docker:2375
   services:
     - docker:dind
-  script: 
+  script:
     - echo "Building the app"
     - cd atour-frontend
     - docker info
@@ -56,12 +56,12 @@ deploy-backend:
     - kubectl config current-context
     - kubectl config get-contexts
     - if kubectl get secret gitlab-auth; then
-        kubectl delete secret gitlab-auth;
-      fi 
-    - kubectl create secret docker-registry gitlab-auth 
-      --docker-server=https://registry.gitlab.com 
-      --docker-username=$DOCKER_USERNAME 
-      --docker-password=$DOCKER_PASSWORD 
+      kubectl delete secret gitlab-auth;
+      fi
+    - kubectl create secret docker-registry gitlab-auth
+      --docker-server=https://registry.gitlab.com
+      --docker-username=$DOCKER_USERNAME
+      --docker-password=$DOCKER_PASSWORD
       --docker-email=$DOCKER_EMAIL
     - sed -i "s/__VERSION__/${CI_COMMIT_REF_NAME}/" atour-backend-deployment.yaml atour-backend-service.yaml db-deployment.yaml db-service.yaml
     - sed -i "s/rolling-again/again-rolling/" atour-backend-deployment.yaml atour-backend-service.yaml db-deployment.yaml db-service.yaml
@@ -75,11 +75,11 @@ deploy-backend:
     - kubectl apply -f db-deployment.yaml
     - kubectl apply -f db-service.yaml
     - cd ../atour-frontend
-    - sed -i "s/__VERSION__/${CI_COMMIT_REF_NAME}/" atour-frontend-deployment.yaml atour-frontend-service.yaml 
-    - sed -i "s/rolling-again/again-rolling/" atour-frontend-deployment.yaml atour-frontend-service.yaml
+    - sed -i "s/__VERSION__/${CI_COMMIT_REF_NAME}/" atour-frontend-deployment.yaml atour-frontend-service.yaml
+    - sed -i "s/rollingworkaround/workaroundrolling/" atour-frontend-deployment.yaml atour-frontend-service.yaml
     - kubectl apply -f atour-frontend-deployment.yaml
     - kubectl apply -f atour-frontend-service.yaml
-    - sed -i "s/again-rolling/rolling-again/" atour-frontend-deployment.yaml atour-frontend-service.yaml
+    - sed -i "s/workaroundrolling/rollingworkaround/" atour-frontend-deployment.yaml atour-frontend-service.yaml
     - kubectl apply -f atour-frontend-deployment.yaml
     - kubectl apply -f atour-frontend-service.yaml
   environment:
