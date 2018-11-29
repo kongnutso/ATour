@@ -7,7 +7,8 @@ ADD . /app
 
 # --> Install dependencies
 WORKDIR /app
-RUN npm install
+
+RUN npm install --production
 
 # --> Expose our server port.
 EXPOSE 3000
