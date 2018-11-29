@@ -1,0 +1,31 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.16.0 (0c01309)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: atour-frontend
+  name: atour-frontend
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.service: atour-frontend
+        workaround: rolling-again
+    spec:
+      imagePullSecrets:
+        - name: gitlab-auth
+      containers:
+        - image: registry.gitlab.com/atour/atour/frontend:__VERSION__
+          name: atour-frontend
+          ports:
+            - containerPort: 3000
+          resources: {}
+      restartPolicy: Always
+status: {}
