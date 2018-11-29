@@ -50,7 +50,7 @@ export async function initMongo() {
       ],
       approveDate: new Date('2018-11-23'),
       refundRequestDate: new Date('2018-11-30'),
-      tourId: 'tourId3',
+      tourId: 'tourid3',
       tourName:
         'Befriend the Elephants and Learn How to Make Coffee the Karen Way!'
     };
