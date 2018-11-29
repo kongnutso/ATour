@@ -16,7 +16,6 @@
   "dependencies": {
     "@types/cors": "^2.8.4",
     "@types/express": "^4.16.0",
-    "@types/immutable": "^3.8.7",
     "@types/jest": "^23.3.9",
     "@types/lodash": "^4.14.118",
     "@types/mongodb": "^3.1.14",
@@ -24,7 +23,6 @@
     "body-parser": "^1.18.3",
     "cors": "^2.8.5",
     "express": "^4.16.4",
-    "immutable": "^4.0.0-rc.12",
     "jest": "^23.6.0",
     "lodash": "^4.17.11",
     "mongodb": "^3.1.8",
