@@ -23,6 +23,7 @@ spec:
         - name: gitlab-auth
       containers:
         - image: registry.gitlab.com/atour/atour/frontend:__VERSION__
+          imagePullPolicy: Always
           name: atour-frontend
           ports:
             - containerPort: 3000
