@@ -1,3 +1,4 @@
 # dependencies
 /atour-frontend/node_modules
+/atour-frontend/build
 /atour-backend/node_modules
